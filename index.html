@@ -30,6 +30,12 @@
         #main-nav.scrolled { background: rgba(2, 6, 23, 0.98) !important; padding: 15px 40px !important; }
         .group:hover .relative.h-64::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent); transform: skewX(-25deg); animation: shine 0.8s forwards; }
         @keyframes shine { 100% { left: 150%; } }
+        
+        /* NEW: カレンダー用スタイル */
+        .status-badge { padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 900; }
+        .status-ok { background: #0ea5e9; color: white; }
+        .status-few { background: #f59e0b; color: white; }
+        .status-full { background: #64748b; color: white; cursor: not-allowed; }
     </style>
 </head>
 <body>
@@ -61,7 +67,7 @@
                 <a href="#" class="hover:text-sky-400 transition text-sky-400">ホーム</a>
                 <a href="#service" class="hover:text-sky-400 transition text-nowrap">サービス</a>
                 <a href="#courses" class="hover:text-sky-400 transition text-nowrap">講習コース</a>
-                <a href="#features" class="hover:text-sky-400 transition text-nowrap">選ばれる理由</a>
+                <a href="#schedule-section" class="hover:text-sky-400 transition text-nowrap text-sky-400">講習スケジュール</a>
                 <a href="#access" class="hover:text-sky-400 transition text-nowrap">アクセス</a>
             </div>
             <a href="tel:0832460556" class="hidden lg:flex items-center gap-2 bg-gradient-to-r from-sky-500 to-sky-600 text-white px-8 py-3 font-bold text-[12px] tracking-widest hover:shadow-xl transition-all shadow-lg rounded-full group uppercase">
@@ -83,9 +89,9 @@
                 <button onclick="openModal('apply')" class="cta-card-primary animate-pulse text-white px-12 py-4 rounded-full font-black text-sm tracking-widest hover:shadow-2xl italic uppercase">
                     <i class="fas fa-edit mr-2"></i> 受講申し込み
                 </button>
-                <button onclick="openModal('schedule')" class="border-2 border-white text-white px-12 py-4 rounded-full font-black text-sm tracking-widest hover:bg-white/10 italic uppercase transition">
+                <a href="#schedule-section" class="border-2 border-white text-white px-12 py-4 rounded-full flex items-center justify-center font-black text-sm tracking-widest hover:bg-white/10 italic uppercase transition">
                     <i class="fas fa-calendar mr-2"></i> 講習スケジュール
-                </button>
+                </a>
             </div>
         </div>
         <div class="scroll-line"></div>
@@ -115,7 +121,7 @@
                             </div>
                         </div>
                     </button>
-                    <button onclick="openModal('schedule')" class="relative group text-left">
+                    <a href="#schedule-section" class="relative group text-left">
                         <div class="glass-bright-card p-12 rounded-3xl border-l-8 border-l-sky-500 h-full flex flex-col justify-between overflow-hidden text-slate-900">
                             <div class="absolute -right-4 -bottom-4 text-8xl font-black italic text-sky-400/10 group-hover:text-sky-400/20 transition-colors">02</div>
                             <div class="relative z-10">
@@ -124,7 +130,7 @@
                                 <p class="text-xs font-bold text-slate-400 italic">最新スケジュール確認</p>
                             </div>
                         </div>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -171,7 +177,7 @@
         </div>
     </section>
 
-    <!-- Why Choose STC / Contact / Footer (以下省略せず統合) -->
+    <!-- Why Choose STC -->
     <section class="py-24 md:py-40 bg-white text-slate-900" id="features">
         <div class="container mx-auto px-6 md:px-10">
             <div class="relative mb-32 reveal text-left">
@@ -195,6 +201,30 @@
                     <h4 class="text-2xl font-black mb-6 text-slate-900 group-hover:text-sky-600 italic transition-colors">現場で生きる生きた指導</h4>
                     <p class="text-slate-500 text-sm font-bold italic leading-relaxed uppercase">ベテラン職人の指導員が、実戦ですぐに役立つ技術を伝授します。</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW: 講習スケジュールセクション -->
+    <section class="py-24 md:py-40 bg-slate-900" id="schedule-section">
+        <div class="container mx-auto px-6 md:px-10">
+            <div class="relative mb-16 reveal text-left flex flex-col md:flex-row justify-between items-end gap-6">
+                <div class="relative">
+                    <h2 class="text-7xl md:text-[10vw] font-black italic tracking-tighter text-white/[0.03] absolute -top-10 -left-1 select-none uppercase">CALENDAR</h2>
+                    <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-400 uppercase italic">Schedule</h2>
+                    <p class="text-white/40 font-en tracking-[0.3em] text-[10px] mt-2 italic uppercase">講習開催予定</p>
+                </div>
+                
+                <!-- 月切り替えボタン -->
+                <div class="relative z-20 flex items-center gap-6 bg-white/5 p-2 rounded-full border border-white/10">
+                    <button onclick="changeMonth(-1)" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-sky-500 transition text-white"><i class="fas fa-chevron-left"></i></button>
+                    <span id="current-month-display" class="font-black italic text-xl min-w-[100px] text-center uppercase tracking-widest text-white">6月</span>
+                    <button onclick="changeMonth(1)" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-sky-500 transition text-white"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div id="calendar-container" class="glass-bright-card rounded-3xl overflow-hidden reveal text-slate-900 shadow-[0_0_50px_rgba(14,165,233,0.1)] min-h-[300px]">
+                <!-- JavaScriptでここにテーブルが生成されます -->
             </div>
         </div>
     </section>
@@ -226,15 +256,79 @@
     </footer>
 
     <script>
+        // --- 1. カレンダー用データとプログラム ---
+        const scheduleData = {
+            6: [
+                { name: '玉掛け技能講習', date: '6/16 - 6/18', status: 'full', statusText: '満員御礼' },
+                { name: 'フォークリフト運転 (31H)', date: '6/22 - 6/25', status: 'few', statusText: '残り 2名' },
+                { name: '小型移動式クレーン', date: '6/26 - 6/28', status: 'ok', statusText: '空席あり' }
+            ],
+            7: [
+                { name: '玉掛け技能講習', date: '7/07 - 7/09', status: 'ok', statusText: '受付中' },
+                { name: 'フォークリフト運転 (31H)', date: '7/14 - 7/17', status: 'ok', statusText: '受付中' },
+                { name: '小型移動式クレーン', date: '7/21 - 7/23', status: 'ok', statusText: '受付中' }
+            ]
+        };
+
+        let currentMonth = 6;
+
+        function renderCalendar(month) {
+            const container = document.getElementById('calendar-container');
+            const monthDisplay = document.getElementById('current-month-display');
+            if(monthDisplay) monthDisplay.innerText = month + '月';
+            
+            const data = scheduleData[month] || [];
+            let html = `
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 italic font-black text-[10px] tracking-[0.2em] border-b border-slate-200 uppercase">
+                            <th class="p-6">Course Name</th>
+                            <th class="p-6">Date</th>
+                            <th class="p-6 text-center">Status</th>
+                            <th class="p-6">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="font-bold italic">`;
+            
+            data.forEach(item => {
+                const badgeClass = item.status === 'full' ? 'status-full' : (item.status === 'few' ? 'status-few' : 'status-ok');
+                const btnAttr = item.status === 'full' ? 'disabled class="opacity-20 cursor-not-allowed"' : 'onclick="openModal(\'apply\')" class="text-sky-600 hover:text-slate-900 underline"';
+                
+                html += `
+                    <tr class="border-b border-slate-50 hover:bg-slate-50 transition">
+                        <td class="p-6 text-slate-900">${item.name}</td>
+                        <td class="p-6 text-sm text-slate-500">${item.date}</td>
+                        <td class="p-6 text-center"><span class="status-badge ${badgeClass}">${item.statusText}</span></td>
+                        <td class="p-6 text-xs uppercase">${item.status === 'full' ? 'Closed' : '<button ' + btnAttr + '>Booking</button>'}</td>
+                    </tr>`;
+            });
+            
+            html += `</tbody></table>`;
+            if(container) container.innerHTML = html;
+        }
+
+        function changeMonth(diff) {
+            currentMonth += diff;
+            if (currentMonth < 6) currentMonth = 6;
+            if (currentMonth > 7) currentMonth = 7;
+            renderCalendar(currentMonth);
+        }
+
+        // --- 2. モーダルとスクロール用プログラム ---
         function openModal(type) {
             const overlay = document.getElementById('modal-overlay');
             const title = document.getElementById('modal-title');
             const body = document.getElementById('modal-body');
-            if(type === 'schedule') { title.innerText = '講習スケジュール'; body.innerHTML = '【玉掛け】毎週火曜〜木曜<br>【フォークリフト】第2・第4週 開講中。'; }
-            else { title.innerText = '受講お申し込み'; body.innerHTML = 'お電話(083-246-0556)にて優先予約を承っております。'; }
+            if(type === 'apply') { 
+                title.innerText = '受講お申し込み'; 
+                body.innerHTML = '現在、WEB予約システムを構築中です。<br><br>お急ぎの方は、お電話(083-246-0556)にて「HPの日程を見た」とお伝えください。優先的にご案内いたします。'; 
+            } else if(type === 'schedule') {
+                window.location.hash = 'schedule-section';
+            }
             document.body.classList.add('modal-active');
         }
         function closeModal() { document.body.classList.remove('modal-active'); }
+
         window.addEventListener('scroll', () => {
             const scroll = window.pageYOffset;
             const heroImg = document.getElementById('hero-img');
@@ -243,6 +337,11 @@
             if (scroll > 50) { nav.classList.add('scrolled'); } else { nav.classList.remove('scrolled'); }
             document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); });
         });
+
+        // ページ読み込み時に実行
+        window.onload = () => {
+            renderCalendar(6);
+        };
     </script>
 </body>
 </html>
