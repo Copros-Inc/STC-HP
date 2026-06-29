@@ -8,52 +8,57 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+JP:wght@300;700;900&display=swap');
-        body { 
-        font-family: 'Noto Sans JP', sans-serif; 
-        background-color: #0b1120; /* 修正：少しだけ青みを足して「重たさ」を軽減 */
-        color: #f1f5f9; 
-        overflow-x: hidden; 
-  　　　　　  }
+        
+        /* 基本設定：重たすぎない紺色へ微調整 */
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #0b1120; color: #f1f5f9; overflow-x: hidden; }
         .font-en { font-family: 'Montserrat', sans-serif; }
+        
+        /* 背景演出 */
         .bg-video-effect { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #1e3a8a 0%, #020617 100%); z-index: -2; }
         .bg-glow { position: fixed; width: 600px; height: 600px; background: rgba(56, 189, 248, 0.08); filter: blur(120px); border-radius: 50%; z-index: -1; animation: float 20s infinite alternate; }
         @keyframes float { from { transform: translate(-10%, -10%); } to { transform: translate(20%, 20%); } }
+        
+        /* ヒーローセクション演出 */
         .parallax-bg { position: relative; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .parallax-img { position: absolute; top: 0; left: 0; width: 100%; height: 120%; object-fit: cover; z-index: -1; opacity: 0.3; will-change: transform; }
         @keyframes kenburns { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
         .zoom-effect { animation: kenburns 20s ease-out forwards; }
+        
+        /* カードデザイン：透明感と明るさを強調 */
         .kiba-card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .glass-bright-card { 
-        background: rgba(255, 255, 255, 0.98); /* 修正：白さを強調 */
-        backdrop-filter: blur(15px); 
-        border: 1px solid rgba(56, 189, 248, 0.3); /* 修正：枠線にスカイブルーを微量追加 */
-        box-shadow: 0 20px 50px rgba(0,0,0,0.2); 
- 　　　　　   }
-        .glass-bright-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.15); }
-        /* ★ NEW: CTA用強調カード */
-        .cta-card-primary { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); box-shadow: 0 20px 50px rgba(14, 165, 233, 0.3); }
+        .glass-bright-card { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px); border: 1px solid rgba(56, 189, 248, 0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .glass-bright-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(56, 189, 248, 0.2); }
+        
+        /* 強調ボタン演出 */
+        .cta-card-primary { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); box-shadow: 0 20px 50px rgba(14, 165, 233, 0.3); transition: all 0.5s; }
         .cta-card-primary:hover { transform: translateY(-8px); box-shadow: 0 30px 70px rgba(14, 165, 233, 0.5); }
+        
+        /* スクロールアニメーション */
         .reveal { opacity: 0; transform: translateY(40px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
         .scroll-line { width: 1px; height: 80px; background: linear-gradient(to bottom, transparent, #38bdf8); position: absolute; bottom: 30px; left: 50%; animation: scrollDown 2s infinite; }
+        @keyframes scrollDown { 0% { height: 0; opacity: 0; top: 0; } 50% { height: 80px; opacity: 1; } 100% { height: 0; opacity: 0; top: 80px; } }
+        
         .hero-title { font-size: clamp(2.5rem, 8vw, 8rem); }
+        
+        /* モーダル */
         #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(10px); z-index: 2000; opacity: 0; transition: opacity 0.5s; }
         .modal-active #modal-overlay { display: flex; opacity: 1; }
-        /* ★ 改善：ナビゲーションの背景強化 */
-        #main-nav.scrolled { background: rgba(2, 6, 23, 0.98) !important; }
-            /* 3. 講習カードに「光の筋」が走るようなエフェクトを追加 */
-    .group:hover .relative.h-64::after {
-        content: '';
-        position: absolute;
-        top: 0; left: -100%;
-        width: 50%; height: 100%;
-        background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
-        transform: skewX(-25deg);
-        animation: shine 0.8s forwards;
-    }
-    @keyframes shine {
-        100% { left: 150%; }
-    }
+        
+        /* ナビゲーションの背景強化 */
+        #main-nav.scrolled { background: rgba(2, 6, 23, 0.98) !important; padding: 15px 40px !important; }
+
+        /* 講習カードに「光の筋」が走るエフェクト */
+        .group:hover .relative.h-64::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+            transform: skewX(-25deg);
+            animation: shine 0.8s forwards;
+        }
+        @keyframes shine { 100% { left: 150%; } }
     </style>
 </head>
 <body>
@@ -63,7 +68,7 @@
     <div id="modal-overlay" class="items-center justify-center p-6">
         <div id="modal-content" class="bg-white w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl">
             <div class="p-8 border-b border-slate-100 flex justify-between items-center text-slate-900">
-                <h3 id="modal-title" class="text-2xl font-black italic"></h3>
+                <h3 id="modal-title" class="text-2xl font-black italic text-sky-600"></h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-sky-600 transition text-3xl">&times;</button>
             </div>
             <div id="modal-body" class="p-10 text-slate-600 leading-loose font-bold italic"></div>
@@ -88,14 +93,13 @@
                 <a href="#features" class="hover:text-sky-400 transition text-nowrap">選ばれる理由</a>
                 <a href="#access" class="hover:text-sky-400 transition">アクセス</a>
             </div>
-            <!-- ★ 改善：ナビのCTAボタンを目立たせ -->
             <a href="tel:0832460556" class="hidden lg:flex items-center gap-2 bg-gradient-to-r from-sky-500 to-sky-600 text-white px-8 py-3 font-bold text-[12px] tracking-widest hover:shadow-xl transition-all shadow-lg rounded-full group uppercase">
                 <i class="fas fa-phone-alt text-[10px] group-hover:scale-120 transition duration-500"></i><span>今すぐ相談</span>
             </a>
         </div>
     </nav>
 
-    <!-- 02. ヒーローセクション（★改善：背景の不透明度UP） -->
+    <!-- 02. ヒーローセクション -->
     <section class="parallax-bg overflow-hidden">
         <img src="hero.png" class="parallax-img zoom-effect" id="hero-img">
         <div class="relative z-10 text-center px-6 mt-20">
@@ -105,7 +109,6 @@
             </h1>
             <p class="text-white/80 text-sm md:text-lg font-bold tracking-[0.3em] md:tracking-[0.5em] reveal active uppercase border-t border-b border-white/20 py-4 inline-block px-10 italic">山口県下関市唯一の認可教習機関</p>
             
-            <!-- ★ 新規：ヒーロー内にCTA追加 -->
             <div class="mt-16 flex flex-col md:flex-row gap-6 justify-center reveal active">
                 <button onclick="openModal('apply')" class="cta-card-primary animate-pulse text-white px-12 py-4 rounded-full font-black text-sm tracking-widest hover:shadow-2xl italic uppercase">
                     <i class="fas fa-edit mr-2"></i> 受講申し込み
@@ -124,31 +127,30 @@
             <div class="grid lg:grid-cols-2 gap-16 items-end"> 
                 <div class="reveal text-left relative pb-10">
                     <div class="relative mb-16">
-                        <h2 class="text-7xl md:text-[8vw] font-black italic tracking-tighter text-slate-200 absolute -top-20 -left-1 select-none">PHILOSOPHY</h2>
+                        <h2 class="text-7xl md:text-[8vw] font-black italic tracking-tighter text-slate-200 absolute -top-20 -left-1 select-none uppercase">PHILOSOPHY</h2>
                         <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-600 uppercase">SERVICE</h2>
                         <p class="text-slate-500 font-bold tracking-[0.2em] text-xs md:text-sm mt-4 relative z-10 uppercase">資格取得とキャリアの構築</p>
                     </div>
                     <h3 class="text-2xl md:text-4xl font-black italic mb-8 text-slate-900 leading-tight">現場の「即戦力」を、<br><span class="text-sky-600">最短ルートで。</span></h3>
                     <p class="text-slate-600 leading-loose font-bold mb-10 text-sm md:text-base max-w-xl">下関トレーニングセンターは、現場で真に通用する「安全」と「技術」を習得するための認可教習機関です。初めての方でも親切に指導いたします。</p>
                 </div>
-                <!-- ★ 改善：カードを2列から1列+フルサイズに変更 -->
                 <div class="grid grid-cols-1 gap-6 reveal" style="transition-delay: 0.3s;">
                     <button onclick="openModal('apply')" class="relative group text-left">
                         <div class="cta-card-primary p-12 rounded-3xl h-full flex flex-col justify-between overflow-hidden text-white">
                             <div class="absolute -right-4 -bottom-4 text-8xl font-black italic text-white/20 group-hover:text-white/30 transition-colors">01</div>
                             <div class="relative z-10">
                                 <div class="w-16 h-16 bg-white/30 rounded-2xl flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform"><i class="fas fa-pen-nib text-white text-2xl"></i></div>
-                                <h4 class="text-3xl font-black mb-2 group-hover:text-white/90">受講<br>お申し込み</h4>
+                                <h4 class="text-3xl font-black mb-2 group-hover:text-white/90 italic">受講<br>お申し込み</h4>
                                 <p class="text-xs font-bold text-white/80 italic">WEB予約・資料請求をいますぐ</p>
                             </div>
                         </div>
                     </button>
                     <button onclick="openModal('schedule')" class="relative group text-left">
-                        <div class="glass-bright-card p-12 rounded-3xl border-l-8 border-l-sky-500 h-full flex flex-col justify-between overflow-hidden">
+                        <div class="glass-bright-card p-12 rounded-3xl border-l-8 border-l-sky-500 h-full flex flex-col justify-between overflow-hidden text-slate-900">
                             <div class="absolute -right-4 -bottom-4 text-8xl font-black italic text-sky-400/10 group-hover:text-sky-400/20 transition-colors">02</div>
                             <div class="relative z-10">
                                 <div class="w-16 h-16 bg-sky-500 rounded-2xl flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform"><i class="fas fa-calendar-alt text-white text-2xl"></i></div>
-                                <h4 class="text-2xl font-black text-slate-900 mb-2 group-hover:text-sky-600">講習<br>カレンダー</h4>
+                                <h4 class="text-2xl font-black mb-2 group-hover:text-sky-600 italic">講習<br>カレンダー</h4>
                                 <p class="text-xs font-bold text-slate-400 italic">最新スケジュール確認</p>
                             </div>
                         </div>
@@ -161,20 +163,39 @@
     <!-- 04. MAJOR COURSES -->
     <section class="py-24 md:py-32 container mx-auto px-6 md:px-10" id="courses">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 reveal text-left">
-            <div class="relative"><h2 class="text-7xl md:text-[10vw] font-black italic tracking-tighter text-white/[0.03] absolute -top-10 -left-1 select-none uppercase">TRAINING</h2><h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-400 uppercase italic">Major Courses</h2><p class="text-white/40 font-en tracking-[0.3em] text-[10px] mt-2 italic uppercase">主要講習コースのご案内</p></div>
+            <div class="relative">
+                <h2 class="text-7xl md:text-[10vw] font-black italic tracking-tighter text-white/[0.03] absolute -top-10 -left-1 select-none uppercase">TRAINING</h2>
+                <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-400 uppercase italic">Major Courses</h2>
+                <p class="text-white/40 font-en tracking-[0.3em] text-[10px] mt-2 italic uppercase">主要講習コースのご案内</p>
+            </div>
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
             <div class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none">
-                <div class="relative h-64 overflow-hidden bg-gradient-to-br from-sky-100 to-blue-100 flex items-center justify-center"><i class="fas fa-link text-6xl text-sky-300 opacity-30"></i><div class="absolute inset-0 bg-blue-900/0 group-hover:bg-transparent transition duration-700"></div></div>
-                <div class="p-10 text-left"><h3 class="text-2xl font-black mb-2 italic text-slate-900">01. 玉掛け技能講習</h3><p class="text-slate-400 text-xs font-bold italic tracking-wider uppercase">Slinging Skill</p></div>
+                <div class="relative h-64 overflow-hidden bg-gradient-to-br from-sky-100 to-blue-100 flex items-center justify-center">
+                    <i class="fas fa-link text-6xl text-sky-300 opacity-30"></i>
+                </div>
+                <div class="p-10 text-left">
+                    <h3 class="text-2xl font-black mb-2 italic text-slate-900">01. 玉掛け技能講習</h3>
+                    <p class="text-slate-400 text-xs font-bold italic tracking-wider uppercase">Slinging Skill</p>
+                </div>
             </div>
             <div class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none" style="transition-delay: 0.2s;">
-                <div class="relative h-64 overflow-hidden bg-gradient-to-br from-sky-100 to-blue-100 flex items-center justify-center"><i class="fas fa-link text-6xl text-sky-300 opacity-30"></i><div class="absolute inset-0 bg-blue-900/0 group-hover:bg-transparent transition duration-700"></div></div>
-                <div class="p-10 text-left"><h3 class="text-2xl font-black mb-2 italic text-slate-900">02. フォークリフト運転</h3><p class="text-slate-400 text-xs font-bold italic tracking-wider uppercase">Forklift Operation</p></div>
+                <div class="relative h-64 overflow-hidden bg-gradient-to-br from-sky-100 to-blue-100 flex items-center justify-center">
+                    <i class="fas fa-link text-6xl text-sky-300 opacity-30"></i>
+                </div>
+                <div class="p-10 text-left">
+                    <h3 class="text-2xl font-black mb-2 italic text-slate-900">02. フォークリフト運転</h3>
+                    <p class="text-slate-400 text-xs font-bold italic tracking-wider uppercase">Forklift Operation</p>
+                </div>
             </div>
             <div class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none" style="transition-delay: 0.4s;">
-                <div class="relative h-64 overflow-hidden bg-gradient-to-br from-sky-100 to-blue-100 flex items-center justify-center"><i class="fas fa-link text-6xl text-sky-300 opacity-30"></i><div class="absolute inset-0 bg-blue-900/0 group-hover:bg-transparent transition duration-700"></div></div>
-                <div class="p-10 text-left"><h3 class="text-2xl font-black mb-2 italic text-slate-900 text-nowrap">03. 小型移動式クレーン</h3><p class="text-slate-400 text-xs font-bold italic tracking-wider uppercase">Mobile Crane Skill</p></div>
+                <div class="relative h-64 overflow-hidden bg-gradient-to-br from-sky-100 to-blue-100 flex items-center justify-center">
+                    <i class="fas fa-link text-6xl text-sky-300 opacity-30"></i>
+                </div>
+                <div class="p-10 text-left">
+                    <h3 class="text-2xl font-black mb-2 italic text-slate-900 text-nowrap">03. 小型移動式クレーン</h3>
+                    <p class="text-slate-400 text-xs font-bold italic tracking-wider uppercase">Mobile Crane Skill</p>
+                </div>
             </div>
         </div>
     </section>
@@ -211,9 +232,21 @@
     <section class="py-24 container mx-auto px-6 md:px-10 overflow-hidden relative">
         <div class="absolute inset-0 bg-sky-500/5 blur-[100px] -z-10 rounded-full transform translate-y-20"></div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal text-center">
-            <a href="#faq" class="kiba-card p-12 rounded-3xl hover:bg-sky-500/10 transition-all flex flex-col items-center"><div class="w-16 h-16 bg-sky-500/20 rounded-full flex items-center justify-center mb-6"><i class="fas fa-comments text-sky-400 text-2xl"></i></div><h4 class="text-white font-black italic mb-4">よくある質問</h4><p class="text-[10px] text-sky-400 font-black uppercase italic border-b border-sky-400/30 pb-2">Questions & Answer</p></a>
-            <a href="#subsidy" class="kiba-card p-12 rounded-3xl hover:bg-sky-500/10 transition-all flex flex-col items-center" style="transition-delay: 0.1s;"><div class="w-16 h-16 bg-sky-500/20 rounded-full flex items-center justify-center mb-6"><i class="fas fa-hand-holding-usd text-sky-400 text-2xl"></i></div><h4 class="text-white font-black italic mb-4">助成金について</h4><p class="text-[10px] text-sky-400 font-black uppercase italic border-b border-sky-400/30 pb-2">Subsidy Information</p></a>
-            <a href="#flow" class="kiba-card p-12 rounded-3xl hover:bg-sky-500/10 transition-all flex flex-col items-center" style="transition-delay: 0.2s;"><div class="w-16 h-16 bg-sky-500/20 rounded-full flex items-center justify-center mb-6"><i class="fas fa-pencil-alt text-sky-400 text-2xl"></i></div><h4 class="text-white font-black italic mb-4">お申し込みの流れ</h4><p class="text-[10px] text-sky-400 font-black uppercase italic border-b border-sky-400/30 pb-2">Application Flow</p></a>
+            <a href="#faq" class="kiba-card p-12 rounded-3xl hover:bg-sky-500/10 transition-all flex flex-col items-center">
+                <div class="w-16 h-16 bg-sky-500/20 rounded-full flex items-center justify-center mb-6"><i class="fas fa-comments text-sky-400 text-2xl"></i></div>
+                <h4 class="text-white font-black italic mb-4">よくある質問</h4>
+                <p class="text-[10px] text-sky-400 font-black uppercase italic border-b border-sky-400/30 pb-2">Questions & Answer</p>
+            </a>
+            <a href="#subsidy" class="kiba-card p-12 rounded-3xl hover:bg-sky-500/10 transition-all flex flex-col items-center" style="transition-delay: 0.1s;">
+                <div class="w-16 h-16 bg-sky-500/20 rounded-full flex items-center justify-center mb-6"><i class="fas fa-hand-holding-usd text-sky-400 text-2xl"></i></div>
+                <h4 class="text-white font-black italic mb-4">助成金について</h4>
+                <p class="text-[10px] text-sky-400 font-black uppercase italic border-b border-sky-400/30 pb-2">Subsidy Information</p>
+            </a>
+            <a href="#flow" class="kiba-card p-12 rounded-3xl hover:bg-sky-500/10 transition-all flex flex-col items-center" style="transition-delay: 0.2s;">
+                <div class="w-16 h-16 bg-sky-500/20 rounded-full flex items-center justify-center mb-6"><i class="fas fa-pencil-alt text-sky-400 text-2xl"></i></div>
+                <h4 class="text-white font-black italic mb-4">お申し込みの流れ</h4>
+                <p class="text-[10px] text-sky-400 font-black uppercase italic border-b border-sky-400/30 pb-2">Application Flow</p>
+            </a>
         </div>
     </section>
 
@@ -249,9 +282,9 @@
                 <img src="logo.png" alt="STC" class="h-20 md:h-32 w-auto mx-auto opacity-100 transition-all duration-1000 hover:scale-105 drop-shadow(0 0 20px rgba(56,189,248,0.2))">
                 <div class="h-px w-20 bg-sky-400 mx-auto mt-8 opacity-30"></div>
             </div>
-            <div class="text-center mb-10 text-white/40 font-bold italic uppercase italic tracking-widest leading-loose">
-                <p class="text-white font-black text-xl md:text-2xl mb-4 uppercase">下関トレーニングセンター</p>
-                <p class="text-[10px] mb-8 text-sky-400/60 uppercase tracking-[0.4em]">山口労働局長登録教習機関 第68号</p>
+            <div class="text-center mb-10 text-white/40 font-bold italic uppercase tracking-widest leading-loose">
+                <p class="text-white font-black text-xl md:text-2xl mb-4 uppercase italic">下関トレーニングセンター</p>
+                <p class="text-[10px] mb-8 text-sky-400/60 uppercase tracking-[0.4em] italic">山口労働局長登録教習機関 第68号</p>
                 <div class="space-y-1 opacity-70 font-bold italic">
                     <p class="text-[11px] md:text-xs uppercase">〒752-8609 山口県下関市長府安養寺1丁目15-13</p>
                     <p class="text-[11px] md:text-xs">TEL 083-246-0556 / FAX 083-246-2835</p>
@@ -266,26 +299,27 @@
             const overlay = document.getElementById('modal-overlay');
             const title = document.getElementById('modal-title');
             const body = document.getElementById('modal-body');
-            if(type === 'schedule') { title.innerText = '講習スケジュール'; body.innerHTML = '【玉掛け】毎週火曜〜木曜<br>【フォークリフト】第2・第4週 開講中。<br><br>詳細な空き状況はお電話にてご確認ください。'; }
-            else { title.innerText = '受講お申し込み'; body.innerHTML = 'WEBまたはお電話にて承っております。<br><br>現在WEBフォーム準備中につき、お電話(083-246-0556)にて優先予約を承っております。'; }
+            if(type === 'schedule') { 
+                title.innerText = '講習スケジュール'; 
+                body.innerHTML = '【玉掛け】毎週火曜〜木曜<br>【フォークリフト】第2・第4週 開講中。<br><br>詳細な空き状況はお電話にてご確認ください。'; 
+            }
+            else { 
+                title.innerText = '受講お申し込み'; 
+                body.innerHTML = 'WEBまたはお電話にて承っております。<br><br>現在WEBフォーム準備中につき、お電話(083-246-0556)にて優先予約を承っております。'; 
+            }
             document.body.classList.add('modal-active');
         }
         function closeModal() { document.body.classList.remove('modal-active'); }
+        
         window.addEventListener('scroll', () => {
             const scroll = window.pageYOffset;
             const heroImg = document.getElementById('hero-img');
             if(heroImg) heroImg.style.transform = `translateY(${scroll * 0.3}px)`;
+            
             const nav = document.getElementById('main-nav');
-            if (scroll > 50) { 
-                nav.style.background = 'rgba(2, 6, 23, 0.98)'; 
-                nav.style.padding = '15px 40px'; 
-                nav.classList.add('shadow-2xl', 'scrolled'); 
-            } 
-            else { 
-                nav.style.background = 'transparent'; 
-                nav.style.padding = '24px 40px'; 
-                nav.classList.remove('shadow-2xl', 'scrolled'); 
-            }
+            if (scroll > 50) { nav.classList.add('scrolled'); } 
+            else { nav.classList.remove('scrolled'); }
+            
             const reveals = document.querySelectorAll('.reveal');
             reveals.forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); });
         });
