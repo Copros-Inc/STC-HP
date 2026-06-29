@@ -8,7 +8,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+JP:wght@300;700;900&display=swap');
-        body { font-family: 'Noto Sans JP', sans-serif; background-color: #020617; color: #f1f5f9; overflow-x: hidden; }
+        body { 
+        font-family: 'Noto Sans JP', sans-serif; 
+        background-color: #0b1120; /* 修正：少しだけ青みを足して「重たさ」を軽減 */
+        color: #f1f5f9; 
+        overflow-x: hidden; 
+  　　　　　  }
         .font-en { font-family: 'Montserrat', sans-serif; }
         .bg-video-effect { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #1e3a8a 0%, #020617 100%); z-index: -2; }
         .bg-glow { position: fixed; width: 600px; height: 600px; background: rgba(56, 189, 248, 0.08); filter: blur(120px); border-radius: 50%; z-index: -1; animation: float 20s infinite alternate; }
@@ -18,7 +23,12 @@
         @keyframes kenburns { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
         .zoom-effect { animation: kenburns 20s ease-out forwards; }
         .kiba-card { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .glass-bright-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.1); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .glass-bright-card { 
+        background: rgba(255, 255, 255, 0.98); /* 修正：白さを強調 */
+        backdrop-filter: blur(15px); 
+        border: 1px solid rgba(56, 189, 248, 0.3); /* 修正：枠線にスカイブルーを微量追加 */
+        box-shadow: 0 20px 50px rgba(0,0,0,0.2); 
+ 　　　　　   }
         .glass-bright-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.15); }
         /* ★ NEW: CTA用強調カード */
         .cta-card-primary { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); box-shadow: 0 20px 50px rgba(14, 165, 233, 0.3); }
@@ -31,6 +41,19 @@
         .modal-active #modal-overlay { display: flex; opacity: 1; }
         /* ★ 改善：ナビゲーションの背景強化 */
         #main-nav.scrolled { background: rgba(2, 6, 23, 0.98) !important; }
+            /* 3. 講習カードに「光の筋」が走るようなエフェクトを追加 */
+    .group:hover .relative.h-64::after {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%;
+        width: 50%; height: 100%;
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+        transform: skewX(-25deg);
+        animation: shine 0.8s forwards;
+    }
+    @keyframes shine {
+        100% { left: 150%; }
+    }
     </style>
 </head>
 <body>
@@ -84,7 +107,7 @@
             
             <!-- ★ 新規：ヒーロー内にCTA追加 -->
             <div class="mt-16 flex flex-col md:flex-row gap-6 justify-center reveal active">
-                <button onclick="openModal('apply')" class="cta-card-primary text-white px-12 py-4 rounded-full font-black text-sm tracking-widest hover:shadow-2xl italic uppercase">
+                <button onclick="openModal('apply')" class="cta-card-primary animate-pulse text-white px-12 py-4 rounded-full font-black text-sm tracking-widest hover:shadow-2xl italic uppercase">
                     <i class="fas fa-edit mr-2"></i> 受講申し込み
                 </button>
                 <button onclick="openModal('schedule')" class="border-2 border-white text-white px-12 py-4 rounded-full font-black text-sm tracking-widest hover:bg-white/10 italic uppercase transition">
