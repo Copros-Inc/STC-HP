@@ -345,35 +345,38 @@
     </footer>
 
     <script type="module">
-     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-　　　import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-　　　import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyCrFI1MkCKdIT4mpzZWKdNPJZt3Gpyw",
-    authDomain: "stc-hp.firebaseapp.com",
-    projectId: "stc-hp",
-    storageBucket: "stc-hp.firebasestorage.app",
-    messagingSenderId: "795332931918",
-    appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f"
-};
+    const firebaseConfig = {
+        apiKey: "AIzaSyCrFI1MkCKdIT4mpzZWKdNPJZt3Gpyw",
+        authDomain: "stc-hp.firebaseapp.com",
+        projectId: "stc-hp",
+        storageBucket: "stc-hp.firebasestorage.app",
+        messagingSenderId: "795332931918",
+        appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f"
+    };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-// 匿名ユーザーでサインイン
-signInAnonymously(auth)
-    .then(() => {
-        console.log("Firebase匿名サインイン成功");
-    })
-    .catch((error) => {
-        console.error("Firebase認証エラー:", error);
-    });
+    let schedules = []; 
+    let currentMonth = 7;
 
-        let schedules = []; 
-        let currentMonth = 7;
+    // 匿名サインイン
+    signInAnonymously(auth)
+        .then(() => {
+            console.log("✅ Firebase認証成功");
+            loadSchedules();
+        })
+        .catch((error) => {
+            console.error("❌ Firebase認証エラー:", error.code, error.message);
+            document.getElementById('calendar-container').innerHTML = '<div class="p-20 text-center text-red-400 italic">Firebase認証に失敗しました。コンソールを確認してください。</div>';
+        });
 
+    function loadSchedules() {
         onSnapshot(collection(db, "schedules"), (snapshot) => {
             schedules = snapshot.docs.map(doc => ({
                 name: doc.data().courseName,
@@ -384,305 +387,306 @@ signInAnonymously(auth)
                 dayStart: doc.data().dayStart,
                 dayEnd: doc.data().dayEnd
             }));
+            console.log("✅ データ読み込み完了:", schedules.length, "件");
             renderCalendar(currentMonth);
             renderGantt(currentMonth);
         }, (error) => {
-            console.error("Firebase接続エラー:", error);
-            document.getElementById('calendar-container').innerHTML = '<div class="p-20 text-center text-red-400 italic">Firebase接続エラー。APIキーを確認してください。</div>';
+            console.error("❌ Firestore読み込みエラー:", error.code, error.message);
+            document.getElementById('calendar-container').innerHTML = '<div class="p-20 text-center text-red-400 italic">データの読み込みに失敗しました。Firestoreを確認してください。</div>';
         });
+    }
 
-        window.renderCalendar = function(month) {
-            const container = document.getElementById('calendar-container');
-            const monthDisplay = document.getElementById('current-month-display');
-            if(monthDisplay) monthDisplay.innerText = month + '月';
-            
-            let html = `<table class="w-full text-left border-collapse"><thead><tr class="bg-slate-100 italic font-black text-[10px] tracking-[0.2em] border-b border-slate-200 uppercase"><th class="p-6">Course</th><th class="p-6">Date</th><th class="p-6 text-center">Status</th><th class="p-6">Action</th></tr></thead><tbody class="font-bold italic">`;
-            
-            const monthSchedules = schedules.filter(s => s.month === month);
-            
-            if (monthSchedules.length === 0) {
-                html += `<tr><td colspan="4" class="p-10 text-center text-slate-400">この月の講習予定がありません</td></tr>`;
-            } else {
-                monthSchedules.forEach(item => {
-                    const badgeClass = item.status === 'full' ? 'status-full' : 'status-ok';
-                    const actionBtn = item.status === 'full' 
-                        ? `<button onclick="openModal('waitlist')" class="text-red-600 font-black italic underline">キャンセル待ち</button>`
-                        : `<button onclick="openModal('apply')" class="text-sky-600 underline">Booking</button>`;
-                    html += `<tr class="border-b border-slate-50 hover:bg-slate-50 transition"><td class="p-6 text-slate-900">${item.name}</td><td class="p-6 text-sm text-slate-500">${item.date}</td><td class="p-6 text-center"><span class="status-badge ${badgeClass}">${item.statusText}</span></td><td class="p-6 text-xs uppercase">${actionBtn}</td></tr>`;
-                });
-            }
-            
-            html += `</tbody></table>`;
-            if(container) container.innerHTML = html;
-        }
-
-        window.renderGantt = function(month) {
-            const ganttData = document.getElementById('gantt-data');
-            if (!ganttData) return;
-            
-            let html = '';
-            const coursesByName = {};
-            const monthSchedules = schedules.filter(s => s.month === month);
-            
+    window.renderCalendar = function(month) {
+        const container = document.getElementById('calendar-container');
+        const monthDisplay = document.getElementById('current-month-display');
+        if(monthDisplay) monthDisplay.innerText = month + '月';
+        
+        let html = `<table class="w-full text-left border-collapse"><thead><tr class="bg-slate-100 italic font-black text-[10px] tracking-[0.2em] border-b border-slate-200 uppercase"><th class="p-6">Course</th><th class="p-6">Date</th><th class="p-6 text-center">Status</th><th class="p-6">Action</th></tr></thead><tbody class="font-bold italic">`;
+        
+        const monthSchedules = schedules.filter(s => s.month === month);
+        
+        if (monthSchedules.length === 0) {
+            html += `<tr><td colspan="4" class="p-10 text-center text-slate-400">この月の講習予定がありません</td></tr>`;
+        } else {
             monthSchedules.forEach(item => {
-                if (!coursesByName[item.name]) {
-                    coursesByName[item.name] = [];
-                }
-                coursesByName[item.name].push(item);
+                const badgeClass = item.status === 'full' ? 'status-full' : 'status-ok';
+                const actionBtn = item.status === 'full' 
+                    ? `<button onclick="openModal('waitlist')" class="text-red-600 font-black italic underline">キャンセル待ち</button>`
+                    : `<button onclick="openModal('apply')" class="text-sky-600 underline">Booking</button>`;
+                html += `<tr class="border-b border-slate-50 hover:bg-slate-50 transition"><td class="p-6 text-slate-900">${item.name}</td><td class="p-6 text-sm text-slate-500">${item.date}</td><td class="p-6 text-center"><span class="status-badge ${badgeClass}">${item.statusText}</span></td><td class="p-6 text-xs uppercase">${actionBtn}</td></tr>`;
             });
-            
-            Object.entries(coursesByName).forEach(([courseName, items]) => {
-                html += `<div class="grid gap-0" style="grid-template-columns: 150px repeat(31, 1fr);">`;
-                html += `<div class="font-bold text-xs text-white italic p-2 bg-slate-900 sticky left-0 z-10 truncate">${courseName}</div>`;
-                
-                for (let day = 1; day <= 31; day++) {
-                    const isScheduled = items.some(item => day >= item.dayStart && day <= item.dayEnd);
-                    const statusClass = items.length > 0 && items[0].status === 'full' 
-                        ? 'bg-red-500/60' 
-                        : 'bg-green-500/60';
-                    
-                    html += `<div class="h-8 border border-white/5 flex items-center justify-center text-[8px] font-bold italic ${isScheduled ? statusClass : 'bg-slate-700/30'} text-white/60">${isScheduled ? '●' : ''}</div>`;
-                }
-                html += `</div>`;
-            });
-            
-            ganttData.innerHTML = html || '<div class="text-center text-white/40 italic py-8">スケジュール情報がありません</div>';
         }
+        
+        html += `</tbody></table>`;
+        if(container) container.innerHTML = html;
+    }
 
-        window.changeMonth = function(diff) {
-            currentMonth += diff;
-            if (currentMonth < 7) currentMonth = 7;
-            if (currentMonth > 8) currentMonth = 8;
-            renderCalendar(currentMonth);
-            renderGantt(currentMonth);
-        }
-
-        window.openModal = function(type) {
-            const overlay = document.getElementById('modal-overlay');
-            const title = document.getElementById('modal-title');
-            const body = document.getElementById('modal-body');
-            
-            if(type === 'apply') { 
-                title.innerText = '受講お申し込み'; 
-                body.innerHTML = `
-                    <div class="space-y-6">
-                        <p class="text-slate-600 italic">下関トレーニングセンターへの受講をお申し込みいただきありがとうございます。</p>
-                        <form class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-black text-slate-900 italic mb-2">お名前 *</label>
-                                <input type="text" class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold" required>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-black text-slate-900 italic mb-2">メールアドレス *</label>
-                                <input type="email" class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold" required>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-black text-slate-900 italic mb-2">電話番号 *</label>
-                                <input type="tel" class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold" required>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-black text-slate-900 italic mb-2">希望講習 *</label>
-                                <select class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold">
-                                    <option>玉掛け技能講習</option>
-                                    <option>フォークリフト運転</option>
-                                    <option>小型移動式クレーン</option>
-                                </select>
-                            </div>
-                            <p class="text-[10px] text-slate-400 italic">入力いただいた情報は、受講申し込み用途のみに使用いたします。</p>
-                        </form>
-                    </div>
-                `;
+    window.renderGantt = function(month) {
+        const ganttData = document.getElementById('gantt-data');
+        if (!ganttData) return;
+        
+        let html = '';
+        const coursesByName = {};
+        const monthSchedules = schedules.filter(s => s.month === month);
+        
+        monthSchedules.forEach(item => {
+            if (!coursesByName[item.name]) {
+                coursesByName[item.name] = [];
             }
-            else if(type === 'waitlist') {
-                title.innerText = 'キャンセル待ち登録';
-                body.innerHTML = `
-                    <div class="space-y-6">
-                        <p class="text-slate-600 italic font-bold">ご希望の講習が満員の場合、キャンセル待ちにご登録いただけます。空席が出ましたらご連絡させていただきます。</p>
-                        <form class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-black text-slate-900 italic mb-2">お名前 *</label>
-                                <input type="text" class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold" required>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-black text-slate-900 italic mb-2">電話番号 *</label>
-                                <input type="tel" class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold" required>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-black text-slate-900 italic mb-2">ご希望の講習 *</label>
-                                <input type="text" class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold" placeholder="例：玉掛け技能講習" required>
-                            </div>
-                            <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-                                <p class="text-xs text-red-700 italic font-bold">キャンセル待ちに登録されても、空席が保証されるものではありません。ご了承ください。</p>
-                            </div>
-                        </form>
-                    </div>
-                `;
-            }
-            else if(type === 'why-01') {
-                title.innerText = '労働局登録教習機関';
-                body.innerHTML = `
-                    <div class="space-y-6">
-                        <img src="why-01.jpg" alt="労働局登録" class="w-full rounded-2xl shadow-lg mb-6">
-                        <h4 class="text-xl font-black text-slate-900 italic">山口労働局長登録 第68号</h4>
-                        <p class="text-slate-600 leading-loose italic font-bold">下関トレーニングセンターは、労働局に正式登録された認可教習機関です。厳格な基準をクリアした高品質な教習環境と、経験豊富な指導員が、安全で実践的な技能を習得させます。</p>
-                        <ul class="list-disc list-inside text-slate-600 space-y-2 text-sm italic font-bold">
-                            <li>法定要件を満たした充実した施設設備</li>
-                            <li>安全衛生教育の専門家による指導</li>
-                            <li>修了後は「修了証」が発行され、資格要件を満たします</li>
-                        </ul>
-                    </div>
-                `;
-            }
-            else if(type === 'why-02') {
-                title.innerText = '国道2号からアクセス抜群';
-                body.innerHTML = `
-                    <div class="space-y-6">
-                        <img src="why-02.jpg" alt="アクセス良好" class="w-full rounded-2xl shadow-lg mb-6">
-                        <h4 class="text-xl font-black text-slate-900 italic">車で来られる国道2号からアクセス抜群</h4>
-                        <p class="text-slate-600 leading-loose italic font-bold">下関市の主要道路・国道2号線からのアクセスが優れており、車での来園が便利です。無料送迎バスも完備しており、遠方からの受講者も安心です。</p>
-                        <ul class="list-disc list-inside text-slate-600 space-y-2 text-sm italic font-bold">
-                            <li>国道2号線からわずか数分の立地</li>
-                            <li>駐車場完備（大型車対応）</li>
-                            <li>無料送迎バスで最寄り駅から送迎</li>
-                        </ul>
-                    </div>
-                `;
-            }
-            else if(type === 'why-03') {
-                title.innerText = 'ベテラン職人による生きた指導';
-                body.innerHTML = `
-                    <div class="space-y-6">
-                        <img src="why-03.jpg" alt="職人指導" class="w-full rounded-2xl shadow-lg mb-6">
-                        <h4 class="text-xl font-black text-slate-900 italic">現場で使える「生きた指導」</h4>
-                        <p class="text-slate-600 leading-loose italic font-bold">講師は全員、建設・製造現場での実務経験が豊富なベテラン職人です。座学だけでなく、実際の現場で起こりうる状況を想定した、実践的で奥深い指導を行います。</p>
-                        <ul class="list-disc list-inside text-slate-600 space-y-2 text-sm italic font-bold">
-                            <li>現場経験20年以上のベテラン講師陣</li>
-                            <li>教科書では学べない「コツ」や「危険予知能力」を習得</li>
-                            <li>修了後も安心して現場で活躍できる人材育成</li>
-                        </ul>
-                    </div>
-                `;
-            }
-            else if(type === 'recruit') {
-                title.innerText = '採用情報';
-                body.innerHTML = `
-                    <div class="space-y-8">
-                        <div>
-                            <h5 class="font-black text-slate-900 italic mb-3 text-lg text-sky-600">募集職種</h5>
-                            <ul class="space-y-3 text-slate-600 italic font-bold">
-                                <li>• 教習指導員（フルタイム・パート）</li>
-                                <li>• 技能講習講師（実務経験必須）</li>
-                                <li>• 事務スタッフ</li>
-                            </ul>
-                        </div>
-                        <div class="border-t border-slate-200 pt-6">
-                            <h5 class="font-black text-slate-900 italic mb-3 text-lg text-sky-600">応募要件</h5>
-                            <p class="text-slate-600 italic font-bold">建設・製造業での実務経験3年以上、または関連資格保有者を優遇します。</p>
-                        </div>
-                        <div class="bg-sky-50 border border-sky-200 rounded-2xl p-6 text-center">
-                            <p class="text-sm text-sky-900 font-black italic mb-4">詳細はお問い合わせください</p>
-                            <a href="tel:0832460556" class="text-sky-600 font-black italic uppercase tracking-widest hover:text-sky-700">📞 083-246-0556</a>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            document.body.classList.add('modal-active');
-        }
-
-        window.openPointModal = function(type) {
-            const overlay = document.getElementById('modal-overlay');
-            const title = document.getElementById('modal-title');
-            const body = document.getElementById('modal-body');
-            
-            if(type === 'qa') {
-                title.innerText = 'よくある質問';
-                body.innerHTML = `
-                    <div class="space-y-8">
-                        <div>
-                            <h5 class="font-black text-slate-900 italic mb-3 text-lg">Q1. 未経験でも受講できますか？</h5>
-                            <p class="text-slate-600 italic font-bold">はい、全く問題ありません。当センターでは初心者向けから資格取得まで、丁寧にサポートします。</p>
-                        </div>
-                        <div class="border-t border-slate-200 pt-6">
-                            <h5 class="font-black text-slate-900 italic mb-3 text-lg">Q2. 講習期間はどのくらい？</h5>
-                            <p class="text-slate-600 italic font-bold">講習により異なりますが、3日～5日程度が目安です。詳しくはお問い合わせください。</p>
-                        </div>
-                        <div class="border-t border-slate-200 pt-6">
-                            <h5 class="font-black text-slate-900 italic mb-3 text-lg">Q3. 修了後に試験はありますか？</h5>
-                            <p class="text-slate-600 italic font-bold">講習修了後、筆記試験と実技試験を行います。合格すると修了証が交付されます。</p>
-                        </div>
-                    </div>
-                `;
-            }
-            else if(type === 'subsidy') {
-                title.innerText = '補助金制度';
-                body.innerHTML = `
-                    <div class="space-y-6">
-                        <p class="text-slate-600 font-black italic">以下の補助金制度が利用できる場合があります。詳しくはお問い合わせください。</p>
-                        <ul class="space-y-4 text-slate-600 italic font-bold">
-                            <li class="flex gap-3">
-                                <span class="text-sky-600 font-black">✓</span>
-                                <span><strong>教育訓練給付金制度</strong><br>厚生労働省の指定講座なら給付対象</span>
-                            </li>
-                            <li class="flex gap-3">
-                                <span class="text-sky-600 font-black">✓</span>
-                                <span><strong>人材開発支援助成金</strong><br>事業所が従業員を訓練する場合の支援</span>
-                            </li>
-                            <li class="flex gap-3">
-                                <span class="text-sky-600 font-black">✓</span>
-                                <span><strong>雇用調整助成金</strong><br>特定の条件下での助成対象</span>
-                            </li>
-                        </ul>
-                        <div class="bg-sky-50 border border-sky-200 rounded-2xl p-6 text-center italic">
-                            <p class="text-sm text-sky-900 font-black">詳細は電話またはメールにてお問い合わせください</p>
-                        </div>
-                    </div>
-                `;
-            }
-            else if(type === 'flow') {
-                title.innerText = '申込み流れ';
-                body.innerHTML = `
-                    <div class="space-y-8">
-                        <div class="flex gap-6 items-start">
-                            <div class="w-12 h-12 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0 text-white font-black italic">1</div>
-                            <div>
-                                <h5 class="font-black text-slate-900 italic mb-2">お問い合わせ</h5>
-                                <p class="text-slate-600 text-sm italic font-bold">電話またはメールで受講希望コースをお知らせください</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-6 items-start">
-                            <div class="w-12 h-12 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0 text-white font-black italic">2</div>
-                            <div>
-                                <h5 class="font-black text-slate-900 italic mb-2">資料送付・打ち合わせ</h5>
-                                <p class="text-slate-600 text-sm italic font-bold">資料をお送りし、開講日や費用などをご説明します</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-6 items-start">
-                            <div class="w-12 h-12 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0 text-white font-black italic">3</div>
-                            <div>
-                                <h5 class="font-black text-slate-900 italic mb-2">受講開始</h5>
-                                <p class="text-slate-600 text-sm italic font-bold">指定日時にご来園ください。講習開始までサポート致します</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            document.body.classList.add('modal-active');
-        }
-
-        window.closeModal = function() { document.body.classList.remove('modal-active'); }
-
-        window.addEventListener('scroll', () => {
-            const scroll = window.pageYOffset;
-            const heroImg = document.getElementById('hero-img');
-            if(heroImg) heroImg.style.transform = `translateY(${scroll * 0.3}px)`;
-            const nav = document.getElementById('main-nav');
-            if (scroll > 50) { nav.classList.add('scrolled'); } else { nav.classList.remove('scrolled'); }
-            document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); });
+            coursesByName[item.name].push(item);
         });
+        
+        Object.entries(coursesByName).forEach(([courseName, items]) => {
+            html += `<div class="grid gap-0" style="grid-template-columns: 150px repeat(31, 1fr);">`;
+            html += `<div class="font-bold text-xs text-white italic p-2 bg-slate-900 sticky left-0 z-10 truncate">${courseName}</div>`;
+            
+            for (let day = 1; day <= 31; day++) {
+                const isScheduled = items.some(item => day >= item.dayStart && day <= item.dayEnd);
+                const statusClass = items.length > 0 && items[0].status === 'full' 
+                    ? 'bg-red-500/60' 
+                    : 'bg-green-500/60';
+                
+                html += `<div class="h-8 border border-white/5 flex items-center justify-center text-[8px] font-bold italic ${isScheduled ? statusClass : 'bg-slate-700/30'} text-white/60">${isScheduled ? '●' : ''}</div>`;
+            }
+            html += `</div>`;
+        });
+        
+        ganttData.innerHTML = html || '<div class="text-center text-white/40 italic py-8">スケジュール情報がありません</div>';
+    }
 
-        window.onload = () => { renderCalendar(7); renderGantt(7); };
-    </script>
+    window.changeMonth = function(diff) {
+        currentMonth += diff;
+        if (currentMonth < 7) currentMonth = 7;
+        if (currentMonth > 8) currentMonth = 8;
+        renderCalendar(currentMonth);
+        renderGantt(currentMonth);
+    }
+
+    window.openModal = function(type) {
+        const overlay = document.getElementById('modal-overlay');
+        const title = document.getElementById('modal-title');
+        const body = document.getElementById('modal-body');
+        
+        if(type === 'apply') { 
+            title.innerText = '受講お申し込み'; 
+            body.innerHTML = `
+                <div class="space-y-6">
+                    <p class="text-slate-600 italic">下関トレーニングセンターへの受講をお申し込みいただきありがとうございます。</p>
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-black text-slate-900 italic mb-2">お名前 *</label>
+                            <input type="text" class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-black text-slate-900 italic mb-2">メールアドレス *</label>
+                            <input type="email" class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-black text-slate-900 italic mb-2">電話番号 *</label>
+                            <input type="tel" class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-black text-slate-900 italic mb-2">希望講習 *</label>
+                            <select class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold">
+                                <option>玉掛け技能講習</option>
+                                <option>フォークリフト運転</option>
+                                <option>小型移動式クレーン</option>
+                            </select>
+                        </div>
+                        <p class="text-[10px] text-slate-400 italic">入力いただいた情報は、受講申し込み用途のみに使用いたします。</p>
+                    </form>
+                </div>
+            `;
+        }
+        else if(type === 'waitlist') {
+            title.innerText = 'キャンセル待ち登録';
+            body.innerHTML = `
+                <div class="space-y-6">
+                    <p class="text-slate-600 italic font-bold">ご希望の講習が満員の場合、キャンセル待ちにご登録いただけます。空席が出ましたらご連絡させていただきます。</p>
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-black text-slate-900 italic mb-2">お名前 *</label>
+                            <input type="text" class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-black text-slate-900 italic mb-2">電話番号 *</label>
+                            <input type="tel" class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-black text-slate-900 italic mb-2">ご希望の講習 *</label>
+                            <input type="text" class="w-full px-4 py-3 border border-slate-300 rounded-lg italic font-bold" placeholder="例：玉掛け技能講習" required>
+                        </div>
+                        <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                            <p class="text-xs text-red-700 italic font-bold">キャンセル待ちに登録されても、空席が保証されるものではありません。ご了承ください。</p>
+                        </div>
+                    </form>
+                </div>
+            `;
+        }
+        else if(type === 'why-01') {
+            title.innerText = '労働局登録教習機関';
+            body.innerHTML = `
+                <div class="space-y-6">
+                    <img src="why-01.jpg" alt="労働局登録" class="w-full rounded-2xl shadow-lg mb-6">
+                    <h4 class="text-xl font-black text-slate-900 italic">山口労働局長登録 第68号</h4>
+                    <p class="text-slate-600 leading-loose italic font-bold">下関トレーニングセンターは、労働局に正式登録された認可教習機関です。厳格な基準をクリアした高品質な教習環境と、経験豊富な指導員が、安全で実践的な技能を習得させます。</p>
+                    <ul class="list-disc list-inside text-slate-600 space-y-2 text-sm italic font-bold">
+                        <li>法定要件を満たした充実した施設設備</li>
+                        <li>安全衛生教育の専門家による指導</li>
+                        <li>修了後は「修了証」が発行され、資格要件を満たします</li>
+                    </ul>
+                </div>
+            `;
+        }
+        else if(type === 'why-02') {
+            title.innerText = '国道2号からアクセス抜群';
+            body.innerHTML = `
+                <div class="space-y-6">
+                    <img src="why-02.jpg" alt="アクセス良好" class="w-full rounded-2xl shadow-lg mb-6">
+                    <h4 class="text-xl font-black text-slate-900 italic">車で来られる国道2号からアクセス抜群</h4>
+                    <p class="text-slate-600 leading-loose italic font-bold">下関市の主要道路・国道2号線からのアクセスが優れており、車での来園が便利です。無料送迎バスも完備しており、遠方からの受講者も安心です。</p>
+                    <ul class="list-disc list-inside text-slate-600 space-y-2 text-sm italic font-bold">
+                        <li>国道2号線からわずか数分の立地</li>
+                        <li>駐車場完備（大型車対応）</li>
+                        <li>無料送迎バスで最寄り駅から送迎</li>
+                    </ul>
+                </div>
+            `;
+        }
+        else if(type === 'why-03') {
+            title.innerText = 'ベテラン職人による生きた指導';
+            body.innerHTML = `
+                <div class="space-y-6">
+                    <img src="why-03.jpg" alt="職人指導" class="w-full rounded-2xl shadow-lg mb-6">
+                    <h4 class="text-xl font-black text-slate-900 italic">現場で使える「生きた指導」</h4>
+                    <p class="text-slate-600 leading-loose italic font-bold">講師は全員、建設・製造現場での実務経験が豊富なベテラン職人です。座学だけでなく、実際の現場で起こりうる状況を想定した、実践的で奥深い指導を行います。</p>
+                    <ul class="list-disc list-inside text-slate-600 space-y-2 text-sm italic font-bold">
+                        <li>現場経験20年以上のベテラン講師陣</li>
+                        <li>教科書では学べない「コツ」や「危険予知能力」を習得</li>
+                        <li>修了後も安心して現場で活躍できる人材育成</li>
+                    </ul>
+                </div>
+            `;
+        }
+        else if(type === 'recruit') {
+            title.innerText = '採用情報';
+            body.innerHTML = `
+                <div class="space-y-8">
+                    <div>
+                        <h5 class="font-black text-slate-900 italic mb-3 text-lg text-sky-600">募集職種</h5>
+                        <ul class="space-y-3 text-slate-600 italic font-bold">
+                            <li>• 教習指導員（フルタイム・パート）</li>
+                            <li>• 技能講習講師（実務経験必須）</li>
+                            <li>• 事務スタッフ</li>
+                        </ul>
+                    </div>
+                    <div class="border-t border-slate-200 pt-6">
+                        <h5 class="font-black text-slate-900 italic mb-3 text-lg text-sky-600">応募要件</h5>
+                        <p class="text-slate-600 italic font-bold">建設・製造業での実務経験3年以上、または関連資格保有者を優遇します。</p>
+                    </div>
+                    <div class="bg-sky-50 border border-sky-200 rounded-2xl p-6 text-center">
+                        <p class="text-sm text-sky-900 font-black italic mb-4">詳細はお問い合わせください</p>
+                        <a href="tel:0832460556" class="text-sky-600 font-black italic uppercase tracking-widest hover:text-sky-700">📞 083-246-0556</a>
+                    </div>
+                </div>
+            `;
+        }
+        
+        document.body.classList.add('modal-active');
+    }
+
+    window.openPointModal = function(type) {
+        const title = document.getElementById('modal-title');
+        const body = document.getElementById('modal-body');
+        
+        if(type === 'qa') {
+            title.innerText = 'よくある質問';
+            body.innerHTML = `
+                <div class="space-y-8">
+                    <div>
+                        <h5 class="font-black text-slate-900 italic mb-3 text-lg">Q1. 未経験でも受講できますか？</h5>
+                        <p class="text-slate-600 italic font-bold">はい、全く問題ありません。当センターでは初心者向けから資格取得まで、丁寧にサポートします。</p>
+                    </div>
+                    <div class="border-t border-slate-200 pt-6">
+                        <h5 class="font-black text-slate-900 italic mb-3 text-lg">Q2. 講習期間はどのくらい？</h5>
+                        <p class="text-slate-600 italic font-bold">講習により異なりますが、3日～5日程度が目安です。詳しくはお問い合わせください。</p>
+                    </div>
+                    <div class="border-t border-slate-200 pt-6">
+                        <h5 class="font-black text-slate-900 italic mb-3 text-lg">Q3. 修了後に試験はありますか？</h5>
+                        <p class="text-slate-600 italic font-bold">講習修了後、筆記試験と実技試験を行います。合格すると修了証が交付されます。</p>
+                    </div>
+                </div>
+            `;
+        }
+        else if(type === 'subsidy') {
+            title.innerText = '補助金制度';
+            body.innerHTML = `
+                <div class="space-y-6">
+                    <p class="text-slate-600 font-black italic">以下の補助金制度が利用できる場合があります。詳しくはお問い合わせください。</p>
+                    <ul class="space-y-4 text-slate-600 italic font-bold">
+                        <li class="flex gap-3">
+                            <span class="text-sky-600 font-black">✓</span>
+                            <span><strong>教育訓練給付金制度</strong><br>厚生労働省の指定講座なら給付対象</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="text-sky-600 font-black">✓</span>
+                            <span><strong>人材開発支援助成金</strong><br>事業所が従業員を訓練する場合の支援</span>
+                        </li>
+                        <li class="flex gap-3">
+                            <span class="text-sky-600 font-black">✓</span>
+                            <span><strong>雇用調整助成金</strong><br>特定の条件下での助成対象</span>
+                        </li>
+                    </ul>
+                    <div class="bg-sky-50 border border-sky-200 rounded-2xl p-6 text-center italic">
+                        <p class="text-sm text-sky-900 font-black">詳細は電話またはメールにてお問い合わせください</p>
+                    </div>
+                </div>
+            `;
+        }
+        else if(type === 'flow') {
+            title.innerText = '申込み流れ';
+            body.innerHTML = `
+                <div class="space-y-8">
+                    <div class="flex gap-6 items-start">
+                        <div class="w-12 h-12 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0 text-white font-black italic">1</div>
+                        <div>
+                            <h5 class="font-black text-slate-900 italic mb-2">お問い合わせ</h5>
+                            <p class="text-slate-600 text-sm italic font-bold">電話またはメールで受講希望コースをお知らせください</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6 items-start">
+                        <div class="w-12 h-12 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0 text-white font-black italic">2</div>
+                        <div>
+                            <h5 class="font-black text-slate-900 italic mb-2">資料送付・打ち合わせ</h5>
+                            <p class="text-slate-600 text-sm italic font-bold">資料をお送りし、開講日や費用などをご説明します</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-6 items-start">
+                        <div class="w-12 h-12 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0 text-white font-black italic">3</div>
+                        <div>
+                            <h5 class="font-black text-slate-900 italic mb-2">受講開始</h5>
+                            <p class="text-slate-600 text-sm italic font-bold">指定日時にご来園ください。講習開始までサポート致します</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        document.body.classList.add('modal-active');
+    }
+
+    window.closeModal = function() { document.body.classList.remove('modal-active'); }
+
+    window.addEventListener('scroll', () => {
+        const scroll = window.pageYOffset;
+        const heroImg = document.getElementById('hero-img');
+        if(heroImg) heroImg.style.transform = `translateY(${scroll * 0.3}px)`;
+        const nav = document.getElementById('main-nav');
+        if (scroll > 50) { nav.classList.add('scrolled'); } else { nav.classList.remove('scrolled'); }
+        document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); });
+    });
+
+    window.onload = () => { renderCalendar(7); renderGantt(7); };
+</script>
 </body>
 </html>
