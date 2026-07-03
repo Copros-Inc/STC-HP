@@ -421,7 +421,7 @@
         if(container) container.innerHTML = html;
     }
 
-   window.renderGantt = function(month) {
+window.renderGantt = function(month) {
     const ganttData = document.getElementById('gantt-data');
     if (!ganttData) return;
     
@@ -430,23 +430,32 @@
     const monthSchedules = schedules.filter(s => s.month === month);
     
     monthSchedules.forEach(item => {
-        if (!coursesByName[item.name]) {
-            coursesByName[item.name] = [];
+        if (!coursesByName[item.courseName]) {
+            coursesByName[item.courseName] = [];
         }
-        coursesByName[item.name].push(item);
+        coursesByName[item.courseName].push(item);
     });
+    
+    const courseColors = {
+        "玉掛け技能講習": "#0ea5e9",
+        "小型移動式クレーン": "#ec4899",
+        "フォークリフト（11H）": "#10b981",
+        "フォークリフト（31H）": "#10b981",
+        "フルハーネス特別教育": "#f59e0b",
+        "テールゲートリフター特別教育": "#8b5cf6"
+    };
     
     Object.entries(coursesByName).forEach(([courseName, items]) => {
         html += `<div class="grid gap-0" style="grid-template-columns: 150px repeat(31, 1fr);">`;
         html += `<div class="font-bold text-xs text-white italic p-2 bg-slate-900 sticky left-0 z-10 truncate">${courseName}</div>`;
         
+        const color = courseColors[courseName] || '#10b981';
+        
         for (let day = 1; day <= 31; day++) {
             const isScheduled = items.some(item => day >= item.dayStart && day <= item.dayEnd);
-            const color = courseColors[courseName] || '#10b981';
-            const statusClass = isScheduled ? `bg-opacity-60` : 'bg-slate-700/30';
             const bgColor = isScheduled ? color : '#334155';
             
-            html += `<div class="h-8 border border-white/5 flex items-center justify-center text-[8px] font-bold italic" style="background-color: ${bgColor}; opacity: 0.7;">${isScheduled ? '●' : ''}</div>`;
+            html += `<div class="h-8 border border-white/5 flex items-center justify-center text-[8px] font-bold italic" style="background-color: ${bgColor}; opacity: 0.8;">${isScheduled ? '●' : ''}</div>`;
         }
         html += `</div>`;
     });
