@@ -430,10 +430,10 @@ window.renderGantt = function(month) {
     const monthSchedules = schedules.filter(s => s.month === month);
     
     monthSchedules.forEach(item => {
-        if (!coursesByName[item.courseName]) {
-            coursesByName[item.courseName] = [];
+        if (!coursesByName[item.name]) {
+            coursesByName[item.name] = [];
         }
-        coursesByName[item.courseName].push(item);
+        coursesByName[item.name].push(item);
     });
     
     Object.entries(coursesByName).forEach(([courseName, items]) => {
