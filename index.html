@@ -429,6 +429,7 @@ window.renderGantt = function(month) {
     const coursesByName = {};
     const monthSchedules = schedules.filter(s => s.month === month);
     
+    // データを講習名ごとにグループ化
     monthSchedules.forEach(item => {
         if (!coursesByName[item.name]) {
             coursesByName[item.name] = [];
@@ -436,20 +437,48 @@ window.renderGantt = function(month) {
         coursesByName[item.name].push(item);
     });
     
-    Object.entries(coursesByName).forEach(([courseName, items]) => {
+    // 色分けロジックの定義
+    const getCourseColor = (name) => {
+        if (name.includes("玉掛け")) return "bg-sky-400"; // 水色
+        if (name.includes("小型移動式クレーン")) return "bg-pink-400"; // ピンク
+        if (name.includes("フォークリフト")) return "bg-lime-500"; // 黄緑
+        if (name.includes("フルハーネス") || name.includes("テールゲート")) return "bg-yellow-400"; // 黄色
+        return "bg-green-500"; // デフォルト
+    };
+    
+    const courseEntries = Object.entries(coursesByName);
+    
+    if (courseEntries.length === 0) {
+        ganttData.innerHTML = '<div class="text-center text-white/40 italic py-8">スケジュール情報がありません</div>';
+        return;
+    }
+
+    courseEntries.forEach(([courseName, items]) => {
+        // 行の開始（グリッドレイアウト）
         html += `<div class="grid gap-0" style="grid-template-columns: 150px repeat(31, 1fr);">`;
-        html += `<div class="font-bold text-xs text-white italic p-2 bg-slate-900 sticky left-0 z-10 truncate">${courseName}</div>`;
         
+        // 【修正ポイント】講習名の表示（デザインに合わせたスタイル）
+        html += `<div class="font-bold text-[10px] text-white italic p-2 bg-slate-900 sticky left-0 z-10 truncate border-r border-white/10 flex items-center">${courseName}</div>`;
+        
+        // 色の決定
+        const colorClass = getCourseColor(courseName);
+        
+        // 1日〜31日のセル生成
         for (let day = 1; day <= 31; day++) {
-            const isScheduled = items.some(item => day >= item.dayStart && day <= item.dayEnd);
-            const statusClass = isScheduled ? 'bg-green-500/60' : 'bg-slate-700/30';
+            const isScheduled = items.some(item => day >= parseInt(item.dayStart) && day <= parseInt(item.dayEnd));
             
-            html += `<div class="h-8 border border-white/5 flex items-center justify-center text-[8px] font-bold italic ${statusClass} text-white/60">${isScheduled ? '●' : ''}</div>`;
+            // スケジュールがある日は指定色、ない日は薄いグレー
+            const cellClass = isScheduled ? `${colorClass} shadow-[0_0_10px_rgba(255,255,255,0.2)]` : 'bg-slate-700/30';
+            const dotOpacity = isScheduled ? 'opacity-100' : 'opacity-0';
+            
+            html += `<div class="h-8 border border-white/5 flex items-center justify-center text-[8px] font-bold italic ${cellClass} transition-colors duration-300 text-white">
+                        <span class="${dotOpacity}">●</span>
+                     </div>`;
         }
         html += `</div>`;
     });
     
-    ganttData.innerHTML = html || '<div class="text-center text-white/40 italic py-8">スケジュール情報がありません</div>';
+    ganttData.innerHTML = html;
 }
 
     window.changeMonth = function(diff) {
