@@ -13,4 +13,4 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COPROS_INC_STC }}'
           channelId: live
-          projectId: copros-inc-stc
+          projectId: stc-hp
