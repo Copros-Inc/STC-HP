@@ -111,7 +111,10 @@
                 </div>
             </section>
 
-            <!-- ※ここに講習別の分岐項目が入ります（次のステップで実装） -->
+            <!-- 3.5 講習別詳細情報（動的分岐） -->
+            <div id="dynamic-section">
+                <!-- ここにJavaScriptで入力項目が生成されます -->
+            </div>
 
             <!-- 4. 同意事項（重要） -->
             <section class="form-card p-8 md:p-12 bg-slate-50 border-2 border-sky-100">
@@ -179,6 +182,63 @@
             };
             reader.readAsDataURL(file);
         });
+　　　　　        // 講習名に応じた動的フォーム生成
+        const dynamicSection = document.getElementById('dynamic-section');
+        const courseNameValue = params.get('course') || "";
+
+        function renderDynamicFields(course) {
+            let html = "";
+            
+            if (course.includes("小型移動式クレーン")) {
+                html = `
+                    <section class="form-card p-8 md:p-12 animate-fadeIn">
+                        <h2 class="section-title text-xl mb-8 italic uppercase text-sky-600">Qualification / 免除条件の確認</h2>
+                        <p class="text-xs font-bold mb-6 text-slate-500 italic">該当する資格を選択してください（一部免除の対象となります）</p>
+                        <div class="space-y-4">
+                            <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50 transition">
+                                <input type="radio" name="exemption" value="玉掛け所持" class="w-5 h-5">
+                                <span class="text-sm font-bold">玉掛け技能講習修了証を所持している</span>
+                            </label>
+                            <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50 transition">
+                                <input type="radio" name="exemption" value="クレーン免許所持" class="w-5 h-5">
+                                <span class="text-sm font-bold">クレーン・デリック運転士免許を所持している</span>
+                            </label>
+                            <div class="pt-4">
+                                <label class="block text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">修了証番号 / 免許証番号</label>
+                                <input type="text" name="licenseNumber" placeholder="第12345号" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+                            </div>
+                        </div>
+                    </section>
+                `;
+            } 
+            else if (course.includes("フォークリフト")) {
+                html = `
+                    <section class="form-card p-8 md:p-12 animate-fadeIn">
+                        <h2 class="section-title text-xl mb-8 italic uppercase text-sky-600">Qualification / 免除条件の確認</h2>
+                        <p class="text-xs font-bold mb-6 text-slate-500 italic">現在の所持免許・経験を選択してください</p>
+                        <div class="space-y-4">
+                            <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50 transition">
+                                <input type="radio" name="exemption" value="普通免許所持" class="w-5 h-5">
+                                <span class="text-sm font-bold">普通・中型・大型免許を所持している</span>
+                            </label>
+                            <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50 transition">
+                                <input type="radio" name="exemption" value="特別教育経験者" class="w-5 h-5">
+                                <span class="text-sm font-bold">1t未満フォークリフト特別教育＋3ヶ月以上の実務経験</span>
+                            </label>
+                            <div class="pt-4">
+                                <label class="block text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">運転免許証番号</label>
+                                <input type="text" name="licenseNumber" placeholder="123456789012" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold">
+                            </div>
+                        </div>
+                    </section>
+                `;
+            }
+            
+            dynamicSection.innerHTML = html;
+        }
+
+        // 実行
+        renderDynamicFields(courseNameValue);      
     </script>
 </body>
 </html>
