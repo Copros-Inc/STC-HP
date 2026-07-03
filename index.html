@@ -342,21 +342,30 @@
         });
     }
 
-    window.renderCalendar = function(month) {
+        window.renderCalendar = function(month) {
         const container = document.getElementById('calendar-container');
         const monthDisplay = document.getElementById('current-month-display');
         if(monthDisplay) monthDisplay.innerText = month + '月';
+        
         let html = `<table class="w-full text-left border-collapse"><thead><tr class="bg-slate-100 italic font-black text-[10px] tracking-[0.2em] border-b border-slate-200 uppercase"><th class="p-6">Course</th><th class="p-6">Date</th><th class="p-6 text-center">Status</th><th class="p-6">Action</th></tr></thead><tbody class="font-bold italic">`;
+        
         const monthSchedules = schedules.filter(s => s.month === month);
+        
         if (monthSchedules.length === 0) {
             html += `<tr><td colspan="4" class="p-10 text-center text-slate-400">この月の講習予定がありません</td></tr>`;
         } else {
             monthSchedules.forEach(item => {
                 const badgeClass = item.status === 'full' ? 'status-full' : 'status-ok';
-                const actionBtn = item.status === 'full' ? `<button onclick="openModal('waitlist')" class="text-red-600 font-black italic underline">キャンセル待ち</button>` : `<button onclick="openModal('apply')" class="text-sky-600 underline">Booking</button>`;
+                
+                // 【修正ポイント】Bookingから「お申し込み」へ変更し、apply.htmlへのリンクにする
+                const actionBtn = item.status === 'full' 
+                    ? `<button onclick="openModal('waitlist')" class="text-red-600 font-black italic underline">キャンセル待ち</button>`
+                    : `<a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}" class="text-sky-600 underline font-black italic">お申し込み</a>`;
+                
                 html += `<tr class="border-b border-slate-50 hover:bg-slate-50 transition"><td class="p-6 text-slate-900">${item.name}</td><td class="p-6 text-sm text-slate-500">${item.date}</td><td class="p-6 text-center"><span class="status-badge ${badgeClass}">${item.statusText}</span></td><td class="p-6 text-xs uppercase">${actionBtn}</td></tr>`;
             });
         }
+        
         html += `</tbody></table>`;
         if(container) container.innerHTML = html;
     }
