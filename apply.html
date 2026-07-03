@@ -238,7 +238,63 @@
         }
 
         // 実行
-        renderDynamicFields(courseNameValue);      
+        renderDynamicFields(courseNameValue); 
+
+                // Firebase初期化と保存処理
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw",
+            authDomain: "stc-hp.firebaseapp.com",
+            projectId: "stc-hp",
+            storageBucket: "stc-hp.firebasestorage.app",
+            messagingSenderId: "795332931918",
+            appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // フォーム送信処理
+        document.getElementById('applyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerText = "SENDING...";
+
+            try {
+                const formData = new FormData(e.target);
+                const data = {
+                    courseName: formData.get('courseName'),
+                    courseDate: formData.get('courseDate'),
+                    userName: formData.get('userName'),
+                    userKana: formData.get('userKana'),
+                    birthDate: formData.get('birthDate'),
+                    phone: formData.get('phone'),
+                    email: formData.get('email'),
+                    address: formData.get('address'),
+                    company: formData.get('company'),
+                    exemption: formData.get('exemption') || "なし",
+                    licenseNumber: formData.get('licenseNumber') || "",
+                    userPhoto: photoBase64, // Base64形式の写真データ
+                    createdAt: serverTimestamp(),
+                    status: 'new'
+                };
+
+                await addDoc(collection(db, "reservations"), data);
+                
+                alert("お申し込みありがとうございます！送信が完了しました。");
+                window.location.href = "index.html"; // 完了後トップへ戻る
+
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert("送信に失敗しました。ネット環境を確認してください。");
+                btn.disabled = false;
+                btn.innerText = "申し込みを送信する";
+            }
+        });
+     
     </script>
 </body>
 </html>
