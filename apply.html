@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>受講お申し込み | STC 下関トレーニングセンター</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+JP:wght@300;700;900&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .font-en { font-family: 'Montserrat', sans-serif; }
+        .form-card { background: white; border-radius: 2rem; border: 1px solid rgba(226, 232, 240, 0.8); box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+        .section-title { position: relative; padding-left: 1.5rem; font-weight: 900; italic: true; }
+        .section-title::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: #0ea5e9; border-radius: 3px; }
+        input[type="checkbox"] { width: 1.5rem; height: 1.5rem; cursor: pointer; }
+        .photo-preview { width: 120px; height: 150px; border: 2px dashed #cbd5e1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 0.5rem; }
+        .cta-button:disabled { background: #94a3b8; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+    </style>
+</head>
+<body class="pb-20">
+    <nav class="bg-slate-900 text-white py-6 px-8 mb-12">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <div class="font-black italic text-xl tracking-tighter">STC <span class="text-sky-400">APPLICATION</span></div>
+            <a href="index.html" class="text-xs font-bold hover:text-sky-400 transition italic uppercase">← Back to Home</a>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-black italic tracking-tighter text-slate-900 mb-4 uppercase">受講お申し込み</h1>
+            <p class="text-slate-500 font-bold text-sm italic">Application Form for Training Course</p>
+        </div>
+
+        <form id="applyForm" class="space-y-10">
+            <!-- 1. 講習選択（自動引き継ぎ） -->
+            <section class="form-card p-8 md:p-12">
+                <h2 class="section-title text-xl mb-8 italic uppercase">01. Selected Course / 選択された講習</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 mb-2 uppercase italic tracking-widest">Selected Course</label>
+                        <input type="text" id="courseName" name="courseName" readonly class="w-full bg-slate-50 border-none font-black text-sky-600 text-lg">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-400 mb-2 uppercase italic tracking-widest">Schedule</label>
+                        <input type="text" id="courseDate" name="courseDate" readonly class="w-full bg-slate-50 border-none font-black text-slate-700 text-lg">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. 基本情報（申込書A相当） -->
+            <section class="form-card p-8 md:p-12">
+                <h2 class="section-title text-xl mb-8 italic uppercase">02. Personal Info / 基本情報</h2>
+                <div class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-black text-slate-700 mb-2">氏名（漢字）*</label>
+                            <input type="text" name="userName" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold" placeholder="下関 太郎">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-700 mb-2">フリガナ *</label>
+                            <input type="text" name="userKana" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold" placeholder="シモノセキ タロウ">
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-black text-slate-700 mb-2">生年月日 *</label>
+                            <input type="date" name="birthDate" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-700 mb-2">電話番号（連絡が取れる番号） *</label>
+                            <input type="tel" name="phone" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold" placeholder="083-246-0556">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-black text-slate-700 mb-2">メールアドレス *</label>
+                        <input type="email" name="email" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold" placeholder="stc@example.com">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-black text-slate-700 mb-2">現住所 *</label>
+                        <input type="text" name="address" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold" placeholder="山口県下関市...">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-black text-slate-700 mb-2">勤務先会社名</label>
+                        <input type="text" name="company" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold" placeholder="株式会社〇〇">
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. 写真添付（Base64） -->
+            <section class="form-card p-8 md:p-12">
+                <h2 class="section-title text-xl mb-8 italic uppercase">03. Photo / 証明写真添付</h2>
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div id="preview" class="photo-preview bg-slate-50 text-slate-400">
+                        <i class="fas fa-user text-4xl"></i>
+                    </div>
+                    <div class="flex-1 space-y-4 text-center md:text-left">
+                        <p class="text-xs font-bold text-slate-500 leading-relaxed italic">
+                            ※証明写真（30mm×24mm相当）を撮影、またはアップロードしてください。<br>
+                            ※修了証に使用するため、無帽・無背景・正面のものをお願いします。
+                        </p>
+                        <input type="file" id="photoInput" accept="image/*" class="hidden">
+                        <button type="button" onclick="document.getElementById('photoInput').click()" class="bg-slate-900 text-white px-6 py-3 rounded-full text-xs font-black italic uppercase hover:bg-sky-600 transition">
+                            <i class="fas fa-camera mr-2"></i> Select Photo
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ※ここに講習別の分岐項目が入ります（次のステップで実装） -->
+
+            <!-- 4. 同意事項（重要） -->
+            <section class="form-card p-8 md:p-12 bg-slate-50 border-2 border-sky-100">
+                <h2 class="section-title text-xl mb-8 italic uppercase">04. Confirmation / 同意事項</h2>
+                <div class="space-y-6">
+                    <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                        <input type="checkbox" id="agree1" class="consent-check mt-1">
+                        <label for="agree1" class="text-xs font-bold leading-relaxed cursor-pointer">
+                            私は、反社会的勢力に属さず、密接な関係をもたず、受講期間中も属さないことを確約します。
+                        </label>
+                    </div>
+                    <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                        <input type="checkbox" id="agree2" class="consent-check mt-1">
+                        <label for="agree2" class="text-xs font-bold leading-relaxed cursor-pointer">
+                            教習所内では、講師の注意に従い、安全を遵守し、一切の講習妨害行為をしないことを確約します。
+                        </label>
+                    </div>
+                    <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                        <input type="checkbox" id="agree3" class="consent-check mt-1">
+                        <label for="agree3" class="text-xs font-bold leading-relaxed cursor-pointer">
+                            入力内容に虚偽がないことを確認しました。
+                        </label>
+                    </div>
+                </div>
+            </section>
+
+            <div class="pt-10">
+                <button type="submit" id="submitBtn" disabled class="cta-button w-full bg-gradient-to-r from-sky-500 to-sky-600 text-white py-6 rounded-2xl font-black text-lg tracking-[0.3em] uppercase italic shadow-2xl hover:translate-y-[-4px] transition-all">
+                    Send Application / 申し込みを送信する
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        // URLからパラメータを取得してフォームに表示
+        const params = new URLSearchParams(window.location.search);
+        document.getElementById('courseName').value = params.get('course') || '講習名が取得できませんでした';
+        document.getElementById('courseDate').value = params.get('date') || '日程が取得できませんでした';
+
+        // 同意チェックの監視
+        const checks = document.querySelectorAll('.consent-check');
+        const submitBtn = document.getElementById('submitBtn');
+
+        function toggleSubmit() {
+            const allChecked = Array.from(checks).every(c => c.checked);
+            submitBtn.disabled = !allChecked;
+        }
+
+        checks.forEach(c => c.addEventListener('change', toggleSubmit));
+
+        // 写真アップロード＆Base64変換
+        const photoInput = document.getElementById('photoInput');
+        const preview = document.getElementById('preview');
+        let photoBase64 = "";
+
+        photoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                photoBase64 = event.target.result;
+                preview.innerHTML = `<img src="${photoBase64}" class="w-full h-full object-cover">`;
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>
