@@ -249,65 +249,101 @@ if (dateFromUrl) {
         renderDynamicFields(courseNameValue); 
 
                 // Firebase初期化と保存処理
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw",
-            authDomain: "stc-hp.firebaseapp.com",
-            projectId: "stc-hp",
-            storageBucket: "stc-hp.firebasestorage.app",
-            messagingSenderId: "795332931918",
-            appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f"
+    const firebaseConfig = {
+        apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw",
+        authDomain: "stc-hp.firebaseapp.com",
+        projectId: "stc-hp",
+        storageBucket: "stc-hp.firebasestorage.app",
+        messagingSenderId: "795332931918",
+        appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    let photoBase64 = "";
+
+    // 1. URLからパラメータを確実に取得してフォームに表示
+    window.addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        const course = params.get('course');
+        const date = params.get('date');
+
+        if (course) {
+            const decodedCourse = decodeURIComponent(course);
+            document.getElementById('courseName').value = decodedCourse;
+            renderDynamicFields(decodedCourse);
+        }
+        if (date) {
+            document.getElementById('courseDate').value = decodeURIComponent(date);
+        }
+    });
+
+    // 2. 講習別分岐
+    function renderDynamicFields(course) {
+        const dynamicSection = document.getElementById('dynamic-section');
+        let html = "";
+        if (course.includes("クレーン")) {
+            html = `<section class="form-card p-8 md:p-12 mb-10 animate-fadeIn"><h2 class="section-title text-xl mb-6 italic uppercase text-sky-600">Qualification / 免除条件</h2>
+                    <select name="exemption" class="w-full p-4 border border-slate-200 rounded-xl font-bold bg-slate-50 focus:ring-2 focus:ring-sky-500 outline-none transition"><option>玉掛け技能講習修了証所持</option><option>クレーン免許所持</option></select>
+                    <input type="text" name="licenseNumber" placeholder="免許・修了証番号（例：第12345号）" class="w-full mt-4 p-4 border border-slate-200 rounded-xl font-bold bg-slate-50 focus:ring-2 focus:ring-sky-500 outline-none transition"></section>`;
+        } else if (course.includes("フォークリフト")) {
+            html = `<section class="form-card p-8 md:p-12 mb-10 animate-fadeIn"><h2 class="section-title text-xl mb-6 italic uppercase text-sky-600">Qualification / 免除条件</h2>
+                    <select name="exemption" class="w-full p-4 border border-slate-200 rounded-xl font-bold bg-slate-50 focus:ring-2 focus:ring-sky-500 outline-none transition"><option>普通免許所持</option><option>特別教育経験者</option></select>
+                    <input type="text" name="licenseNumber" placeholder="運転免許証番号（12桁）" class="w-full mt-4 p-4 border border-slate-200 rounded-xl font-bold bg-slate-50 focus:ring-2 focus:ring-sky-500 outline-none transition"></section>`;
+        }
+        dynamicSection.innerHTML = html;
+    }
+
+    // 3. 写真のBase64変換
+    document.getElementById('photoInput').addEventListener('change', function(e) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            photoBase64 = event.target.result;
+            document.getElementById('preview').innerHTML = `<img src="${photoBase64}" class="w-full h-full object-cover">`;
         };
+        reader.readAsDataURL(e.target.files[0]);
+    });
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+    // 4. 同意チェックとボタン有効化
+    const checks = document.querySelectorAll('.consent-check');
+    const submitBtn = document.getElementById('submitBtn');
+    checks.forEach(c => c.addEventListener('change', () => {
+        submitBtn.disabled = !Array.from(checks).every(i => i.checked);
+    }));
 
-                // フォーム送信処理
-        document.getElementById('applyForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.innerText = "SENDING...";
-
-            try {
-                const formData = new FormData(e.target);
-                // 写真が選択されていない場合のガード
-                const finalPhoto = typeof photoBase64 !== 'undefined' ? photoBase64 : "";
-
-                const data = {
-                    courseName: document.getElementById('courseName').value, // ここを確実にする
-                    courseDate: document.getElementById('courseDate').value, // ここを確実にする
-                    userName: formData.get('userName'),
-                    userKana: formData.get('userKana'),
-                    birthDate: formData.get('birthDate'),
-                    phone: formData.get('phone'),
-                    email: formData.get('email'),
-                    address: formData.get('address'),
-                    company: formData.get('company') || "",
-                    exemption: formData.get('exemption') || "なし",
-                    licenseNumber: formData.get('licenseNumber') || "",
-                    userPhoto: finalPhoto,
-                    createdAt: serverTimestamp(),
-                    status: 'new'
-                };
-
-                // コレクション名 "reservations" に保存
-                await addDoc(collection(db, "reservations"), data);
-                
-                alert("お申し込みありがとうございます！送信が完了しました。");
-                window.location.href = "index.html"; 
-
-            } catch (error) {
-                console.error("Firestore Error:", error);
-                alert("送信に失敗しました: " + error.message);
-                btn.disabled = false;
-                btn.innerText = "申し込みを送信する";
-            }
-        });
-     
+    // 5. 送信処理
+    document.getElementById('applyForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true; submitBtn.innerText = "SENDING...";
+        try {
+            const formData = new FormData(e.target);
+            await addDoc(collection(db, "reservations"), {
+                courseName: document.getElementById('courseName').value,
+                courseDate: document.getElementById('courseDate').value,
+                userName: formData.get('userName'),
+                userKana: formData.get('userKana'),
+                birthDate: formData.get('birthDate'),
+                phone: formData.get('phone'),
+                email: formData.get('email'),
+                address: formData.get('address'),
+                company: formData.get('company') || "",
+                exemption: formData.get('exemption') || "なし",
+                licenseNumber: formData.get('licenseNumber') || "",
+                userPhoto: photoBase64,
+                createdAt: serverTimestamp()
+            });
+            alert("お申し込みありがとうございました！送信が完了しました。"); 
+            window.location.href = "index.html";
+        } catch (err) { 
+            console.error("Firestore Error:", err);
+            alert("エラーが発生しました: " + err.message); 
+            submitBtn.disabled = false; 
+            submitBtn.innerText = "申し込みを送信する";
+        }
+    });
     </script>
 </body>
 </html>
-
