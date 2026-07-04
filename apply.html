@@ -11,7 +11,7 @@
         body { font-family: 'Noto Sans JP', sans-serif; background-color: #f8fafc; color: #1e293b; }
         .font-en { font-family: 'Montserrat', sans-serif; }
         .form-card { background: white; border-radius: 2rem; border: 1px solid rgba(226, 232, 240, 0.8); box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
-        .section-title { position: relative; padding-left: 1.5rem; font-weight: 900; italic: true; }
+        .section-title { position: relative; padding-left: 1.5rem; font-weight: 900; }
         .section-title::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: #0ea5e9; border-radius: 3px; }
         input[type="checkbox"] { width: 1.5rem; height: 1.5rem; cursor: pointer; }
         .photo-preview { width: 120px; height: 150px; border: 2px dashed #cbd5e1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 0.5rem; }
@@ -33,7 +33,7 @@
         </div>
 
         <form id="applyForm" class="space-y-10">
-            <!-- 1. 講習選択（自動引き継ぎ） -->
+            <!-- 1. 講習選択 -->
             <section class="form-card p-8 md:p-12">
                 <h2 class="section-title text-xl mb-8 italic uppercase">01. Selected Course / 選択された講習</h2>
                 <div class="grid md:grid-cols-2 gap-8">
@@ -48,213 +48,54 @@
                 </div>
             </section>
 
-            <!-- 2. 基本情報（申込書A相当） -->
+            <!-- 2. 基本情報 -->
             <section class="form-card p-8 md:p-12">
                 <h2 class="section-title text-xl mb-8 italic uppercase">02. Personal Info / 基本情報</h2>
                 <div class="space-y-6">
                     <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-black text-slate-700 mb-2">氏名（漢字）*</label>
-                            <input type="text" name="userName" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold" placeholder="下関 太郎">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-black text-slate-700 mb-2">フリガナ *</label>
-                            <input type="text" name="userKana" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold" placeholder="シモノセキ タロウ">
-                        </div>
+                        <input type="text" name="userName" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="氏名（漢字）*">
+                        <input type="text" name="userKana" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="フリガナ *">
+                        <input type="date" name="birthDate" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold">
+                        <input type="tel" name="phone" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="電話番号 *">
                     </div>
-
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-black text-slate-700 mb-2">生年月日 *</label>
-                            <input type="date" name="birthDate" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-black text-slate-700 mb-2">電話番号（連絡が取れる番号） *</label>
-                            <input type="tel" name="phone" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold" placeholder="083-246-0556">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-black text-slate-700 mb-2">メールアドレス *</label>
-                        <input type="email" name="email" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold" placeholder="stc@example.com">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-black text-slate-700 mb-2">現住所 *</label>
-                        <input type="text" name="address" required class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold" placeholder="山口県下関市...">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-black text-slate-700 mb-2">勤務先会社名</label>
-                        <input type="text" name="company" class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 outline-none transition font-bold" placeholder="株式会社〇〇">
-                    </div>
+                    <input type="email" name="email" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="メールアドレス *">
+                    <input type="text" name="address" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="現住所 *">
+                    <input type="text" name="company" class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="勤務先会社名">
                 </div>
             </section>
 
-            <!-- 3. 写真添付（Base64） -->
+            <!-- 3. 写真添付 -->
             <section class="form-card p-8 md:p-12">
                 <h2 class="section-title text-xl mb-8 italic uppercase">03. Photo / 証明写真添付</h2>
                 <div class="flex flex-col md:flex-row items-center gap-8">
-                    <div id="preview" class="photo-preview bg-slate-50 text-slate-400">
-                        <i class="fas fa-user text-4xl"></i>
-                    </div>
-                    <div class="flex-1 space-y-4 text-center md:text-left">
-                        <p class="text-xs font-bold text-slate-500 leading-relaxed italic">
-                            ※証明写真（30mm×24mm相当）を撮影、またはアップロードしてください。<br>
-                            ※修了証に使用するため、無帽・無背景・正面のものをお願いします。
-                        </p>
+                    <div id="preview" class="photo-preview bg-slate-50 text-slate-400"><i class="fas fa-user text-4xl"></i></div>
+                    <div>
                         <input type="file" id="photoInput" accept="image/*" class="hidden">
-                        <button type="button" onclick="document.getElementById('photoInput').click()" class="bg-slate-900 text-white px-6 py-3 rounded-full text-xs font-black italic uppercase hover:bg-sky-600 transition">
-                            <i class="fas fa-camera mr-2"></i> Select Photo
-                        </button>
+                        <button type="button" onclick="document.getElementById('photoInput').click()" class="bg-slate-900 text-white px-6 py-3 rounded-full text-xs font-black italic uppercase">Select Photo</button>
                     </div>
                 </div>
             </section>
 
-            <!-- 3.5 講習別詳細情報（動的分岐） -->
-            <div id="dynamic-section">
-                <!-- ここにJavaScriptで入力項目が生成されます -->
-            </div>
+            <!-- 講習別分岐項目 -->
+            <div id="dynamic-section"></div>
 
-            <!-- 4. 同意事項（重要） -->
+            <!-- 4. 同意事項 -->
             <section class="form-card p-8 md:p-12 bg-slate-50 border-2 border-sky-100">
-                <h2 class="section-title text-xl mb-8 italic uppercase">04. Confirmation / 同意事項</h2>
-                <div class="space-y-6">
-                    <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
-                        <input type="checkbox" id="agree1" class="consent-check mt-1">
-                        <label for="agree1" class="text-xs font-bold leading-relaxed cursor-pointer">
-                            私は、反社会的勢力に属さず、密接な関係をもたず、受講期間中も属さないことを確約します。
-                        </label>
-                    </div>
-                    <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
-                        <input type="checkbox" id="agree2" class="consent-check mt-1">
-                        <label for="agree2" class="text-xs font-bold leading-relaxed cursor-pointer">
-                            教習所内では、講師の注意に従い、安全を遵守し、一切の講習妨害行為をしないことを確約します。
-                        </label>
-                    </div>
-                    <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
-                        <input type="checkbox" id="agree3" class="consent-check mt-1">
-                        <label for="agree3" class="text-xs font-bold leading-relaxed cursor-pointer">
-                            入力内容に虚偽がないことを確認しました。
-                        </label>
-                    </div>
+                <div class="space-y-4">
+                    <label class="flex gap-4 cursor-pointer"><input type="checkbox" class="consent-check"> <span class="text-xs font-bold">反社会的勢力に属さないことを誓約します</span></label>
+                    <label class="flex gap-4 cursor-pointer"><input type="checkbox" class="consent-check"> <span class="text-xs font-bold">教習所の指示に従い安全を遵守します</span></label>
                 </div>
+                <button type="submit" id="submitBtn" disabled class="cta-button w-full mt-10 bg-gradient-to-r from-sky-500 to-sky-600 text-white py-6 rounded-2xl font-black text-lg italic uppercase shadow-xl">Send Application / 申し込みを送信する</button>
             </section>
-
-            <div class="pt-10">
-                <button type="submit" id="submitBtn" disabled class="cta-button w-full bg-gradient-to-r from-sky-500 to-sky-600 text-white py-6 rounded-2xl font-black text-lg tracking-[0.3em] uppercase italic shadow-2xl hover:translate-y-[-4px] transition-all">
-                    Send Application / 申し込みを送信する
-                </button>
-            </div>
         </form>
     </main>
 
-    <script>
-        // URLからパラメータを確実に取得する
-const params = new URLSearchParams(window.location.search);
-// デコード処理を入れて確実に取得
-const courseFromUrl = params.get('course');
-const dateFromUrl = params.get('date');
-
-if (courseFromUrl) {
-    document.getElementById('courseName').value = decodeURIComponent(courseFromUrl);
-}
-if (dateFromUrl) {
-    document.getElementById('courseDate').value = decodeURIComponent(dateFromUrl);
-}
-
-        // 同意チェックの監視
-        const checks = document.querySelectorAll('.consent-check');
-        const submitBtn = document.getElementById('submitBtn');
-
-        function toggleSubmit() {
-            const allChecked = Array.from(checks).every(c => c.checked);
-            submitBtn.disabled = !allChecked;
-        }
-
-        checks.forEach(c => c.addEventListener('change', toggleSubmit));
-
-        // 写真アップロード＆Base64変換
-        const photoInput = document.getElementById('photoInput');
-        const preview = document.getElementById('preview');
-        let photoBase64 = "";
-
-        photoInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                photoBase64 = event.target.result;
-                preview.innerHTML = `<img src="${photoBase64}" class="w-full h-full object-cover">`;
-            };
-            reader.readAsDataURL(file);
-        });
-　　　　　        // 講習名に応じた動的フォーム生成
-        const dynamicSection = document.getElementById('dynamic-section');
-        const courseNameValue = params.get('course') || "";
-
-        function renderDynamicFields(course) {
-            let html = "";
-            
-            if (course.includes("小型移動式クレーン")) {
-                html = `
-                    <section class="form-card p-8 md:p-12 animate-fadeIn">
-                        <h2 class="section-title text-xl mb-8 italic uppercase text-sky-600">Qualification / 免除条件の確認</h2>
-                        <p class="text-xs font-bold mb-6 text-slate-500 italic">該当する資格を選択してください（一部免除の対象となります）</p>
-                        <div class="space-y-4">
-                            <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50 transition">
-                                <input type="radio" name="exemption" value="玉掛け所持" class="w-5 h-5">
-                                <span class="text-sm font-bold">玉掛け技能講習修了証を所持している</span>
-                            </label>
-                            <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50 transition">
-                                <input type="radio" name="exemption" value="クレーン免許所持" class="w-5 h-5">
-                                <span class="text-sm font-bold">クレーン・デリック運転士免許を所持している</span>
-                            </label>
-                            <div class="pt-4">
-                                <label class="block text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">修了証番号 / 免許証番号</label>
-                                <input type="text" name="licenseNumber" placeholder="第12345号" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold">
-                            </div>
-                        </div>
-                    </section>
-                `;
-            } 
-            else if (course.includes("フォークリフト")) {
-                html = `
-                    <section class="form-card p-8 md:p-12 animate-fadeIn">
-                        <h2 class="section-title text-xl mb-8 italic uppercase text-sky-600">Qualification / 免除条件の確認</h2>
-                        <p class="text-xs font-bold mb-6 text-slate-500 italic">現在の所持免許・経験を選択してください</p>
-                        <div class="space-y-4">
-                            <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50 transition">
-                                <input type="radio" name="exemption" value="普通免許所持" class="w-5 h-5">
-                                <span class="text-sm font-bold">普通・中型・大型免許を所持している</span>
-                            </label>
-                            <label class="flex items-center gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50 transition">
-                                <input type="radio" name="exemption" value="特別教育経験者" class="w-5 h-5">
-                                <span class="text-sm font-bold">1t未満フォークリフト特別教育＋3ヶ月以上の実務経験</span>
-                            </label>
-                            <div class="pt-4">
-                                <label class="block text-[10px] font-black text-slate-400 mb-2 uppercase tracking-widest">運転免許証番号</label>
-                                <input type="text" name="licenseNumber" placeholder="123456789012" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl font-bold">
-                            </div>
-                        </div>
-                    </section>
-                `;
-            }
-            
-            dynamicSection.innerHTML = html;
-        }
-
-        // 実行
-        renderDynamicFields(courseNameValue); 
-
-                // Firebase初期化と保存処理
-        <script type="module">
+    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw",
+            apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw", 
             authDomain: "stc-hp.firebaseapp.com",
             projectId: "stc-hp",
             storageBucket: "stc-hp.firebasestorage.app",
@@ -263,10 +104,9 @@ if (dateFromUrl) {
         };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
         let photoBase64 = "";
 
-        // 【最重要】ページが開いた瞬間にURLから情報を抜き取って画面に表示する
+        // 1. 【解決】ページ読み込み時にURLからデータを確実に取得
         window.addEventListener('load', () => {
             const params = new URLSearchParams(window.location.search);
             const course = params.get('course');
@@ -275,24 +115,26 @@ if (dateFromUrl) {
             if (course) {
                 const decodedCourse = decodeURIComponent(course);
                 document.getElementById('courseName').value = decodedCourse;
-                renderDynamicFields(decodedCourse); // 免許証などの入力欄を出す
+                renderDynamicFields(decodedCourse);
             }
             if (date) {
                 document.getElementById('courseDate').value = decodeURIComponent(date);
             }
         });
 
-        // 講習別分岐（免許証・修了証の入力欄）
+        // 2. 【解決】講習別の入力欄生成
         function renderDynamicFields(course) {
             const section = document.getElementById('dynamic-section');
+            let html = "";
             if (course.includes("小型移動式クレーン")) {
-                section.innerHTML = `<section class="form-card p-12 mb-10 animate-fadeIn"><h2 class="section-title text-xl mb-8 italic uppercase text-sky-600">Qualification</h2><select name="exemption" class="w-full px-4 py-3 border rounded-xl font-bold bg-slate-50"><option>玉掛け技能講習修了証所持</option><option>クレーン免許所持</option></select><input type="text" name="licenseNumber" placeholder="免許・修了証番号" class="w-full mt-4 px-4 py-3 border rounded-xl font-bold bg-slate-50"></section>`;
+                html = `<section class="form-card p-12 mb-10 animate-fadeIn"><h2 class="section-title text-xl mb-6 italic text-sky-600 uppercase">Qualification</h2><p class="text-xs font-bold mb-4 italic text-slate-500">免除条件の確認</p><select name="exemption" class="w-full p-4 border rounded-xl font-bold bg-slate-50"><option>玉掛け技能講習修了証所持</option><option>クレーン免許所持</option></select><input type="text" name="licenseNumber" placeholder="免許・修了証番号" class="w-full mt-4 p-4 border rounded-xl font-bold bg-slate-50"></section>`;
             } else if (course.includes("フォークリフト")) {
-                section.innerHTML = `<section class="form-card p-12 mb-10 animate-fadeIn"><h2 class="section-title text-xl mb-8 italic uppercase text-sky-600">Qualification</h2><select name="exemption" class="w-full px-4 py-3 border rounded-xl font-bold bg-slate-50"><option>普通免許所持</option><option>特別教育経験者</option></select><input type="text" name="licenseNumber" placeholder="運転免許証番号" class="w-full mt-4 px-4 py-3 border rounded-xl font-bold bg-slate-50"></section>`;
+                html = `<section class="form-card p-12 mb-10 animate-fadeIn"><h2 class="section-title text-xl mb-6 italic text-sky-600 uppercase">Qualification</h2><p class="text-xs font-bold mb-4 italic text-slate-500">免除条件の確認</p><select name="exemption" class="w-full p-4 border rounded-xl font-bold bg-slate-50"><option>普通免許所持</option><option>特別教育経験者</option></select><input type="text" name="licenseNumber" placeholder="免許証番号" class="w-full mt-4 p-4 border rounded-xl font-bold bg-slate-50"></section>`;
             }
+            section.innerHTML = html;
         }
 
-        // 写真の処理
+        // 3. 写真処理
         document.getElementById('photoInput').addEventListener('change', e => {
             const reader = new FileReader();
             reader.onload = event => {
@@ -302,12 +144,13 @@ if (dateFromUrl) {
             reader.readAsDataURL(e.target.files[0]);
         });
 
-        // 同意チェック
-        document.querySelectorAll('.consent-check').forEach(c => c.addEventListener('change', () => {
-            document.getElementById('submitBtn').disabled = !Array.from(document.querySelectorAll('.consent-check')).every(i => i.checked);
+        // 4. 同意チェック
+        const checks = document.querySelectorAll('.consent-check');
+        checks.forEach(c => c.addEventListener('change', () => {
+            document.getElementById('submitBtn').disabled = !Array.from(checks).every(i => i.checked);
         }));
 
-        // 送信処理
+        // 5. 【解決】送信処理
         document.getElementById('applyForm').addEventListener('submit', async e => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
@@ -329,12 +172,11 @@ if (dateFromUrl) {
                     userPhoto: photoBase64,
                     createdAt: serverTimestamp()
                 });
-                alert("お申し込みありがとうございます！送信が完了しました。"); 
+                alert("お申し込みありがとうございます！");
                 window.location.href = "index.html";
-            } catch (err) { 
-                alert("送信エラー: " + err.message); 
-                btn.disabled = false; 
-                btn.innerText = "申し込みを送信する";
+            } catch (err) {
+                alert("エラー: " + err.message);
+                btn.disabled = false;
             }
         });
     </script>
