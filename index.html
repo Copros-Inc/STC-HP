@@ -104,16 +104,19 @@
                     <p class="text-slate-600 leading-loose font-bold mb-10 text-sm md:text-base max-w-xl">下関トレーニングセンターは、現場で真に通用する「安全」と「技術」を習得するための認可教習機関です。</p>
                 </div>
                 <div class="grid grid-cols-1 gap-6 reveal">
-                    <button onclick="openModal('apply')" class="relative group text-left">
-                        <div class="cta-card-primary p-12 rounded-3xl h-full flex flex-col justify-between overflow-hidden text-white">
-                            <div class="absolute -right-4 -bottom-4 text-8xl font-black italic text-white/20 group-hover:text-white/30 transition-colors">01</div>
-                            <div class="relative z-10">
-                                <div class="w-16 h-16 bg-white/30 rounded-2xl flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform"><i class="fas fa-pen-nib text-white text-2xl"></i></div>
-                                <h4 class="text-3xl font-black mb-2 group-hover:text-white/90 italic">受講<br>お申し込み</h4>
-                                <p class="text-xs font-bold text-white/80 italic">WEB予約・資料請求をいますぐ</p>
-                            </div>
-                        </div>
-                    </button>
+                   <!-- 修正後：デザインはそのまま、動きだけカレンダー移動に変更 -->
+<a href="#schedule-section" class="relative group text-left block">
+    <div class="cta-card-primary p-12 rounded-3xl h-full flex flex-col justify-between overflow-hidden text-white">
+        <div class="absolute -right-4 -bottom-4 text-8xl font-black italic text-white/20 group-hover:text-white/30 transition-colors">01</div>
+        <div class="relative z-10">
+            <div class="w-16 h-16 bg-white/30 rounded-2xl flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform">
+                <i class="fas fa-pen-nib text-white text-2xl"></i>
+            </div>
+            <h4 class="text-3xl font-black mb-2 group-hover:text-white/90 italic">受講<br>お申し込み</h4>
+            <p class="text-xs font-bold text-white/80 italic">WEB予約・資料請求をいますぐ</p>
+        </div>
+    </div>
+</a>
                     <a href="#schedule-section" class="relative group text-left">
                         <div class="glass-bright-card p-12 rounded-3xl border-l-8 border-l-sky-500 h-full flex flex-col justify-between overflow-hidden text-slate-900">
                             <div class="absolute -right-4 -bottom-4 text-8xl font-black italic text-sky-400/10 group-hover:text-sky-400/20 transition-colors">02</div>
@@ -358,9 +361,9 @@
                 const badgeClass = item.status === 'full' ? 'status-full' : 'status-ok';
                 
                 // 【修正ポイント】Bookingから「お申し込み」へ変更し、apply.htmlへのリンクにする
-                const actionBtn = item.status === 'full' 
-                    ? `<button onclick="openModal('waitlist')" class="text-red-600 font-black italic underline">キャンセル待ち</button>`
-                    : `<a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}" class="text-sky-600 underline font-black italic">お申し込み</a>`;
+               const actionBtn = item.status === 'full' 
+    ? `<button onclick="openModal('waitlist')" class="text-red-600 font-black italic underline">キャンセル待ち</button>`
+    : `<a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}" class="text-sky-600 underline font-black italic">お申し込み</a>`;
                 
                 html += `<tr class="border-b border-slate-50 hover:bg-slate-50 transition"><td class="p-6 text-slate-900">${item.name}</td><td class="p-6 text-sm text-slate-500">${item.date}</td><td class="p-6 text-center"><span class="status-badge ${badgeClass}">${item.statusText}</span></td><td class="p-6 text-xs uppercase">${actionBtn}</td></tr>`;
             });
