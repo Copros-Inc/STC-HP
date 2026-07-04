@@ -249,6 +249,7 @@ if (dateFromUrl) {
         renderDynamicFields(courseNameValue); 
 
                 // Firebase初期化と保存処理
+       // --- ここから 153行目 ---
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -266,7 +267,7 @@ if (dateFromUrl) {
     let photoBase64 = "";
 
     // 1. URLからパラメータを確実に取得してフォームに表示
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('load', () => {
         const params = new URLSearchParams(window.location.search);
         const course = params.get('course');
         const date = params.get('date');
@@ -286,38 +287,33 @@ if (dateFromUrl) {
         const dynamicSection = document.getElementById('dynamic-section');
         let html = "";
         if (course.includes("クレーン")) {
-            html = `<section class="form-card p-8 md:p-12 mb-10 animate-fadeIn"><h2 class="section-title text-xl mb-6 italic uppercase text-sky-600">Qualification / 免除条件</h2>
-                    <select name="exemption" class="w-full p-4 border border-slate-200 rounded-xl font-bold bg-slate-50 focus:ring-2 focus:ring-sky-500 outline-none transition"><option>玉掛け技能講習修了証所持</option><option>クレーン免許所持</option></select>
-                    <input type="text" name="licenseNumber" placeholder="免許・修了証番号（例：第12345号）" class="w-full mt-4 p-4 border border-slate-200 rounded-xl font-bold bg-slate-50 focus:ring-2 focus:ring-sky-500 outline-none transition"></section>`;
+            html = `<section class="form-card p-8 md:p-12 mb-10 animate-fadeIn"><h2 class="section-title text-xl mb-6 italic uppercase text-sky-600">Qualification / 免除条件</h2><select name="exemption" class="w-full p-4 border border-slate-200 rounded-xl font-bold bg-slate-50"><option>玉掛け技能講習修了証所持</option><option>クレーン免許所持</option></select><input type="text" name="licenseNumber" placeholder="免許・修了証番号" class="w-full mt-4 p-4 border border-slate-200 rounded-xl font-bold"></section>`;
         } else if (course.includes("フォークリフト")) {
-            html = `<section class="form-card p-8 md:p-12 mb-10 animate-fadeIn"><h2 class="section-title text-xl mb-6 italic uppercase text-sky-600">Qualification / 免除条件</h2>
-                    <select name="exemption" class="w-full p-4 border border-slate-200 rounded-xl font-bold bg-slate-50 focus:ring-2 focus:ring-sky-500 outline-none transition"><option>普通免許所持</option><option>特別教育経験者</option></select>
-                    <input type="text" name="licenseNumber" placeholder="運転免許証番号（12桁）" class="w-full mt-4 p-4 border border-slate-200 rounded-xl font-bold bg-slate-50 focus:ring-2 focus:ring-sky-500 outline-none transition"></section>`;
+            html = `<section class="form-card p-8 md:p-12 mb-10 animate-fadeIn"><h2 class="section-title text-xl mb-6 italic uppercase text-sky-600">Qualification / 免除条件</h2><select name="exemption" class="w-full p-4 border border-slate-200 rounded-xl font-bold bg-slate-50"><option>普通免許所持</option><option>特別教育経験者</option></select><input type="text" name="licenseNumber" placeholder="運転免許証番号" class="w-full mt-4 p-4 border border-slate-200 rounded-xl font-bold"></section>`;
         }
         dynamicSection.innerHTML = html;
     }
 
-    // 3. 写真のBase64変換
-    document.getElementById('photoInput').addEventListener('change', function(e) {
+    // 3. 写真処理
+    document.getElementById('photoInput').addEventListener('change', e => {
         const reader = new FileReader();
-        reader.onload = (event) => {
+        reader.onload = event => {
             photoBase64 = event.target.result;
             document.getElementById('preview').innerHTML = `<img src="${photoBase64}" class="w-full h-full object-cover">`;
         };
         reader.readAsDataURL(e.target.files[0]);
     });
 
-    // 4. 同意チェックとボタン有効化
-    const checks = document.querySelectorAll('.consent-check');
-    const submitBtn = document.getElementById('submitBtn');
-    checks.forEach(c => c.addEventListener('change', () => {
-        submitBtn.disabled = !Array.from(checks).every(i => i.checked);
+    // 4. 同意チェック
+    document.querySelectorAll('.consent-check').forEach(c => c.addEventListener('change', () => {
+        document.getElementById('submitBtn').disabled = !Array.from(document.querySelectorAll('.consent-check')).every(i => i.checked);
     }));
 
     // 5. 送信処理
-    document.getElementById('applyForm').addEventListener('submit', async (e) => {
+    document.getElementById('applyForm').addEventListener('submit', async e => {
         e.preventDefault();
-        submitBtn.disabled = true; submitBtn.innerText = "SENDING...";
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true; btn.innerText = "SENDING...";
         try {
             const formData = new FormData(e.target);
             await addDoc(collection(db, "reservations"), {
@@ -335,14 +331,9 @@ if (dateFromUrl) {
                 userPhoto: photoBase64,
                 createdAt: serverTimestamp()
             });
-            alert("お申し込みありがとうございました！送信が完了しました。"); 
+            alert("お申し込みありがとうございました！"); 
             window.location.href = "index.html";
-        } catch (err) { 
-            console.error("Firestore Error:", err);
-            alert("エラーが発生しました: " + err.message); 
-            submitBtn.disabled = false; 
-            submitBtn.innerText = "申し込みを送信する";
-        }
+        } catch (err) { alert("エラー: " + err.message); btn.disabled = false; }
     });
     </script>
 </body>
