@@ -334,17 +334,22 @@
 
     signInAnonymously(auth).then(() => { loadSchedules(); });
 
-    function loadSchedules() {
+        function loadSchedules() {
         onSnapshot(collection(db, "schedules"), (snapshot) => {
-            schedules = snapshot.docs.map(doc => ({
-                name: doc.data().courseName,
-                date: doc.data().date || "",
-                status: doc.data().status,
-                statusText: doc.data().status === 'full' ? '満員御礼' : '空席あり',
-                month: parseInt(doc.data().month),
-                dayStart: parseInt(doc.data().dayStart),
-                dayEnd: parseInt(doc.data().dayEnd)
-            }));
+            schedules = snapshot.docs.map(doc => {
+                const data = doc.data();
+                return {
+                    // Firestoreの「courseName」を、プログラムで使う「name」に正しく割り当てる
+                    name: data.courseName || "名称未設定", 
+                    date: data.date || "",
+                    status: data.status,
+                    statusText: data.status === 'full' ? '満員御礼' : '空席あり',
+                    month: parseInt(data.month),
+                    dayStart: parseInt(data.dayStart),
+                    dayEnd: parseInt(data.dayEnd)
+                };
+            });
+            console.log("✅ 同期データ:", schedules);
             renderCalendar(currentMonth);
             renderGantt(currentMonth);
         });
