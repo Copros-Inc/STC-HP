@@ -33,57 +33,81 @@
         </div>
 
         <form id="applyForm" class="space-y-10">
-            <!-- 1. 講習選択 -->
+            <!-- 01. 選んだ講習 -->
             <section class="form-card p-8 md:p-12">
                 <h2 class="section-title text-xl mb-8 italic uppercase">01. Selected Course / 選択された講習</h2>
                 <div class="grid md:grid-cols-2 gap-8">
                     <div>
-                        <label class="block text-[10px] font-black text-slate-400 mb-2 uppercase italic tracking-widest">Selected Course</label>
-                        <input type="text" id="courseName" name="courseName" readonly class="w-full bg-slate-50 border-none font-black text-sky-600 text-lg">
+                        <label class="block text-[10px] font-black text-slate-400 mb-2 uppercase italic tracking-widest text-left">Selected Course</label>
+                        <input type="text" id="courseName" name="courseName" readonly class="w-full bg-slate-50 border-none font-black text-sky-600 text-lg outline-none">
                     </div>
                     <div>
-                        <label class="block text-[10px] font-black text-slate-400 mb-2 uppercase italic tracking-widest">Schedule</label>
-                        <input type="text" id="courseDate" name="courseDate" readonly class="w-full bg-slate-50 border-none font-black text-slate-700 text-lg">
+                        <label class="block text-[10px] font-black text-slate-400 mb-2 uppercase italic tracking-widest text-left">Schedule</label>
+                        <input type="text" id="courseDate" name="courseDate" readonly class="w-full bg-slate-50 border-none font-black text-slate-700 text-lg outline-none">
                     </div>
                 </div>
             </section>
 
-            <!-- 2. 基本情報 -->
+            <!-- 02. 基本情報 -->
             <section class="form-card p-8 md:p-12">
-                <h2 class="section-title text-xl mb-8 italic uppercase">02. Personal Info / 基本情報</h2>
+                <h2 class="section-title text-xl mb-8 italic uppercase text-left">02. Personal Info / 基本情報</h2>
                 <div class="space-y-6">
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <input type="text" name="userName" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="氏名（漢字）*">
-                        <input type="text" name="userKana" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="フリガナ *">
-                        <input type="date" name="birthDate" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold">
-                        <input type="tel" name="phone" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="電話番号 *">
+                    <div class="grid md:grid-cols-2 gap-6 text-left">
+                        <div>
+                            <label class="block text-xs font-black text-slate-700 mb-2">氏名（漢字）*</label>
+                            <input type="text" name="userName" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="下関 太郎">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-700 mb-2">フリガナ *</label>
+                            <input type="text" name="userKana" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="シモノセキ タロウ">
+                        </div>
                     </div>
-                    <input type="email" name="email" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="メールアドレス *">
-                    <input type="text" name="address" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="現住所 *">
-                    <input type="text" name="company" class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="勤務先会社名">
+                    <div class="grid md:grid-cols-2 gap-6 text-left">
+                        <div>
+                            <label class="block text-xs font-black text-slate-700 mb-2">生年月日 *</label>
+                            <input type="date" name="birthDate" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-700 mb-2">電話番号 *</label>
+                            <input type="tel" name="phone" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="083-246-0556">
+                        </div>
+                    </div>
+                    <div class="text-left">
+                        <label class="block text-xs font-black text-slate-700 mb-2">メールアドレス *</label>
+                        <input type="email" name="email" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="stc@example.com">
+                    </div>
+                    <div class="text-left">
+                        <label class="block text-xs font-black text-slate-700 mb-2">現住所 *</label>
+                        <input type="text" name="address" required class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="山口県下関市...">
+                    </div>
+                    <div class="text-left">
+                        <label class="block text-xs font-black text-slate-700 mb-2">勤務先会社名</label>
+                        <input type="text" name="company" class="w-full px-4 py-3 border border-slate-200 rounded-xl font-bold" placeholder="株式会社〇〇">
+                    </div>
                 </div>
             </section>
 
-            <!-- 3. 写真添付 -->
+            <!-- 03. 写真添付 -->
             <section class="form-card p-8 md:p-12">
-                <h2 class="section-title text-xl mb-8 italic uppercase">03. Photo / 証明写真添付</h2>
+                <h2 class="section-title text-xl mb-8 italic uppercase text-left">03. Photo / 証明写真添付</h2>
                 <div class="flex flex-col md:flex-row items-center gap-8">
                     <div id="preview" class="photo-preview bg-slate-50 text-slate-400"><i class="fas fa-user text-4xl"></i></div>
-                    <div>
+                    <div class="text-left">
                         <input type="file" id="photoInput" accept="image/*" class="hidden">
-                        <button type="button" onclick="document.getElementById('photoInput').click()" class="bg-slate-900 text-white px-6 py-3 rounded-full text-xs font-black italic uppercase">Select Photo</button>
+                        <button type="button" onclick="document.getElementById('photoInput').click()" class="bg-slate-900 text-white px-6 py-3 rounded-full text-xs font-black italic uppercase hover:bg-sky-600 transition">Select Photo</button>
                     </div>
                 </div>
             </section>
 
-            <!-- 講習別分岐項目 -->
+            <!-- 分岐項目 -->
             <div id="dynamic-section"></div>
 
-            <!-- 4. 同意事項 -->
+            <!-- 04. 同意事項 -->
             <section class="form-card p-8 md:p-12 bg-slate-50 border-2 border-sky-100">
-                <div class="space-y-4">
+                <div class="space-y-4 text-left">
                     <label class="flex gap-4 cursor-pointer"><input type="checkbox" class="consent-check"> <span class="text-xs font-bold">反社会的勢力に属さないことを誓約します</span></label>
                     <label class="flex gap-4 cursor-pointer"><input type="checkbox" class="consent-check"> <span class="text-xs font-bold">教習所の指示に従い安全を遵守します</span></label>
+                    <label class="flex gap-4 cursor-pointer"><input type="checkbox" class="consent-check"> <span class="text-xs font-bold">入力内容に虚偽がないことを確認しました</span></label>
                 </div>
                 <button type="submit" id="submitBtn" disabled class="cta-button w-full mt-10 bg-gradient-to-r from-sky-500 to-sky-600 text-white py-6 rounded-2xl font-black text-lg italic uppercase shadow-xl">Send Application / 申し込みを送信する</button>
             </section>
@@ -95,7 +119,7 @@
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw", 
+            apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw",
             authDomain: "stc-hp.firebaseapp.com",
             projectId: "stc-hp",
             storageBucket: "stc-hp.firebasestorage.app",
@@ -106,11 +130,11 @@
         const db = getFirestore(app);
         let photoBase64 = "";
 
-        // 1. 【解決】ページ読み込み時にURLからデータを確実に取得
+        // 1. URLパラメータ受け取りと表示
         window.addEventListener('load', () => {
-            const params = new URLSearchParams(window.location.search);
-            const course = params.get('course');
-            const date = params.get('date');
+            const urlParams = new URLSearchParams(window.location.search);
+            const course = urlParams.get('course');
+            const date = urlParams.get('date');
 
             if (course) {
                 const decodedCourse = decodeURIComponent(course);
@@ -122,14 +146,14 @@
             }
         });
 
-        // 2. 【解決】講習別の入力欄生成
+        // 2. 講習別分岐
         function renderDynamicFields(course) {
             const section = document.getElementById('dynamic-section');
             let html = "";
             if (course.includes("小型移動式クレーン")) {
-                html = `<section class="form-card p-12 mb-10 animate-fadeIn"><h2 class="section-title text-xl mb-6 italic text-sky-600 uppercase">Qualification</h2><p class="text-xs font-bold mb-4 italic text-slate-500">免除条件の確認</p><select name="exemption" class="w-full p-4 border rounded-xl font-bold bg-slate-50"><option>玉掛け技能講習修了証所持</option><option>クレーン免許所持</option></select><input type="text" name="licenseNumber" placeholder="免許・修了証番号" class="w-full mt-4 p-4 border rounded-xl font-bold bg-slate-50"></section>`;
+                html = `<section class="form-card p-12 mb-10 animate-fadeIn text-left"><h2 class="section-title text-xl mb-6 italic text-sky-600 uppercase">Qualification</h2><select name="exemption" class="w-full p-4 border rounded-xl font-bold bg-slate-50"><option>玉掛け技能講習修了証所持</option><option>クレーン免許所持</option></select><input type="text" name="licenseNumber" placeholder="免許・修了証番号" class="w-full mt-4 p-4 border rounded-xl font-bold bg-slate-50"></section>`;
             } else if (course.includes("フォークリフト")) {
-                html = `<section class="form-card p-12 mb-10 animate-fadeIn"><h2 class="section-title text-xl mb-6 italic text-sky-600 uppercase">Qualification</h2><p class="text-xs font-bold mb-4 italic text-slate-500">免除条件の確認</p><select name="exemption" class="w-full p-4 border rounded-xl font-bold bg-slate-50"><option>普通免許所持</option><option>特別教育経験者</option></select><input type="text" name="licenseNumber" placeholder="免許証番号" class="w-full mt-4 p-4 border rounded-xl font-bold bg-slate-50"></section>`;
+                html = `<section class="form-card p-12 mb-10 animate-fadeIn text-left"><h2 class="section-title text-xl mb-6 italic text-sky-600 uppercase">Qualification</h2><select name="exemption" class="w-full p-4 border rounded-xl font-bold bg-slate-50"><option>普通免許所持</option><option>特別教育経験者</option></select><input type="text" name="licenseNumber" placeholder="免許証番号" class="w-full mt-4 p-4 border rounded-xl font-bold bg-slate-50"></section>`;
             }
             section.innerHTML = html;
         }
@@ -150,7 +174,7 @@
             document.getElementById('submitBtn').disabled = !Array.from(checks).every(i => i.checked);
         }));
 
-        // 5. 【解決】送信処理
+        // 5. 送信
         document.getElementById('applyForm').addEventListener('submit', async e => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
@@ -172,10 +196,10 @@
                     userPhoto: photoBase64,
                     createdAt: serverTimestamp()
                 });
-                alert("お申し込みありがとうございます！");
+                alert("お申し込みありがとうございます！送信が完了しました。");
                 window.location.href = "index.html";
             } catch (err) {
-                alert("エラー: " + err.message);
+                alert("送信エラー: " + err.message);
                 btn.disabled = false;
             }
         });
