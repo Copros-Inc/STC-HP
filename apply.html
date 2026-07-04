@@ -114,7 +114,7 @@
         </form>
     </main>
 
-    <script type="module">
+       <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -130,12 +130,11 @@
         const db = getFirestore(app);
         let photoBase64 = "";
 
-        // 1. URLパラメータ受け取りと表示
+        // 1. URLパラメータ受け取り
         window.addEventListener('load', () => {
             const urlParams = new URLSearchParams(window.location.search);
             const course = urlParams.get('course');
             const date = urlParams.get('date');
-
             if (course) {
                 const decodedCourse = decodeURIComponent(course);
                 document.getElementById('courseName').value = decodedCourse;
@@ -158,14 +157,31 @@
             section.innerHTML = html;
         }
 
-        // 3. 写真処理
+        // 3. 【解決：圧縮機能】 写真処理（サイズを小さくしてからBase64化）
         document.getElementById('photoInput').addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (!file) return;
+
             const reader = new FileReader();
             reader.onload = event => {
-                photoBase64 = event.target.result;
-                document.getElementById('preview').innerHTML = `<img src="${photoBase64}" class="w-full h-full object-cover">`;
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 400; // 横幅を400pxに制限
+                    const scale = MAX_WIDTH / img.width;
+                    canvas.width = MAX_WIDTH;
+                    canvas.height = img.height * scale;
+
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+                    // 画質を0.7（70%）に落として圧縮
+                    photoBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    document.getElementById('preview').innerHTML = `<img src="${photoBase64}" class="w-full h-full object-cover">`;
+                };
+                img.src = event.target.result;
             };
-            reader.readAsDataURL(e.target.files[0]);
+            reader.readAsDataURL(file);
         });
 
         // 4. 同意チェック
@@ -193,7 +209,7 @@
                     company: formData.get('company') || "",
                     exemption: formData.get('exemption') || "なし",
                     licenseNumber: formData.get('licenseNumber') || "",
-                    userPhoto: photoBase64,
+                    userPhoto: photoBase64, // 圧縮されたデータ
                     createdAt: serverTimestamp()
                 });
                 alert("お申し込みありがとうございます！送信が完了しました。");
@@ -201,6 +217,7 @@
             } catch (err) {
                 alert("送信エラー: " + err.message);
                 btn.disabled = false;
+                btn.innerText = "申し込みを送信する";
             }
         });
     </script>
