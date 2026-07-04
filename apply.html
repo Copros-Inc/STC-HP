@@ -150,10 +150,18 @@
     </main>
 
     <script>
-        // URLからパラメータを取得してフォームに表示
-        const params = new URLSearchParams(window.location.search);
-        document.getElementById('courseName').value = params.get('course') || '講習名が取得できませんでした';
-        document.getElementById('courseDate').value = params.get('date') || '日程が取得できませんでした';
+        // URLからパラメータを確実に取得する
+const params = new URLSearchParams(window.location.search);
+// デコード処理を入れて確実に取得
+const courseFromUrl = params.get('course');
+const dateFromUrl = params.get('date');
+
+if (courseFromUrl) {
+    document.getElementById('courseName').value = decodeURIComponent(courseFromUrl);
+}
+if (dateFromUrl) {
+    document.getElementById('courseDate').value = decodeURIComponent(dateFromUrl);
+}
 
         // 同意チェックの監視
         const checks = document.querySelectorAll('.consent-check');
@@ -256,7 +264,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // フォーム送信処理
+                // フォーム送信処理
         document.getElementById('applyForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
@@ -265,31 +273,35 @@
 
             try {
                 const formData = new FormData(e.target);
+                // 写真が選択されていない場合のガード
+                const finalPhoto = typeof photoBase64 !== 'undefined' ? photoBase64 : "";
+
                 const data = {
-                    courseName: formData.get('courseName'),
-                    courseDate: formData.get('courseDate'),
+                    courseName: document.getElementById('courseName').value, // ここを確実にする
+                    courseDate: document.getElementById('courseDate').value, // ここを確実にする
                     userName: formData.get('userName'),
                     userKana: formData.get('userKana'),
                     birthDate: formData.get('birthDate'),
                     phone: formData.get('phone'),
                     email: formData.get('email'),
                     address: formData.get('address'),
-                    company: formData.get('company'),
+                    company: formData.get('company') || "",
                     exemption: formData.get('exemption') || "なし",
                     licenseNumber: formData.get('licenseNumber') || "",
-                    userPhoto: photoBase64, // Base64形式の写真データ
+                    userPhoto: finalPhoto,
                     createdAt: serverTimestamp(),
                     status: 'new'
                 };
 
+                // コレクション名 "reservations" に保存
                 await addDoc(collection(db, "reservations"), data);
                 
                 alert("お申し込みありがとうございます！送信が完了しました。");
-                window.location.href = "index.html"; // 完了後トップへ戻る
+                window.location.href = "index.html"; 
 
             } catch (error) {
-                console.error("Error adding document: ", error);
-                alert("送信に失敗しました。ネット環境を確認してください。");
+                console.error("Firestore Error:", error);
+                alert("送信に失敗しました: " + error.message);
                 btn.disabled = false;
                 btn.innerText = "申し込みを送信する";
             }
