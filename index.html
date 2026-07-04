@@ -368,9 +368,10 @@
         } else {
             monthSchedules.forEach(item => {
                 const badgeClass = item.status === 'full' ? 'status-full' : 'status-ok';
-                const actionBtn = item.status === 'full' 
-                    ? `<button onclick="openModal('waitlist')" class="text-red-600 font-black italic underline">キャンセル待ち</button>`
-                    : `<a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}" class="text-sky-600 underline font-black italic">お申し込み</a>`;
+                // 【修正後】 item.name ではなく item.courseName (Firestoreの生の名前) を送るように変更
+const actionBtn = item.status === 'full' 
+    ? `<button onclick="openModal('waitlist')" class="text-red-600 font-black italic underline">キャンセル待ち</button>`
+    : `<a href="apply.html?course=${encodeURIComponent(item.name || item.courseName)}&date=${encodeURIComponent(item.date)}" class="text-sky-600 underline font-black italic">お申し込み</a>`;
                 
                 html += `<tr class="border-b border-slate-50 hover:bg-slate-50 transition"><td class="p-6 text-slate-900">${item.name}</td><td class="p-6 text-sm text-slate-500">${item.date}</td><td class="p-6 text-center"><span class="status-badge ${badgeClass}">${item.statusText}</span></td><td class="p-6 text-xs uppercase">${actionBtn}</td></tr>`;
             });
@@ -407,6 +408,7 @@
         courseEntries.forEach(([courseName, items]) => {
             html += `<div class="grid gap-0" style="grid-template-columns: 150px repeat(31, 1fr);">`;
             html += `<div class="font-bold text-[10px] text-white italic p-2 bg-slate-900 sticky left-0 z-10 truncate border-r border-white/10 flex items-center">${courseName}</div>`;
+           
             const colorClass = getCourseColor(courseName);
             for (let day = 1; day <= 31; day++) {
                 const isScheduled = items.some(item => day >= item.dayStart && day <= item.dayEnd);
