@@ -326,30 +326,32 @@
         appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f"
     };
 
-    const app = initializeApp(firebaseConfig);
+       const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
+
+    const now = new Date();
     let schedules = []; 
-    let currentMonth = 7;
+    let currentMonth = now.getMonth() + 1; // 今月を表示
+    let currentYear = now.getFullYear();   // 今年を表示
 
     signInAnonymously(auth).then(() => { loadSchedules(); });
 
-        function loadSchedules() {
+    function loadSchedules() {
         onSnapshot(collection(db, "schedules"), (snapshot) => {
             schedules = snapshot.docs.map(doc => {
                 const data = doc.data();
                 return {
-                    // Firestoreの「courseName」を、プログラムで使う「name」に正しく割り当てる
-                    name: data.courseName || "名称未設定", 
+                    name: data.courseName || "名称未設定",
                     date: data.date || "",
                     status: data.status,
                     statusText: data.status === 'full' ? '満員御礼' : '空席あり',
                     month: parseInt(data.month),
-                    dayStart: parseInt(data.dayStart),
+                    // 開始日をカンマで区切って配列にする（飛び石対応）
+                    days: String(data.dayStart).split(',').map(Number),
                     dayEnd: parseInt(data.dayEnd)
                 };
             });
-            console.log("✅ 同期データ:", schedules);
             renderCalendar(currentMonth);
             renderGantt(currentMonth);
         });
@@ -358,7 +360,7 @@
     window.renderCalendar = function(month) {
         const container = document.getElementById('calendar-container');
         const monthDisplay = document.getElementById('current-month-display');
-        if(monthDisplay) monthDisplay.innerText = month + '月';
+        if(monthDisplay) monthDisplay.innerText = `${currentYear}年${month}月`;
         
         let html = `<table class="w-full text-left border-collapse"><thead><tr class="bg-slate-100 italic font-black text-[10px] tracking-[0.2em] border-b border-slate-200 uppercase"><th class="p-6">Course</th><th class="p-6">Date</th><th class="p-6 text-center">Status</th><th class="p-6">Action</th></tr></thead><tbody class="font-bold italic">`;
         const monthSchedules = schedules.filter(s => s.month === month);
@@ -368,13 +370,12 @@
         } else {
             monthSchedules.forEach(item => {
                 const badgeClass = item.status === 'full' ? 'status-full' : 'status-ok';
-                // 【修正後】 item.name ではなく item.courseName (Firestoreの生の名前) を送るように変更
-　　　　　　　　                const actionBtn = item.status === 'full' 
+                const actionBtn = item.status === 'full' 
                     ? `<button onclick="openModal('waitlist')" class="text-red-600 font-black italic underline text-[10px]">キャンセル待ち</button>`
                     : `<div class="flex flex-col gap-2 py-2">
-                        <a href="apply.html?course=${encodeURIComponent(item.name || item.courseName)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-sky-600 text-white px-3 py-1.5 rounded-full text-[9px] text-center font-black italic hover:bg-slate-900 transition shadow-sm uppercase tracking-tighter">WEBで本申込</a>
-                        <a href="apply.html?course=${encodeURIComponent(item.name || item.courseName)}&date=${encodeURIComponent(item.date)}&mode=simple" class="border border-sky-400 text-sky-500 px-3 py-1.5 rounded-full text-[9px] text-center font-black italic hover:bg-sky-50 transition uppercase tracking-tighter">予約のみ(紙提出)</a>
-                       </div>`;        
+                        <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-sky-600 text-white px-4 py-1.5 rounded-full text-[9px] text-center font-black italic hover:bg-slate-900 transition shadow-sm uppercase tracking-tighter">WEBで本申込</a>
+                        <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="border border-sky-400 text-sky-500 px-4 py-1.5 rounded-full text-[9px] text-center font-black italic hover:bg-sky-50 transition uppercase tracking-tighter">予約のみ(紙提出)</a>
+                       </div>`;
                 html += `<tr class="border-b border-slate-50 hover:bg-slate-50 transition"><td class="p-6 text-slate-900">${item.name}</td><td class="p-6 text-sm text-slate-500">${item.date}</td><td class="p-6 text-center"><span class="status-badge ${badgeClass}">${item.statusText}</span></td><td class="p-6 text-xs uppercase">${actionBtn}</td></tr>`;
             });
         }
@@ -385,7 +386,10 @@
     window.renderGantt = function(month) {
         const ganttData = document.getElementById('gantt-data');
         if (!ganttData) return;
-        let html = '';
+        let html = '<div class="grid gap-0 mb-2" style="grid-template-columns: 150px repeat(31, 1fr);"><div class="font-black text-xs text-white/40 italic p-2 bg-slate-900 sticky left-0 z-10">講習</div>';
+        for(let i=1; i<=31; i++) { html += `<div class="text-[9px] text-white/40 text-center italic font-bold p-1">${i}</div>`; }
+        html += '</div>';
+
         const coursesByName = {};
         const monthSchedules = schedules.filter(s => s.month === month);
         monthSchedules.forEach(item => {
@@ -401,27 +405,30 @@
             return "bg-green-500";
         };
 
-        const courseEntries = Object.entries(coursesByName);
-        if (courseEntries.length === 0) {
-            ganttData.innerHTML = '<div class="text-center text-white/40 italic py-8">スケジュール情報がありません</div>';
-            return;
-        }
-
-        courseEntries.forEach(([courseName, items]) => {
+        Object.entries(coursesByName).forEach(([courseName, items]) => {
             html += `<div class="grid gap-0" style="grid-template-columns: 150px repeat(31, 1fr);">`;
             html += `<div class="font-bold text-[10px] text-white italic p-2 bg-slate-900 sticky left-0 z-10 truncate border-r border-white/10 flex items-center">${courseName}</div>`;
-           
             const colorClass = getCourseColor(courseName);
             for (let day = 1; day <= 31; day++) {
-                const isScheduled = items.some(item => day >= item.dayStart && day <= item.dayEnd);
+                const isScheduled = items.some(item => {
+                    if (item.days.includes(day)) return true;
+                    return (item.days.length === 1 && day >= item.days[0] && day <= item.dayEnd);
+                });
                 const cellClass = isScheduled ? `${colorClass} shadow-[0_0_10px_rgba(255,255,255,0.1)]` : 'bg-slate-700/30';
-                html += `<div class="h-8 border border-white/5 flex items-center justify-center text-[8px] font-bold italic ${cellClass} transition-colors duration-300 text-white">${isScheduled ? '●' : ''}</div>`;
+                html += `<div class="h-8 border border-white/5 flex items-center justify-center text-[8px] font-bold italic ${cellClass} text-white">${isScheduled ? '●' : ''}</div>`;
             }
             html += `</div>`;
         });
         ganttData.innerHTML = html;
     }
 
+    window.changeMonth = function(diff) {
+        currentMonth += diff;
+        if (currentMonth > 12) { currentMonth = 1; currentYear++; }
+        if (currentMonth < 1) { currentMonth = 12; currentYear--; }
+        renderCalendar(currentMonth);
+        renderGantt(currentMonth);
+    }
     window.changeMonth = function(diff) {
         currentMonth += diff;
         if (currentMonth < 1) currentMonth = 1;
