@@ -207,14 +207,7 @@
             <div id="gantt-container" class="reveal bg-slate-800/50 rounded-3xl p-8 overflow-x-auto border border-white/10 shadow-2xl">
                 <div class="min-w-[800px]">
                     <h3 class="text-white font-black italic text-lg mb-4">月間カレンダー</h3>
-                    <div class="grid gap-0 mb-2" style="grid-template-columns: 150px repeat(31, 1fr);">
-                        <div class="font-black text-xs text-white/40 italic p-2 bg-slate-900 sticky left-0 z-10">講習</div>
-                        <script>
-                            for(let i=1; i<=31; i++) {
-                                document.write(`<div class="text-[9px] text-white/40 text-center italic font-bold p-1">${i}</div>`);
-                            }
-                        </script>
-                    </div>
+                   
                     <div id="gantt-data" class="space-y-1">
                         <div class="text-center text-white/40 italic py-8">データ読み込み中...</div>
                     </div>
@@ -326,7 +319,7 @@
         appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f"
     };
 
-        const app = initializeApp(firebaseConfig);
+    const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
 
@@ -335,6 +328,7 @@
     let currentMonth = now.getMonth() + 1;
     let currentYear = now.getFullYear();
 
+    // 2026年4月〜2027年3月の範囲に強制補正
     if (currentYear === 2026 && currentMonth < 4) currentMonth = 4;
     if (currentYear === 2027 && currentMonth > 3) { currentYear = 2027; currentMonth = 3; }
 
@@ -344,7 +338,9 @@
         onSnapshot(collection(db, "schedules"), (snapshot) => {
             schedules = snapshot.docs.map(doc => {
                 const data = doc.data();
-                const dayArray = data.dayStart ? String(data.dayStart).split(',').map(n => parseInt(n.trim())) : [];
+                // カンマ区切りの数字を「個別の日のリスト」として取り込む
+                const dayStartStr = String(data.dayStart || "");
+                const dayArray = dayStartStr.includes(',') ? dayStartStr.split(',').map(n => parseInt(n.trim())) : [parseInt(dayStartStr)];
                 return {
                     name: data.courseName || "名称未設定",
                     date: data.date || "",
@@ -387,26 +383,36 @@
     window.renderGantt = function(month) {
         const ganttData = document.getElementById('gantt-data');
         if (!ganttData) return;
-        let html = '<div class="grid gap-0 mb-2" style="grid-template-columns: 150px repeat(31, 1fr);"><div class="font-black text-xs text-white/40 italic p-2 bg-slate-900 sticky left-0 z-10">講習</div>';
+        
+        // ヘッダーをここで一度だけ生成
+        let html = '<div class="grid gap-0 mb-2 border-b border-white/5" style="grid-template-columns: 150px repeat(31, 1fr);"><div class="font-black text-[10px] text-white/40 italic p-2 bg-slate-900 sticky left-0 z-10">講習名</div>';
         for(let i=1; i<=31; i++) { html += `<div class="text-[9px] text-white/40 text-center italic font-bold p-1">${i}</div>`; }
         html += '</div>';
-        const coursesByName = {};
+
         const monthSchedules = schedules.filter(s => s.month === month);
+        const coursesByName = {};
         monthSchedules.forEach(item => {
             if (!coursesByName[item.name]) { coursesByName[item.name] = []; }
             coursesByName[item.name].push(item);
         });
+
         const getCourseColor = (name) => {
             if (name.includes("玉掛け")) return "bg-sky-400";
             if (name.includes("小型移動式クレーン")) return "bg-pink-400";
             if (name.includes("フォークリフト")) return "bg-lime-500";
             return "bg-yellow-400";
         };
+
         Object.entries(coursesByName).forEach(([courseName, items]) => {
             html += `<div class="grid gap-0" style="grid-template-columns: 150px repeat(31, 1fr);"><div class="font-bold text-[10px] text-white italic p-2 bg-slate-900 sticky left-0 z-10 truncate border-r border-white/10 flex items-center">${courseName}</div>`;
             const colorClass = getCourseColor(courseName);
             for (let day = 1; day <= 31; day++) {
-                const isScheduled = items.some(item => item.days.includes(day) || (item.days.length === 1 && day >= item.days[0] && day <= item.dayEnd));
+                const isScheduled = items.some(item => {
+                    // もし「26,30」のようなリスト形式なら、その日だけ塗る
+                    if (item.days.length > 1) return item.days.includes(day);
+                    // 1つだけなら、開始〜終了の「範囲」を塗る
+                    return (day >= item.days[0] && day <= item.dayEnd);
+                });
                 const cellClass = isScheduled ? `${colorClass} shadow-[0_0_10px_rgba(255,255,255,0.1)]` : 'bg-slate-700/30';
                 html += `<div class="h-8 border border-white/5 flex items-center justify-center text-[8px] font-bold italic ${cellClass} text-white">${isScheduled ? '●' : ''}</div>`;
             }
@@ -420,12 +426,16 @@
         let newYear = currentYear;
         if (newMonth > 12) { newMonth = 1; newYear++; }
         if (newMonth < 1) { newMonth = 12; newYear--; }
+        
+        // 2026年度（2026/4〜2027/3）の範囲外への移動を禁止
         if (newYear < 2026 || (newYear === 2026 && newMonth < 4)) return;
         if (newYear > 2027 || (newYear === 2027 && newMonth > 3)) return;
-        currentMonth = newMonth; currentYear = newYear;
-        renderCalendar(currentMonth); renderGantt(currentMonth);
-    }
 
+        currentMonth = newMonth;
+        currentYear = newYear;
+        renderCalendar(currentMonth);
+        renderGantt(currentMonth);
+    }
     window.openModal = function(type) {
         if(type === 'apply') { window.location.href = "#schedule-section"; return; }
         const overlay = document.getElementById('modal-overlay');
