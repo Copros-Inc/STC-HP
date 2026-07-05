@@ -320,7 +320,7 @@
                     licChecked: lics, photos: photos
                 });
                 if (mode === 'simple') {
-                    const pdfMap = { "玉掛け技能講習": "pdf/tamakake.pdf", "小型移動式クレーン": "pdf/crane.pdf", "フォークリフト (31H)": "pdf/fork.pdf", "フォークリフト (11H)": "pdf/fork.pdf", "テールゲート": "pdf/tail.pdf" };
+                    const pdfMap = { "玉掛け技能講習": "pdf/tamakake.pdf", "小型移動式クレーン": "pdf/crane.pdf", "フォークリフト (31H)": "pdf/fork31.pdf", "フォークリフト (11H)": "pdf/fork11.pdf", "テールゲート": "pdf/tail.pdf" };
                     alert("予約を受け付けました！\n\n受講2週間前までに、申込書を印刷・記入して当センターまでお持ちください。"); window.location.href = pdfMap[document.getElementById('courseName').value] || "pdf/common.pdf";
                 } else {
                     alert("お申し込みありがとうございます！\n送信が完了いたしました。"); window.location.href = "index.html";
