@@ -17,45 +17,44 @@
         .photo-box { border: 2px dashed #cbd5e1; border-radius: 1rem; overflow: hidden; transition: all 0.3s; background: #f8fafc; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; min-height: 120px; }
         .photo-box:hover { border-color: #0ea5e9; background: #f0f9ff; }
         .input-field { width: 100%; padding: 0.85rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; font-weight: bold; background: #f8fafc; outline: none; }
-        .input-field:focus { border-color: #0ea5e9; background: white; }
-        .input-label { display: block; text-[10px] font-black text-slate-400 mb-1 uppercase tracking-widest; }
+        .input-label { display: block; text-[11px] font-black text-slate-400 mb-1 uppercase tracking-widest; }
     </style>
 </head>
 <body class="pb-20">
     <nav class="bg-slate-900 text-white py-6 px-8 mb-12">
         <div class="max-w-5xl mx-auto flex justify-between items-center">
-            <div class="font-black italic text-xl tracking-tighter text-sky-400 uppercase">STC Application</div>
-            <a href="index.html" class="text-xs font-bold hover:text-sky-400 transition italic uppercase">← Back to Home</a>
+            <div class="font-black italic text-xl tracking-tighter">STC <span class="text-sky-400 uppercase">Application</span></div>
+            <a href="index.html" class="text-xs font-bold hover:text-sky-400 transition italic">← ホームへ戻る / Home</a>
         </div>
     </nav>
 
     <main class="max-w-4xl mx-auto px-6">
         <div class="text-center mb-12">
-            <h1 class="text-4xl font-black italic tracking-tighter text-slate-900 mb-2 uppercase">受講お申し込み</h1>
-            <p id="mode-badge" class="text-white bg-slate-900 px-4 py-1 rounded-full text-[10px] font-black inline-block uppercase tracking-widest italic">Full Application Mode</p>
+            <h1 class="text-3xl md:text-4xl font-black italic tracking-tighter text-slate-900 mb-2">受講お申し込み</h1>
+            <p id="mode-badge" class="text-white bg-slate-900 px-4 py-1 rounded-full text-[10px] font-black inline-block tracking-widest italic uppercase">Full Web Application</p>
         </div>
 
         <form id="applyForm" class="space-y-10">
             <!-- 01. 講習・受講料確認 -->
             <section class="form-card p-8 md:p-12">
-                <h2 class="section-title text-xl mb-8 italic uppercase text-slate-900">01. Selected Course / 講習確認</h2>
+                <h2 class="section-title text-xl mb-8 italic text-slate-900">01. 講習の確認 / Selected Course</h2>
                 <div class="grid md:grid-cols-2 gap-8">
-                    <div><label class="input-label">Course Name</label><input type="text" id="courseName" name="courseName" readonly class="w-full bg-transparent border-none font-black text-sky-600 text-lg outline-none"></div>
-                    <div><label class="input-label">Schedule</label><input type="text" id="courseDate" name="courseDate" readonly class="w-full bg-transparent border-none font-black text-slate-700 text-lg outline-none"></div>
+                    <div><label class="input-label">講習名 / Course Name</label><input type="text" id="courseName" name="courseName" readonly class="w-full bg-transparent border-none font-black text-sky-600 text-lg outline-none"></div>
+                    <div><label class="input-label">日程 / Schedule</label><input type="text" id="courseDate" name="courseDate" readonly class="w-full bg-transparent border-none font-black text-slate-700 text-lg outline-none"></div>
                 </div>
                 <div class="mt-8 p-6 bg-sky-50 rounded-2xl border border-sky-100 flex justify-between items-center">
-                    <div><p class="input-label text-sky-600">Tuition Fee</p><p class="text-2xl font-black italic text-slate-900" id="displayFee">--</p></div>
+                    <div><p class="input-label text-sky-600">受講料 / Tuition Fee</p><p class="text-2xl font-black italic text-slate-900" id="displayFee">--</p></div>
                     <div class="text-right text-[10px] font-bold text-slate-500 italic leading-relaxed">※テキスト代・税込<br>※受講開始の1週間前までにご入金ください</div>
                 </div>
-                <div id="subsidy-section" class="mt-8 pt-8 border-t border-slate-100 hidden">
-                    <label class="block text-xs font-black text-slate-700 mb-4">人材開発支援助成金を利用しますか？</label>
+                <div id="subsidy-section" class="mt-8 pt-8 border-t border-slate-100 hidden text-left">
+                    <label class="block text-xs font-black text-slate-700 mb-4 font-bold">人材開発支援助成金を利用しますか？</label>
                     <div class="flex gap-6"><label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="subsidy" value="利用する"> <span class="text-sm font-bold">利用する</span></label><label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="subsidy" value="利用しない" checked> <span class="text-sm font-bold">利用しない</span></label></div>
                 </div>
             </section>
 
             <!-- 02. 受講者・勤務先情報 -->
             <section class="form-card p-8 md:p-12">
-                <h2 class="section-title text-xl mb-8 italic uppercase">02. Personal Info / 受講者情報</h2>
+                <h2 class="section-title text-xl mb-8 italic">02. 受講者情報 / Personal Info</h2>
                 <div class="space-y-6 text-left">
                     <div class="grid md:grid-cols-2 gap-6">
                         <div><label class="input-label">氏名（漢字） *</label><input type="text" name="userName" required class="input-field" placeholder="下関 太郎"></div>
@@ -73,7 +72,7 @@
                     <div><label class="input-label">メールアドレス *</label><input type="email" name="email" required class="input-field" placeholder="example@mail.com"></div>
                     
                     <div class="mt-10 pt-10 border-t border-slate-100 space-y-6">
-                        <h3 class="font-black text-slate-900 italic uppercase">Employment / 勤務先情報</h3>
+                        <h3 class="font-black text-slate-900 italic">勤務先情報 / Employment</h3>
                         <div class="grid md:grid-cols-2 gap-6">
                             <input type="text" name="company" class="input-field" placeholder="会社名">
                             <input type="text" name="compPhone" class="input-field" placeholder="会社電話番号">
@@ -84,56 +83,48 @@
                 </div>
             </section>
 
-            <!-- 03. 写真添付（本人の顔写真） -->
+            <!-- 03. 写真（WEB申込のみ表示） -->
             <section id="section-photo" class="form-card p-8 md:p-12">
-                <h2 class="section-title text-xl mb-8 italic uppercase text-left">03. Profile Photo / 証明写真</h2>
-                <div class="flex flex-col md:flex-row items-center gap-8">
+                <h2 class="section-title text-xl mb-8 italic text-left">03. 証明写真 / Profile Photo</h2>
+                <div class="flex flex-col md:flex-row items-center gap-8 text-left">
                     <div id="pre_user" class="w-32 h-40 bg-slate-50 flex items-center justify-center rounded-xl overflow-hidden border-2 border-dashed border-slate-200 shadow-inner"><i class="fas fa-camera text-slate-300 text-3xl"></i></div>
-                    <div class="flex-1 text-center md:text-left space-y-4">
-                        <p class="text-[10px] font-bold text-slate-500 italic">修了証用。無帽・無背景・正面のもの。</p>
+                    <div class="flex-1 space-y-4">
+                        <p class="text-[10px] font-bold text-slate-500 italic">※修了証に使用します。無帽・無背景・正面のもの。</p>
                         <input type="file" id="in_user" accept="image/*" class="hidden" onchange="window.processImg(this, 'user')">
-                        <button type="button" onclick="document.getElementById('in_user').click()" class="bg-slate-900 text-white px-8 py-3 rounded-full text-xs font-black italic uppercase hover:bg-sky-600 transition">Select User Photo</button>
+                        <button type="button" onclick="document.getElementById('in_user').click()" class="bg-slate-900 text-white px-8 py-3 rounded-full text-xs font-black italic hover:bg-sky-600 transition">写真を撮影・選択する</button>
                     </div>
                 </div>
             </section>
 
-            <!-- 動的分岐（Qualification / 免除条件） -->
+            <!-- 講習別分岐セクション -->
             <div id="dynamic-section"></div>
 
-            <!-- 04. 支払・領収書 -->
-            <section class="form-card p-8 md:p-12">
-                <h2 class="section-title text-xl mb-8 italic uppercase text-left">04. Payment & Receipt / 支払・領収書</h2>
-                <div class="space-y-8 text-left">
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
-                        <p class="input-label">Payment Method</p>
-                        <p class="text-sm font-bold text-slate-900 italic">銀行振込（振込手数料はご負担ください）</p>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-black text-slate-700 mb-4">領収書の発行は必要ですか？</label>
-                        <div class="flex flex-wrap items-center gap-6">
-                            <label class="flex items-center gap-2 whitespace-nowrap"><input type="radio" name="receipt" value="不要" checked> <span class="text-sm font-bold">不要</span></label>
-                            <div class="flex items-center gap-3 min-w-0 flex-1">
-                                <label class="flex items-center gap-2 whitespace-nowrap"><input type="radio" name="receipt" value="必要"> <span class="text-sm font-bold">必要</span></label>
-                                <input type="text" name="receiptName" class="input-field py-2 text-xs flex-1 min-w-[150px]" placeholder="宛名（会社名など）">
-                            </div>
-                        </div>
+            <!-- 04. 支払・領収書 (WEB申込のみ表示) -->
+            <section id="section-payment" class="form-card p-8 md:p-12">
+                <h2 class="section-title text-xl mb-8 italic text-left">04. 領収書について / Receipt</h2>
+                <div class="space-y-6 text-left">
+                    <p class="text-sm font-bold">支払方法：銀行振込（山口銀行 長府支店 当座 125391）</p>
+                    <div class="flex flex-wrap items-center gap-6">
+                        <label class="flex items-center gap-2 whitespace-nowrap"><input type="radio" name="receipt" value="不要" checked> <span class="text-sm font-bold">領収書不要</span></label>
+                        <div class="flex items-center gap-2 flex-1"><label class="flex items-center gap-2 whitespace-nowrap"><input type="radio" name="receipt" value="必要"> <span class="text-sm font-bold">領収書必要</span></label><input type="text" name="receiptName" class="input-field py-1 text-xs" placeholder="宛名（会社名など）"></div>
                     </div>
                 </div>
             </section>
 
             <!-- 05. 同意事項 -->
             <section class="form-card p-8 md:p-12 bg-slate-900 text-white border-none shadow-2xl">
-                <h2 class="text-sky-400 font-black italic text-xl mb-8 uppercase tracking-tighter text-left">05. Confirmation / 同意事項</h2>
-                <div class="space-y-4 text-left">
-                    <label class="flex gap-4 cursor-pointer p-3 rounded-xl hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[11px] font-bold leading-relaxed text-slate-300">本申込書に虚偽の記載が無いことを確約します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-3 rounded-xl hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[11px] font-bold leading-relaxed text-slate-300">自らが反社会的勢力に属さず、受講期間中も属さないことを確約します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-3 rounded-xl hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[11px] font-bold leading-relaxed text-slate-300">講師の注意に従い、一切の講習妨害行為をしないことを確約します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-3 rounded-xl hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[11px] font-bold leading-relaxed text-slate-300">事項に反することが判明した場合、講習を中止し退場することに同意します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-3 rounded-xl hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[11px] font-bold leading-relaxed text-slate-300">これにより損害が生じても、講習所は一切賠償しないことに同意します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-3 rounded-xl hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[11px] font-bold leading-relaxed text-slate-300">予期せぬ事態で講習が開催できなかった場合、教習所は一切賠償しないことに同意します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-3 rounded-xl hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[11px] font-bold leading-relaxed text-sky-300 underline italic">遅刻・早退・欠席は失格となり、受講料の返金はできないことを承知しました。</span></label>
+                <h2 class="text-sky-400 font-black italic text-xl mb-8 uppercase text-left">05. 同意事項 / Confirmation</h2>
+                <p class="text-[10px] text-slate-400 font-bold mb-6 italic">受講申込者は、本申込書を送信することで、下記に同意したものとします。</p>
+                <div class="space-y-4 text-left" id="consent-list">
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">本申込書に虚偽の記載が無いことを確約します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">自らが反社会的勢力に属さず、密接な関係をもたず、受講期間中も属さないことを確約します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">当講習所内では講師の注意に従い、一切の講習妨害行為をしないことを確約します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">講習中、上記事項に反することが判明した場合、講習を中止し退場することに同意します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">これにより損害が生じても、講習所は一切賠償しないことに同意します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">予期せぬ事態で講習が開催できなかった場合、教習所は一切賠償しないことに同意します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-sky-300 underline">遅刻・早退・欠席は失格となり、受講料の返金はできないことを承知しました。</span></label>
                 </div>
-                <button type="submit" id="submitBtn" disabled class="cta-button w-full mt-10 bg-gradient-to-r from-sky-400 to-sky-600 text-white py-6 rounded-2xl font-black text-lg italic uppercase shadow-xl hover:scale-[1.01] transition-transform">Send Application / 申し込みを送信する</button>
+                <button type="submit" id="submitBtn" disabled class="cta-button w-full mt-10 bg-gradient-to-r from-sky-400 to-sky-600 text-white py-6 rounded-2xl font-black text-lg italic uppercase shadow-xl hover:scale-[1.01] transition-transform">申し込みを送信する / Send Application</button>
             </section>
         </form>
     </main>
@@ -157,9 +148,10 @@
             document.getElementById('courseDate').value = date;
             
             if (mode === 'simple') {
-                document.getElementById('mode-badge').innerText = "Simple Reservation Mode";
+                document.getElementById('mode-badge').innerText = "簡易予約モード（書類は後日提出）";
                 document.getElementById('section-photo').style.display = 'none';
-                document.getElementById('submitBtn').innerText = "予約を確定する（当日紙を持参）";
+                document.getElementById('section-payment').style.display = 'none';
+                document.getElementById('submitBtn').innerText = "予約を確定する（受講2週間前までに書類持参）";
                 updateCourseUI(course, true);
             } else {
                 updateCourseUI(course, false);
@@ -186,42 +178,46 @@
                 if (course.includes("小型移動式クレーン")) {
                     html = `
                     <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-8">
-                        <h2 class="section-title text-xl italic text-sky-600 uppercase">Qualification / 免除条件</h2>
+                        <h2 class="section-title text-xl italic text-sky-600">免除条件の確認 / Qualification</h2>
                         <div class="space-y-4">
                             <label class="flex gap-4 p-4 border rounded-xl cursor-pointer"><input type="radio" name="exType" value="玉掛" onchange="window.toggleEx('cr_a')"> <span class="text-sm font-bold">玉掛け技能講習 or 床上操作式クレーン修了証所持</span></label>
                             <label class="flex gap-4 p-4 border rounded-xl cursor-pointer"><input type="radio" name="exType" value="免許" onchange="window.toggleEx('cr_b')"> <span class="text-sm font-bold">クレーン・デリック or 揚貨装置運転士免許所持</span></label>
                         </div>
-                        <div id="cr_a_fields" class="hidden space-y-4 p-6 bg-slate-50 rounded-xl">
+                        <div id="cr_a_fields" class="hidden space-y-6 p-6 bg-slate-50 rounded-2xl border">
                             <div class="grid md:grid-cols-2 gap-4">
                                 <div><label class="input-label">修了日</label><input type="date" name="exDate" class="input-field bg-white"></div>
                                 <div><label class="input-label">修了証番号</label><input type="text" name="exNo" class="input-field bg-white" placeholder="第12345号"></div>
                             </div>
                             <input type="text" name="exOrg" class="input-field bg-white" placeholder="交付機関名（例：山口労働局）">
-                            <div class="flex gap-6"><label><input type="radio" name="exDetail" value="玉掛け"> 玉掛け</label><label><input type="radio" name="exDetail" value="床上操作"> 床上操作式</label></div>
+                            <div class="flex gap-6"><label class="flex gap-2 items-center"><input type="radio" name="exDetail" value="玉掛け"> 玉掛け</label><label class="flex gap-2 items-center"><input type="radio" name="exDetail" value="床上操作"> 床上操作式</label></div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div onclick="window.triggerFile('licA')" class="photo-box" id="pre_licA"><span>修了証【表面】</span></div>
+                                <div onclick="window.triggerFile('licB')" class="photo-box" id="pre_licB"><span>修了証【裏面】</span></div>
+                            </div>
                         </div>
-                        <div id="cr_b_fields" class="hidden space-y-4 p-6 bg-slate-50 rounded-xl">
+                        <div id="cr_b_fields" class="hidden space-y-6 p-6 bg-slate-50 rounded-2xl border">
                             <div class="grid md:grid-cols-2 gap-4">
                                 <div><label class="input-label">取得日</label><input type="date" name="exDateB" class="input-field bg-white"></div>
                                 <div><label class="input-label">免許証番号</label><input type="text" name="exNoB" class="input-field bg-white" placeholder="第12345号"></div>
                             </div>
                             <input type="text" name="exOrgB" class="input-field bg-white" placeholder="交付局名">
-                            <div class="flex gap-6"><label><input type="radio" name="exDetailB" value="クレーン"> クレーン</label><label><input type="radio" name="exDetailB" value="デリック"> デリック</label><label><input type="radio" name="exDetailB" value="揚貨装置"> 揚貨装置</label></div>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div onclick="window.triggerFile('licA')" class="photo-box" id="pre_licA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">証本【表】</span></div>
-                            <div onclick="window.triggerFile('licB')" class="photo-box" id="pre_licB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">証本【裏】</span></div>
+                            <div class="flex gap-6"><label class="flex gap-2 items-center"><input type="radio" name="exDetailB" value="クレーン"> クレーン</label><label class="flex gap-2 items-center"><input type="radio" name="exDetailB" value="デリック"> デリック</label><label class="flex gap-2 items-center"><input type="radio" name="exDetailB" value="揚貨装置"> 揚貨装置</label></div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div onclick="window.triggerFile('licA')" class="photo-box" id="pre_licA"><span>免許証【表面】</span></div>
+                                <div onclick="window.triggerFile('licB')" class="photo-box" id="pre_licB"><span>免許証【裏面】</span></div>
+                            </div>
                         </div>
                     </section>`;
                 } else if (course.includes("31H")) {
                     html = `
                     <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-6">
-                        <h2 class="section-title text-xl italic text-sky-600 uppercase">Driver License / 運転免許</h2>
+                        <h2 class="section-title text-xl italic text-sky-600">運転免許の確認 / Driver License</h2>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-xl">
-                            <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="普通"> 普通</label>
-                            <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="準中型"> 準中型</label>
-                            <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="中型"> 中型</label>
+                            <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="大型特殊(キャタピラ)"> 大特(キャタ)</label>
                             <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="大型"> 大型</label>
-                            <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="大特キャタピラ"> 大特(キャタ)</label>
+                            <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="中型"> 中型</label>
+                            <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="準中型"> 準中型</label>
+                            <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="普通"> 普通</label>
                         </div>
                         <div class="grid md:grid-cols-2 gap-4">
                             <div><label class="input-label">交付日</label><input type="date" name="licDate" class="input-field"></div>
@@ -229,47 +225,46 @@
                         </div>
                         <input type="text" name="licNo" class="input-field" placeholder="免許証番号 第123456789012号">
                         <div class="grid grid-cols-2 gap-4">
-                            <div onclick="window.triggerFile('licA')" class="photo-box" id="pre_licA"><span>免許証【表】</span></div>
-                            <div onclick="window.triggerFile('licB')" class="photo-box" id="pre_licB"><span>免許証【裏】</span></div>
+                            <div onclick="window.triggerFile('licA')" class="photo-box" id="pre_licA"><span>免許証【表面】</span></div>
+                            <div onclick="window.triggerFile('licB')" class="photo-box" id="pre_licB"><span>免許証【裏面】</span></div>
                         </div>
                     </section>`;
                 } else if (course.includes("11H")) {
                     html = `
                     <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-8">
-                        <h2 class="section-title text-xl italic text-sky-600 uppercase">Qualification / A or B コース</h2>
+                        <h2 class="section-title text-xl italic text-sky-600">免除条件の選択 / Course Type</h2>
                         <div class="space-y-4">
-                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="f11" value="A" onchange="window.toggleEx('f_a')"> <span class="text-sm font-bold">A：大型特殊免許(限定なし)を保有</span></label>
-                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="f11" value="B" onchange="window.toggleEx('f_b')"> <span class="text-sm font-bold text-rose-600 underline">B：免許あり＋特教＋実務3ヶ月以上</span></label>
+                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer"><input type="radio" name="f11" value="A" onchange="window.toggleEx('f_a')"> <div><span class="text-sm font-bold">A：大型特殊免許(限定なし)を保有している</span></div></label>
+                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer"><input type="radio" name="f11" value="B" onchange="window.toggleEx('f_b')"> <div><span class="text-sm font-bold text-rose-600 underline">B：普通・大型免許等あり＋特別教育＋実務3ヶ月以上</span></div></label>
                         </div>
                         <div id="fl_lic_fields" class="hidden space-y-6">
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-3 bg-white p-4 rounded-xl border">
-                                <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="普通"> 普通</label>
+                                <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="大型特殊(キャタピラ)"> 大特(キャタ)</label>
+                                <label class="flex gap-2 text-xs font-bold text-sky-600"><input type="checkbox" name="licT" value="大型特殊(限定なし)"> 大特(限定なし)</label>
                                 <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="大型"> 大型</label>
-                                <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="大特キャタピラ"> 大特(キャタ)</label>
-                                <label class="flex gap-2 text-xs font-bold text-sky-600"><input type="checkbox" name="licT" value="大特限定なし"> 大特(限定なし)</label>
+                                <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="中型"> 中型</label>
+                                <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="準中型"> 準中型</label>
+                                <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="普通"> 普通</label>
                             </div>
-                            <input type="text" name="licNo" class="input-field" placeholder="免許証番号">
+                            <input type="text" name="licNo" class="input-field" placeholder="免許証番号 第123456789012号">
                             <div class="grid grid-cols-2 gap-4">
-                                <div onclick="window.triggerFile('licA')" class="photo-box" id="pre_licA"><span>免許証【表】</span></div>
-                                <div onclick="window.triggerFile('licB')" class="photo-box" id="pre_licB"><span>免許証【裏】</span></div>
+                                <div onclick="window.triggerFile('licA')" class="photo-box" id="pre_licA"><span>免許証【表面】</span></div>
+                                <div onclick="window.triggerFile('licB')" class="photo-box" id="pre_licB"><span>免許証【裏面】</span></div>
                             </div>
                         </div>
-                        <div id="fl_b_fields" class="hidden space-y-6 p-6 bg-slate-50 rounded-2xl">
-                            <p class="input-label text-sky-600 font-black">フォークリフト特別教育・実務経験</p>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <input type="date" name="spDate" class="input-field bg-white" placeholder="修了日">
-                                <input type="text" name="spNo" class="input-field bg-white" placeholder="修了証番号">
-                            </div>
+                        <div id="fl_b_fields" class="hidden space-y-6 p-6 bg-slate-50 rounded-2xl border">
+                            <p class="input-label text-sky-600 font-black">フォークリフト特別教育・実務経験の情報</p>
+                            <div class="grid md:grid-cols-2 gap-4"><input type="date" name="spDate" class="input-field bg-white"><input type="text" name="spNo" class="input-field bg-white" placeholder="修了証番号"></div>
                             <input type="text" name="spOrg" class="input-field bg-white" placeholder="交付機関名">
                             <div class="grid grid-cols-3 gap-2">
-                                <input type="text" name="mcM" class="input-field bg-white text-[10px]" placeholder="メーカー">
+                                <input type="text" name="mcM" class="input-field bg-white text-[10px]" placeholder="メーカー名">
                                 <input type="text" name="mcT" class="input-field bg-white text-[10px]" placeholder="型式">
                                 <input type="text" name="mcW" class="input-field bg-white text-[10px]" placeholder="最大荷重">
                             </div>
                             <input type="text" name="mcExp" class="input-field bg-white" placeholder="経験期間（例：6ヶ月）">
                             <div class="grid grid-cols-2 gap-4">
-                                <div onclick="window.triggerFile('spA')" class="photo-box" id="pre_spA"><span>特教証【表】</span></div>
-                                <div onclick="window.triggerFile('spB')" class="photo-box" id="pre_spB"><span>特教証【裏】</span></div>
+                                <div onclick="window.triggerFile('spA')" class="photo-box" id="pre_spA"><span>特別教育証【表面】</span></div>
+                                <div onclick="window.triggerFile('spB')" class="photo-box" id="pre_spB"><span>特別教育証【裏面】</span></div>
                                 <div onclick="window.triggerFile('emp')" class="photo-box col-span-2" id="pre_emp"><span>事業所証明（社印）を撮影</span></div>
                             </div>
                         </div>
@@ -313,7 +308,7 @@
 
         document.getElementById('applyForm').addEventListener('submit', async e => {
             e.preventDefault();
-            const btn = document.getElementById('submitBtn'); btn.disabled = true; btn.innerText = "SENDING...";
+            const btn = document.getElementById('submitBtn'); btn.disabled = true; btn.innerText = "送信中 / SENDING...";
             const mode = new URLSearchParams(window.location.search).get('mode') || "full";
             try {
                 const formData = new FormData(e.target);
@@ -326,11 +321,11 @@
                 });
                 if (mode === 'simple') {
                     const pdfMap = { "玉掛け技能講習": "pdf/tamakake.pdf", "小型移動式クレーン": "pdf/crane.pdf", "フォークリフト (31H)": "pdf/fork.pdf", "フォークリフト (11H)": "pdf/fork.pdf", "テールゲート": "pdf/tail.pdf" };
-                    alert("予約完了！書類をダウンロードして当日お持ちください。"); window.location.href = pdfMap[document.getElementById('courseName').value] || "pdf/common.pdf";
+                    alert("予約を受け付けました！\n\n受講2週間前までに、申込書を印刷・記入して当センターまでお持ちください。"); window.location.href = pdfMap[document.getElementById('courseName').value] || "pdf/common.pdf";
                 } else {
-                    alert("お申し込みありがとうございます！"); window.location.href = "index.html";
+                    alert("お申し込みありがとうございます！\n送信が完了いたしました。"); window.location.href = "index.html";
                 }
-            } catch (err) { alert(err.message); btn.disabled = false; }
+            } catch (err) { alert("エラー: " + err.message); btn.disabled = false; }
         });
     </script>
 
