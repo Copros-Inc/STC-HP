@@ -403,16 +403,23 @@
             return "bg-yellow-400";
         };
 
-        Object.entries(coursesByName).forEach(([courseName, items]) => {
-            html += `<div class="grid gap-0" style="grid-template-columns: 150px repeat(31, 1fr);"><div class="font-bold text-[10px] text-white italic p-2 bg-slate-900 sticky left-0 z-10 truncate border-r border-white/10 flex items-center">${courseName}</div>`;
+               Object.entries(coursesByName).forEach(([courseName, items]) => {
+            html += `<div class="grid gap-0" style="grid-template-columns: 150px repeat(31, 1fr);">`;
+            html += `<div class="font-bold text-[10px] text-white italic p-2 bg-slate-900 sticky left-0 z-10 truncate border-r border-white/10 flex items-center">${courseName}</div>`;
             const colorClass = getCourseColor(courseName);
+            
             for (let day = 1; day <= 31; day++) {
                 const isScheduled = items.some(item => {
-                    // もし「26,30」のようなリスト形式なら、その日だけ塗る
-                    if (item.days.length > 1) return item.days.includes(day);
-                    // 1つだけなら、開始〜終了の「範囲」を塗る
+                    // 【解決策】dayStartが「26,30」のような文字列なら、配列に分解してその日が含まれるかチェック
+                    const startStr = String(item.days || "");
+                    if (startStr.includes(',')) {
+                        const dayList = startStr.split(',').map(n => parseInt(n.trim()));
+                        return dayList.includes(day);
+                    }
+                    // カンマがない場合は、従来通り「開始〜終了」の範囲で塗る
                     return (day >= item.days[0] && day <= item.dayEnd);
                 });
+                
                 const cellClass = isScheduled ? `${colorClass} shadow-[0_0_10px_rgba(255,255,255,0.1)]` : 'bg-slate-700/30';
                 html += `<div class="h-8 border border-white/5 flex items-center justify-center text-[8px] font-bold italic ${cellClass} text-white">${isScheduled ? '●' : ''}</div>`;
             }
