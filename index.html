@@ -326,14 +326,18 @@
         appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f"
     };
 
-       const app = initializeApp(firebaseConfig);
+    const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
 
     const now = new Date();
     let schedules = []; 
-    let currentMonth = now.getMonth() + 1; // 今月を表示
-    let currentYear = now.getFullYear();   // 今年を表示
+    let currentMonth = now.getMonth() + 1; // 現在の月
+    let currentYear = now.getFullYear();   // 現在の年
+
+    // 初期表示の年度内補正（2026年4月〜2027年3月）
+    if (currentYear === 2026 && currentMonth < 4) currentMonth = 4;
+    if (currentYear === 2027 && currentMonth > 3) { currentYear = 2027; currentMonth = 3; }
 
     signInAnonymously(auth).then(() => { loadSchedules(); });
 
@@ -341,14 +345,15 @@
         onSnapshot(collection(db, "schedules"), (snapshot) => {
             schedules = snapshot.docs.map(doc => {
                 const data = doc.data();
+                // 開始日が「26,30」のようなカンマ区切りでも配列として取り込む
+                const dayArray = data.dayStart ? String(data.dayStart).split(',').map(n => parseInt(n.trim())) : [];
                 return {
                     name: data.courseName || "名称未設定",
                     date: data.date || "",
                     status: data.status,
                     statusText: data.status === 'full' ? '満員御礼' : '空席あり',
                     month: parseInt(data.month),
-                    // 開始日をカンマで区切って配列にする（飛び石対応）
-                    days: String(data.dayStart).split(',').map(Number),
+                    days: dayArray,
                     dayEnd: parseInt(data.dayEnd)
                 };
             });
@@ -386,6 +391,8 @@
     window.renderGantt = function(month) {
         const ganttData = document.getElementById('gantt-data');
         if (!ganttData) return;
+        
+        // ヘッダー（日付の数字）をクリアして再生成
         let html = '<div class="grid gap-0 mb-2" style="grid-template-columns: 150px repeat(31, 1fr);"><div class="font-black text-xs text-white/40 italic p-2 bg-slate-900 sticky left-0 z-10">講習</div>';
         for(let i=1; i<=31; i++) { html += `<div class="text-[9px] text-white/40 text-center italic font-bold p-1">${i}</div>`; }
         html += '</div>';
@@ -423,16 +430,14 @@
     }
 
     window.changeMonth = function(diff) {
-        currentMonth += diff;
-        if (currentMonth > 12) { currentMonth = 1; currentYear++; }
-        if (currentMonth < 1) { currentMonth = 12; currentYear--; }
-        renderCalendar(currentMonth);
-        renderGantt(currentMonth);
-    }
-    window.changeMonth = function(diff) {
-        currentMonth += diff;
-        if (currentMonth < 1) currentMonth = 1;
-        if (currentMonth > 12) currentMonth = 12;
+        let newMonth = currentMonth + diff;
+        let newYear = currentYear;
+        if (newMonth > 12) { newMonth = 1; newYear++; }
+        if (newMonth < 1) { newMonth = 12; newYear--; }
+        if (newYear < 2026 || (newYear === 2026 && newMonth < 4)) return;
+        if (newYear > 2027 || (newYear === 2027 && newMonth > 3)) return;
+        currentMonth = newMonth;
+        currentYear = newYear;
         renderCalendar(currentMonth);
         renderGantt(currentMonth);
     }
