@@ -167,6 +167,7 @@
             if (date) document.getElementById('courseDate').value = decodeURIComponent(date);
         });
 
+        // 2. 講習に応じたUI変更（判定をより柔軟にしました）
         function updateCourseUI(course) {
             const feeEl = document.getElementById('displayFee');
             const subsidyEl = document.getElementById('subsidy-section');
@@ -174,6 +175,7 @@
             let fee = "金額未定";
             let dynamicHtml = "";
 
+            // 判定を includes のみに絞り、誤作動を防ぐ
             if (course.includes("玉掛け")) {
                 fee = "¥25,000-"; subsidyEl.classList.remove('hidden');
             } else if (course.includes("小型移動式クレーン")) {
@@ -182,8 +184,8 @@
                     <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-8">
                         <h2 class="section-title text-xl italic text-sky-600 uppercase">Qualification / 免除条件（いずれか1つ選択）</h2>
                         <div class="space-y-4">
-                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="exType" value="玉掛" onchange="toggleExSection('cr_a')"> <div><span class="text-sm font-bold">玉掛け技能講習 or 床上操作式クレーン修了証所持</span></div></label>
-                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="exType" value="免許" onchange="toggleExSection('cr_b')"> <div><span class="text-sm font-bold">クレーン・デリック or 揚貨装置運転士免許所持</span></div></label>
+                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="exType" value="玉掛" onchange="window.toggleExSection('cr_a')"> <div><span class="text-sm font-bold">玉掛け技能講習 or 床上操作式クレーン修了証所持</span></div></label>
+                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="exType" value="免許" onchange="window.toggleExSection('cr_b')"> <div><span class="text-sm font-bold">クレーン・デリック or 揚貨装置運転士免許所持</span></div></label>
                         </div>
                         <div id="cr_a_fields" class="hidden space-y-6 p-6 bg-slate-50 rounded-2xl border border-slate-100">
                             <div class="grid md:grid-cols-2 gap-4">
@@ -193,8 +195,8 @@
                             <input type="text" name="exOrg" class="input-field bg-white" placeholder="交付機関名（例：山口労働局）">
                             <div class="grid grid-cols-2 gap-4"><label class="flex gap-2"><input type="radio" name="exDetail" value="玉掛け"> 玉掛け</label><label class="flex gap-2"><input type="radio" name="exDetail" value="床上操作"> 床上操作式</label></div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div onclick="document.getElementById('in_licA').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">修了証【表】</span></div>
-                                <div onclick="document.getElementById('in_licB').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">修了証【裏】</span></div>
+                                <div onclick="document.getElementById('in_licA').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licenseA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">修了証【表】</span></div>
+                                <div onclick="document.getElementById('in_licB').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licenseB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">修了証【裏】</span></div>
                             </div>
                         </div>
                         <div id="cr_b_fields" class="hidden space-y-6 p-6 bg-slate-50 rounded-2xl border border-slate-100">
@@ -205,12 +207,12 @@
                             <input type="text" name="exOrgB" class="input-field bg-white" placeholder="交付局名（例：山口労働局）">
                             <div class="flex gap-4"><label class="flex gap-2"><input type="radio" name="exDetailB" value="クレーン"> クレーン</label><label class="flex gap-2"><input type="radio" name="exDetailB" value="デリック"> デリック</label><label class="flex gap-2"><input type="radio" name="exDetailB" value="揚貨装置"> 揚貨装置</label></div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div onclick="document.getElementById('in_licA').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【表】</span></div>
-                                <div onclick="document.getElementById('in_licB').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【裏】</span></div>
+                                <div onclick="document.getElementById('in_licA').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licenseA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【表】</span></div>
+                                <div onclick="document.getElementById('in_licB').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licenseB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【裏】</span></div>
                             </div>
                         </div>
                     </section>`;
-            } else if (course.includes("フォークリフト (31H)")) {
+            } else if (course.includes("31H")) {
                 fee = "¥30,000-";
                 dynamicHtml = `
                     <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-6">
@@ -228,18 +230,18 @@
                         </div>
                         <input type="text" name="licenseNo" placeholder="免許証番号 第123456789012号" class="input-field">
                         <div class="grid grid-cols-2 gap-4">
-                            <div onclick="document.getElementById('in_licA').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【表】</span></div>
-                            <div onclick="document.getElementById('in_licB').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【裏】</span></div>
+                            <div onclick="document.getElementById('in_licA').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licenseA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【表】</span></div>
+                            <div onclick="document.getElementById('in_licB').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licenseB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【裏】</span></div>
                         </div>
                     </section>`;
-            } else if (course.includes("フォークリフト (11H)")) {
+            } else if (course.includes("11H")) {
                 fee = "¥20,000-";
                 dynamicHtml = `
                     <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-8">
                         <h2 class="section-title text-xl italic text-sky-600 uppercase">Qualification / A or B コース選択</h2>
                         <div class="space-y-4">
-                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="fl11Type" value="A" onchange="toggleExSection('fl_a')"> <div><span class="text-sm font-bold">A：大型特殊免許(限定なし)を所持している</span></div></label>
-                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="fl11Type" value="B" onchange="toggleExSection('fl_b')"> <div><span class="text-sm font-bold">B：免許あり＋特別教育＋実務3ヶ月以上</span></div></label>
+                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="fl11Type" value="A" onchange="window.toggleExSection('fl_a')"> <div><span class="text-sm font-bold">A：大型特殊免許(限定なし)を所持している</span></div></label>
+                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="fl11Type" value="B" onchange="window.toggleExSection('fl_b')"> <div><span class="text-sm font-bold">B：免許あり＋特別教育＋実務3ヶ月以上</span></div></label>
                         </div>
                         <div id="fl_common_fields" class="hidden space-y-6">
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -249,8 +251,8 @@
                             </div>
                             <input type="text" name="licenseNo" placeholder="免許証番号 第123456789012号" class="input-field">
                             <div class="grid grid-cols-2 gap-4">
-                                <div onclick="document.getElementById('in_licA').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【表】</span></div>
-                                <div onclick="document.getElementById('in_licB').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【裏】</span></div>
+                                <div onclick="document.getElementById('in_licA').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licenseA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【表】</span></div>
+                                <div onclick="document.getElementById('in_licB').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licenseB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【裏】</span></div>
                             </div>
                         </div>
                         <div id="fl_b_only_fields" class="hidden space-y-6 p-6 bg-slate-50 rounded-2xl border border-slate-100">
@@ -259,17 +261,16 @@
                             <div class="grid md:grid-cols-3 gap-4"><input type="text" name="mcName" class="input-field bg-white" placeholder="機体メーカ"><input type="text" name="mcType" class="input-field bg-white" placeholder="型式"><input type="text" name="mcWeight" class="input-field bg-white" placeholder="最大荷重"></div>
                             <input type="text" name="mcExp" class="input-field bg-white" placeholder="経験期間(例:6ヶ月)">
                             <div class="grid grid-cols-2 gap-4">
-                                <div onclick="document.getElementById('in_spA').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_spA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">特教証【表】</span></div>
-                                <div onclick="document.getElementById('in_spB').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_spB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">特教証【裏】</span></div>
+                                <div onclick="document.getElementById('in_spA').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_specialA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">特教証【表】</span></div>
+                                <div onclick="document.getElementById('in_spB').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_specialB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">特教証【裏】</span></div>
                             </div>
-                            <p class="text-[9px] font-bold text-rose-500">※事業者証明原本は後日提出してください</p>
                         </div>
                     </section>`;
             } else if (course.includes("テールゲート")) { fee = "¥15,000-"; }
             feeEl.innerText = fee; dynamicEl.innerHTML = dynamicHtml;
         }
 
-        // 3. ヘルパー関数群
+        // ラジオボタンの切り替え（windowに付けて確実に動かす）
         window.toggleExSection = function(type) {
             document.getElementById('cr_a_fields')?.classList.toggle('hidden', type !== 'cr_a');
             document.getElementById('cr_b_fields')?.classList.toggle('hidden', type !== 'cr_b');
