@@ -100,7 +100,7 @@
             <!-- 動的分岐（Qualification / 免除条件） -->
             <div id="dynamic-section"></div>
 
-            <!-- 04. 支払・領収書 -->
+                       <!-- 04. 支払・領収書 -->
             <section class="form-card p-8 md:p-12">
                 <h2 class="section-title text-xl mb-8 italic uppercase text-left">04. Payment & Receipt / 支払・領収書</h2>
                 <div class="space-y-8 text-left">
@@ -110,11 +110,11 @@
                     </div>
                     <div>
                         <label class="block text-xs font-black text-slate-700 mb-4">領収書の発行は必要ですか？</label>
-                        <div class="flex flex-col md:flex-row gap-4">
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="receipt" value="不要" checked> <span class="text-sm font-bold">不要</span></label>
-                            <div class="flex items-center gap-3">
-                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="receipt" value="必要"> <span class="text-sm font-bold">必要</span></label>
-                                <input type="text" name="receiptName" class="input-field py-2 text-xs" placeholder="宛名（会社名など）">
+                        <div class="flex flex-wrap items-center gap-6">
+                            <label class="flex items-center gap-2 cursor-pointer whitespace-nowrap"><input type="radio" name="receipt" value="不要" checked> <span class="text-sm font-bold">不要</span></label>
+                            <div class="flex items-center gap-3 min-w-0 flex-1">
+                                <label class="flex items-center gap-2 cursor-pointer whitespace-nowrap"><input type="radio" name="receipt" value="必要"> <span class="text-sm font-bold">必要</span></label>
+                                <input type="text" name="receiptName" class="input-field py-2 text-xs flex-1 min-w-[150px]" placeholder="宛名（会社名など）">
                             </div>
                         </div>
                     </div>
@@ -167,7 +167,7 @@
             if (date) document.getElementById('courseDate').value = decodeURIComponent(date);
         });
 
-        // 2. 講習に応じたUI変更（判定をより柔軟にしました）
+               // 2. 講習に応じたUI変更（11Hを完全に申込書Bに合わせました）
         function updateCourseUI(course) {
             const feeEl = document.getElementById('displayFee');
             const subsidyEl = document.getElementById('subsidy-section');
@@ -175,7 +175,6 @@
             let fee = "金額未定";
             let dynamicHtml = "";
 
-            // 判定を includes のみに絞り、誤作動を防ぐ
             if (course.includes("玉掛け")) {
                 fee = "¥25,000-"; subsidyEl.classList.remove('hidden');
             } else if (course.includes("小型移動式クレーン")) {
@@ -216,13 +215,13 @@
                 fee = "¥30,000-";
                 dynamicHtml = `
                     <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-6">
-                        <h2 class="section-title text-xl italic text-sky-600 uppercase">Driver License / 運転免許の確認</h2>
+                        <h2 class="section-title text-xl italic text-sky-600 uppercase text-nowrap">Driver License / 運転免許の確認</h2>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                             <label class="flex gap-2 items-center font-bold text-xs"><input type="checkbox" name="licType" value="普通"> 普通</label>
                             <label class="flex gap-2 items-center font-bold text-xs"><input type="checkbox" name="licType" value="準中型"> 準中型</label>
                             <label class="flex gap-2 items-center font-bold text-xs"><input type="checkbox" name="licType" value="中型"> 中型</label>
                             <label class="flex gap-2 items-center font-bold text-xs"><input type="checkbox" name="licType" value="大型"> 大型</label>
-                            <label class="flex gap-2 items-center font-bold text-xs"><input type="checkbox" name="licType" value="大特キャタピラ"> 大特(キャタピラ)</label>
+                            <label class="flex gap-2 items-center font-bold text-xs"><input type="checkbox" name="licType" value="大特キャタピラ"> 大特(キャタ)</label>
                         </div>
                         <div class="grid md:grid-cols-2 gap-4">
                             <div><label class="input-label">交付日</label><input type="date" name="licDate" class="input-field"></div>
@@ -238,31 +237,65 @@
                 fee = "¥20,000-";
                 dynamicHtml = `
                     <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-8">
-                        <h2 class="section-title text-xl italic text-sky-600 uppercase">Qualification / A or B コース選択</h2>
+                        <h2 class="section-title text-xl italic text-sky-600 uppercase text-nowrap">Qualification / A or B コース選択</h2>
                         <div class="space-y-4">
-                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="fl11Type" value="A" onchange="window.toggleExSection('fl_a')"> <div><span class="text-sm font-bold">A：大型特殊免許(限定なし)を所持している</span></div></label>
-                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="fl11Type" value="B" onchange="window.toggleExSection('fl_b')"> <div><span class="text-sm font-bold">B：免許あり＋特別教育＋実務3ヶ月以上</span></div></label>
+                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="fl11Type" value="A" onchange="window.toggleExSection('fl_a')"> <div><span class="text-sm font-bold">A：大型特殊免許(限定なし)を保有している</span></div></label>
+                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer hover:bg-slate-50"><input type="radio" name="fl11Type" value="B" onchange="window.toggleExSection('fl_b')"> <div><span class="text-sm font-bold text-rose-600 underline">B：普通・大型免許等あり＋特別教育＋実務3ヶ月以上</span></div></label>
                         </div>
-                        <div id="fl_common_fields" class="hidden space-y-6">
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                <label class="flex gap-2 items-center font-bold text-xs"><input type="checkbox" name="licType" value="普通"> 普通</label>
-                                <label class="flex gap-2 items-center font-bold text-xs"><input type="checkbox" name="licType" value="大型"> 大型</label>
-                                <label class="flex gap-2 items-center font-bold text-xs"><input type="checkbox" name="licType" value="大特キャタピラ"> 大特(キャタ)</label>
+
+                        <!-- 共通：自動車免許証入力 -->
+                        <div id="fl_common_lic" class="hidden space-y-6 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                            <p class="input-label text-sky-600">① 自動車運転免許証の情報</p>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 bg-white p-4 rounded-xl border">
+                                <label class="flex gap-2 items-center font-bold text-[10px]"><input type="checkbox" name="licType" value="普通"> 普通</label>
+                                <label class="flex gap-2 items-center font-bold text-[10px]"><input type="checkbox" name="licType" value="準中型"> 準中型</label>
+                                <label class="flex gap-2 items-center font-bold text-[10px]"><input type="checkbox" name="licType" value="中型"> 中型</label>
+                                <label class="flex gap-2 items-center font-bold text-[10px]"><input type="checkbox" name="licType" value="大型"> 大型</label>
+                                <label class="flex gap-2 items-center font-bold text-[10px]"><input type="checkbox" name="licType" value="大特キャタピラ"> 大特(キャタ)</label>
+                                <label class="flex gap-2 items-center font-bold text-[10px] text-sky-600"><input type="checkbox" name="licType" value="大特限定なし"> 大特(限定なし)</label>
                             </div>
-                            <input type="text" name="licenseNo" placeholder="免許証番号 第123456789012号" class="input-field">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div><label class="input-label">交付日</label><input type="date" name="licDate" class="input-field bg-white"></div>
+                                <div><label class="input-label">有効期限</label><input type="date" name="licExp" class="input-field bg-white"></div>
+                            </div>
+                            <input type="text" name="licenseNo" placeholder="免許証番号 第123456789012号" class="input-field bg-white">
                             <div class="grid grid-cols-2 gap-4">
                                 <div onclick="document.getElementById('in_licA').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licenseA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【表】</span></div>
                                 <div onclick="document.getElementById('in_licB').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_licenseB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">免許証【裏】</span></div>
                             </div>
                         </div>
-                        <div id="fl_b_only_fields" class="hidden space-y-6 p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                            <p class="input-label text-sky-600">特別教育・実務経験の情報</p>
-                            <div class="grid md:grid-cols-2 gap-4"><input type="text" name="spNo" class="input-field bg-white" placeholder="特教修了番号"><input type="text" name="spOrg" class="input-field bg-white" placeholder="交付機関名"></div>
-                            <div class="grid md:grid-cols-3 gap-4"><input type="text" name="mcName" class="input-field bg-white" placeholder="機体メーカ"><input type="text" name="mcType" class="input-field bg-white" placeholder="型式"><input type="text" name="mcWeight" class="input-field bg-white" placeholder="最大荷重"></div>
-                            <input type="text" name="mcExp" class="input-field bg-white" placeholder="経験期間(例:6ヶ月)">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div onclick="document.getElementById('in_spA').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_specialA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">特教証【表】</span></div>
-                                <div onclick="document.getElementById('in_spB').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_specialB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">特教証【裏】</span></div>
+
+                        <!-- Bコースのみ：特別教育・実務経験・事業者証明 -->
+                        <div id="fl_b_extras" class="hidden space-y-8">
+                            <div class="space-y-6 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                                <p class="input-label text-sky-600">② フォークリフト特別教育修了証の情報</p>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div><label class="input-label">修了日</label><input type="date" name="spCompletionDate" class="input-field bg-white"></div>
+                                    <div><label class="input-label">修了証番号</label><input type="text" name="spNo" class="input-field bg-white" placeholder="第12345号"></div>
+                                </div>
+                                <input type="text" name="spOrg" class="input-field bg-white" placeholder="交付機関名">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div onclick="document.getElementById('in_spA').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_specialA"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">特教証【表】</span></div>
+                                    <div onclick="document.getElementById('in_spB').click()" class="photo-box aspect-[4/3] flex flex-col items-center justify-center p-2 cursor-pointer" id="pre_specialB"><i class="fas fa-camera mb-1"></i><span class="text-[8px]">特教証【裏】</span></div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-6 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                                <p class="input-label text-sky-600">③ 運転業務経験期間</p>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <input type="text" name="mcName" class="input-field bg-white text-xs" placeholder="メーカー名">
+                                    <input type="text" name="mcType" class="input-field bg-white text-xs" placeholder="型式">
+                                    <input type="text" name="mcWeight" class="input-field bg-white text-xs" placeholder="最大荷重">
+                                </div>
+                                <input type="text" name="experienceDuration" class="input-field bg-white" placeholder="経験期間（例：3年6ヶ月）">
+                            </div>
+
+                            <div class="space-y-6 p-6 bg-slate-50 rounded-2xl border border-slate-100 text-left">
+                                <p class="input-label text-sky-600">④ 事業者証明</p>
+                                <input type="text" name="employerName" class="input-field bg-white mb-4" placeholder="事業所名・代表者名">
+                                <div onclick="document.getElementById('in_emp').click()" class="photo-box aspect-video flex flex-col items-center justify-center p-4 cursor-pointer" id="pre_employer"><i class="fas fa-stamp text-2xl mb-2 text-slate-300"></i><span class="text-xs font-bold text-slate-400">事業所証明（社印）を撮影</span></div>
+                                <input type="file" id="in_emp" accept="image/*" class="hidden" onchange="processImg(this, 'employer')">
+                                <p class="text-[9px] font-bold text-rose-500 italic mt-2">※原本は受講当日に必ずお持ちください</p>
                             </div>
                         </div>
                     </section>`;
@@ -270,14 +303,21 @@
             feeEl.innerText = fee; dynamicEl.innerHTML = dynamicHtml;
         }
 
-        // ラジオボタンの切り替え（windowに付けて確実に動かす）
+        // ラジオボタンの切り替え（11HのA/Bに完全対応）
         window.toggleExSection = function(type) {
+            // 小型クレーン用
             document.getElementById('cr_a_fields')?.classList.toggle('hidden', type !== 'cr_a');
             document.getElementById('cr_b_fields')?.classList.toggle('hidden', type !== 'cr_b');
-            document.getElementById('fl_common_fields')?.classList.remove('hidden');
-            document.getElementById('fl_b_only_fields')?.classList.toggle('hidden', type !== 'fl_b');
+            
+            // 11H用
+            if (type === 'fl_a') {
+                document.getElementById('fl_common_lic').classList.remove('hidden');
+                document.getElementById('fl_b_extras').classList.add('hidden');
+            } else if (type === 'fl_b') {
+                document.getElementById('fl_common_lic').classList.remove('hidden');
+                document.getElementById('fl_b_extras').classList.remove('hidden');
+            }
         };
-
         window.processImg = function(input, key) {
             const file = input.files[0]; if (!file) return;
             const reader = new FileReader();
