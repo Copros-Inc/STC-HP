@@ -8,96 +8,127 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+JP:wght@300;700;900&display=swap');
-        body { font-family: 'Noto Sans JP', sans-serif; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; }
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; scroll-behavior: smooth; }
         .font-en { font-family: 'Montserrat', sans-serif; }
         .bg-bright-effect { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); z-index: -2; }
-        .feature-card { background: white; border-radius: 3rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.05); border: 1px solid rgba(56, 189, 248, 0.1); transition: 0.5s; }
-        .spec-label-jp { background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%); padding: 8px 24px; border-radius: 0 50px 50px 0; color: #fff; font-weight: 900; font-size: 1rem; display: inline-flex; align-items: center; }
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        .feature-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 3rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.05); border: 1px solid rgba(56, 189, 248, 0.2); }
+        .spec-label-jp { background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%); padding: 8px 24px; border-radius: 0 50px 50px 0; color: #fff; font-weight: 900; font-size: 1.1rem; display: inline-flex; align-items: center; box-shadow: 4px 4px 15px rgba(14, 165, 233, 0.2); }
     </style>
 </head>
 <body class="pb-20">
     <div class="bg-bright-effect"></div>
 
-    <nav class="p-8">
-        <a href="index.html#features" class="inline-flex items-center text-slate-400 hover:text-sky-600 transition font-black italic text-xs tracking-widest group">
+    <nav class="p-8 sticky top-0 z-50 bg-white/30 backdrop-blur-md border-b border-white/50">
+        <a href="index.html#features" class="inline-flex items-center text-sky-600 hover:text-slate-900 transition font-black italic text-xs tracking-widest group">
             <i class="fas fa-chevron-left mr-3 group-hover:-translate-x-2 transition-transform"></i> BACK TO HOME
         </a>
     </nav>
 
-    <header class="container mx-auto px-6 py-12 text-center">
-        <span class="font-en font-black text-sky-500/10 text-7xl md:text-9xl absolute left-1/2 -translate-x-1/2 top-10 select-none italic uppercase">REASON</span>
-        <h1 class="text-4xl md:text-6xl font-black italic tracking-tighter text-slate-900 relative z-10 uppercase">下関トレーニングセンターが<br><span class="text-sky-500">選ばれる3つの理由</span></h1>
+    <header class="container mx-auto px-6 py-20 text-center relative">
+        <span class="font-en font-black text-sky-500/5 text-8xl md:text-[12rem] absolute left-1/2 -translate-x-1/2 top-0 select-none italic uppercase">REASON</span>
+        <h1 class="text-4xl md:text-6xl font-black italic tracking-tighter text-slate-900 relative z-10 uppercase">
+            下関トレーニングセンターが<br><span class="text-sky-500">選ばれる理由</span>
+        </h1>
     </header>
 
-    <main class="container mx-auto px-6 max-w-5xl space-y-24 mt-20">
+    <main class="container mx-auto px-6 max-w-6xl space-y-32 mt-10">
         
-        <!-- 01. 労働局登録 -->
-        <section class="feature-card reveal active grid md:grid-cols-2">
-            <div class="p-12 md:p-16 space-y-8">
-                <div class="flex items-center gap-4">
-                    <span class="text-7xl font-en font-black italic text-sky-500/20 leading-none">01</span>
-                    <h2 class="text-3xl font-black italic text-slate-900 leading-tight">山口労働局長<br><span class="text-sky-600 underline">登録教習機関</span></h2>
+        <!-- 01. 労働局登録 (id="reason01" を付与) -->
+        <section id="reason01" class="feature-card grid md:grid-cols-2 scroll-mt-32">
+            <div class="p-10 md:p-16 space-y-8">
+                <div class="flex items-center gap-6">
+                    <span class="text-8xl font-en font-black italic text-sky-500/10 leading-none">01</span>
+                    <h2 class="text-3xl md:text-4xl font-black italic text-slate-900 leading-tight">山口労働局長<br><span class="text-sky-600 underline">登録教習機関</span></h2>
                 </div>
-                <div class="spec-label-jp italic">安心と信頼の認可校</div>
-                <p class="text-slate-600 font-bold italic leading-loose">
-                    STCは山口県下関市で唯一の認可教習機関（第68号）です。厚生労働省・山口労働局の厳格な基準をクリアした施設とカリキュラムで、全国の現場で永続的に有効な「本物の修了証」を発行いたします。
+                <div class="spec-label-jp italic">山口県唯一の認可教習機関</div>
+                <p class="text-slate-600 font-bold italic leading-loose text-lg">
+                    下関トレーニングセンターは、厚生労働省・山口労働局から認可を受けた公式の重機教習所（第68号）です。山口県下関市では唯一の認可機関であり、最新の法令に基づいた安全かつ高品質な教習を提供しています。ここで取得した修了証は、全国の建設現場・工場で永続的に有効です。
                 </p>
+                <div class="bg-sky-50 p-6 rounded-2xl border border-sky-100 italic font-black text-sky-700 text-sm">
+                    <i class="fas fa-certificate mr-2"></i> 登録番号：山口労働局長登録教習機関 第68号
+                </div>
             </div>
-            <div class="bg-slate-100 flex items-center justify-center p-8">
-                <img src="features-01.jpg" alt="労働局登録" class="rounded-3xl shadow-xl w-full h-full object-cover">
+            <div class="bg-slate-50 flex items-center justify-center p-8 border-l border-white/50">
+                <img src="features-01.jpg" alt="労働局登録" class="rounded-[2rem] shadow-2xl w-full h-full object-cover">
             </div>
         </section>
 
-        <!-- 02. アクセス -->
-        <section class="feature-card reveal grid md:grid-cols-2">
-            <div class="bg-slate-100 order-2 md:order-1 p-8">
-                <!-- 地図画像またはGoogle Map埋め込み -->
-                <div class="rounded-3xl overflow-hidden shadow-xl h-full min-h-[300px] bg-white">
+        <!-- 02. アクセス (id="reason02" を付与) -->
+        <section id="reason02" class="feature-card grid md:grid-cols-2 scroll-mt-32">
+            <div class="bg-slate-50 flex items-center justify-center p-8 order-2 md:order-1 border-r border-white/50">
+                <div class="rounded-[2rem] overflow-hidden shadow-2xl w-full h-full min-h-[400px]">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3299.782068478495!2d131.0264004!3d34.010999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3543971e98d98d9d%3A0x7d8a6e8b8e8b8e8b!2z5LiL6Zai44OI44Os44O844OL44Oz44Kw44K744Oz44K_44O8!5e0!3m2!1sja!2sjp!4v1719999999999" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
-            <div class="p-12 md:p-16 space-y-8 order-1 md:order-2">
-                <div class="flex items-center gap-4">
-                    <span class="text-7xl font-en font-black italic text-sky-500/20 leading-none">02</span>
-                    <h2 class="text-3xl font-black italic text-slate-900 leading-tight">国道2号線すぐ<br><span class="text-sky-600 underline">抜群のアクセス</span></h2>
+            <div class="p-10 md:p-16 space-y-8 order-1 md:order-2">
+                <div class="flex items-center gap-6">
+                    <span class="text-8xl font-en font-black italic text-sky-500/10 leading-none">02</span>
+                    <h2 class="text-3xl md:text-4xl font-black italic text-slate-900 leading-tight">国道2号線から<br><span class="text-sky-600 underline">アクセス抜群</span></h2>
                 </div>
-                <div class="spec-label-jp italic">車で通いやすい好立地</div>
-                <p class="text-slate-600 font-bold italic leading-loose">
-                    国道2号線（小月バイパス）に直結しており、下関市内、山陽小野田、北九州方面からのアクセスもスムーズです。広大な大型駐車場を完備しており、お車での来園も安心。小月駅からの送迎バス（予約制）も運行しています。
+                <div class="spec-label-jp italic">車での来園が非常にスムーズ</div>
+                <p class="text-slate-600 font-bold italic leading-loose text-lg">
+                    下関市の主要幹線道路である国道2号線（小月バイパス）に隣接。下関市内はもちろん、山陽小野田市、宇部市、さらには北九州方面からも迷わずにお越しいただけます。広大な敷地内に大型駐車場を完備しており、自家用車だけでなく社用車でのご来園も大歓迎です。
                 </p>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 text-slate-500 italic font-black text-sm">
+                        <i class="fas fa-car text-sky-500"></i> 小月ICから車で約10分
+                    </div>
+                    <div class="flex items-center gap-4 text-slate-500 italic font-black text-sm">
+                        <i class="fas fa-bus text-sky-500"></i> 小月駅より送迎バス運行（要予約）
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- 03. 指導陣 -->
-        <section class="feature-card reveal grid md:grid-cols-2">
-            <div class="p-12 md:p-16 space-y-8">
-                <div class="flex items-center gap-4">
-                    <span class="text-7xl font-en font-black italic text-sky-500/20 leading-none">03</span>
-                    <h2 class="text-3xl font-black italic text-slate-900 leading-tight">現役職人が教える<br><span class="text-sky-600 underline">生きた技術</span></h2>
+        <!-- 03. 指導陣 (id="reason03" を付与) -->
+        <section id="reason03" class="feature-card grid md:grid-cols-2 scroll-mt-32">
+            <div class="p-10 md:p-16 space-y-8">
+                <div class="flex items-center gap-6">
+                    <span class="text-8xl font-en font-black italic text-sky-500/10 leading-none">03</span>
+                    <h2 class="text-3xl md:text-4xl font-black italic text-slate-900 leading-tight">ベテラン職人による<br><span class="text-sky-600 underline">生きた実技指導</span></h2>
                 </div>
-                <div class="spec-label-jp italic">現場のリアルを伝えたい</div>
-                <p class="text-slate-600 font-bold italic leading-loose">
-                    当センターの講師陣は、長年建設現場で第一線を張ってきたベテラン揃い。ただ試験に受かるための知識ではなく、「現場でどう動けば安全か」「事故を未然に防ぐための判断は」といった、経験に基づいた生きた指導に定評があります。
+                <div class="spec-label-jp italic">「現場で通用する」がモットー</div>
+                <p class="text-slate-600 font-bold italic leading-loose text-lg">
+                    講師陣は全員、建設や土木の第一線で活躍してきた現役バリバリの職人経験者です。教科書通りの教え方だけでなく、「現場ではここが危険」「こう動かせば効率が良い」といった、実務に即した具体的なアドバイスを行います。愛のある丁寧な指導で、未経験者も即戦力へと導きます。
                 </p>
+                <div class="bg-slate-900 p-8 rounded-[2rem] text-white italic shadow-xl">
+                    <p class="text-sky-400 font-black mb-2 uppercase tracking-widest text-xs">Instructor Message</p>
+                    <p class="font-bold text-lg leading-relaxed">「ただ免許を取らせるだけではない。教え子の命を現場で守るのが、我々の使命です。」</p>
+                </div>
             </div>
-            <div class="bg-slate-100 flex items-center justify-center p-8">
-                <img src="features-03.jpg" alt="指導風景" class="rounded-3xl shadow-xl w-full h-full object-cover">
+            <div class="bg-slate-50 flex items-center justify-center p-8 border-l border-white/50">
+                <img src="features-03.jpg" alt="ベテラン指導陣" class="rounded-[2rem] shadow-2xl w-full h-full object-cover">
             </div>
         </section>
 
     </main>
 
-    <footer class="py-20 text-center opacity-30 font-black italic text-[10px] tracking-[0.5em] uppercase text-slate-400">
-        SHIMONOSEKI TRAINING CENTER
+    <footer class="py-24 text-center">
+        <a href="index.html#schedule-section" class="bg-sky-600 text-white px-12 py-5 rounded-full font-black italic text-lg tracking-widest hover:bg-slate-900 transition-all shadow-2xl uppercase">
+            講習スケジュールを見る <i class="fas fa-calendar-alt ml-3"></i>
+        </a>
+        <p class="mt-20 opacity-30 font-black italic text-[10px] tracking-[0.5em] uppercase text-slate-400">
+            SHIMONOSEKI TRAINING CENTER
+        </p>
     </footer>
 
     <script>
-        window.addEventListener('scroll', () => {
-            document.querySelectorAll('.reveal').forEach(el => {
-                if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
+        // スクロール時のふわっと表示エフェクト
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
             });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = 0;
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = '1s ease-out';
+            observer.observe(section);
         });
     </script>
 </body>
