@@ -8,166 +8,187 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+JP:wght@300;700;900&display=swap');
-        body { font-family: 'Noto Sans JP', sans-serif; background-color: #0b1120; color: #f1f5f9; }
+        
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; }
         .font-en { font-family: 'Montserrat', sans-serif; }
-        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.05); }
-        .spec-label { background: linear-gradient(90deg, #0ea5e9 0%, transparent 100%); padding: 4px 12px; border-left: 4px solid #fff; font-style: italic; font-weight: 900; font-size: 0.75rem; color: #fff; letter-spacing: 0.1em; }
-        .hero-gradient { background: radial-gradient(circle at 20% 50%, rgba(14, 165, 233, 0.15) 0%, transparent 50%); }
+
+        /* 明るい背景エフェクト */
+        .bg-bright-effect { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); z-index: -2; }
+        .bg-glow-bright { position: fixed; width: 800px; height: 800px; background: rgba(56, 189, 248, 0.15); filter: blur(150px); border-radius: 50%; z-index: -1; animation: float 15s infinite alternate; }
+        @keyframes float { from { transform: translate(-10%, -10%); } to { transform: translate(15%, 15%); } }
+
+        /* 白ベースのガラスカード */
+        .glass-white-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(56, 189, 248, 0.2); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05); transition: all 0.4s ease; }
+        .glass-white-card:hover { transform: translateY(-5px); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08); border-color: #0ea5e9; }
+
+        /* 日本語メインの力強いラベル */
+        .spec-label-jp { background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%); padding: 8px 24px; border-radius: 0 50px 50px 0; color: #fff; font-weight: 900; font-size: 1rem; display: inline-flex; align-items: center; box-shadow: 4px 4px 15px rgba(14, 165, 233, 0.2); }
+        .label-en-sub { font-family: 'Montserrat'; font-size: 0.65rem; letter-spacing: 0.2em; display: block; opacity: 0.7; font-style: italic; margin-bottom: 2px; }
+
+        /* 料金セクション（明るく力強く） */
+        .price-box { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 40px; rounded-3xl: 2rem; box-shadow: 0 20px 40px rgba(14, 165, 233, 0.3); border-radius: 2.5rem; }
+
+        /* 申し込みボタン（明るいオレンジかスカイブルーで） */
+        .cta-bright { background: linear-gradient(90deg, #0ea5e9, #38bdf8); color: white; position: relative; overflow: hidden; transition: 0.5s; }
+        .cta-bright:hover { transform: scale(1.02); filter: brightness(1.1); box-shadow: 0 20px 40px rgba(14, 165, 233, 0.4); }
+
+        .reveal { opacity: 0; transform: translateY(20px); transition: 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
-<body class="hero-gradient min-h-screen pb-20">
+<body class="pb-20">
+    <div class="bg-bright-effect"></div>
+    <div class="bg-glow-bright"></div>
 
-    <nav class="p-6">
-        <a href="index.html" class="inline-flex items-center text-white/50 hover:text-sky-400 transition font-black italic text-xs tracking-widest uppercase">
-            <i class="fas fa-arrow-left mr-2"></i> Back to Home
+    <nav class="p-8">
+        <a href="index.html#courses" class="inline-flex items-center text-slate-400 hover:text-sky-600 transition font-black italic text-xs tracking-widest group">
+            <i class="fas fa-chevron-left mr-3 group-hover:-translate-x-2 transition-transform"></i> 一覧に戻る / BACK
         </a>
     </nav>
 
-    <main class="container mx-auto px-6 py-12 max-w-5xl">
+    <main class="container mx-auto px-6 max-w-6xl">
         <div class="grid lg:grid-cols-2 gap-16 items-start">
             
-            <!-- 左側：ビジュアル & PDF -->
-            <div class="lg:sticky lg:top-24">
-                <div class="relative mb-8">
-                    <span id="course-id-en" class="font-en font-black text-sky-600/20 text-8xl absolute -top-10 -left-4 italic select-none uppercase">DETAILS</span>
-                    <h1 id="course-name" class="text-3xl md:text-5xl font-black italic leading-tight text-white relative z-10 uppercase tracking-tighter">講習コース詳細</h1>
+            <!-- 左側：ビジュアルセクション -->
+            <div class="lg:sticky lg:top-12">
+                <div class="relative mb-8 reveal active">
+                    <span id="course-id-en" class="font-en font-black text-sky-600/5 text-8xl absolute -top-12 -left-4 italic select-none uppercase tracking-tighter leading-none">COURSE</span>
+                    <h1 id="course-name" class="text-4xl md:text-6xl font-black italic leading-tight text-slate-900 relative z-10 uppercase tracking-tighter"></h1>
                 </div>
                 
-                <div class="rounded-3xl overflow-hidden shadow-2xl mb-8 border border-white/10 group bg-slate-800">
-                    <img id="course-img" src="course1.jpg" alt="講習イメージ" class="w-full h-64 object-cover group-hover:scale-105 transition duration-700">
+                <div class="rounded-[2.5rem] overflow-hidden shadow-2xl mb-10 border-4 border-white group">
+                    <img id="course-img" src="" alt="講習イメージ" class="w-full h-80 object-cover group-hover:scale-105 transition duration-[2s]">
                 </div>
 
-                <a id="pdf-link" href="#" download class="w-full glass-card p-6 rounded-2xl flex items-center justify-between hover:bg-white/10 transition group border-l-4 border-l-red-500 shadow-xl">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center text-red-500 text-2xl"><i class="fas fa-file-pdf"></i></div>
-                        <div class="text-left">
-                            <p class="text-[10px] text-white/40 font-black italic uppercase tracking-widest">Application Form</p>
-                            <p class="text-white font-black italic">受講申込書(PDF)をダウンロード</p>
+                <!-- PDFダウンロード -->
+                <a id="pdf-link" href="#" download class="w-full glass-white-card p-8 rounded-[2rem] flex items-center justify-between group border-2 border-white">
+                    <div class="flex items-center gap-6 text-left">
+                        <div class="w-16 h-16 bg-red-500 rounded-2xl flex items-center justify-center text-white text-3xl shadow-lg group-hover:rotate-6 transition"><i class="fas fa-file-pdf"></i></div>
+                        <div>
+                            <span class="label-en-sub text-slate-400">APPLICATION FORM</span>
+                            <p class="text-slate-800 font-black italic text-xl">受講申込書(PDF)をダウンロード</p>
                         </div>
                     </div>
-                    <i class="fas fa-download text-white/20 group-hover:text-white group-hover:translate-y-1 transition text-xl"></i>
+                    <i class="fas fa-download text-sky-500 transition text-2xl"></i>
                 </a>
             </div>
 
-            <!-- 右側：スペック詳細（画像から文字起こしした全データ） -->
-            <div class="space-y-10">
-                <div class="reveal">
-                    <h2 class="text-sky-400 font-black italic tracking-widest text-xs mb-6 uppercase border-b border-sky-400/30 pb-2">Technical Specifications</h2>
+            <!-- 右側：スペック詳細 -->
+            <div class="space-y-10 py-4">
+                <div class="reveal active space-y-12">
                     
-                    <div class="space-y-8">
-                        <div>
-                            <div class="spec-label mb-3 uppercase">コース説明</div>
-                            <p id="desc" class="text-slate-300 font-bold italic leading-loose text-sm pl-4 whitespace-pre-wrap"></p>
-                        </div>
+                    <!-- コース説明 -->
+                    <div class="pl-2">
+                        <span class="label-en-sub text-sky-600 ml-1">COURSE OVERVIEW</span>
+                        <div class="spec-label-jp mb-6 italic">コース説明</div>
+                        <p id="desc" class="text-slate-600 font-bold italic leading-relaxed text-lg pl-2"></p>
+                    </div>
 
-                        <div class="grid grid-cols-2 gap-8 pl-4">
-                            <div>
-                                <div class="spec-label mb-3 uppercase">受講資格</div>
-                                <p id="eligibility" class="text-white font-black italic"></p>
+                    <!-- 受講資格・条件 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pl-2">
+                        <div class="glass-white-card p-8 rounded-[2rem] border-t-4 border-t-sky-400">
+                            <span class="label-en-sub text-slate-400">ELIGIBILITY</span>
+                            <div class="text-sky-600 font-black italic text-2xl mt-2" id="eligibility"></div>
+                            <p class="text-xs text-slate-400 font-bold mt-2 italic">受講資格：満18歳以上</p>
+                        </div>
+                        <div class="glass-white-card p-8 rounded-[2rem] border-t-4 border-t-slate-300">
+                            <span class="label-en-sub text-slate-400">CONDITION</span>
+                            <div class="text-slate-700 font-black italic text-base mt-2 whitespace-pre-wrap" id="condition"></div>
+                        </div>
+                    </div>
+
+                    <!-- 対応重機 -->
+                    <div class="pl-2">
+                        <span class="label-en-sub text-sky-600 ml-1">APPLICABLE MACHINES</span>
+                        <div class="spec-label-jp mb-6 italic">対応重機・業務</div>
+                        <p id="machines" class="text-slate-600 font-black italic pl-2 text-lg leading-relaxed whitespace-pre-wrap"></p>
+                    </div>
+
+                    <!-- 料金（明るく目立たせる） -->
+                    <div class="price-box relative overflow-hidden group">
+                        <div class="relative z-10">
+                            <span class="label-en-sub text-sky-100/60">TOTAL FEE</span>
+                            <div class="spec-label-jp mb-6 italic bg-white/20 border-white text-white">受講料金</div>
+                            <div class="flex items-baseline gap-4">
+                                <span id="price" class="text-7xl font-en font-black italic text-white tracking-tighter"></span>
+                                <span class="text-white font-black italic text-2xl">円</span>
                             </div>
-                            <div>
-                                <div class="spec-label mb-3 uppercase">受講条件</div>
-                                <p id="condition" class="text-white font-black italic whitespace-pre-wrap"></p>
-                            </div>
+                            <p id="tax-note" class="text-sky-100 text-sm mt-6 font-bold italic border-t border-white/20 pt-4"></p>
                         </div>
+                    </div>
 
-                        <div>
-                            <div class="spec-label mb-3 uppercase">対応重機・業務</div>
-                            <p id="machines" class="text-white font-black italic pl-4 whitespace-pre-wrap"></p>
-                        </div>
-
-                        <div class="bg-sky-600/10 p-8 rounded-3xl border border-sky-500/20 shadow-inner">
-                            <div class="spec-label mb-4 uppercase">受講料金</div>
-                            <div class="flex items-baseline gap-2 pl-4">
-                                <span id="price" class="text-5xl font-en font-black italic text-sky-400"></span>
-                                <span class="text-white font-black italic text-xl">円</span>
-                                <span id="tax-note" class="text-white/40 text-[10px] ml-4 font-bold italic"></span>
-                            </div>
-                        </div>
-
-                        <div class="glass-card p-6 rounded-2xl">
-                            <div class="spec-label mb-3 uppercase text-white">講習時間・その他</div>
-                            <ul id="others" class="text-xs text-white/70 font-bold italic space-y-3 pl-4 list-none">
-                                <!-- JSで動的に追加 -->
-                            </ul>
-                        </div>
+                    <!-- その他 -->
+                    <div class="glass-white-card p-10 rounded-[2.5rem] reveal active border-l-8 border-l-slate-300">
+                        <span class="label-en-sub text-slate-400">SCHEDULE & DETAILS</span>
+                        <div class="spec-label-jp mb-8 italic bg-slate-800 text-white">講習日数・その他</div>
+                        <ul id="others" class="text-lg text-slate-700 font-bold italic space-y-6 list-none pl-2"></ul>
                     </div>
                 </div>
 
-                <div class="pt-8">
-                    <a href="index.html#schedule-section" class="block w-full bg-gradient-to-r from-sky-500 to-sky-600 text-white text-center py-6 rounded-full font-black text-lg italic tracking-[0.2em] hover:shadow-[0_20px_50px_rgba(14,165,233,0.4)] hover:-translate-y-1 transition duration-500 uppercase shadow-xl">
-                        <i class="fas fa-calendar-check mr-3"></i> 開催予定を確認・申込む
+                <!-- 申し込みボタン -->
+                <div class="pt-10 reveal active">
+                    <a href="index.html#schedule-section" class="cta-bright group block w-full text-center py-10 rounded-full font-black text-2xl italic tracking-[0.4em] shadow-xl uppercase">
+                        <i class="fas fa-calendar-check mr-4"></i> 開催予定を確認・申込む
                     </a>
                 </div>
             </div>
         </div>
     </main>
 
+    <footer class="py-20 text-center opacity-30 font-black italic text-[10px] tracking-[0.5em] uppercase text-slate-400">
+        SHIMONOSEKI TRAINING CENTER
+    </footer>
+
     <script>
         const courseData = {
             'tamakake': {
-                name: '玉掛け技能講習<br><span class="text-sky-500 text-2xl">(19時間コース)</span>',
-                en: 'SLINGING',
-                img: 'course1.jpg',
+                name: '玉掛け技能講習<br><span class="text-sky-500 text-2xl md:text-3xl italic">(19時間コース)</span>',
+                en: 'SLINGING', img: 'course1.jpg',
                 desc: 'つり上げ荷重に制限なく、移動式クレーン・クレーン・デリック・又は揚貨装置等の玉掛けの業務が可能になる資格取得コースです。未経験の方を対象とした、標準コースです。',
-                eligibility: '満18歳以上の方',
-                condition: '未経験の方',
+                eligibility: '経験不問', condition: '未経験の方',
                 machines: 'クレーン・移動式クレーン・デリック・揚貨装置等',
-                price: '25,000',
-                tax: '(テキスト代1,800円、及び消費税込み)',
-                others: ['学科講習12時間 / 実技講習7時間','講習日数：3日','最低開催人数：4名'],
+                price: '25,000', tax: '※ テキスト代 1,800円、及び消費税を含む。',
+                others: ['学科講習 12時間 / 実技講習 7時間','講習日数：3日間','最低開催人数：4名','定員に満たない場合、中止することがあります。'],
                 pdf: 'pdf/tamakake.pdf'
             },
             'crane': {
-                name: '小型移動式クレーン運転技能講習<br><span class="text-sky-500 text-2xl">(16時間コース)</span>',
-                en: 'CRANE',
-                img: 'course3.jpg',
-                desc: 'つり上げ荷重が5トン未満の小型移動式クレーンの運転業務が可能になる資格取得コースです。以下の修了証もしくは免許保有者を対象としたコースです。',
-                eligibility: '満18歳以上の方',
-                condition: 'A.玉掛けまたは、床上操作式クレーン運転技能講習修了証を持っている\nB.クレーン、デリックまたは、揚貨装置運転士免許持っている',
-                machines: 'つり上げ荷重5トン未満の、クローラーキャリア搭載クレーン/積載型トラッククレーン/トラッククレーン/ホイールクレーン等',
-                price: '35,000',
-                tax: '(テキスト代1,800円、及び消費税込み)',
-                others: ['学科講習10時間 / 実技講習6時間','講習日数：3日','最低開催人数：4名'],
+                name: '小型移動式クレーン<br><span class="text-sky-500 text-2xl md:text-3xl italic">(16時間コース)</span>',
+                en: 'MOBILE CRANE', img: 'course3.jpg',
+                desc: 'つり上げ荷重が5トン未満の小型移動式クレーンの運転業務が可能になる資格取得コースです。',
+                eligibility: '有資格者対象', condition: 'A.玉掛け技能講習修了証所持\nB.クレーン・デリック等の免許所持',
+                machines: '積載型トラッククレーン(ユニック車)、トラッククレーン等',
+                price: '35,000', tax: '※ テキスト代 1,800円、及び消費税を含む。',
+                others: ['学科講習 10時間 / 実技講習 6時間','講習日数：3日間','最低開催人数：4名'],
                 pdf: 'pdf/crane.pdf'
             },
             'fork31': {
-                name: 'フォークリフト運転技能講習<br><span class="text-sky-500 text-2xl">(31時間コース)</span>',
-                en: 'FORKLIFT',
-                img: 'course2.jpg',
-                desc: '最大荷重1トン以上(最大荷重に制限なし)のフォークリフトの運転の業務を行うことができる資格です。',
-                eligibility: '満18歳以上の方',
-                condition: '(普通・準中・中型・大型)自動車免許をお持ちの者',
-                machines: 'カウンタバランスフォークリフト / リーチフォークリフト / サイドフォークリフト / オーダピッキングフォークリフト / ウォーキーフォークリフト / マルチディレクショナルフォークリフト等',
-                price: '30,000',
-                tax: '(テキスト代2,000円、及び消費税込み)',
-                others: ['学科講習：7時間 / 実技講習：24時間','講習日数：4日','最低開催人数：4名'],
+                name: 'フォークリフト運転<br><span class="text-sky-500 text-2xl md:text-3xl italic">(31時間コース)</span>',
+                en: 'FORKLIFT 31H', img: 'course2.jpg',
+                desc: '最大荷重1トン以上のフォークリフトの運転業務を行うことができる資格です。自動車免許所持者を対象としています。',
+                eligibility: '免許所持者', condition: '普通・中型・大型自動車免許をお持ちの方',
+                machines: 'カウンタバランス、リーチフォークリフト等全般',
+                price: '30,000', tax: '※ テキスト代 2,000円、及び消費税を含む。',
+                others: ['学科講習 7時間 / 実技講習 24時間','講習日数：4日間','最低開催人数：4名'],
                 pdf: 'pdf/fork31.pdf'
             },
             'fork11': {
-                name: 'フォークリフト運転技能講習<br><span class="text-sky-500 text-2xl">(11時間コース)</span>',
-                en: 'FORKLIFT',
-                img: 'course2.jpg',
-                desc: '最大荷重1トン以上(最大荷重に制限なし)のフォークリフトの運転の業務を行うことができる資格です。',
-                eligibility: '満18歳以上の方',
-                condition: '・大型特殊自動車運転免許をお持ちの者\n・(普通・準中・中型・大型)自動車免許をお持ちで、フォークリフト特別教育修了後、フォークリフトの運転業務経験が3ヶ月以上ある者',
-                machines: 'カウンタバランスフォークリフト / リーチフォークリフト / サイドフォークリフト / 等',
-                price: '20,000',
-                tax: '(テキスト代2,000円、及び消費税込み)',
-                others: ['学科講習：7時間 / 実技講習：4時間','講習日数：2日','最低開催人数：4名'],
+                name: 'フォークリフト運転<br><span class="text-sky-500 text-2xl md:text-3xl italic">(11時間コース)</span>',
+                en: 'FORKLIFT 11H', img: 'course2.jpg',
+                desc: '最大荷重1トン以上のフォークリフトの運転業務を行うことができる資格です。大型特殊免許所持者、または特別教育修了後の実務経験者を対象としています。',
+                eligibility: '特定経験・資格者', condition: '・大型特殊免許所持者\n・普通免許所持＋特別教育後実務3ヶ月以上',
+                machines: 'カウンタバランス、リーチフォークリフト等全般',
+                price: '20,000', tax: '※ テキスト代 2,000円、及び消費税を含む。',
+                others: ['学科講習 7時間 / 実技講習 4時間','講習日数：2日間','最低開催人数：4名'],
                 pdf: 'pdf/fork11.pdf'
             },
             'tailgate': {
-                name: 'テールゲートリフターの操作の業務に係る特別教育',
-                en: 'TAILGATE',
-                img: 'course1.jpg',
-                desc: '荷を積み卸す作業におけるテールゲートリフターの操作の業務を行う者を対象とした講習です。',
-                eligibility: '満18歳以上の方',
-                condition: '未経験の方',
+                name: 'テールゲートリフター<br><span class="text-sky-500 text-2xl md:text-3xl italic">(特別教育)</span>',
+                en: 'TAILGATE LIFTER', img: 'hero.png',
+                desc: '荷を積み卸す作業におけるテールゲートリフターの操作の業務を行う方を対象とした特別教育です。',
+                eligibility: '経験不問', condition: '未経験の方',
                 machines: 'トラック等のテールゲートリフター操作全般',
-                price: '15,000',
-                tax: '(テキスト代2,000円、及び消費税込み)',
-                others: ['学科講習4時間 / 実技講習2時間','講習日数：1日','最低開催人数：4名','※開講日については、参加企業の業務日程に併せて調整させていただきますので、お電話にてお問い合わせ下さい。'],
+                price: '15,000', tax: '※ テキスト代 2,000円、及び消費税を含む。',
+                others: ['学科講習 4時間 / 実技講習 2時間','講習日数：1日間','企業の業務日程に合わせて調整可能です。'],
                 pdf: 'pdf/tail.pdf'
             }
         };
@@ -191,7 +212,7 @@
             const othersList = document.getElementById('others');
             data.others.forEach(text => {
                 const li = document.createElement('li');
-                li.innerText = `※ ${text}`;
+                li.innerHTML = `<div class="flex items-start gap-4"><i class="fas fa-check-circle text-sky-500 mt-1"></i><span>${text}</span></div>`;
                 othersList.appendChild(li);
             });
         }
