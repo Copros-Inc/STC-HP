@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STCが選ばれる理由 | 下関トレーニングセンター</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+JP:wght@300;700;900&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; }
+        .font-en { font-family: 'Montserrat', sans-serif; }
+        .bg-bright-effect { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); z-index: -2; }
+        .feature-card { background: white; border-radius: 3rem; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.05); border: 1px solid rgba(56, 189, 248, 0.1); transition: 0.5s; }
+        .spec-label-jp { background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 100%); padding: 8px 24px; border-radius: 0 50px 50px 0; color: #fff; font-weight: 900; font-size: 1rem; display: inline-flex; align-items: center; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="pb-20">
+    <div class="bg-bright-effect"></div>
+
+    <nav class="p-8">
+        <a href="index.html#features" class="inline-flex items-center text-slate-400 hover:text-sky-600 transition font-black italic text-xs tracking-widest group">
+            <i class="fas fa-chevron-left mr-3 group-hover:-translate-x-2 transition-transform"></i> BACK TO HOME
+        </a>
+    </nav>
+
+    <header class="container mx-auto px-6 py-12 text-center">
+        <span class="font-en font-black text-sky-500/10 text-7xl md:text-9xl absolute left-1/2 -translate-x-1/2 top-10 select-none italic uppercase">REASON</span>
+        <h1 class="text-4xl md:text-6xl font-black italic tracking-tighter text-slate-900 relative z-10 uppercase">下関トレーニングセンターが<br><span class="text-sky-500">選ばれる3つの理由</span></h1>
+    </header>
+
+    <main class="container mx-auto px-6 max-w-5xl space-y-24 mt-20">
+        
+        <!-- 01. 労働局登録 -->
+        <section class="feature-card reveal active grid md:grid-cols-2">
+            <div class="p-12 md:p-16 space-y-8">
+                <div class="flex items-center gap-4">
+                    <span class="text-7xl font-en font-black italic text-sky-500/20 leading-none">01</span>
+                    <h2 class="text-3xl font-black italic text-slate-900 leading-tight">山口労働局長<br><span class="text-sky-600 underline">登録教習機関</span></h2>
+                </div>
+                <div class="spec-label-jp italic">安心と信頼の認可校</div>
+                <p class="text-slate-600 font-bold italic leading-loose">
+                    STCは山口県下関市で唯一の認可教習機関（第68号）です。厚生労働省・山口労働局の厳格な基準をクリアした施設とカリキュラムで、全国の現場で永続的に有効な「本物の修了証」を発行いたします。
+                </p>
+            </div>
+            <div class="bg-slate-100 flex items-center justify-center p-8">
+                <img src="features-01.jpg" alt="労働局登録" class="rounded-3xl shadow-xl w-full h-full object-cover">
+            </div>
+        </section>
+
+        <!-- 02. アクセス -->
+        <section class="feature-card reveal grid md:grid-cols-2">
+            <div class="bg-slate-100 order-2 md:order-1 p-8">
+                <!-- 地図画像またはGoogle Map埋め込み -->
+                <div class="rounded-3xl overflow-hidden shadow-xl h-full min-h-[300px] bg-white">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3299.782068478495!2d131.0264004!3d34.010999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3543971e98d98d9d%3A0x7d8a6e8b8e8b8e8b!2z5LiL6Zai44OI44Os44O844OL44Oz44Kw44K744Oz44K_44O8!5e0!3m2!1sja!2sjp!4v1719999999999" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="p-12 md:p-16 space-y-8 order-1 md:order-2">
+                <div class="flex items-center gap-4">
+                    <span class="text-7xl font-en font-black italic text-sky-500/20 leading-none">02</span>
+                    <h2 class="text-3xl font-black italic text-slate-900 leading-tight">国道2号線すぐ<br><span class="text-sky-600 underline">抜群のアクセス</span></h2>
+                </div>
+                <div class="spec-label-jp italic">車で通いやすい好立地</div>
+                <p class="text-slate-600 font-bold italic leading-loose">
+                    国道2号線（小月バイパス）に直結しており、下関市内、山陽小野田、北九州方面からのアクセスもスムーズです。広大な大型駐車場を完備しており、お車での来園も安心。小月駅からの送迎バス（予約制）も運行しています。
+                </p>
+            </div>
+        </section>
+
+        <!-- 03. 指導陣 -->
+        <section class="feature-card reveal grid md:grid-cols-2">
+            <div class="p-12 md:p-16 space-y-8">
+                <div class="flex items-center gap-4">
+                    <span class="text-7xl font-en font-black italic text-sky-500/20 leading-none">03</span>
+                    <h2 class="text-3xl font-black italic text-slate-900 leading-tight">現役職人が教える<br><span class="text-sky-600 underline">生きた技術</span></h2>
+                </div>
+                <div class="spec-label-jp italic">現場のリアルを伝えたい</div>
+                <p class="text-slate-600 font-bold italic leading-loose">
+                    当センターの講師陣は、長年建設現場で第一線を張ってきたベテラン揃い。ただ試験に受かるための知識ではなく、「現場でどう動けば安全か」「事故を未然に防ぐための判断は」といった、経験に基づいた生きた指導に定評があります。
+                </p>
+            </div>
+            <div class="bg-slate-100 flex items-center justify-center p-8">
+                <img src="features-03.jpg" alt="指導風景" class="rounded-3xl shadow-xl w-full h-full object-cover">
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-20 text-center opacity-30 font-black italic text-[10px] tracking-[0.5em] uppercase text-slate-400">
+        SHIMONOSEKI TRAINING CENTER
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            document.querySelectorAll('.reveal').forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
