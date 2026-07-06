@@ -133,27 +133,68 @@
         </div>
     </section>
 
-    <section class="py-24 md:py-32 container mx-auto px-6 md:px-10" id="courses">
-        <div class="relative mb-16 reveal text-left">
-            <h2 class="text-6xl md:text-[8vw] font-black italic tracking-tighter text-white/[0.03] absolute -top-10 -left-1 select-none uppercase" style="letter-spacing: -0.03em;">COURSE</h2>
-            <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-400 uppercase">Major Courses</h2>
-            <p class="text-white/40 font-en tracking-[0.3em] text-[10px] mt-2 italic uppercase">主要講習コースのご案内</p>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-7xl mx-auto">
-            <div class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none">
-                <div class="relative h-64 overflow-hidden"><img src="course1.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700"></div>
-                <div class="p-10 text-left"><h3 class="text-2xl font-black mb-2 italic text-slate-900">01. 玉掛け技能講習</h3><p class="text-slate-400 text-xs font-bold italic tracking-wider uppercase">Slinging Skill</p></div>
+   <section class="py-24 md:py-32 container mx-auto px-6 md:px-10" id="courses">
+    <div class="relative mb-16 reveal text-left">
+        <h2 class="text-6xl md:text-[8vw] font-black italic tracking-tighter text-white/[0.03] absolute -top-10 -left-1 select-none uppercase" style="letter-spacing: -0.03em;">COURSE</h2>
+        <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-400 uppercase">Major Courses</h2>
+        <p class="text-white/40 font-en tracking-[0.3em] text-[10px] mt-2 italic uppercase">主要講習コースのご案内</p>
+    </div>
+    
+    <!-- 4つ並べるために grid-cols-1 md:grid-cols-2 lg:grid-cols-4 に変更 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-[90rem] mx-auto">
+        
+        <!-- 01. 玉掛け -->
+        <a href="course-detail.html?id=tamakake" class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none h-full">
+            <div class="relative h-48 overflow-hidden">
+                <img src="course1.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
             </div>
-            <div class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none">
-                <div class="relative h-64 overflow-hidden"><img src="course2.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700"></div>
-                <div class="p-10 text-left"><h3 class="text-2xl font-black mb-2 italic text-slate-900">02. フォークリフト運転</h3><p class="text-slate-400 text-xs font-bold italic tracking-wider uppercase">Forklift Operation</p></div>
+            <div class="p-8 text-left flex-grow">
+                <h3 class="text-xl font-black mb-2 italic text-slate-900 leading-tight">01. 玉掛け<br>技能講習</h3>
+                <p class="text-slate-400 text-[10px] font-bold italic tracking-wider uppercase mb-4">Slinging Skill</p>
+                <div class="text-sky-600 text-[9px] font-black italic border-t border-slate-100 pt-4">詳細・申込書DL →</div>
             </div>
-            <div class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none">
-                <div class="relative h-64 overflow-hidden"><img src="course3.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700"></div>
-                <div class="p-10 text-left"><h3 class="text-2xl font-black mb-2 italic text-slate-900">03. 小型移動式クレーン</h3><p class="text-slate-400 text-xs font-bold italic tracking-wider uppercase">Mobile Crane Skill</p></div>
+        </a>
+
+        <!-- 02. フォークリフト（ここから詳細ページで31H/11Hを選べるようにします） -->
+        <a href="course-detail.html?id=fork31" class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none h-full">
+            <div class="relative h-48 overflow-hidden">
+                <img src="course2.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
             </div>
-        </div>
-    </section>
+            <div class="p-8 text-left flex-grow">
+                <h3 class="text-xl font-black mb-2 italic text-slate-900 leading-tight">02. フォークリフト<br>運転技能講習</h3>
+                <p class="text-slate-400 text-[10px] font-bold italic tracking-wider uppercase mb-4">Forklift Operation</p>
+                <div class="text-sky-600 text-[9px] font-black italic border-t border-slate-100 pt-4">詳細・申込書DL →</div>
+            </div>
+        </a>
+
+        <!-- 03. 小型移動式クレーン -->
+        <a href="course-detail.html?id=crane" class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none h-full">
+            <div class="relative h-48 overflow-hidden">
+                <img src="course3.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+            </div>
+            <div class="p-8 text-left flex-grow">
+                <h3 class="text-xl font-black mb-2 italic text-slate-900 leading-tight">03. 小型移動式<br>クレーン運転</h3>
+                <p class="text-slate-400 text-[10px] font-bold italic tracking-wider uppercase mb-4">Mobile Crane Skill</p>
+                <div class="text-sky-600 text-[9px] font-black italic border-t border-slate-100 pt-4">詳細・申込書DL →</div>
+            </div>
+        </a>
+
+        <!-- 04. テールゲート（新規追加！） -->
+        <a href="course-detail.html?id=tailgate" class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none h-full">
+            <div class="relative h-48 overflow-hidden">
+                <!-- 画像がない場合は一旦 hero.png 等を仮置きするか、色で表現 -->
+                <img src="hero.png" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-80">
+                <div class="absolute inset-0 bg-sky-900/20"></div>
+            </div>
+            <div class="p-8 text-left flex-grow">
+                <h3 class="text-xl font-black mb-2 italic text-slate-900 leading-tight">04. テールゲート<br>リフター特別教育</h3>
+                <p class="text-slate-400 text-[10px] font-bold italic tracking-wider uppercase mb-4">Tailgate Lifter</p>
+                <div class="text-sky-600 text-[9px] font-black italic border-t border-slate-100 pt-4">詳細・申込書DL →</div>
+            </div>
+        </a>
+
+    </div>
+</section>
 
     <!-- WHY CHOOSE STC -->
     <section class="py-24 md:py-40 bg-white text-slate-900" id="features">
