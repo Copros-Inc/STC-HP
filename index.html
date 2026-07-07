@@ -75,29 +75,29 @@
         </div>
     </nav>
 
-    <section class="parallax-bg overflow-hidden text-center px-6">
+        <section class="parallax-bg overflow-hidden text-center px-6">
         <img src="hero.png" class="parallax-img zoom-effect" id="hero-img">
-        <div class="relative z-10 mt-20">
-            <h1 class="font-black leading-[1.2] text-white tracking-tighter mb-10 italic reveal active text-[clamp(2.5rem,8vw,8rem)]">
+        <div class="relative z-10 mt-20 w-full"> <!-- w-fullを追加して中央配置を保証 -->
+            <h1 class="font-black leading-[1.2] text-white tracking-tighter mb-10 italic reveal active text-[clamp(2.5rem,8vw,8rem)] text-center">
                 <span class="block mb-4">その資格が、</span>
                 <span class="text-transparent" style="-webkit-text-stroke: 1px #fff; opacity: 0.9;">一生の武器になる。</span>
             </h1>
             <p class="text-white/80 text-sm md:text-lg font-bold tracking-[0.3em] reveal active uppercase border-t border-b border-white/20 py-4 inline-block px-10 italic">山口県下関市唯一の認可教習機関</p>
+            
             <div class="mt-16 flex flex-col md:flex-row gap-6 justify-center reveal active">
-                <!-- 修正：カレンダーへ移動 -->
                 <a href="#schedule-section" class="cta-card-primary animate-pulse text-white px-12 py-4 rounded-full font-black text-sm tracking-widest hover:shadow-2xl italic uppercase flex items-center justify-center">
                     <i class="fas fa-edit mr-2"></i> 受講申し込み
                 </a>
                 <a href="#schedule-section" class="border-2 border-white text-white px-12 py-4 rounded-full flex items-center justify-center font-black text-sm tracking-widest hover:bg-white/10 italic uppercase transition"><i class="fas fa-calendar mr-2"></i> 講習スケジュール</a>
             </div>
-        </div>
-        　　　　<!-- NEWS TICKER (動的お知らせ) -->
-            <div id="hp-news-list" class="mt-12 max-w-2xl mx-auto space-y-3 px-4 relative z-20">
+
+            <!-- NEWS TICKER (ここに再配置) -->
+            <div id="hp-news-list" class="mt-12 max-w-2xl mx-auto space-y-3 px-4 relative z-20 text-center">
                 <!-- ここに管理画面からのメッセージが自動で入ります -->
             </div>
+        </div>
         <div class="scroll-line"></div>
     </section>
-
     <section class="py-40 md:py-60 bg-slate-50 text-slate-900" id="service">
         <div class="container mx-auto px-6 md:px-10">
             <div class="grid lg:grid-cols-2 gap-16 items-end"> 
