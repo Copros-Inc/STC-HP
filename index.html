@@ -411,12 +411,13 @@
         });
     }
 
-           function loadSchedules() {
+              function loadSchedules() {
         onSnapshot(collection(db, "schedules"), (snapshot) => {
             schedules = snapshot.docs.map(doc => {
                 const data = doc.data();
                 const rawStart = data.dayStart;
                 let dayArray = [];
+                
                 if (typeof rawStart === 'string' && rawStart.includes(',')) {
                     dayArray = rawStart.split(',').map(n => parseInt(n.trim()));
                 } else {
@@ -430,17 +431,16 @@
                     month: parseInt(data.month),
                     days: dayArray,
                     dayEnd: parseInt(data.dayEnd),
-                    // --- ここが超重要！管理画面の項目名と合わせる ---
-                    capacity: parseInt(data.capacity || 10),
-                    fullApplied: parseInt(data.fullApplied || 0),
-                    reserved: parseInt(data.reserved || 0)
+                    // --- ★ここが「空席表示」の魔法！管理画面の項目をHPに繋ぎます ---
+                    capacity: parseInt(data.capacity || 10),    // 定員
+                    fullApplied: parseInt(data.fullApplied || 0), // 本申込
+                    reserved: parseInt(data.reserved || 0)      // 予約のみ
                 };
             });
             renderCalendar(currentMonth);
             renderGantt(currentMonth);
         });
     }
-
        window.renderCalendar = function(month) {
         const container = document.getElementById('calendar-container');
         const monthDisplay = document.getElementById('current-month-display');
