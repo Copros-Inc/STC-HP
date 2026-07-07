@@ -411,30 +411,29 @@
         });
     }
 
-        function loadSchedules() {
+           function loadSchedules() {
         onSnapshot(collection(db, "schedules"), (snapshot) => {
             schedules = snapshot.docs.map(doc => {
                 const data = doc.data();
-                // どんな形式（数値/文字列/カンマ区切り）で来ても配列に変換する
                 const rawStart = data.dayStart;
                 let dayArray = [];
-                
                 if (typeof rawStart === 'string' && rawStart.includes(',')) {
-                    // 「26,30」のようなカンマ区切り文字列の場合
                     dayArray = rawStart.split(',').map(n => parseInt(n.trim()));
                 } else {
-                    // 単一の数値または文字列の場合
                     dayArray = [parseInt(rawStart)];
                 }
 
                 return {
+                    id: doc.id,
                     name: data.courseName || "名称未設定",
                     date: data.date || "",
-                    status: data.status,
-                    statusText: data.status === 'full' ? '満員御礼' : '空席あり',
                     month: parseInt(data.month),
-                    days: dayArray, // ここに配列として保存
-                    dayEnd: parseInt(data.dayEnd)
+                    days: dayArray,
+                    dayEnd: parseInt(data.dayEnd),
+                    // --- ここが超重要！管理画面の項目名と合わせる ---
+                    capacity: parseInt(data.capacity || 10),
+                    fullApplied: parseInt(data.fullApplied || 0),
+                    reserved: parseInt(data.reserved || 0)
                 };
             });
             renderCalendar(currentMonth);
