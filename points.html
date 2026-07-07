@@ -255,7 +255,7 @@
             const container = document.getElementById('faq-container');
             if (!container) return;
 
-            container.innerHTML = snapshot.docs.map(doc => {
+                container.innerHTML = snapshot.docs.map(doc => {
                 const data = doc.data();
                 return `
                 <details class="faq-details group bg-white rounded-[1.5rem] border border-slate-200 overflow-hidden shadow-sm hover:border-sky-400 hover:shadow-md transition-all mb-4">
@@ -264,12 +264,14 @@
                             <span class="text-sky-500 font-en text-2xl">Q.</span> 
                             <span class="text-lg">${data.question}</span>
                         </span>
-                        <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300"></i>
+                        <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300 group-open:rotate-180"></i>
                     </summary>
-                    <div class="px-10 pb-10 pt-4 border-t border-slate-50 animate-fadeIn">
+                    <div class="px-10 pb-10 pt-4 border-t border-slate-50">
                         <div class="flex gap-6">
-                            <span class="text-slate-200 font-en font-black text-3xl">A.</span>
-                            <p class="text-slate-600 font-bold italic leading-loose text-base whitespace-pre-wrap">${data.answer}</p>
+                            <!-- Aの文字を少しだけ濃い水色にして存在感アップ -->
+                            <span class="text-sky-200 font-en font-black text-3xl">A.</span>
+                            <!-- 本文を text-slate-800（濃いグレー）にして視認性を最大化 -->
+                            <p class="text-slate-800 font-bold italic leading-loose text-base whitespace-pre-wrap">${data.answer}</p>
                         </div>
                     </div>
                 </details>`;
