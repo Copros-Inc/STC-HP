@@ -306,27 +306,54 @@
             document.getElementById('submitBtn').disabled = !Array.from(document.querySelectorAll('.consent-check')).every(i => i.checked);
         }));
 
-        document.getElementById('applyForm').addEventListener('submit', async e => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn'); btn.disabled = true; btn.innerText = "送信中 / SENDING...";
-            const mode = new URLSearchParams(window.location.search).get('mode') || "full";
-            try {
-                const formData = new FormData(e.target);
-                const lics = Array.from(document.querySelectorAll('input[name="licT"]:checked')).map(i => i.value).join(',');
-                await addDoc(collection(db, "reservations"), {
-                    courseName: document.getElementById('courseName').value, courseDate: document.getElementById('courseDate').value,
-                    userName: formData.get('userName'), userKana: formData.get('userKana'), birthDate: formData.get('birthDate'), phone: formData.get('phone'), email: formData.get('email'), address: formData.get('address'),
-                    company: formData.get('company'), mode: mode, createdAt: serverTimestamp(), status: 'new',
-                    licChecked: lics, photos: photos
-                });
-                if (mode === 'simple') {
-                    const pdfMap = { "玉掛け技能講習": "pdf/tamakake.pdf", "小型移動式クレーン": "pdf/crane.pdf", "フォークリフト (31H)": "pdf/fork31.pdf", "フォークリフト (11H)": "pdf/fork11.pdf", "テールゲート": "pdf/tail.pdf" };
-                    alert("予約を受け付けました！\n\n受講2週間前までに、申込書を印刷・記入して当センターまでお持ちください。"); window.location.href = pdfMap[document.getElementById('courseName').value] || "pdf/common.pdf";
+           document.getElementById('applyForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn'); 
+        btn.disabled = true; 
+        btn.innerText = "送信中 / SENDING...";
+        
+        const mode = new URLSearchParams(window.location.search).get('mode') || "full";
+        
+        try {
+            const formData = new FormData(e.target);
+            
+            // 1. まず基本情報をセット
+            const data = {
+                courseName: document.getElementById('courseName').value,
+                courseDate: document.getElementById('courseDate').value,
+                mode: mode,
+                createdAt: serverTimestamp(),
+                status: 'new',
+                photos: photos // 圧縮画像
+            };
+
+            // 2. フォーム内の全入力項目（mcM, mcT, receipt等）をループで全部追加
+            formData.forEach((value, key) => {
+                // 同じ名前が複数ある（チェックボックス等）場合はカンマ区切りにする
+                if (data[key]) {
+                    data[key] = data[key] + ", " + value;
                 } else {
-                    alert("お申し込みありがとうございます！\n送信が完了いたしました。"); window.location.href = "index.html";
+                    data[key] = value;
                 }
-            } catch (err) { alert("エラー: " + err.message); btn.disabled = false; }
-        });
+            });
+
+            // 3. 最後にFirebaseへ保存
+            await addDoc(collection(db, "reservations"), data);
+
+            if (mode === 'simple') {
+                const pdfMap = { "玉掛け技能講習": "pdf/tamakake.pdf", "小型移動式クレーン": "pdf/crane.pdf", "フォークリフト (31H)": "pdf/fork31.pdf", "フォークリフト (11H)": "pdf/fork11.pdf", "テールゲート": "pdf/tail.pdf" };
+                alert("予約を受け付けました！\n\n受講2週間前までに、申込書を印刷・記入して当センターまでお持ちください。"); 
+                window.location.href = pdfMap[document.getElementById('courseName').value] || "pdf/common.pdf";
+            } else {
+                alert("お申し込みありがとうございます！\n送信が完了いたしました。"); 
+                window.location.href = "index.html";
+            }
+        } catch (err) { 
+            alert("エラー: " + err.message); 
+            btn.disabled = false; 
+            btn.innerText = "申し込みを送信する";
+        }
+    });
     </script>
 
     <input type="file" id="in_licA" accept="image/*" class="hidden" onchange="window.processImg(this, 'licA')">
