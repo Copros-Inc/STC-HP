@@ -230,32 +230,52 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        const firebaseConfig = { apiKey: "AiZaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw", authDomain: "stc-hp.firebaseapp.com", projectId: "stc-hp", storageBucket: "stc-hp.firebasestorage.app", messagingSenderId: "795332931918", appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f" };
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-        onSnapshot(query(collection(db, "faq"), orderBy("order", "asc")), (snapshot) => {
+    const firebaseConfig = { 
+        apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw", 
+        authDomain: "stc-hp.firebaseapp.com", 
+        projectId: "stc-hp",
+        storageBucket: "stc-hp.firebasestorage.app",
+        messagingSenderId: "795332931918",
+        appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    signInAnonymously(auth).then(() => {
+        // --- 魔法のFAQ読み込みロジック ---
+        // order（表示順）が小さい順に並べて取得
+        const faqQuery = query(collection(db, "faq"), orderBy("order", "asc"));
+        
+        onSnapshot(faqQuery, (snapshot) => {
             const container = document.getElementById('faq-container');
-            let html = "";
-            snapshot.docs.forEach(doc => {
+            if (!container) return;
+
+            container.innerHTML = snapshot.docs.map(doc => {
                 const data = doc.data();
-                html += `<details class="faq-details group bg-white rounded-[1.5rem] border border-slate-200 overflow-hidden shadow-sm hover:border-sky-400 hover:shadow-md transition-all mb-4">
+                return `
+                <details class="faq-details group bg-white rounded-[1.5rem] border border-slate-200 overflow-hidden shadow-sm hover:border-sky-400 hover:shadow-md transition-all mb-4">
                     <summary class="p-8 cursor-pointer flex justify-between items-center font-black italic text-slate-800">
-                        <span class="flex gap-4 items-center"><span class="text-sky-500 font-en text-2xl">Q.</span> ${data.question}</span>
-                        <i class="fas fa-chevron-down text-slate-300 transition-transform"></i>
+                        <span class="flex gap-4 items-center">
+                            <span class="text-sky-500 font-en text-2xl">Q.</span> 
+                            <span class="text-lg">${data.question}</span>
+                        </span>
+                        <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300"></i>
                     </summary>
-                    <div class="px-10 pb-10 pt-4 border-t border-slate-50">
+                    <div class="px-10 pb-10 pt-4 border-t border-slate-50 animate-fadeIn">
                         <div class="flex gap-6">
                             <span class="text-slate-200 font-en font-black text-3xl">A.</span>
                             <p class="text-slate-600 font-bold italic leading-loose text-base whitespace-pre-wrap">${data.answer}</p>
                         </div>
                     </div>
                 </details>`;
-            });
-            container.innerHTML = html || '<p class="text-center text-slate-400 py-10 italic">現在準備中です。</p>';
+            }).join('') || '<p class="text-center text-slate-400 py-10 italic">現在、よくある質問を準備中です。</p>';
         });
+    });
     </script>
 </body>
 </html>
