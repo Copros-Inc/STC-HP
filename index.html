@@ -441,7 +441,7 @@
             renderGantt(currentMonth);
         });
     }
-       window.renderCalendar = function(month) {
+           window.renderCalendar = function(month) {
         const container = document.getElementById('calendar-container');
         const monthDisplay = document.getElementById('current-month-display');
         if(monthDisplay) monthDisplay.innerText = `${currentYear}年${month}月`;
@@ -460,34 +460,29 @@
             html += `<tr><td colspan="4" class="p-10 text-center text-slate-400">この月の講習予定がありません</td></tr>`;
         } else {
             monthSchedules.forEach(item => {
-                // --- 残席計算の魔法 ---
+                // 【計算ロジック】定員 - (本申込 + 予約)
                 const cap = Number(item.capacity || 10);
                 const res = Number(item.reserved || 0) + Number(item.fullApplied || 0);
                 const avail = cap - res;
 
                 let statusHtml = "";
-                let actionBtn = "";
+                let actionBtn = `
+                    <div class="flex flex-col gap-2 py-2">
+                        <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-sky-600 text-white px-4 py-1.5 rounded-full text-[9px] text-center font-black italic hover:bg-slate-900 transition shadow-sm uppercase tracking-tighter">WEBで本申込</a>
+                        <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="border border-sky-400 text-sky-500 px-4 py-1.5 rounded-full text-[9px] text-center font-black italic hover:bg-sky-50 transition uppercase tracking-tighter">予約のみ(紙提出)</a>
+                    </div>`;
 
+                // --- 状態による表示の切り替え ---
                 if (avail <= 0) {
-                    // 【満員の場合】
+                    // 満員：ボタンを「キャンセル待ち」に
                     statusHtml = `<span class="status-badge status-full">満員御礼</span>`;
-                    actionBtn = `<button onclick="openModal('waitlist')" class="w-full bg-slate-800 text-white py-3 rounded-full text-[9px] font-black italic hover:bg-slate-900 transition shadow-sm uppercase tracking-tighter">キャンセル待ち(電話)</button>`;
+                    actionBtn = `<button onclick="openModal('waitlist')" class="w-full bg-slate-800 text-white py-3 rounded-full text-[9px] font-black italic shadow-sm uppercase tracking-tighter">キャンセル待ち(電話)</button>`;
                 } else if (avail <= 2) {
-                    // 【残りわずか（2名以下）の場合】
-                    statusHtml = `<span class="status-badge status-few font-en animate-pulse">残り${avail}席</span>`;
-                    actionBtn = `
-                        <div class="flex flex-col gap-2 py-2">
-                            <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-sky-600 text-white px-4 py-1.5 rounded-full text-[9px] text-center font-black italic hover:bg-slate-900 transition shadow-sm uppercase tracking-tighter">WEBで本申込</a>
-                            <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="border border-sky-400 text-sky-500 px-4 py-1.5 rounded-full text-[9px] text-center font-black italic hover:bg-sky-50 transition uppercase tracking-tighter">予約のみ(紙提出)</a>
-                        </div>`;
+                    // 残りわずか：オレンジ色で点滅させて注意を引く
+                    statusHtml = `<span class="status-badge status-few animate-pulse font-en">残り ${avail} 席</span>`;
                 } else {
-                    // 【空席ありの場合】
-                    statusHtml = `<span class="status-badge status-ok">空席あり</span>`;
-                    actionBtn = `
-                        <div class="flex flex-col gap-2 py-2">
-                            <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-sky-600 text-white px-4 py-1.5 rounded-full text-[9px] text-center font-black italic hover:bg-slate-900 transition shadow-sm uppercase tracking-tighter">WEBで本申込</a>
-                            <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="border border-sky-400 text-sky-500 px-4 py-1.5 rounded-full text-[9px] text-center font-black italic hover:bg-sky-50 transition uppercase tracking-tighter">予約のみ(紙提出)</a>
-                        </div>`;
+                    // 3名以上の空き：青色で「残り◯席」とハッキリ表示
+                    statusHtml = `<span class="status-badge status-ok font-en">残り ${avail} 席</span>`;
                 }
 
                 html += `
