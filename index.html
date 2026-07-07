@@ -91,6 +91,10 @@
                 <a href="#schedule-section" class="border-2 border-white text-white px-12 py-4 rounded-full flex items-center justify-center font-black text-sm tracking-widest hover:bg-white/10 italic uppercase transition"><i class="fas fa-calendar mr-2"></i> 講習スケジュール</a>
             </div>
         </div>
+        　　　　<!-- NEWS TICKER (動的お知らせ) -->
+            <div id="hp-news-list" class="mt-12 max-w-2xl mx-auto space-y-3 px-4 relative z-20">
+                <!-- ここに管理画面からのメッセージが自動で入ります -->
+            </div>
         <div class="scroll-line"></div>
     </section>
 
@@ -379,7 +383,33 @@
     if (currentYear === 2026 && currentMonth < 4) currentMonth = 4;
     if (currentYear === 2027 && currentMonth > 3) { currentYear = 2027; currentMonth = 3; }
 
-    signInAnonymously(auth).then(() => { loadSchedules(); });
+       // ログイン後にスケジュールとお知らせの両方を読み込む
+    signInAnonymously(auth).then(() => { 
+        loadSchedules(); 
+        loadNews(); // ←これを追加
+    });
+
+    // ニュース（お知らせ）読み込み機能
+    function loadNews() {
+        onSnapshot(collection(db, "news"), (snapshot) => {
+            const listEl = document.getElementById('hp-news-list');
+            if (!listEl) return;
+            const docs = snapshot.docs
+                .map(d => ({id: d.id, ...d.data()}))
+                .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0))
+                .slice(0, 3);
+            listEl.innerHTML = docs.map(data => {
+                const isImportant = data.isImportant 
+                    ? 'border-rose-500 bg-rose-500/20 text-rose-100 shadow-[0_0_15px_rgba(244,63,94,0.3)]' 
+                    : 'border-white/10 bg-white/5 text-white/80';
+                return `
+                <div class="flex items-center gap-4 p-3 rounded-2xl border ${isImportant} backdrop-blur-sm reveal active transition-all hover:scale-[1.02]">
+                    <span class="text-[9px] font-black italic opacity-50 font-en uppercase">${data.createdAt?.toDate().toLocaleDateString('ja-JP') || ''}</span>
+                    <p class="text-xs font-bold italic tracking-wider text-left truncate">${data.content}</p>
+                </div>`;
+            }).join('');
+        });
+    }
 
         function loadSchedules() {
         onSnapshot(collection(db, "schedules"), (snapshot) => {
