@@ -52,15 +52,21 @@
         </div>
     </nav>
 
-    <!-- 1. HERO -->
+        <!-- 1. HERO SECTION -->
     <section class="relative h-screen flex items-center justify-center text-center px-6 overflow-hidden">
-        <div class="hero-slider"><img src="hero.png" class="hero-img-main" id="hero-img"></div>
+        <!-- 背景スライダー -->
+        <div class="hero-slider" id="hero-slider">
+            <div class="slide" id="slide1" style="background-image: url('old1.jpg'); position: absolute; inset: 0; opacity: 0; transition: opacity 2s; background-size: cover; background-position: center;"></div>
+            <div class="slide" id="slide2" style="background-image: url('old2.jpg'); position: absolute; inset: 0; opacity: 0; transition: opacity 2s; background-size: cover; background-position: center;"></div>
+            <div class="slide main-hero" id="slide-main" style="background-image: url('hero.png'); position: absolute; inset: 0; opacity: 0; background-size: cover; background-position: center;"></div>
+        </div>
+        
         <div class="relative z-10">
             <h1 class="font-black leading-tight text-white tracking-tighter mb-8 italic text-[clamp(2.2rem,8vw,7rem)] drop-shadow-2xl">
-                <span class="block mb-2 text-center">その資格が、</span>
-                <span class="text-transparent text-center" style="-webkit-text-stroke: 1px #fff; opacity: 0.9;">一生の武器になる。</span>
+                <span class="block mb-2">その資格が、</span>
+                <span class="text-transparent" style="-webkit-text-stroke: 1px #fff; opacity: 0.9;">一生の武器になる。</span>
             </h1>
-            <p class="text-white text-[clamp(0.75rem,2vw,1.1rem)] font-bold tracking-[0.3em] border-t border-b border-white/20 py-4 inline-block px-10 italic uppercase">
+            <p class="text-white text-[clamp(0.7rem,2vw,1.1rem)] font-bold tracking-[0.2em] border-t border-b border-white/20 py-4 inline-block px-10 italic uppercase">
                 山口県下関市唯一の認可教習機関
             </p>
             <div class="mt-12 flex flex-col md:flex-row gap-6 justify-center">
@@ -263,10 +269,24 @@
     let currentMonth = new Date().getMonth() + 1;
     let currentYear = new Date().getFullYear();
 
-    signInAnonymously(auth).then(() => { 
+       signInAnonymously(auth).then(() => { 
         loadSchedules(); 
         loadNews(); 
-        setTimeout(() => { document.body.classList.add('hero-active'); document.getElementById('flare').classList.add('flare-active'); }, 500);
+        
+        // --- 演出開始の魔法 ---
+        const s1 = document.getElementById('slide1');
+        const s2 = document.getElementById('slide2');
+        const sm = document.getElementById('slide-main');
+        const flare = document.getElementById('flare');
+
+        setTimeout(() => s1.style.opacity = "0.4", 500); // 写真1
+        setTimeout(() => { s1.style.opacity = "0"; s2.style.opacity = "0.4"; }, 3000); // 写真2
+        setTimeout(() => { 
+            s2.style.opacity = "0";
+            document.body.classList.add('hero-active'); // おじさんズームCSS適用
+            sm.style.opacity = "0.6"; // おじさん表示
+            flare.classList.add('flare-active'); // 閃光
+        }, 5500);
     });
 
     function loadSchedules() {
