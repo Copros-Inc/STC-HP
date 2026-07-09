@@ -13,97 +13,72 @@
         .bg-video-effect { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, #1e3a8a 0%, #020617 100%); z-index: -2; }
         .bg-glow { position: fixed; width: 600px; height: 600px; background: rgba(56, 189, 248, 0.08); filter: blur(120px); border-radius: 50%; z-index: -1; animation: float 20s infinite alternate; }
         @keyframes float { from { transform: translate(-10%, -10%); } to { transform: translate(20%, 20%); } }
-        .parallax-bg { position: relative; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .parallax-img { position: absolute; top: 0; left: 0; width: 100%; height: 120%; object-fit: cover; z-index: -1; opacity: 0.3; will-change: transform; }
-        @keyframes kenburns { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
-        .zoom-effect { animation: kenburns 20s ease-out forwards; }
-        .glass-bright-card { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px); border: 1px solid rgba(56, 189, 248, 0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.2); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .glass-bright-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(56, 189, 248, 0.2); }
-        .cta-card-primary { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); box-shadow: 0 20px 50px rgba(14, 165, 233, 0.3); transition: all 0.5s; }
-        .cta-card-primary:hover { transform: translateY(-8px); box-shadow: 0 30px 70px rgba(14, 165, 233, 0.5); }
+        
+        .hero-slider { position: absolute; inset: 0; z-index: -1; overflow: hidden; }
+        .hero-img-main { width: 100%; height: 120%; object-fit: cover; opacity: 0; transition: transform 8s ease-out, opacity 2s ease-in; }
+        .hero-active .hero-img-main { opacity: 0.4; transform: scale(1.1); }
+        .lens-flare { position: absolute; top: 30%; left: -100%; width: 200%; height: 2px; background: linear-gradient(90deg, transparent, #fff, transparent); transform: rotate(-25deg); opacity: 0; z-index: 10; pointer-events: none; }
+        .flare-active { animation: flare 1.5s ease-in-out forwards; }
+        @keyframes flare { 0% { left: -100%; opacity: 0; } 50% { opacity: 0.8; } 100% { left: 100%; opacity: 0; } }
+
+        .glass-bright-card { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(15px); border: 1px solid rgba(56, 189, 248, 0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.2); transition: all 0.5s; }
+        .cta-card-primary { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); box-shadow: 0 20px 50px rgba(14, 165, 233, 0.3); }
         .reveal { opacity: 0; transform: translateY(40px); transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
-        .scroll-line { width: 1px; height: 80px; background: linear-gradient(to bottom, transparent, #38bdf8); position: absolute; bottom: 30px; left: 50%; animation: scrollDown 2s infinite; }
-        @keyframes scrollDown { 0% { height: 0; opacity: 0; top: 0; } 50% { height: 80px; opacity: 1; } 100% { height: 0; opacity: 0; top: 80px; } }
-        #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(10px); z-index: 2000; opacity: 0; transition: opacity 0.5s; }
-        .modal-active #modal-overlay { display: flex; opacity: 1; }
-        #main-nav.scrolled { background: rgba(2, 6, 23, 0.98) !important; padding: 15px 40px !important; }
-        .group:hover .relative.h-64::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent); transform: skewX(-25deg); animation: shine 0.8s forwards; }
-        @keyframes shine { 100% { left: 150%; } }
+        
         .status-badge { padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 900; }
         .status-ok { background: #0ea5e9; color: white; }
-        .status-few { background: #f59e0b; color: white; }
+        .status-few { background: #f59e0b; color: white; animation: pulse 2s infinite; }
         .status-full { background: #64748b; color: white; }
-        .waitlist-badge { background: #ec4899; color: white; }
-        .shadow-text-unified { position: relative; display: inline-block; }
-        .shadow-text-unified::before { content: attr(data-text); position: absolute; left: 0; top: -5px; font-size: 1em; font-weight: 900; color: rgba(255, 255, 255, 0.03); z-index: -1; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        @media (max-width: 768px) {
+            #calendar-container table { display: none; }
+            .mobile-card { display: block; background: white; margin-bottom: 15px; padding: 20px; border-radius: 20px; color: #333; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        }
     </style>
 </head>
 <body>
     <div class="bg-video-effect"></div><div class="bg-glow"></div>
-
-    <div id="modal-overlay" class="items-center justify-center p-6">
-        <div id="modal-content" class="bg-white w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div class="p-8 border-b border-slate-100 flex justify-between items-center text-slate-900 sticky top-0 bg-white z-20">
-                <h3 id="modal-title" class="text-2xl font-black italic text-sky-600 uppercase"></h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-sky-600 transition text-3xl">&times;</button>
-            </div>
-            <div id="modal-body" class="p-10 text-slate-600 leading-loose font-bold italic"></div>
-            <div class="p-8 bg-slate-50 text-right sticky bottom-0">
-                <button onclick="closeModal()" class="bg-sky-600 text-white px-8 py-3 rounded-full font-black text-xs tracking-widest hover:bg-slate-900 transition">CLOSE</button>
-            </div>
-        </div>
-    </div>
+    <div class="lens-flare" id="flare"></div>
 
     <nav class="fixed top-0 w-full z-50 px-4 md:px-10 py-6 transition-all duration-500 bg-transparent" id="main-nav">
-        <div class="flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-0 w-full">
-            <div class="flex items-center gap-4 md:gap-8">
-                <img src="logo.png" alt="STC" class="h-12 md:h-20 w-auto block object-contain">
-                <div class="w-px h-10 bg-white/20 hidden md:block"></div>
-                <div class="font-bold text-lg md:text-2xl tracking-tighter text-white leading-tight text-left italic">下関トレーニングセンター<br><span class="text-[10px] md:text-xs font-en font-light tracking-[0.2em] text-sky-400/80 uppercase text-left italic">Shimonoseki Training Center</span></div>
+        <div class="flex justify-between items-center w-full max-w-7xl mx-auto">
+            <div class="flex items-center gap-4">
+                <img src="logo.png" alt="STC" class="h-10 md:h-14">
+                <div class="font-bold text-sm md:text-xl text-white leading-tight italic text-left">下関トレーニングセンター<br><span class="text-[8px] md:text-[10px] font-en font-light tracking-[0.2em] text-sky-400">SHIMONOSEKI TRAINING CENTER</span></div>
             </div>
-            <div class="hidden lg:flex gap-4 xl:gap-8 font-bold text-[11px] tracking-widest text-white/70 uppercase italic">
-                <a href="#" class="hover:text-sky-400 transition text-sky-400">ホーム</a>
-                <a href="#service" class="hover:text-sky-400 transition text-nowrap">サービス</a>
-                <a href="#courses" class="hover:text-sky-400 transition text-nowrap">講習コース</a>
-                <a href="#schedule-section" class="hover:text-sky-400 transition text-nowrap">講習スケジュール</a>
-                <a href="#access" class="hover:text-sky-400 transition text-nowrap">アクセス</a>
-            </div>
-            <a href="tel:0832460556" class="hidden lg:flex items-center gap-2 bg-gradient-to-r from-sky-500 to-sky-600 text-white px-8 py-3 font-bold text-[12px] tracking-widest hover:shadow-xl transition-all shadow-lg rounded-full group uppercase">
-                <i class="fas fa-phone-alt text-[10px] group-hover:scale-120 transition"></i><span>今すぐ相談</span>
-            </a>
+            <a href="tel:0832460556" class="bg-sky-500 text-white px-5 py-2 rounded-full font-bold text-[10px] md:text-xs italic uppercase"><i class="fas fa-phone-alt mr-2"></i>今すぐ相談</a>
         </div>
     </nav>
 
-        <section class="parallax-bg overflow-hidden text-center px-6">
-        <img src="hero.png" class="parallax-img zoom-effect" id="hero-img">
-        <div class="relative z-10 mt-20 w-full"> <!-- w-fullを追加して中央配置を保証 -->
-            <h1 class="font-black leading-[1.2] text-white tracking-tighter mb-10 italic reveal active text-[clamp(2.5rem,8vw,8rem)] text-center">
-                <span class="block mb-4">その資格が、</span>
-                <span class="text-transparent" style="-webkit-text-stroke: 1px #fff; opacity: 0.9;">一生の武器になる。</span>
+    <!-- 1. HERO -->
+    <section class="relative h-screen flex items-center justify-center text-center px-6 overflow-hidden">
+        <div class="hero-slider"><img src="hero.png" class="hero-img-main" id="hero-img"></div>
+        <div class="relative z-10">
+            <h1 class="font-black leading-tight text-white tracking-tighter mb-8 italic text-[clamp(2.2rem,8vw,7rem)] drop-shadow-2xl">
+                <span class="block mb-2 text-center">その資格が、</span>
+                <span class="text-transparent text-center" style="-webkit-text-stroke: 1px #fff; opacity: 0.9;">一生の武器になる。</span>
             </h1>
-            <p class="text-white/80 text-sm md:text-lg font-bold tracking-[0.3em] reveal active uppercase border-t border-b border-white/20 py-4 inline-block px-10 italic">山口県下関市唯一の認可教習機関</p>
-            
-            <div class="mt-16 flex flex-col md:flex-row gap-6 justify-center reveal active">
-                <a href="#schedule-section" class="cta-card-primary animate-pulse text-white px-12 py-4 rounded-full font-black text-sm tracking-widest hover:shadow-2xl italic uppercase flex items-center justify-center">
-                    <i class="fas fa-edit mr-2"></i> 受講申し込み
-                </a>
-                <a href="#schedule-section" class="border-2 border-white text-white px-12 py-4 rounded-full flex items-center justify-center font-black text-sm tracking-widest hover:bg-white/10 italic uppercase transition"><i class="fas fa-calendar mr-2"></i> 講習スケジュール</a>
+            <p class="text-white text-[clamp(0.75rem,2vw,1.1rem)] font-bold tracking-[0.3em] border-t border-b border-white/20 py-4 inline-block px-10 italic uppercase">
+                山口県下関市唯一の認可教習機関
+            </p>
+            <div class="mt-12 flex flex-col md:flex-row gap-6 justify-center">
+                <a href="#schedule-section" class="cta-card-primary text-white px-12 py-4 rounded-full font-black text-sm tracking-widest italic uppercase flex items-center justify-center shadow-2xl">受講申し込み</a>
+                <a href="#schedule-section" class="border-2 border-white text-white px-12 py-4 rounded-full font-black text-sm tracking-widest hover:bg-white/10 italic transition shadow-2xl">講習スケジュール</a>
             </div>
-
-            <!-- NEWS TICKER (ここに再配置) -->
-            <div id="hp-news-list" class="mt-12 max-w-2xl mx-auto space-y-3 px-4 relative z-20 text-center">
-                <!-- ここに管理画面からのメッセージが自動で入ります -->
-            </div>
+            <div id="hp-news-list" class="mt-12 max-w-2xl mx-auto space-y-3 px-4 relative z-20 text-center"></div>
         </div>
-        <div class="scroll-line"></div>
+        <div class="scroll-line absolute bottom-10 left-1/2 -translate-x-1/2 w-px h-20 bg-gradient-to-b from-sky-400 to-transparent"></div>
     </section>
+
+    <!-- 2. SERVICE (デザイン復元) -->
     <section class="py-40 md:py-60 bg-slate-50 text-slate-900" id="service">
         <div class="container mx-auto px-6 md:px-10">
             <div class="grid lg:grid-cols-2 gap-16 items-end"> 
                 <div class="reveal text-left relative pb-10">
                     <div class="relative mb-16">
-                        <h2 class="text-6xl md:text-[8vw] font-black italic tracking-tighter text-slate-200 absolute -top-20 -left-1 select-none uppercase" style="letter-spacing: -0.03em;">SKILL</h2>
+                        <h2 class="text-6xl md:text-[8vw] font-black italic tracking-tighter text-slate-200 absolute -top-20 -left-1 select-none uppercase">SKILL</h2>
                         <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-600 uppercase">SERVICE</h2>
                         <p class="text-slate-500 font-bold tracking-[0.2em] text-xs md:text-sm mt-4 relative z-10 uppercase">資格取得とキャリアの構築</p>
                     </div>
@@ -111,248 +86,166 @@
                     <p class="text-slate-600 leading-loose font-bold mb-10 text-sm md:text-base max-w-xl">下関トレーニングセンターは、現場で真に通用する「安全」と「技術」を習得するための認可教習機関です。</p>
                 </div>
                 <div class="grid grid-cols-1 gap-6 reveal">
-                    <!-- 修正：デザインそのまま、カレンダーへ移動 -->
-                    <a href="#schedule-section" class="relative group text-left block">
-                        <div class="cta-card-primary p-12 rounded-3xl h-full flex flex-col justify-between overflow-hidden text-white">
-                            <div class="absolute -right-4 -bottom-4 text-8xl font-black italic text-white/20 group-hover:text-white/30 transition-colors">01</div>
-                            <div class="relative z-10">
-                                <div class="w-16 h-16 bg-white/30 rounded-2xl flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform"><i class="fas fa-pen-nib text-white text-2xl"></i></div>
-                                <h4 class="text-3xl font-black mb-2 group-hover:text-white/90 italic">受講<br>お申し込み</h4>
-                                <p class="text-xs font-bold text-white/80 italic">WEB予約・資料請求をいますぐ</p>
-                            </div>
-                        </div>
+                    <a href="#schedule-section" class="cta-card-primary p-12 rounded-3xl h-full flex flex-col justify-between overflow-hidden text-white group">
+                        <h4 class="text-3xl font-black mb-2 italic">受講<br>お申し込み</h4>
+                        <p class="text-xs font-bold text-white/80 italic">WEB予約・資料請求をいますぐ</p>
                     </a>
-                    <a href="#schedule-section" class="relative group text-left block">
-                        <div class="glass-bright-card p-12 rounded-3xl border-l-8 border-l-sky-500 h-full flex flex-col justify-between overflow-hidden text-slate-900">
-                            <div class="absolute -right-4 -bottom-4 text-8xl font-black italic text-sky-400/10 group-hover:text-sky-400/20 transition-colors">02</div>
-                            <div class="relative z-10">
-                                <div class="w-16 h-16 bg-sky-500 rounded-2xl flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform"><i class="fas fa-calendar-alt text-white text-2xl"></i></div>
-                                <h4 class="text-2xl font-black mb-2 group-hover:text-sky-600 italic">講習<br>カレンダー</h4>
-                                <p class="text-xs font-bold text-slate-400 italic">最新スケジュール確認</p>
-                            </div>
-                        </div>
+                    <a href="#schedule-section" class="glass-bright-card p-12 rounded-3xl border-l-8 border-l-sky-500 h-full flex flex-col justify-between overflow-hidden text-slate-900 group">
+                        <h4 class="text-2xl font-black mb-2 italic">講習<br>カレンダー</h4>
+                        <p class="text-xs font-bold text-slate-400 italic">最新スケジュール確認</p>
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-   <section class="py-24 md:py-32 container mx-auto px-6 md:px-10" id="courses">
-    <div class="relative mb-16 reveal text-left">
-        <h2 class="text-6xl md:text-[8vw] font-black italic tracking-tighter text-white/[0.03] absolute -top-10 -left-1 select-none uppercase" style="letter-spacing: -0.03em;">COURSE</h2>
-        <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-400 uppercase">Major Courses</h2>
-        <p class="text-white/40 font-en tracking-[0.3em] text-[10px] mt-2 italic uppercase">主要講習コースのご案内</p>
-    </div>
-    
-    <!-- 4つ並べるために grid-cols-1 md:grid-cols-2 lg:grid-cols-4 に変更 -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-[90rem] mx-auto">
-        
-        <!-- 01. 玉掛け -->
-        <a href="course-detail.html?id=tamakake" class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none h-full">
-            <div class="relative h-48 overflow-hidden">
-                <img src="course1.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+    <!-- 3. MAJOR COURSES -->
+    <section class="py-32 bg-slate-900/80" id="courses">
+        <div class="container mx-auto px-6 max-w-7xl text-left">
+            <div class="relative mb-20">
+                <h2 class="text-6xl md:text-[8vw] font-black italic tracking-tighter text-white/[0.03] absolute -top-10 -left-1 select-none uppercase">COURSE</h2>
+                <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-400 uppercase italic">Major Courses</h2>
+                <p class="text-white/40 font-en tracking-[0.3em] text-[10px] mt-2 italic uppercase">主要講習コースのご案内</p>
             </div>
-            <div class="p-8 text-left flex-grow">
-                <h3 class="text-xl font-black mb-2 italic text-slate-900 leading-tight">01. 玉掛け<br>技能講習</h3>
-                <p class="text-slate-400 text-[10px] font-bold italic tracking-wider uppercase mb-4">Slinging Skill</p>
-                <div class="text-sky-600 text-[9px] font-black italic border-t border-slate-100 pt-4">詳細・申込書DL →</div>
-            </div>
-        </a>
-
-        <!-- 02. フォークリフト（ここから詳細ページで31H/11Hを選べるようにします） -->
-        <a href="course-detail.html?id=fork31" class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none h-full">
-            <div class="relative h-48 overflow-hidden">
-                <img src="course2.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-            </div>
-            <div class="p-8 text-left flex-grow">
-                <h3 class="text-xl font-black mb-2 italic text-slate-900 leading-tight">02. フォークリフト<br>運転技能講習</h3>
-                <p class="text-slate-400 text-[10px] font-bold italic tracking-wider uppercase mb-4">Forklift Operation</p>
-                <div class="text-sky-600 text-[9px] font-black italic border-t border-slate-100 pt-4">詳細・申込書DL →</div>
-            </div>
-        </a>
-
-        <!-- 03. 小型移動式クレーン -->
-        <a href="course-detail.html?id=crane" class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none h-full">
-            <div class="relative h-48 overflow-hidden">
-                <img src="course3.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-            </div>
-            <div class="p-8 text-left flex-grow">
-                <h3 class="text-xl font-black mb-2 italic text-slate-900 leading-tight">03. 小型移動式<br>クレーン運転</h3>
-                <p class="text-slate-400 text-[10px] font-bold italic tracking-wider uppercase mb-4">Mobile Crane Skill</p>
-                <div class="text-sky-600 text-[9px] font-black italic border-t border-slate-100 pt-4">詳細・申込書DL →</div>
-            </div>
-        </a>
-
-        <!-- 04. テールゲート（新規追加！） -->
-        <a href="course-detail.html?id=tailgate" class="rounded-3xl overflow-hidden reveal group shadow-2xl flex flex-col glass-bright-card border-none h-full">
-            <div class="relative h-48 overflow-hidden">
-                <!-- 画像がない場合は一旦 hero.png 等を仮置きするか、色で表現 -->
-                <img src="hero.png" class="w-full h-full object-cover group-hover:scale-110 transition duration-700 opacity-80">
-                <div class="absolute inset-0 bg-sky-900/20"></div>
-            </div>
-            <div class="p-8 text-left flex-grow">
-                <h3 class="text-xl font-black mb-2 italic text-slate-900 leading-tight">04. テールゲート<br>リフター特別教育</h3>
-                <p class="text-slate-400 text-[10px] font-bold italic tracking-wider uppercase mb-4">Tailgate Lifter</p>
-                <div class="text-sky-600 text-[9px] font-black italic border-t border-slate-100 pt-4">詳細・申込書DL →</div>
-            </div>
-        </a>
-
-    </div>
-</section>
-
-    <!-- WHY CHOOSE STC -->
-    <section class="py-24 md:py-40 bg-white text-slate-900" id="features">
-        <div class="container mx-auto px-6 md:px-10">
-            <div class="relative mb-32 reveal text-left">
-                <h2 class="text-6xl md:text-[8vw] font-black italic tracking-tighter text-slate-100 absolute -top-16 md:-top-24 -left-1 whitespace-nowrap uppercase select-none" style="letter-spacing: -0.03em;">REASON</h2>
-                <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-600 uppercase italic text-left">Why Choose STC</h2>
-                <p class="text-slate-500 font-bold tracking-[0.2em] text-xs md:text-sm mt-4 relative z-10 uppercase text-left">下関トレーニングセンターが選ばれる理由</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 reveal">
-               <a href="features.html#reason01" class="glass-bright-card p-12 rounded-3xl group text-left cursor-pointer hover:shadow-2xl transition-all duration-500 h-full">
-                    <div class="text-sky-500 font-en font-black italic mb-8 text-6xl opacity-20 group-hover:opacity-100 transition-opacity duration-700">01</div>
-                    <h4 class="text-2xl font-black mb-6 text-slate-900 group-hover:text-sky-600 italic transition-colors">労働局登録教習機関</h4>
-                    <p class="text-slate-500 text-sm font-bold italic leading-relaxed uppercase">山口労働局長登録教習機関として、高品質な教習を提供します。</p>
-                    <div class="mt-8 text-sky-600 text-xs font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">詳しく見る →</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <a href="course-detail.html?id=tamakake" class="glass-bright-card rounded-3xl p-8 block group border-none">
+                    <img src="course1.jpg" class="w-full h-40 object-cover rounded-2xl mb-6 group-hover:scale-105 transition">
+                    <h3 class="text-xl font-black italic text-slate-900">01. 玉掛け技能講習</h3>
                 </a>
-                <a href="features.html#reason02" class="glass-bright-card p-12 rounded-3xl group text-left cursor-pointer hover:shadow-2xl transition-all duration-500 h-full">
-                    <div class="text-sky-500 font-en font-black italic mb-8 text-6xl opacity-20 group-hover:opacity-100 transition-opacity duration-700">02</div>
-                    <h4 class="text-2xl font-black mb-6 text-slate-900 group-hover:text-sky-600 italic transition-colors">国道2号からアクセス抜群</h4>
-                    <p class="text-slate-500 text-sm font-bold italic leading-relaxed uppercase">車で来られる国道2号からのアクセス良好。送迎バスも完備。</p>
-                    <div class="mt-8 text-sky-600 text-xs font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">詳しく見る →</div>
-               </a>
-                <a href="features.html#reason03" class="glass-bright-card p-12 rounded-3xl group text-left cursor-pointer hover:shadow-2xl transition-all duration-500 h-full">
-                    <div class="text-sky-500 font-en font-black italic mb-8 text-6xl opacity-20 group-hover:opacity-100 transition-opacity duration-700">03</div>
-                    <h4 class="text-2xl font-black mb-6 text-slate-900 group-hover:text-sky-600 italic transition-colors">ベテラン職人による生きた指導</h4>
-                    <p class="text-slate-500 text-sm font-bold italic leading-relaxed uppercase">現場で本当に使える、生きた技術と安全知識を伝授します。</p>
-                    <div class="mt-8 text-sky-600 text-xs font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">詳しく見る →</div>
+                <a href="course-detail.html?id=fork31" class="glass-bright-card rounded-3xl p-8 block group border-none">
+                    <img src="course2.jpg" class="w-full h-40 object-cover rounded-2xl mb-6 group-hover:scale-105 transition">
+                    <h3 class="text-xl font-black italic text-slate-900">02. フォークリフト運転</h3>
+                </a>
+                <a href="course-detail.html?id=crane" class="glass-bright-card rounded-3xl p-8 block group border-none">
+                    <img src="course3.jpg" class="w-full h-40 object-cover rounded-2xl mb-6 group-hover:scale-105 transition">
+                    <h3 class="text-xl font-black italic text-slate-900">03. 小型移動式クレーン</h3>
+                </a>
+                <a href="course-detail.html?id=tailgate" class="glass-bright-card rounded-3xl p-8 block group border-none text-left">
+                    <img src="teil.jpg" class="w-full h-40 object-cover rounded-2xl mb-6 group-hover:scale-105 transition">
+                    <h3 class="text-lg font-black italic text-slate-900 leading-tight">04. 特別教育<br><span class="text-[10px] text-sky-600">(ﾃｰﾙｹﾞｰﾄ/ﾌﾙﾊｰﾈｽ)</span></h3>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- SCHEDULE -->
-    <section class="py-24 md:py-40 bg-slate-900" id="schedule-section">
-        <div class="container mx-auto px-6 md:px-10">
-            <div class="relative mb-16 reveal text-left flex flex-col md:flex-row justify-between items-end gap-6">
+    <!-- 4. WHY CHOOSE STC (ボタンのみ) -->
+    <section class="py-32 bg-white text-slate-900" id="features">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="relative mb-20 text-left">
+                <h2 class="text-6xl md:text-[8vw] font-black italic tracking-tighter text-slate-100 absolute -top-16 -left-1 uppercase select-none">REASON</h2>
+                <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-600 uppercase italic">Why Choose STC</h2>
+                <p class="text-slate-500 font-bold tracking-[0.2em] text-xs md:text-sm mt-4 relative z-10 uppercase">下関トレーニングセンターが選ばれる理由</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-10">
+                <a href="features.html#reason01" class="glass-bright-card p-12 rounded-3xl group text-left cursor-pointer hover:shadow-2xl transition block border border-slate-100">
+                    <div class="text-sky-500 font-en font-black italic mb-8 text-6xl opacity-20 group-hover:opacity-100 transition duration-700">01</div>
+                    <h4 class="text-2xl font-black mb-6 italic">山口労働局長<br>登録教習機関</h4>
+                    <p class="text-slate-500 text-sm font-bold italic leading-relaxed uppercase">山口県唯一の認可機関として、信頼の教習を提供します。</p>
+                    <div class="mt-8 text-sky-600 text-xs font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition">詳しく見る →</div>
+                </a>
+                <a href="features.html#reason02" class="glass-bright-card p-12 rounded-3xl group text-left cursor-pointer hover:shadow-2xl transition block border border-slate-100">
+                    <div class="text-sky-500 font-en font-black italic mb-8 text-6xl opacity-20 group-hover:opacity-100 transition duration-700">02</div>
+                    <h4 class="text-2xl font-black mb-6 italic">国道2号線から<br>アクセス抜群</h4>
+                    <p class="text-slate-500 text-sm font-bold italic leading-relaxed uppercase">通いやすさもプロの条件。詳細な案内図も完備。</p>
+                    <div class="mt-8 text-sky-600 text-xs font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition">詳しく見る →</div>
+                </a>
+                <a href="features.html#reason03" class="glass-bright-card p-12 rounded-3xl group text-left cursor-pointer hover:shadow-2xl transition block border border-slate-100">
+                    <div class="text-sky-500 font-en font-black italic mb-8 text-6xl opacity-20 group-hover:opacity-100 transition duration-700">03</div>
+                    <h4 class="text-2xl font-black mb-6 italic">ベテラン職人に<br>よる生きた指導</h4>
+                    <p class="text-slate-500 text-sm font-bold italic leading-relaxed uppercase">現場を知り尽くした講師陣が、あなたの命を守る技術を伝授。</p>
+                    <div class="mt-8 text-sky-600 text-xs font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition">詳しく見る →</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. SCHEDULE (リスト & 月間カレンダー) -->
+    <section class="py-32 bg-slate-900" id="schedule-section">
+        <div class="container mx-auto px-6 text-left max-w-6xl">
+            <div class="relative mb-16 flex flex-col md:flex-row justify-between items-end gap-6">
                 <div class="relative">
-                    <h2 class="text-6xl md:text-[8vw] font-black italic tracking-tighter text-white/[0.03] absolute -top-10 -left-1 select-none uppercase" style="letter-spacing: -0.03em;">TIME</h2>
+                    <h2 class="text-6xl md:text-[8vw] font-black italic tracking-tighter text-white/[0.03] absolute -top-10 -left-1 select-none uppercase">TIME</h2>
                     <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-400 uppercase italic">Schedule</h2>
-                    <p class="text-white/40 font-en tracking-[0.3em] text-[10px] mt-2 italic uppercase text-left">講習開催予定</p>
+                    <p class="text-white/40 font-en tracking-[0.3em] text-[10px] mt-2 italic uppercase">講習開催予定</p>
                 </div>
                 <div class="relative z-20 flex items-center gap-6 bg-white/5 p-2 rounded-full border border-white/10">
                     <button onclick="changeMonth(-1)" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-sky-500 transition text-white"><i class="fas fa-chevron-left"></i></button>
-                    <span id="current-month-display" class="font-black italic text-xl min-w-[100px] text-center uppercase tracking-widest text-white">7月</span>
+                    <span id="current-month-display" class="font-black italic text-xl min-w-[100px] text-center tracking-widest text-white">7月</span>
                     <button onclick="changeMonth(1)" class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-sky-500 transition text-white"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
-            <div id="calendar-container" class="glass-bright-card rounded-3xl overflow-hidden reveal text-slate-900 shadow-[0_0_50px_rgba(14,165,233,0.1)] min-h-[300px] mb-12">
-                <div class="p-20 text-center text-slate-400 italic">読み込み中...</div>
-            </div>
-            <div id="gantt-container" class="reveal bg-slate-800/50 rounded-3xl p-8 overflow-x-auto border border-white/10 shadow-2xl">
-                <div class="min-w-[800px]">
-                    <h3 class="text-white font-black italic text-lg mb-4">月間カレンダー</h3>
-                   
-                    <div id="gantt-data" class="space-y-1">
-                        <div class="text-center text-white/40 italic py-8">データ読み込み中...</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-   <!-- POINT SECTION -->
-<section class="py-24 md:py-40 bg-gradient-to-b from-slate-900 to-black text-white" id="point-section">
-    <div class="container mx-auto px-6 md:px-10">
-        <div class="relative mb-32 reveal text-left">
-            <h2 class="text-6xl md:text-[8vw] font-black italic tracking-tighter text-white/[0.03] absolute -top-10 -left-1 select-none uppercase" style="letter-spacing: -0.03em;">INFO</h2>
-            <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-400 uppercase">POINT</h2>
-            <p class="text-white/40 font-en tracking-[0.3em] text-[10px] mt-2 italic uppercase">受講に関するサポート情報</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto reveal">
             
-            <!-- よくある質問 -->
-            <a href="points.html#qa" class="group relative overflow-hidden rounded-3xl p-8 md:p-12 h-full text-left cursor-pointer transition-all duration-500 hover:shadow-2xl bg-gradient-to-br from-sky-600 to-sky-700 border border-sky-500/30 block">
-                <div class="absolute inset-0 bg-sky-400/0 group-hover:bg-white/10 transition-colors duration-500"></div>
-                <div class="relative z-10">
-                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><i class="fas fa-comments text-white text-3xl italic"></i></div>
-                    <h4 class="text-2xl md:text-3xl font-black mb-4 text-white italic">よくある質問</h4>
-                    <p class="text-sky-100 text-sm font-bold italic">受講前のご質問にお答えします</p>
-                    <div class="mt-8 text-sky-100 text-xs font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">詳細を見る →</div>
+            <div id="calendar-container" class="glass-bright-card rounded-[3rem] overflow-hidden text-slate-900 mb-12 min-h-[300px]"></div>
+            
+            <!-- 月間カレンダー (ガントチャート) -->
+            <div class="mt-20 hidden md:block">
+                <h3 class="text-white font-black italic text-xl mb-8 uppercase border-l-4 border-sky-500 pl-4">Monthly Calendar</h3>
+                <div id="gantt-container" class="bg-slate-800/50 rounded-3xl p-8 overflow-x-auto border border-white/10 shadow-2xl">
+                    <div id="gantt-data" class="min-w-[900px] space-y-1"></div>
                 </div>
-            </a>
-
-            <!-- 補助金制度 -->
-            <a href="points.html#subsidy" class="group relative overflow-hidden rounded-3xl p-8 md:p-12 h-full text-left cursor-pointer transition-all duration-500 hover:shadow-2xl bg-gradient-to-br from-emerald-600 to-emerald-700 border border-emerald-500/30 block">
-                <div class="absolute inset-0 bg-emerald-400/0 group-hover:bg-white/10 transition-colors duration-500"></div>
-                <div class="relative z-10">
-                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><i class="fas fa-hand-holding-usd text-white text-3xl italic"></i></div>
-                    <h4 class="text-2xl md:text-3xl font-black mb-4 text-white italic">補助金制度</h4>
-                    <p class="text-emerald-100 text-sm font-bold italic">利用可能な支援制度のご案内</p>
-                    <div class="mt-8 text-emerald-100 text-xs font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">詳細を見る →</div>
-                </div>
-            </a>
-
-            <!-- 申込みの流れ -->
-            <a href="points.html#flow" class="group relative overflow-hidden rounded-3xl p-8 md:p-12 h-full text-left cursor-pointer transition-all duration-500 hover:shadow-2xl bg-gradient-to-br from-amber-600 to-amber-700 border border-amber-500/30 block">
-                <div class="absolute inset-0 bg-amber-400/0 group-hover:bg-white/10 transition-colors duration-500"></div>
-                <div class="relative z-10">
-                    <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><i class="fas fa-clipboard-list text-white text-3xl italic"></i></div>
-                    <h4 class="text-2xl md:text-3xl font-black mb-4 text-white italic">申込みの流れ</h4>
-                    <p class="text-amber-100 text-sm font-bold italic">受講まで3ステップ</p>
-                    <div class="mt-8 text-amber-100 text-xs font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">詳細を見る →</div>
-                </div>
-            </a>
-        </div>
-    </div>
-</section>
-
-    <!-- RECRUIT -->
-    <section class="py-32 md:py-48 relative overflow-hidden bg-black text-white" id="recruit">
-        <img src="recruit-bg.jpg" class="absolute inset-0 w-full h-full object-cover opacity-20 z-0">
-        <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/80 to-black/90 z-1"></div>
-        <div class="container mx-auto px-6 md:px-10 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="reveal text-left">
-                    <div class="relative mb-16">
-                        <h2 class="text-6xl md:text-[8vw] font-black italic tracking-tighter text-white/[0.05] absolute -top-10 -left-1 select-none uppercase" style="letter-spacing: -0.03em;">WORK</h2>
-                        <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-400 uppercase">RECRUIT</h2>
-                        <p class="text-white/40 font-en tracking-[0.3em] text-[10px] mt-4 relative z-10 uppercase">採用・求人情報</p>
-                    </div>
-                    <h3 class="text-2xl md:text-4xl font-black italic mb-8 text-white leading-tight">日本の未来と<br><span class="text-sky-400">安全に貢献できる。</span></h3>
-                    <p class="text-white/70 leading-loose font-bold mb-12 text-sm md:text-base max-w-md italic">下関トレーニングセンターでは、現場の安全と技術を支える人材を募集しています。</p>
-                    <button onclick="openModal('recruit')" class="cta-card-primary text-white px-10 py-4 rounded-full font-black text-sm tracking-widest hover:shadow-2xl italic uppercase inline-flex items-center gap-3 group">
-                        <i class="fas fa-briefcase"></i> 詳しく見る
-                    </button>
-                </div>
-                <div class="reveal"><div class="relative group"><div class="absolute inset-0 bg-gradient-to-br from-sky-500/20 to-sky-600/10 rounded-3xl group-hover:from-sky-500/30 group-hover:to-sky-600/20 transition-all duration-700 blur-xl"></div><img src="recruit-image.jpg" alt="採用情報" class="w-full rounded-3xl shadow-2xl relative z-10 group-hover:scale-105 transition-transform duration-700"></div></div>
             </div>
         </div>
     </section>
 
-    <section class="py-20 md:py-32 relative overflow-hidden bg-slate-900/50" id="access">
-        <div class="absolute inset-0 bg-sky-500/10 backdrop-blur-3xl -z-10"></div>
-        <div class="container mx-auto px-6 md:px-10 text-center">
-            <h2 class="text-4xl md:text-6xl font-black italic text-white mb-16 reveal">CONTACT US</h2>
-            <div class="flex flex-col md:flex-row justify-center gap-10 reveal mb-20 font-black italic">
-                <a href="tel:0832460556" class="cta-card-primary p-8 rounded-2xl flex items-center justify-center gap-6 text-white w-full max-w-sm mx-auto shadow-2xl">
-                    <i class="fas fa-phone-alt text-3xl"></i>
-                    <div class="text-left"><p class="text-[10px] opacity-80 uppercase">TEL</p><p class="text-3xl font-en tracking-tighter">083.246.0556</p></div>
+    <!-- 6. POINT -->
+    <section class="py-32 bg-slate-950" id="point-section">
+        <div class="container mx-auto px-6 max-w-5xl">
+            <div class="relative mb-20 text-left">
+                <h2 class="text-6xl md:text-[8vw] font-black italic tracking-tighter text-white/[0.02] absolute -top-10 -left-1 select-none uppercase">INFO</h2>
+                <h2 class="text-4xl md:text-6xl font-black italic tracking-tighter relative z-10 text-sky-400 uppercase italic">Point</h2>
+                <p class="text-white/40 font-en tracking-[0.3em] text-[10px] mt-2 italic uppercase">受講に関するサポート情報</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <a href="points.html#qa" class="bg-sky-600 text-white p-10 rounded-[2.5rem] block hover:shadow-2xl transition group border border-sky-500/30">
+                    <i class="fas fa-comments text-3xl mb-6 group-hover:scale-110 transition"></i>
+                    <h4 class="text-xl font-black italic mb-2">よくある質問</h4>
+                    <p class="text-[10px] font-bold opacity-80 italic">受講前のご不安を解消</p>
                 </a>
-                <div class="kiba-card p-8 rounded-2xl flex items-center justify-center gap-6 w-full max-w-sm mx-auto border border-white/10">
-                    <i class="fas fa-fax text-3xl text-sky-400 opacity-60"></i>
-                    <div class="text-left"><p class="text-[10px] opacity-40 uppercase">FAX</p><p class="text-3xl font-en tracking-tighter text-white/80">083.246.2835</p></div>
-                </div>
+                <a href="points.html#subsidy" class="bg-slate-800 text-white p-10 rounded-[2.5rem] block hover:shadow-2xl transition group border border-white/5">
+                    <i class="fas fa-hand-holding-usd text-3xl mb-6 group-hover:scale-110 transition"></i>
+                    <h4 class="text-xl font-black italic mb-2">補助金制度</h4>
+                    <p class="text-[10px] font-bold opacity-80 italic">支援制度の活用ガイド</p>
+                </a>
+                <a href="points.html#flow" class="bg-sky-400 text-white p-10 rounded-[2.5rem] block hover:shadow-2xl transition group border border-sky-300/30">
+                    <i class="fas fa-route text-3xl mb-6 group-hover:scale-110 transition"></i>
+                    <h4 class="text-xl font-black italic mb-2">申込の流れ</h4>
+                    <p class="text-[10px] font-bold opacity-80 italic">受講まで3ステップ</p>
+                </a>
             </div>
         </div>
     </section>
 
-    <footer class="py-24 bg-black/90 border-t border-white/5 text-center">
-        <div class="container mx-auto px-6 md:px-10">
-            <img src="logo.png" alt="STC" class="h-24 mx-auto mb-12">
-            <p class="text-white font-black text-2xl mb-4 italic uppercase">下関トレーニングセンター</p>
-            <p class="text-[10px] mb-8 text-sky-400/60 uppercase tracking-[0.4em] italic">山口労働局長登録教習機関 第68号</p>
-            <p class="text-white/40 text-[9px] tracking-[0.5em] uppercase mt-16">Copyright © 2026 SHIMONOSEKI TRAINING CENTER.</p>
+    <!-- 7. ACCESS & CONTACT -->
+    <section class="py-32 bg-slate-50 text-slate-900" id="access">
+        <div class="container mx-auto px-6 text-center max-w-6xl">
+            <h2 class="text-4xl font-black italic text-slate-200 uppercase mb-20 font-en">Access & Contact</h2>
+            <div class="grid md:grid-cols-2 gap-12 text-left mb-20 font-black italic">
+                <a href="tel:0832460556" class="cta-card-primary p-8 rounded-2xl flex items-center justify-center gap-6 text-white shadow-2xl hover:scale-105 transition">
+                    <i class="fas fa-phone-alt text-3xl"></i>
+                    <div><p class="text-[10px] opacity-80 uppercase">TEL</p><p class="text-3xl font-en tracking-tighter">083.246.0556</p></div>
+                </a>
+                <div class="bg-white border-2 border-slate-200 p-8 rounded-2xl flex items-center justify-center gap-6 text-slate-300">
+                    <i class="fas fa-fax text-3xl"></i>
+                    <div><p class="text-[10px] opacity-60 uppercase">FAX</p><p class="text-3xl font-en tracking-tighter">083.246.2835</p></div>
+                </div>
+            </div>
+            <div class="rounded-[3rem] overflow-hidden shadow-2xl h-[450px]">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3299.782068478495!2d131.0264004!3d34.010999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3543971e98d98d9d%3A0x7d8a6e8b8e8b8e8b!2z5LiL6Zai44OI44Os44O844OL44Oz44Kw44K744Oz44K_44O8!5e0!3m2!1sja!2sjp!4v1719999999999" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. FOOTER (完全再現) -->
+    <footer class="py-20 bg-slate-900 text-white text-center">
+        <div class="container mx-auto px-6">
+            <p class="text-[10px] font-bold text-sky-400 uppercase tracking-[0.3em] mb-12">
+                対応エリア：山口県全域（下関市、宇部市、山口市、萩市、防府市、下松市、岩国市、光市、長門市、柳井市、美祢市、周南市、山陽小野田市）、福岡県北九州市
+            </p>
+            <img src="logo.png" alt="STC" class="h-20 mx-auto mb-6">
+            <p class="text-2xl font-black italic uppercase mb-4 tracking-tighter">下関トレーニングセンター</p>
+            <p class="text-xs font-bold text-slate-400 italic">〒752-8609 山口県下関市長府安養寺1丁目15-13</p>
+            <p class="text-sm font-black text-white mt-4 italic tracking-tight">TEL 083-246-0556 / FAX 083-246-2835</p>
+            <p class="text-white/20 text-[9px] tracking-[0.5em] uppercase mt-16 font-en">Copyright © 2026 SHIMONOSEKI TRAINING CENTER.</p>
         </div>
     </footer>
 
@@ -361,184 +254,97 @@
     import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw",
-        authDomain: "stc-hp.firebaseapp.com",
-        projectId: "stc-hp",
-        storageBucket: "stc-hp.firebasestorage.app",
-        messagingSenderId: "795332931918",
-        appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f"
-    };
-
+    const firebaseConfig = { apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw", authDomain: "stc-hp.firebaseapp.com", projectId: "stc-hp", storageBucket: "stc-hp.firebasestorage.app", messagingSenderId: "795332931918", appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f" };
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    const now = new Date();
     let schedules = []; 
-    let currentMonth = now.getMonth() + 1;
-    let currentYear = now.getFullYear();
+    let currentMonth = new Date().getMonth() + 1;
+    let currentYear = new Date().getFullYear();
 
-    // 2026年4月〜2027年3月の範囲に強制補正
-    if (currentYear === 2026 && currentMonth < 4) currentMonth = 4;
-    if (currentYear === 2027 && currentMonth > 3) { currentYear = 2027; currentMonth = 3; }
-
-       // ログイン後にスケジュールとお知らせの両方を読み込む
     signInAnonymously(auth).then(() => { 
         loadSchedules(); 
-        loadNews(); // ←これを追加
+        loadNews(); 
+        setTimeout(() => { document.body.classList.add('hero-active'); document.getElementById('flare').classList.add('flare-active'); }, 500);
     });
 
-    // ニュース（お知らせ）読み込み機能
-    function loadNews() {
-        onSnapshot(collection(db, "news"), (snapshot) => {
-            const listEl = document.getElementById('hp-news-list');
-            if (!listEl) return;
-            const docs = snapshot.docs
-                .map(d => ({id: d.id, ...d.data()}))
-                .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0))
-                .slice(0, 3);
-            listEl.innerHTML = docs.map(data => {
-                const isImportant = data.isImportant 
-                    ? 'border-rose-500 bg-rose-500/20 text-rose-100 shadow-[0_0_15px_rgba(244,63,94,0.3)]' 
-                    : 'border-white/10 bg-white/5 text-white/80';
-                return `
-                <div class="flex items-center gap-4 p-3 rounded-2xl border ${isImportant} backdrop-blur-sm reveal active transition-all hover:scale-[1.02]">
-                    <span class="text-[9px] font-black italic opacity-50 font-en uppercase">${data.createdAt?.toDate().toLocaleDateString('ja-JP') || ''}</span>
-                    <p class="text-xs font-bold italic tracking-wider text-left truncate">${data.content}</p>
-                </div>`;
-            }).join('');
-        });
-    }
-
-              function loadSchedules() {
+    function loadSchedules() {
         onSnapshot(collection(db, "schedules"), (snapshot) => {
             schedules = snapshot.docs.map(doc => {
                 const data = doc.data();
-                const rawStart = data.dayStart;
-                let dayArray = [];
-                
-                if (typeof rawStart === 'string' && rawStart.includes(',')) {
-                    dayArray = rawStart.split(',').map(n => parseInt(n.trim()));
-                } else {
-                    dayArray = [parseInt(rawStart)];
-                }
-
+                const rawStart = String(data.dayStart || "");
                 return {
                     id: doc.id,
                     name: data.courseName || "名称未設定",
                     date: data.date || "",
                     month: parseInt(data.month),
-                    days: dayArray,
-                    dayEnd: parseInt(data.dayEnd),
-                    // --- ★ここが「空席表示」の魔法！管理画面の項目をHPに繋ぎます ---
-                    capacity: parseInt(data.capacity || 10),    // 定員
-                    fullApplied: parseInt(data.fullApplied || 0), // 本申込
-                    reserved: parseInt(data.reserved || 0)      // 予約のみ
+                    days: rawStart.includes(',') ? rawStart.split(',').map(n => parseInt(n.trim())) : [parseInt(rawStart)],
+                    dayEnd: parseInt(data.dayEnd || 0),
+                    capacity: parseInt(data.capacity || 10),
+                    fullApplied: parseInt(data.fullApplied || 0),
+                    reserved: parseInt(data.reserved || 0)
                 };
             });
             renderCalendar(currentMonth);
             renderGantt(currentMonth);
         });
     }
-           window.renderCalendar = function(month) {
+
+    window.renderCalendar = function(month) {
         const container = document.getElementById('calendar-container');
-        const monthDisplay = document.getElementById('current-month-display');
-        if(monthDisplay) monthDisplay.innerText = `${currentYear}年${month}月`;
-        
-        let html = `<table class="w-full text-left border-collapse">
-            <thead>
-                <tr class="bg-slate-100 italic font-black text-[10px] tracking-[0.2em] border-b border-slate-200 uppercase">
-                    <th class="p-6">Course</th><th class="p-6">Date</th><th class="p-6 text-center">Status</th><th class="p-6">Action</th>
-                </tr>
-            </thead>
-            <tbody class="font-bold italic">`;
+        document.getElementById('current-month-display').innerText = `${currentYear}年${month}月`;
+        let html = '<div class="md:hidden">'; 
+        let tableHtml = '<table class="w-full text-left border-collapse hidden md:table"><thead><tr class="bg-slate-100 italic font-black text-[10px] tracking-widest border-b border-slate-200 uppercase"><th class="p-6">Course</th><th class="p-6">Date</th><th class="p-6 text-center">Status</th><th class="p-6">Action</th></tr></thead><tbody class="font-bold italic">';
 
         const monthSchedules = schedules.filter(s => s.month === month);
+        if (monthSchedules.length === 0) { container.innerHTML = '<p class="p-20 text-slate-400 italic">講習予定がありません</p>'; return; }
 
-        if (monthSchedules.length === 0) {
-            html += `<tr><td colspan="4" class="p-10 text-center text-slate-400">この月の講習予定がありません</td></tr>`;
-        } else {
-            monthSchedules.forEach(item => {
-                // 【計算ロジック】定員 - (本申込 + 予約)
-                const cap = Number(item.capacity || 10);
-                const res = Number(item.reserved || 0) + Number(item.fullApplied || 0);
-                const avail = cap - res;
+        monthSchedules.forEach(item => {
+            const avail = item.capacity - (item.fullApplied + item.reserved);
+            const statusLabel = avail <= 0 ? '<span class="status-badge status-full">満員御礼</span>' : (avail <= 2 ? `<span class="status-badge status-few font-en italic">残り ${avail} 席</span>` : `<span class="status-badge status-ok font-en italic text-[10px]">残り ${avail} 席</span>`);
+            let actionBtn = "";
+            if (item.name.includes("テールゲート") || item.name.includes("フルハーネス")) {
+                actionBtn = `<a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-amber-500 text-white px-6 py-2 rounded-full text-[9px] font-black italic block text-center shadow-lg hover:scale-105 transition">予約のみ(書類持参)</a><p class="text-[8px] text-rose-500 mt-2 font-black italic text-center">※当日、免許証またはコピーをご持参ください。</p>`;
+            } else if (avail <= 0) {
+                actionBtn = `<button onclick="alert('お電話にてキャンセル待ちを承ります\\n083-246-0556')" class="w-full bg-slate-800 text-white py-3 rounded-full text-[9px] font-black italic shadow-sm uppercase tracking-tighter">キャンセル待ち(電話)</button>`;
+            } else {
+                actionBtn = `<div class="flex flex-col gap-2"><a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-sky-600 text-white px-4 py-1.5 rounded-full text-[9px] text-center font-black italic shadow-sm uppercase tracking-tighter hover:bg-slate-900 transition">WEBで本申込</a><a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="border border-sky-400 text-sky-500 px-4 py-1.5 rounded-full text-[9px] text-center font-black italic uppercase tracking-tighter hover:bg-sky-50 transition">予約のみ(紙提出)</a></div>`;
+            }
+            html += `<div class="mobile-card"><div class="text-[9px] text-sky-500 font-black mb-1 uppercase font-en">${item.date}</div><h4 class="text-base font-black italic mb-3 text-slate-800">${item.name}</h4><div class="mb-4">${statusLabel}</div>${actionBtn}</div>`;
+            tableHtml += `<tr class="border-b border-slate-50 hover:bg-sky-50/50 transition"><td class="p-6 text-slate-900">${item.name}</td><td class="p-6 text-sm text-slate-500">${item.date}</td><td class="p-6 text-center">${statusLabel}</td><td class="p-6 text-xs">${actionBtn}</td></tr>`;
+        });
+        container.innerHTML = html + '</div>' + tableHtml + '</tbody></table>';
+    }
 
-                let statusHtml = "";
-                let actionBtn = `
-                    <div class="flex flex-col gap-2 py-2">
-                        <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-sky-600 text-white px-4 py-1.5 rounded-full text-[9px] text-center font-black italic hover:bg-slate-900 transition shadow-sm uppercase tracking-tighter">WEBで本申込</a>
-                        <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="border border-sky-400 text-sky-500 px-4 py-1.5 rounded-full text-[9px] text-center font-black italic hover:bg-sky-50 transition uppercase tracking-tighter">予約のみ(紙提出)</a>
-                    </div>`;
-
-                // --- 状態による表示の切り替え ---
-                if (avail <= 0) {
-                    // 満員：ボタンを「キャンセル待ち」に
-                    statusHtml = `<span class="status-badge status-full">満員御礼</span>`;
-                    actionBtn = `<button onclick="openModal('waitlist')" class="w-full bg-slate-800 text-white py-3 rounded-full text-[9px] font-black italic shadow-sm uppercase tracking-tighter">キャンセル待ち(電話)</button>`;
-                } else if (avail <= 2) {
-                    // 残りわずか：オレンジ色で点滅させて注意を引く
-                    statusHtml = `<span class="status-badge status-few animate-pulse font-en">残り ${avail} 席</span>`;
-                } else {
-                    // 3名以上の空き：青色で「残り◯席」とハッキリ表示
-                    statusHtml = `<span class="status-badge status-ok font-en">残り ${avail} 席</span>`;
-                }
-
-                html += `
-                <tr class="border-b border-slate-50 hover:bg-sky-50/50 transition">
-                    <td class="p-6 text-slate-900">${item.name}</td>
-                    <td class="p-6 text-sm text-slate-500">${item.date}</td>
-                    <td class="p-6 text-center">${statusHtml}</td>
-                    <td class="p-6 text-xs uppercase">${actionBtn}</td>
-                </tr>`;
-            });
-        }
-        html += `</tbody></table>`;
-        if(container) container.innerHTML = html;
+    function loadNews() {
+        onSnapshot(collection(db, "news"), (snap) => {
+            const listEl = document.getElementById('hp-news-list');
+            if(!listEl) return;
+            const docs = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)).slice(0, 2);
+            listEl.innerHTML = docs.map(d => `
+                <div class="flex items-center gap-4 p-3 rounded-2xl border ${d.isImportant ? 'border-rose-500 bg-rose-500/20 text-rose-100 shadow-[0_0_15px_rgba(244,63,94,0.3)]' : 'border-white/10 bg-white/5 text-white/80'} backdrop-blur-sm reveal active transition-all hover:scale-[1.02]">
+                    <span class="text-[9px] font-black italic opacity-50 font-en uppercase">${d.createdAt?.toDate().toLocaleDateString('ja-JP') || ''}</span>
+                    <p class="text-xs font-bold italic tracking-wider text-left truncate">${d.content}</p>
+                </div>`).join('');
+        });
     }
 
     window.renderGantt = function(month) {
         const ganttData = document.getElementById('gantt-data');
         if (!ganttData) return;
-        
-        // ヘッダーをここで一度だけ生成
         let html = '<div class="grid gap-0 mb-2 border-b border-white/5" style="grid-template-columns: 150px repeat(31, 1fr);"><div class="font-black text-[10px] text-white/40 italic p-2 bg-slate-900 sticky left-0 z-10">講習名</div>';
         for(let i=1; i<=31; i++) { html += `<div class="text-[9px] text-white/40 text-center italic font-bold p-1">${i}</div>`; }
         html += '</div>';
-
         const monthSchedules = schedules.filter(s => s.month === month);
         const coursesByName = {};
-        monthSchedules.forEach(item => {
-            if (!coursesByName[item.name]) { coursesByName[item.name] = []; }
-            coursesByName[item.name].push(item);
-        });
-
-        const getCourseColor = (name) => {
-            if (name.includes("玉掛け")) return "bg-sky-400";
-            if (name.includes("小型移動式クレーン")) return "bg-pink-400";
-            if (name.includes("フォークリフト")) return "bg-lime-500";
-            return "bg-yellow-400";
-        };
-
-               Object.entries(coursesByName).forEach(([courseName, items]) => {
-            html += `<div class="grid gap-0" style="grid-template-columns: 150px repeat(31, 1fr);">`;
-            html += `<div class="font-bold text-[10px] text-white italic p-2 bg-slate-900 sticky left-0 z-10 truncate border-r border-white/10 flex items-center">${courseName}</div>`;
-            const colorClass = getCourseColor(courseName);
-            
+        monthSchedules.forEach(item => { if (!coursesByName[item.name]) { coursesByName[item.name] = []; } coursesByName[item.name].push(item); });
+        Object.entries(coursesByName).forEach(([courseName, items]) => {
+            html += `<div class="grid gap-0" style="grid-template-columns: 150px repeat(31, 1fr);"><div class="font-bold text-[10px] text-white italic p-2 bg-slate-900 sticky left-0 z-10 truncate border-r border-white/10 flex items-center text-left">${courseName}</div>`;
+            const colorClass = courseName.includes("クレーン") ? "bg-pink-400" : courseName.includes("フォークリフト") ? "bg-lime-500" : "bg-sky-400";
             for (let day = 1; day <= 31; day++) {
-                const isScheduled = items.some(item => {
-                    // 【解決策】dayStartが「26,30」のような文字列なら、配列に分解してその日が含まれるかチェック
-                    const startStr = String(item.days || "");
-                    if (startStr.includes(',')) {
-                        const dayList = startStr.split(',').map(n => parseInt(n.trim()));
-                        return dayList.includes(day);
-                    }
-                    // カンマがない場合は、従来通り「開始〜終了」の範囲で塗る
-                    return (day >= item.days[0] && day <= item.dayEnd);
-                });
-                
-                const cellClass = isScheduled ? `${colorClass} shadow-[0_0_10px_rgba(255,255,255,0.1)]` : 'bg-slate-700/30';
+                const isScheduled = items.some(item => item.days.includes(day) || (day >= item.days[0] && day <= item.dayEnd));
+                const cellClass = isScheduled ? colorClass : 'bg-slate-700/30';
                 html += `<div class="h-8 border border-white/5 flex items-center justify-center text-[8px] font-bold italic ${cellClass} text-white">${isScheduled ? '●' : ''}</div>`;
             }
             html += `</div>`;
@@ -546,71 +352,12 @@
         ganttData.innerHTML = html;
     }
 
-    window.changeMonth = function(diff) {
-        let newMonth = currentMonth + diff;
-        let newYear = currentYear;
-        if (newMonth > 12) { newMonth = 1; newYear++; }
-        if (newMonth < 1) { newMonth = 12; newYear--; }
-        
-        // 2026年度（2026/4〜2027/3）の範囲外への移動を禁止
-        if (newYear < 2026 || (newYear === 2026 && newMonth < 4)) return;
-        if (newYear > 2027 || (newYear === 2027 && newMonth > 3)) return;
-
-        currentMonth = newMonth;
-        currentYear = newYear;
-        renderCalendar(currentMonth);
-        renderGantt(currentMonth);
-    }
-    window.openModal = function(type) {
-        if(type === 'apply') { window.location.href = "#schedule-section"; return; }
-        const overlay = document.getElementById('modal-overlay');
-        const title = document.getElementById('modal-title');
-        const body = document.getElementById('modal-body');
-        if(type === 'waitlist') {
-            title.innerText = 'キャンセル待ち登録';
-            body.innerHTML = `<div class="space-y-6"><p class="text-slate-600 italic font-bold">現在満員です。お電話にてキャンセル待ちを承っております。</p><div class="bg-sky-50 p-6 rounded-2xl text-center"><a href="tel:0832460556" class="text-sky-600 font-black text-xl">📞 083-246-0556</a></div></div>`;
-        } else if(type === 'why-01') {
-            title.innerText = '労働局登録教習機関';
-            body.innerHTML = `<div class="space-y-6"><img src="why-01.jpg" class="w-full rounded-2xl shadow-lg mb-6"><p class="text-slate-600 leading-loose italic font-bold">下関トレーニングセンターは、山口労働局長登録教習機関 第68号として、法定基準を満たした高品質な教習を提供しています。</p></div>`;
-        } else if(type === 'why-02') {
-            title.innerText = '国道2号からアクセス抜群';
-            body.innerHTML = `<div class="space-y-6"><img src="why-02.jpg" class="w-full rounded-2xl shadow-lg mb-6"><p class="text-slate-600 leading-loose italic font-bold">下関市の主要道路・国道2号線からのアクセスが良く、駐車場も完備。無料送迎バスでの来園も可能です。</p></div>`;
-        } else if(type === 'why-03') {
-            title.innerText = 'ベテラン職人による生きた指導';
-            body.innerHTML = `<div class="space-y-6"><img src="why-03.jpg" class="w-full rounded-2xl shadow-lg mb-6"><p class="text-slate-600 leading-loose italic font-bold">講師陣は現場経験豊富なベテラン揃い。単なる知識だけでなく、現場で役立つ本当の技術と安全知識を伝授します。</p></div>`;
-        } else if(type === 'recruit') {
-            title.innerText = '採用情報';
-            body.innerHTML = `<div class="space-y-8 text-left"><div><h5 class="font-black text-slate-900 italic mb-3 text-lg text-sky-600">募集職種</h5><ul class="space-y-3 text-slate-600 italic font-bold"><li>• 教習指導員（フルタイム・パート）</li><li>• 技能講習講師</li><li>• 事務スタッフ</li></ul></div><div class="bg-sky-50 border border-sky-200 rounded-2xl p-6 text-center italic"><p class="text-sm text-sky-900 font-black mb-4">詳細はお問い合わせください</p><a href="tel:0832460556" class="text-sky-600 font-black italic">📞 083-246-0556</a></div></div>`;
-        }
-        document.body.classList.add('modal-active');
-    }
-
-    window.openPointModal = function(type) {
-        const title = document.getElementById('modal-title');
-        const body = document.getElementById('modal-body');
-        if(type === 'qa') {
-            title.innerText = 'よくある質問';
-            body.innerHTML = `<div class="space-y-8 text-left"><div><h5 class="font-black text-slate-900 italic mb-3 text-lg">Q1. 未経験でも受講できますか？</h5><p class="text-slate-600 italic font-bold">はい、初心者から資格取得まで丁寧にサポートします。</p></div><div class="border-t pt-6"><h5 class="font-black text-slate-900 italic mb-3 text-lg">Q2. 講習期間は？</h5><p class="text-slate-600 italic font-bold">講習により異なりますが、3日〜5日程度が目安です。</p></div></div>`;
-        } else if(type === 'subsidy') {
-            title.innerText = '補助金制度';
-            body.innerHTML = `<div class="space-y-6 text-left"><p class="text-slate-600 font-black italic">以下の制度が利用可能です。</p><ul class="space-y-4 text-slate-600 italic font-bold"><li>• 教育訓練給付金制度</li><li>• 人材開発支援助成金</li></ul><p class="text-xs text-slate-400 italic">詳細は最寄りのハローワークまたは当センターへ。</p></div>`;
-        } else if(type === 'flow') {
-            title.innerText = '申込み流れ';
-            body.innerHTML = `<div class="space-y-8 text-left"><div class="flex gap-6 items-start"><div class="w-12 h-12 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0 text-white font-black italic">1</div><div><h5 class="font-black text-slate-900 italic mb-2">お問い合わせ</h5><p class="text-slate-600 text-sm italic font-bold">お電話またはWebで希望コースをお知らせください</p></div></div><div class="flex gap-6 items-start pt-6 border-t"><div class="w-12 h-12 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0 text-white font-black italic">2</div><div><h5 class="font-black text-slate-900 italic mb-2">資料送付・受付</h5><p class="text-slate-600 text-sm italic font-bold">詳細な案内をお送りします</p></div></div><div class="flex gap-6 items-start pt-6 border-t"><div class="w-12 h-12 bg-sky-600 rounded-full flex items-center justify-center flex-shrink-0 text-white font-black italic">3</div><div><h5 class="font-black text-slate-900 italic mb-2">受講開始</h5><p class="text-slate-600 text-sm italic font-bold">指定の日に当センターへお越しください</p></div></div></div>`;
-        }
-        document.body.classList.add('modal-active');
-    }
-
-    window.closeModal = function() { document.body.classList.remove('modal-active'); }
-
+    window.changeMonth = (diff) => { currentMonth += diff; if (currentMonth > 12) { currentMonth = 1; currentYear++; } if (currentMonth < 1) { currentMonth = 12; currentYear--; } renderCalendar(currentMonth); renderGantt(currentMonth); };
     window.addEventListener('scroll', () => {
-        const scroll = window.pageYOffset;
         const nav = document.getElementById('main-nav');
-        if (scroll > 50) { nav.classList.add('scrolled'); } else { nav.classList.remove('scrolled'); }
+        if (window.pageYOffset > 50) nav.style.background = "rgba(2, 6, 23, 0.98)"; else nav.style.background = "transparent";
         document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); });
     });
-
-    window.onload = () => { renderCalendar(currentMonth); renderGantt(currentMonth); };
     </script>
 </body>
 </html>
