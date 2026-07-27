@@ -52,18 +52,31 @@
 </head>
 <body>
 
-    <!-- 0. HEADER -->
-    <header class="fixed top-0 w-full z-50 bg-navy/90 backdrop-blur-md border-b border-white/10 px-6 py-4 flex justify-between items-center text-white transition-all" id="main-nav">
-        <div class="flex items-center space-x-4">
-            <img src="logo.png" alt="STC" class="h-10 md:h-12 border border-white/20 rounded">
-            <div class="leading-tight">
-                <h1 class="font-black text-sm md:text-lg tracking-tighter italic">下関トレーニングセンター</h1>
-                <p class="text-[8px] md:text-[10px] text-accent uppercase tracking-[0.3em] font-bold">Shimonoseki Training Center</p>
+        <!-- 0. HEADER (新装：日本語リンク & 重厚デザイン) -->
+    <header class="fixed top-0 w-full z-50 transition-all duration-500 px-6 py-6 md:py-8" id="main-nav">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <img src="logo.png" alt="STC" class="h-10 md:h-14 border border-white/20 rounded shadow-lg">
+                <div class="leading-tight">
+                    <h1 class="font-black text-sm md:text-xl tracking-tighter italic text-white drop-shadow-md">下関トレーニングセンター</h1>
+                    <p class="text-[8px] md:text-[10px] text-accent uppercase tracking-[0.3em] font-bold drop-shadow-md">Shimonoseki Training Center</p>
+                </div>
+            </div>
+
+            <!-- 日本語メニュー（PCのみ表示） -->
+            <nav class="hidden lg:flex items-center space-x-8 text-white text-sm font-black italic tracking-widest">
+                <a href="#service" class="hover:text-accent transition-colors border-b-2 border-transparent hover:border-accent pb-1">事業内容</a>
+                <a href="#courses" class="hover:text-accent transition-colors border-b-2 border-transparent hover:border-accent pb-1">主要コース</a>
+                <a href="#schedule-section" class="hover:text-accent transition-colors border-b-2 border-transparent hover:border-accent pb-1">講習日程</a>
+                <a href="#access" class="hover:text-accent transition-colors border-b-2 border-transparent hover:border-accent pb-1">アクセス</a>
+            </nav>
+
+            <div class="flex items-center gap-4">
+                <a href="tel:0832460556" class="bg-accent text-white px-6 py-3 md:px-8 md:py-4 rounded-full text-xs md:text-sm font-black shadow-[0_10px_30px_rgba(0,162,255,0.4)] hover:bg-white hover:text-navy hover:scale-105 transition-all italic flex items-center gap-2">
+                    <i class="fas fa-phone-alt"></i> <span>今すぐ相談</span>
+                </a>
             </div>
         </div>
-        <a href="tel:0832460556" class="bg-accent px-6 py-2 md:py-3 rounded-full text-xs font-black shadow-lg hover:scale-105 transition-all italic flex items-center gap-2">
-            <i class="fas fa-phone-alt"></i> <span class="hidden md:inline">今すぐ相談</span>
-        </a>
     </header>
 
     <!-- 1. HERO SECTION -->
@@ -408,6 +421,18 @@
         const nav = document.getElementById('main-nav');
         if (window.pageYOffset > 50) { nav.style.paddingTop = "12px"; nav.style.paddingBottom = "12px"; nav.style.backgroundColor = "rgba(0, 26, 51, 0.98)"; } 
         else { nav.style.paddingTop = "16px"; nav.style.paddingBottom = "16px"; nav.style.backgroundColor = "rgba(0, 26, 51, 0.90)"; }
+        document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); });
+    });    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('main-nav');
+        if (window.pageYOffset > 50) {
+            nav.style.backgroundColor = "rgba(0, 26, 51, 0.98)";
+            nav.classList.remove('py-6', 'md:py-8');
+            nav.classList.add('py-3', 'md:py-4', 'shadow-2xl');
+        } else {
+            nav.style.backgroundColor = "transparent";
+            nav.classList.add('py-6', 'md:py-8');
+            nav.classList.remove('py-3', 'md:py-4', 'shadow-2xl');
+        }
         document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); });
     });
     </script>
