@@ -245,7 +245,7 @@
     </section>
 
            <!-- 5. SCHEDULE (背景色・視認性・システム連動を完全修正) -->
-    <section id="schedule-section" class="py-24 bg-[#001a33] relative text-left overflow-hidden">
+    <section id="schedule-section" class="parallax py-32" style="background-image: url('bg-detail.jpg'); background-attachment: fixed; background-size: cover; background-position: center;">
         <!-- 背景の模型写真を少し強調 -->
         <div class="absolute inset-0 z-0 opacity-20">
             <img src="bg-detail.jpg" alt="detail" class="w-full h-full object-cover grayscale">
@@ -380,7 +380,7 @@
 
         monthSchedules.forEach(item => {
             const avail = item.capacity - (item.fullApplied + item.reserved);
-            const statusLabel = avail <= 0 ? '<span class="bg-slate-400 text-white px-6 py-2 rounded-full text-sm">満員御礼</span>' : `<span class="bg-accent text-white px-8 py-3 rounded-full text-base shadow-lg">残り ${avail} 席</span>`;
+            const statusLabel = avail <= 0 ? '<span class="bg-slate-200 text-slate-500 px-8 py-3 rounded-full text-base">満員御礼</span>' : `<span class="bg-sky-100 text-[#001a33] px-8 py-3 rounded-full text-lg font-black border-2 border-sky-200 shadow-sm">残り ${avail} 席</span>`;
             let actionBtn = "";
             if (item.name.includes("テールゲート") || item.name.includes("フルハーネス")) {
                 actionBtn = `<a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-amber-500 text-white px-8 py-4 rounded-2xl text-base font-black italic block text-center shadow-xl hover:bg-navy transition border-2 border-amber-600">予約のみ(書類持参)</a>`;
@@ -415,8 +415,7 @@
         monthSchedules.forEach(item => { if (!coursesByName[item.name]) { coursesByName[item.name] = []; } coursesByName[item.name].push(item); });
         Object.entries(coursesByName).forEach(([courseName, items]) => {
             html += `<div class="grid gap-0 items-center border-b border-white/5 py-4 hover:bg-white/5 transition" style="grid-template-columns: 300px repeat(31, 1fr);"><div class="font-[900] text-xl text-white italic truncate pr-8 text-left uppercase tracking-tighter">${courseName}</div>`;
-            const colorClass = courseName.includes("クレーン") ? "bg-pink-500 shadow-[0_0_20px_rgba(236,72,153,0.6)]" : courseName.includes("フォーク") ? "bg-lime-400 shadow-[0_0_20px_rgba(163,230,53,0.6)]" : "bg-accent shadow-[0_0_20px_rgba(0,162,255,0.6)]";
-            for (let day = 1; day <= 31; day++) {
+            const colorClass = courseName.includes("クレーン") ? "bg-pink-500 shadow-lg" : courseName.includes("フォーク") ? "bg-lime-500 shadow-lg" : "bg-sky-600 shadow-lg";
                 const isScheduled = items.some(item => item.days.includes(day) || (day >= item.days[0] && day <= item.dayEnd));
                 html += `<div class="h-10 mx-1 rounded-md ${isScheduled ? colorClass : 'bg-white/5'}"></div>`;
             }
