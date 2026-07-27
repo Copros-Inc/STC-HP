@@ -281,84 +281,95 @@
         </div>
     </section>
 
-            <!-- 6. POINT (セクション区切り & 真ん中の文字復活) -->
-    <section id="point" class="py-32 bg-slate-50 relative overflow-hidden">
-        <div class="container mx-auto px-6 max-w-6xl relative z-10">
-            <div class="text-left mb-20">
-                <h3 class="text-[#001a33] text-5xl md:text-7xl font-[900] italic uppercase tracking-tighter">Point</h3>
-                <p class="text-accent font-[900] tracking-[0.4em] text-sm mt-4 italic uppercase">受講に関する重要情報</p>
+               <!-- 6. POINT (シャレオツ感アップ & 文字視認性 完璧版) -->
+    <section id="point" class="parallax py-40" style="background-image: url('bg-theory.jpg'); background-attachment: fixed; background-size: cover;">
+        <!-- 背景を白で明るく覆い、清潔感と視認性を両立 -->
+        <div class="absolute inset-0 bg-white/90 backdrop-blur-[2px]"></div>
+        
+        <div class="container mx-auto px-6 max-w-6xl relative z-10 text-left">
+            <div class="text-left mb-24">
+                <h3 class="text-[#001a33] text-6xl md:text-8xl font-[900] italic uppercase tracking-tighter">Point</h3>
+                <p class="text-accent font-[900] tracking-[0.4em] text-sm md:text-lg mt-4 italic uppercase">受講に関する重要情報</p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-10">
+            <div class="grid md:grid-cols-3 gap-12">
                 <!-- よくある質問 -->
-                <a href="points.html#qa" class="bg-white p-12 rounded-[3.5rem] block shadow-xl hover:shadow-2xl transition group border border-slate-100 text-center">
-                    <div class="w-24 h-24 bg-sky-50 rounded-full flex items-center justify-center mx-auto mb-8 group-hover:bg-accent transition duration-500">
+                <a href="points.html#qa" class="bg-white p-12 rounded-[3.5rem] block shadow-2xl hover:shadow-sky-200 transition-all duration-500 group border border-slate-100 text-center hover:-translate-y-2">
+                    <div class="w-24 h-24 bg-sky-50 rounded-full flex items-center justify-center mx-auto mb-10 group-hover:bg-accent transition duration-500">
                         <i class="fas fa-question text-accent text-4xl group-hover:text-white"></i>
                     </div>
-                    <h4 class="text-2xl font-[900] italic mb-4 text-[#001a33]">よくある質問</h4>
-                    <p class="text-slate-400 font-bold text-sm italic">ご不安を事前に解消</p>
+                    <h4 class="text-3xl font-[900] italic mb-6 text-[#001a33]">よくある質問</h4>
+                    <p class="text-slate-400 font-bold text-base italic uppercase tracking-widest">ご不安を事前に解消</p>
                 </a>
                 
-                <!-- 補助金制度 (文字復活！) -->
-                <a href="points.html#subsidy" class="bg-accent p-12 rounded-[3.5rem] block shadow-xl hover:shadow-2xl transition group text-center text-white">
-                    <div class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-8 group-hover:bg-white transition duration-500">
-                        <i class="fas fa-hand-holding-usd text-white text-4xl group-hover:text-accent"></i>
+                <!-- 補助金制度 (背景を水色にして、文字を濃紺でハッキリさせる) -->
+                <a href="points.html#subsidy" class="bg-sky-100 p-12 rounded-[3.5rem] block shadow-2xl hover:shadow-sky-300 transition-all duration-500 group border-4 border-white text-center hover:-translate-y-2">
+                    <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-10 group-hover:bg-[#001a33] transition duration-500">
+                        <i class="fas fa-hand-holding-usd text-accent text-4xl group-hover:text-white"></i>
                     </div>
-                    <h4 class="text-2xl font-[900] italic mb-4 text-white">補助金制度</h4>
-                    <p class="text-white/80 font-bold text-sm italic">支援制度でお得に受講</p>
+                    <h4 class="text-3xl font-[900] italic mb-6 text-[#001a33]">補助金制度</h4>
+                    <p class="text-[#001a33] font-[900] text-base italic uppercase tracking-widest">支援制度でお得に受講</p>
                 </a>
                 
                 <!-- 申込の流れ -->
-                <a href="points.html#flow" class="bg-[#001a33] p-12 rounded-[3.5rem] block shadow-xl hover:shadow-2xl transition group text-center text-white">
-                    <div class="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-8 group-hover:bg-accent transition duration-500">
+                <a href="points.html#flow" class="bg-[#001a33] p-12 rounded-[3.5rem] block shadow-2xl hover:shadow-slate-400 transition-all duration-500 group text-center hover:-translate-y-2">
+                    <div class="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-10 group-hover:bg-accent transition duration-500">
                         <i class="fas fa-route text-white text-4xl"></i>
                     </div>
-                    <h4 class="text-2xl font-[900] italic mb-4 text-white">申込の流れ</h4>
-                    <p class="text-white/40 font-bold text-sm italic">受講まで簡単3ステップ</p>
+                    <h4 class="text-3xl font-[900] italic mb-6 text-white text-center">申込の流れ</h4>
+                    <p class="text-white/40 font-bold text-base italic uppercase tracking-widest text-center">受講まで簡単3ステップ</p>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- 7. ACCESS & CONTACT (同じセクションに集約 & 正確な位置の地図) -->
+    <!-- 7. ACCESS (地図のピンを正確な位置に修正) -->
     <section id="access" class="py-32 bg-white">
         <div class="container mx-auto px-6 max-w-6xl">
-            <div class="text-left mb-20">
-                <h3 class="text-[#001a33] text-5xl md:text-7xl font-[900] italic uppercase tracking-tighter">Access</h3>
-                <p class="text-accent font-[900] tracking-[0.4em] text-sm mt-4 italic uppercase">所在地・お問い合わせ</p>
+            <div class="text-left mb-24">
+                <h3 class="text-[#001a33] text-6xl md:text-8xl font-[900] italic uppercase tracking-tighter">Access</h3>
+                <p class="text-accent font-[900] tracking-[0.4em] text-sm md:text-lg mt-4 italic uppercase">所在地・お問い合わせ</p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-10 mb-16">
-                <a href="tel:0832460556" class="bg-[#001a33] text-white p-12 rounded-[3.5rem] shadow-2xl flex items-center justify-between group transition hover:bg-accent">
+            <div class="grid md:grid-cols-2 gap-10 mb-20">
+                <a href="tel:0832460556" class="bg-[#001a33] text-white p-14 rounded-[4rem] shadow-2xl flex items-center justify-between group transition-all duration-500 hover:bg-accent">
                     <div class="text-left">
-                        <span class="block text-accent font-black text-sm mb-2 italic group-hover:text-white transition">TELEPHONE</span>
-                        <span class="text-4xl md:text-5xl font-[900] italic font-en">083.246.0556</span>
+                        <span class="block text-accent font-black text-sm mb-4 italic group-hover:text-white transition">TELEPHONE</span>
+                        <span class="text-4xl md:text-5xl font-[900] italic font-en tracking-tighter">083.246.0556</span>
                     </div>
-                    <i class="fas fa-phone-alt text-5xl opacity-20"></i>
+                    <i class="fas fa-phone-alt text-6xl opacity-10 group-hover:opacity-40 transition"></i>
                 </a>
-                <div class="bg-slate-50 border-4 border-slate-100 p-12 rounded-[3.5rem] flex items-center justify-between text-[#001a33]">
+                <div class="bg-slate-50 border-4 border-slate-100 p-14 rounded-[4rem] flex items-center justify-between text-[#001a33]">
                     <div class="text-left">
-                        <span class="block text-slate-400 font-black text-sm mb-2 italic">FAX NUMBER</span>
-                        <span class="text-4xl md:text-5xl font-[900] italic font-en">083.246.2835</span>
+                        <span class="block text-slate-400 font-black text-sm mb-4 italic">FAX NUMBER</span>
+                        <span class="text-4xl md:text-5xl font-[900] italic font-en tracking-tighter">083.246.2835</span>
                     </div>
-                    <i class="fas fa-fax text-5xl opacity-20"></i>
+                    <i class="fas fa-fax text-6xl opacity-5"></i>
                 </div>
             </div>
 
-            <!-- ピンの立った正確な地図 -->
-            <div class="w-full h-[550px] rounded-[4rem] overflow-hidden shadow-2xl border-[12px] border-slate-100">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3299.782068478495!2d131.0264004!3d34.010999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3543971e98d98d9d%3A0x7d8a6e8b8e8b8e8b!2z5LiL6Zai44OI44Os44O844OL44Oz44Kw44K744Oz44K_44O8!5e0!3m2!1sja!2sjp!4v1719999999999" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            <!-- ピンの立った正確な地図（山口県下関市長府安養寺1丁目15-13） -->
+            <div class="w-full h-[600px] rounded-[4rem] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.2)] border-[15px] border-white">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3299.827725916174!2d131.02613527622956!3d34.01042451930773!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3543971e98d98d9d%3A0x7d8a6e8b8e8b8e8b!2z5LiL6Zai44OI44Os44O844OL44Oz44Kw44K744Oz44K_44O8!5e0!3m2!1sja!2sjp!4v1711234567890!5m2!1sja!2sjp" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
-            <p class="mt-8 text-center text-slate-400 font-bold italic">〒752-8609 山口県下関市長府安養寺1丁目15-13</p>
+            <p class="mt-12 text-center text-slate-400 font-bold text-lg italic tracking-widest">〒752-8609 山口県下関市長府安養寺1丁目15-13</p>
         </div>
     </section>
 
-    <!-- 8. FOOTER -->
-    <footer class="bg-[#001a33] text-white py-32 text-center">
+    <!-- 8. FOOTER (内容・重厚感を完全復活) -->
+    <footer class="bg-[#001a33] text-white py-32 text-center border-t border-white/5">
         <div class="container mx-auto px-6">
-            <img src="logo.png" alt="STC" class="h-20 mx-auto mb-10 opacity-90">
-            <h2 class="text-4xl font-[900] italic mb-6">下関トレーニングセンター</h2>
-            <p class="text-accent text-sm tracking-[0.5em] mt-12 font-bold uppercase">&copy; 2026 SHIMONOSEKI TRAINING CENTER.</p>
+            <p class="text-[10px] md:text-xs font-bold text-accent uppercase tracking-[0.4em] mb-20 leading-loose max-w-4xl mx-auto opacity-70">
+                対応エリア：山口県全域（下関市、宇部市、山口市、萩市、防府市、下松市、岩国市、光市、長門市、柳井市、美祢市、周南市、山陽小野田市）、福岡県北九州市
+            </p>
+            <img src="logo.png" alt="STC" class="h-28 mx-auto mb-12 drop-shadow-2xl">
+            <h2 class="text-4xl font-[900] italic mb-8 tracking-[0.1em]">下関トレーニングセンター</h2>
+            <div class="text-slate-400 font-bold text-lg leading-loose italic mb-20">
+                <p>〒752-8609 山口県下関市長府安養寺1丁目15-13</p>
+                <p class="mt-4 text-white text-3xl tracking-tighter font-en">TEL 083-246-0556 / FAX 083-246-2835</p>
+            </div>
+            <div class="w-20 h-1 bg-accent mx-auto mb-12"></div>
+            <p class="text-white/20 text-[11px] tracking-[0.6em] font-bold uppercase">&copy; 2026 SHIMONOSEKI TRAINING CENTER.</p>
         </div>
     </footer>
 
@@ -399,7 +410,7 @@
     window.renderCalendar = function(month) {
         const container = document.getElementById('calendar-container');
         document.getElementById('current-month-display').innerText = `${month}月`;
-        let tableHtml = '<table class="w-full text-left border-collapse hidden md:table"><thead><tr class="bg-slate-800 text-white font-[900] text-xl border-b-4 border-navy"><th class="p-10">講習名称</th><th class="p-10">開催日程</th><th class="p-10 text-center">状況</th><th class="p-10">申込</th></tr></thead><tbody class="font-bold text-navy">';
+        let tableHtml = '<table class="w-full text-left border-collapse hidden md:table"><thead><tr class="bg-slate-800 text-white font-[900] text-xl border-b-4 border-navy"><th class="p-10 text-left">講習名称</th><th class="p-10 text-left">開催日程</th><th class="p-10 text-center">状況</th><th class="p-10 text-left">申込</th></tr></thead><tbody class="font-bold text-navy">';
         const monthSchedules = schedules.filter(s => s.month === month);
         if (monthSchedules.length === 0) { container.innerHTML = '<p class="p-24 text-slate-400 italic text-center font-[900] text-2xl">現在、講習予定はございません。</p>'; return; }
         monthSchedules.forEach(item => {
@@ -437,7 +448,7 @@
             const listEl = document.getElementById('hp-news-list');
             if(!listEl) return;
             const docs = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)).slice(0, 1);
-            listEl.innerHTML = docs.map(d => `<div class="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center space-x-6 text-left max-w-xl mx-auto"><span class="bg-red-600 text-[10px] text-white px-3 py-1 rounded font-black">NEWS</span><p class="text-white text-base font-bold italic text-left">${d.content}</p></div>`).join('');
+            listEl.innerHTML = docs.map(d => `<div class="bg-[#001a33]/80 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center space-x-6 text-left max-w-xl mx-auto shadow-2xl"><span class="bg-red-600 text-[10px] text-white px-3 py-1 rounded font-black">NEWS</span><p class="text-white text-base font-bold italic text-left">${d.content}</p></div>`).join('');
         });
     }
 
