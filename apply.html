@@ -130,15 +130,22 @@
         </form>
     </main>
 
-    <script type="module">
+        <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw", authDomain: "stc-hp.firebaseapp.com", projectId: "stc-hp", storageBucket: "stc-hp.firebasestorage.app", messagingSenderId: "795332931918", appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f" };
+        const firebaseConfig = { 
+            apiKey: "AIzaSyCrRf1MMckR_dTIT4mpz2MWdNPJZt3GpYw",
+            authDomain: "stc-hp.firebaseapp.com",
+            projectId: "stc-hp",
+            storageBucket: "stc-hp.firebasestorage.app",
+            messagingSenderId: "795332931918",
+            appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f" 
+        };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        let photos = { user: "", licA: "", licB: "", spA: "", spB: "", emp: "" };
 
+        // ページ読み込み時の処理
         window.addEventListener('load', () => {
             const params = new URLSearchParams(window.location.search);
             const course = decodeURIComponent(params.get('course') || "");
@@ -149,192 +156,99 @@
             document.getElementById('courseDate').value = date;
             
             if (mode === 'simple') {
-                document.getElementById('mode-badge').innerText = "簡易予約モード（書類は後日提出）";
-                document.getElementById('section-photo').style.display = 'none';
-                document.getElementById('section-payment').style.display = 'none';
-                document.getElementById('submitBtn').innerText = "予約を確定する（受講2週間前までに書類持参）";
+                document.getElementById('mode-badge').innerText = "簡易予約モード（書類は当日持参）";
+                if(document.getElementById('section-photo')) document.getElementById('section-photo').style.display = 'none';
+                if(document.getElementById('section-payment')) document.getElementById('section-payment').style.display = 'none';
                 updateCourseUI(course, true);
             } else {
                 updateCourseUI(course, false);
             }
         });
 
+        // 講習ごとの受講料・追加項目切り替え
         function updateCourseUI(course, isSimple) {
             const feeEl = document.getElementById('displayFee');
-            const subsidyEl = document.getElementById('subsidy-section');
             const dynamicEl = document.getElementById('dynamic-section');
+            const subsidyEl = document.getElementById('subsidy-section');
             let fee = "金額未定";
             let html = "";
 
+            // 受講料計算
             if (course.includes("玉掛け")) fee = "¥25,000-"; 
             else if (course.includes("小型移動式クレーン")) fee = "¥35,000-";
             else if (course.includes("31H")) fee = "¥30,000-";
             else if (course.includes("11H")) fee = "¥20,000-";
             else if (course.includes("テールゲート")) fee = "¥15,000-";
-
             feeEl.innerText = fee;
-            if (course.includes("玉掛け") || course.includes("小型移動式クレーン")) subsidyEl.classList.remove('hidden');
 
+            // 助成金案内の表示
+            if (course.includes("玉掛け") || course.includes("小型移動式クレーン")) {
+                if(subsidyEl) subsidyEl.classList.remove('hidden');
+            }
+
+            // 本申込（full）の場合のみ、資格確認欄を出す
             if (!isSimple) {
                 if (course.includes("小型移動式クレーン")) {
                     html = `
-                    <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-8">
+                    <section class="form-card p-8 md:p-12 text-left space-y-6">
                         <h2 class="section-title text-xl italic text-sky-600">免除条件の確認 / Qualification</h2>
+                        <p class="text-xs font-bold text-rose-500">※写真の添付は不要です。当日原本をお持ちください。</p>
                         <div class="space-y-4">
-                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer"><input type="radio" name="exType" value="玉掛" onchange="window.toggleEx('cr_a')"> <span class="text-sm font-bold">玉掛け技能講習 or 床上操作式クレーン修了証所持</span></label>
-                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer"><input type="radio" name="exType" value="免許" onchange="window.toggleEx('cr_b')"> <span class="text-sm font-bold">クレーン・デリック or 揚貨装置運転士免許所持</span></label>
+                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer bg-slate-50"><input type="radio" name="exType" value="玉掛所持" onclick="document.getElementById('lic_input').classList.remove('hidden')"> <span class="text-sm font-bold">玉掛け・床上操作式クレーン等の資格を所持している</span></label>
                         </div>
-                        <div id="cr_a_fields" class="hidden space-y-6 p-6 bg-slate-50 rounded-2xl border">
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div><label class="input-label">修了日</label><input type="date" name="exDate" class="input-field bg-white"></div>
-                                <div><label class="input-label">修了証番号</label><input type="text" name="exNo" class="input-field bg-white" placeholder="第12345号"></div>
-                            </div>
-                            <input type="text" name="exOrg" class="input-field bg-white" placeholder="交付機関名（例：山口労働局）">
-                            <div class="flex gap-6"><label class="flex gap-2 items-center"><input type="radio" name="exDetail" value="玉掛け"> 玉掛け</label><label class="flex gap-2 items-center"><input type="radio" name="exDetail" value="床上操作"> 床上操作式</label></div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div onclick="window.triggerFile('licA')" class="photo-box" id="pre_licA"><span>修了証【表面】</span></div>
-                                <div onclick="window.triggerFile('licB')" class="photo-box" id="pre_licB"><span>修了証【裏面】</span></div>
-                            </div>
-                        </div>
-                        <div id="cr_b_fields" class="hidden space-y-6 p-6 bg-slate-50 rounded-2xl border">
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div><label class="input-label">取得日</label><input type="date" name="exDateB" class="input-field bg-white"></div>
-                                <div><label class="input-label">免許証番号</label><input type="text" name="exNoB" class="input-field bg-white" placeholder="第12345号"></div>
-                            </div>
-                            <input type="text" name="exOrgB" class="input-field bg-white" placeholder="交付局名">
-                            <div class="flex gap-6"><label class="flex gap-2 items-center"><input type="radio" name="exDetailB" value="クレーン"> クレーン</label><label class="flex gap-2 items-center"><input type="radio" name="exDetailB" value="デリック"> デリック</label><label class="flex gap-2 items-center"><input type="radio" name="exDetailB" value="揚貨装置"> 揚貨装置</label></div>
-                                                    <div class="p-4 bg-rose-50 border border-rose-100 rounded-xl">
-                            <p class="text-xs font-bold text-rose-600 italic">※免許証は当日原本をお持ちください。</p>
-                        </div>
+                        <div id="lic_input" class="hidden p-6 border-2 border-dashed border-slate-200 rounded-2xl space-y-4">
+                            <div><label class="input-label">修了証番号</label><input type="text" name="exNo" class="input-field bg-white" placeholder="第12345号"></div>
+                            <div><label class="input-label">交付機関名</label><input type="text" name="exOrg" class="input-field bg-white" placeholder="山口労働局など"></div>
                         </div>
                     </section>`;
                 } else if (course.includes("31H")) {
                     html = `
-                                        <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-6">
-                        <h2 class="section-title text-xl italic text-sky-600">運転免許の確認 / Driver License</h2>
-                        <div class="p-6 bg-rose-50 border-2 border-rose-100 rounded-2xl flex items-center gap-4">
-                            <i class="fas fa-id-card text-rose-500 text-2xl"></i>
-                            <p class="text-sm font-bold text-rose-600 leading-relaxed">
-                                セキュリティ保護のため、免許証情報の入力と写真添付を廃止しました。<br>
-                                <span class="text-lg">【重要】運転免許証の原本を、当日必ずお持ちください。</span>
-                            </p>
-                        </div>
-                    </section>
+                    <section class="form-card p-8 md:p-12 text-left space-y-6">
+                        <h2 class="section-title text-xl italic text-sky-600">所持免許の確認 / Driver License</h2>
+                        <div class="p-4 bg-rose-50 rounded-xl"><p class="text-xs font-[900] text-rose-600">【重要】運転免許証の原本を当日受付にて提示してください。</p></div>
+                        <div><label class="input-label">運転免許証番号</label><input type="text" name="licNo" class="input-field" placeholder="第000000000000号"></div>
+                    </section>`;
                 } else if (course.includes("11H")) {
                     html = `
-                    <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-8">
-                        <h2 class="section-title text-xl italic text-sky-600">免除条件の選択 / Course Type</h2>
-                        <div class="space-y-4">
-                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer"><input type="radio" name="f11" value="A" onchange="window.toggleEx('f_a')"> <div><span class="text-sm font-bold">A：大型特殊免許(限定なし)を保有している</span></div></label>
-                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer"><input type="radio" name="f11" value="B" onchange="window.toggleEx('f_b')"> <div><span class="text-sm font-bold text-rose-600 underline">B：普通・大型免許等あり＋特別教育＋実務3ヶ月以上</span></div></label>
-                        </div>
-                                                <div id="fl_lic_fields" class="hidden p-6 bg-rose-50 border border-rose-100 rounded-2xl">
-                            <p class="text-sm font-bold text-rose-600 italic">
-                                【重要】当日、免許証の原本を受付にて確認させていただきます。
-                            </p>
-                        </div>
-                        <div id="fl_b_fields" class="hidden space-y-6 p-6 bg-slate-50 rounded-2xl border">
-                            <p class="input-label text-sky-600 font-black">フォークリフト特別教育・実務経験の情報</p>
-                            <div class="grid md:grid-cols-2 gap-4"><input type="date" name="spDate" class="input-field bg-white"><input type="text" name="spNo" class="input-field bg-white" placeholder="修了証番号"></div>
-                            <input type="text" name="spOrg" class="input-field bg-white" placeholder="交付機関名">
-                            <div class="grid grid-cols-3 gap-2">
-                                <input type="text" name="mcM" class="input-field bg-white text-[10px]" placeholder="メーカー名">
-                                <input type="text" name="mcT" class="input-field bg-white text-[10px]" placeholder="型式">
-                                <input type="text" name="mcW" class="input-field bg-white text-[10px]" placeholder="最大荷重">
-                            </div>
-                            <input type="text" name="mcExp" class="input-field bg-white" placeholder="経験期間（例：6ヶ月）">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div onclick="window.triggerFile('spA')" class="photo-box" id="pre_spA"><span>特別教育証【表面】</span></div>
-                                <div onclick="window.triggerFile('spB')" class="photo-box" id="pre_spB"><span>特別教育証【裏面】</span></div>
-                                <div onclick="window.triggerFile('emp')" class="photo-box col-span-2" id="pre_emp"><span>事業所証明（社印）を撮影</span></div>
-                            </div>
-                        </div>
+                    <section class="form-card p-8 md:p-12 text-left space-y-6">
+                        <h2 class="section-title text-xl italic text-sky-600">免除条件（11H）の確認</h2>
+                        <div class="p-4 bg-rose-50 rounded-xl text-xs font-bold text-rose-600">※大型特殊免許（限定なし）等の原本を当日お持ちください。</div>
+                        <div><label class="input-label">免許証番号</label><input type="text" name="licNo" class="input-field" placeholder="第000000000000号"></div>
                     </section>`;
                 }
             }
             dynamicEl.innerHTML = html;
         }
 
-        window.toggleEx = (type) => {
-            document.getElementById('cr_a_fields')?.classList.toggle('hidden', type !== 'cr_a');
-            document.getElementById('cr_b_fields')?.classList.toggle('hidden', type !== 'cr_b');
-            document.getElementById('fl_lic_fields')?.classList.remove('hidden');
-            document.getElementById('fl_b_fields')?.classList.toggle('hidden', type !== 'f_b');
-        };
-
-        window.triggerFile = (key) => document.getElementById('in_' + key).click();
-
-        window.processImg = (input, key) => {
-            if (!input.files[0]) return;
-            const reader = new FileReader();
-            reader.onload = e => {
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const MAX = 400; const scale = MAX / img.width;
-                    canvas.width = MAX; canvas.height = img.height * scale;
-                    canvas.getContext('2d').drawImage(img, 0, 0, MAX, canvas.height);
-                    photos[key] = canvas.toDataURL('image/jpeg', 0.7);
-                    const pre = document.getElementById('pre_' + key);
-                    if(pre) pre.innerHTML = `<img src="${photos[key]}" class="w-full h-full object-cover">`;
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(input.files[0]);
-        };
-
-        document.querySelectorAll('.consent-check').forEach(c => c.addEventListener('change', () => {
-            document.getElementById('submitBtn').disabled = !Array.from(document.querySelectorAll('.consent-check')).every(i => i.checked);
-        }));
-
-           document.getElementById('applyForm').addEventListener('submit', async e => {
-        e.preventDefault();
-        const btn = document.getElementById('submitBtn'); 
-        btn.disabled = true; 
-        btn.innerText = "送信中 / SENDING...";
-        
-        const mode = new URLSearchParams(window.location.search).get('mode') || "full";
-        
-        try {
-            const formData = new FormData(e.target);
-            
-            // 1. まず基本情報をセット
-            const data = {
-                courseName: document.getElementById('courseName').value,
-                courseDate: document.getElementById('courseDate').value,
-                mode: mode,
-                createdAt: serverTimestamp(),
-                status: 'new',
-                photos: photos // 圧縮画像
-            };
-
-            // 2. フォーム内の全入力項目（mcM, mcT, receipt等）をループで全部追加
-            formData.forEach((value, key) => {
-                // 同じ名前が複数ある（チェックボックス等）場合はカンマ区切りにする
-                if (data[key]) {
-                    data[key] = data[key] + ", " + value;
-                } else {
-                    data[key] = value;
-                }
-            });
-
-            // 3. 最後にFirebaseへ保存
-            await addDoc(collection(db, "reservations"), data);
-
-            if (mode === 'simple') {
-                const pdfMap = { "玉掛け技能講習": "pdf/tamakake.pdf", "小型移動式クレーン": "pdf/crane.pdf", "フォークリフト (31H)": "pdf/fork31.pdf", "フォークリフト (11H)": "pdf/fork11.pdf", "テールゲート": "pdf/tail.pdf" };
-                alert("予約を受け付けました！\n\n受講2週間前までに、申込書を印刷・記入して当センターまでお持ちください。"); 
-                window.location.href = pdfMap[document.getElementById('courseName').value] || "pdf/common.pdf";
-            } else {
-                alert("お申し込みありがとうございます！\n送信が完了いたしました。"); 
-                window.location.href = "index.html";
+        // 同意チェック
+        document.addEventListener('change', (e) => {
+            if (e.target.classList.contains('consent-check')) {
+                const checks = document.querySelectorAll('.consent-check');
+                document.getElementById('submitBtn').disabled = !Array.from(checks).every(c => c.checked);
             }
-        } catch (err) { 
-            alert("エラー: " + err.message); 
-            btn.disabled = false; 
-            btn.innerText = "申し込みを送信する";
-        }
-    });
+        });
+
+        // 送信処理
+        document.getElementById('applyForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn'); 
+            btn.disabled = true; btn.innerText = "送信中...";
+            try {
+                const formData = new FormData(e.target);
+                const data = {
+                    courseName: document.getElementById('courseName').value,
+                    courseDate: document.getElementById('courseDate').value,
+                    createdAt: serverTimestamp()
+                };
+                formData.forEach((value, key) => { data[key] = value; });
+                await addDoc(collection(db, "reservations"), data);
+                alert("お申し込みありがとうございました！\n送信が完了しました。\n\n※本人確認書類の原本を当日必ずお持ちください。"); 
+                window.location.href = "index.html";
+            } catch (err) { 
+                alert("エラー: " + err.message); 
+                btn.disabled = false; btn.innerText = "申し込みを送信する";
+            }
+        });
     </script>
 
     <input type="file" id="in_licA" accept="image/*" class="hidden" onchange="window.processImg(this, 'licA')">
