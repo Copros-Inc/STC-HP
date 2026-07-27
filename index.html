@@ -80,7 +80,6 @@
     </header>
 
     <!-- 1. HERO SECTION -->
-       <!-- 1. HERO SECTION (力強く、アクションしやすく改良) -->
     <section class="relative h-screen flex items-center justify-center text-center overflow-hidden bg-slate-950">
         <div class="hero-bg"></div>
         <div class="absolute inset-0 bg-gradient-to-b from-navy/40 via-transparent to-navy/90"></div>
@@ -96,12 +95,15 @@
             </p>
             
             <!-- ボタンの視認性・ホバーアクションを強化 -->
-            <div class="flex flex-col sm:flex-row gap-8 justify-center items-center mb-16 reveal active">
-                <a href="#schedule-section" class="w-72 md:w-80 bg-accent text-white py-6 rounded-full font-black text-2xl shadow-[0_20px_60px_rgba(0,162,255,0.5)] hover:bg-white hover:text-navy transition-all duration-300 italic transform hover:-translate-y-2 flex items-center justify-center gap-3">
-                    受講申し込み <i class="fas fa-chevron-right text-lg"></i>
+            <div class="flex flex-col sm:flex-row gap-8 justify-center items-center mb-16 reveal active px-4">
+                <!-- 受講申し込み：濃紺縁取り・強力なシャドウ -->
+                <a href="#schedule-section" class="w-full sm:w-80 bg-accent text-white py-6 rounded-full font-black text-2xl shadow-[0_20px_50px_rgba(0,162,255,0.4)] border-2 border-navy hover:bg-navy hover:scale-105 transition-all duration-300 italic flex items-center justify-center gap-3 group">
+                    受講申し込み <i class="fas fa-chevron-right text-lg group-hover:translate-x-1 transition"></i>
                 </a>
-                <a href="#schedule-section" class="w-72 md:w-80 border-4 border-white text-white py-6 rounded-full font-black text-2xl backdrop-blur-md hover:bg-white hover:text-navy transition-all duration-300 italic transform hover:-translate-y-2 flex items-center justify-center gap-3">
-                    講習日程表 <i class="fas fa-calendar-alt text-lg"></i>
+                
+                <!-- 講習日程表：白ベース・濃紺文字（消えない設定） -->
+                <a href="#schedule-section" class="w-full sm:w-80 bg-white text-navy py-6 rounded-full font-black text-2xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] border-2 border-white hover:bg-navy hover:text-white hover:border-navy hover:scale-105 transition-all duration-300 italic flex items-center justify-center gap-3 group">
+                    <i class="fas fa-calendar-alt text-lg"></i> 講習日程表
                 </a>
             </div>
 
