@@ -415,7 +415,8 @@
         if (monthSchedules.length === 0) { container.innerHTML = '<p class="p-24 text-slate-400 italic text-center font-[900] text-2xl">現在、講習予定はございません。</p>'; return; }
         monthSchedules.forEach(item => {
             const avail = item.capacity - (item.fullApplied + item.reserved);
-            const statusLabel = avail <= 0 ? '<span class="bg-slate-200 text-slate-500 px-8 py-3 rounded-full text-base">満員御礼</span>' : `<span class="bg-sky-100 text-[#001a33] px-8 py-3 rounded-full text-lg font-[900] border-2 border-sky-200 shadow-sm">残り ${avail} 席</span>`;
+            const statusLabel = avail <= 0 ? '<span class="bg-slate-200 text-slate-500 px-8 py-3 rounded-full text-base font-black">満員御礼</span>' : `<span class="bg-sky-100 text-[#001a33] px-8 py-3 rounded-full text-lg font-[900] border-2 border-sky-200 shadow-sm">残り ${avail} 席</span>`;
+            let actionBtn = "";
             actionBtn = `<div class="flex flex-col gap-3"><a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] shadow-lg hover:bg-accent transition border-2 border-[#001a33] text-white">WEB本申込</a><a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-slate-100 text-[#001a33] border-2 border-slate-200 px-8 py-3 rounded-2xl text-[12px] text-center font-black italic hover:bg-white transition">予約のみ(紙提出)</a></div>`;
             tableHtml += `<tr class="border-b-2 border-slate-100 hover:bg-sky-50 transition-colors text-left"><td class="p-10 text-[#001a33] font-[900] text-3xl leading-tight text-left">${item.name}</td><td class="p-10 text-slate-500 font-[900] text-2xl italic text-left">${item.date}</td><td class="p-10 text-center text-left">${statusLabel}</td><td class="p-10 text-left">${actionBtn}</td></tr>`;
         });
