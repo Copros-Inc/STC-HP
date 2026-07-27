@@ -373,7 +373,7 @@
         </div>
     </footer>
 
-    <script type="module">
+        <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -394,7 +394,11 @@
     let currentMonth = new Date().getMonth() + 1;
     let currentYear = new Date().getFullYear();
 
-    signInAnonymously(auth).then(() => { loadSchedules(); loadNews(); setTimeout(() => document.body.classList.add('hero-active'), 100); });
+    signInAnonymously(auth).then(() => { 
+        loadSchedules(); 
+        loadNews(); 
+        setTimeout(() => document.body.classList.add('hero-active'), 100);
+    });
 
     function loadSchedules() {
         onSnapshot(collection(db, "schedules"), (snapshot) => {
@@ -410,34 +414,50 @@
     window.renderCalendar = function(month) {
         const container = document.getElementById('calendar-container');
         document.getElementById('current-month-display').innerText = `${month}月`;
+        
+        // スマホ用カード表示の準備
+        let html = '<div class="md:hidden space-y-4 p-4">'; 
+        // PC用テーブル表示の準備
         let tableHtml = '<table class="w-full text-left border-collapse hidden md:table"><thead><tr class="bg-slate-800 text-white font-[900] text-xl border-b-4 border-navy"><th class="p-10 text-left">講習名称</th><th class="p-10 text-left">開催日程</th><th class="p-10 text-center">状況</th><th class="p-10 text-left">申込</th></tr></thead><tbody class="font-bold text-navy">';
+        
         const monthSchedules = schedules.filter(s => s.month === month);
-        if (monthSchedules.length === 0) { container.innerHTML = '<p class="p-24 text-slate-400 italic text-center font-[900] text-2xl">現在、講習予定はございません。</p>'; return; }
+        if (monthSchedules.length === 0) { container.innerHTML = '<p class="p-20 text-slate-400 italic text-center font-[900] text-lg">現在、講習予定はございません。</p>'; return; }
+
         monthSchedules.forEach(item => {
             const avail = item.capacity - (item.fullApplied + item.reserved);
-            const statusLabel = avail <= 0 ? '<span class="bg-slate-200 text-slate-500 px-8 py-3 rounded-full text-base font-black">満員御礼</span>' : `<span class="bg-sky-100 text-[#001a33] px-8 py-3 rounded-full text-lg font-[900] border-2 border-sky-200 shadow-sm">残り ${avail} 席</span>`;
-            let actionBtn = "";
-            actionBtn = `<div class="flex flex-col gap-3"><a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] shadow-lg hover:bg-accent transition border-2 border-[#001a33] text-white">WEB本申込</a><a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-slate-100 text-[#001a33] border-2 border-slate-200 px-8 py-3 rounded-2xl text-[12px] text-center font-black italic hover:bg-white transition">予約のみ(紙提出)</a></div>`;
-            tableHtml += `<tr class="border-b-2 border-slate-100 hover:bg-sky-50 transition-colors text-left"><td class="p-10 text-[#001a33] font-[900] text-3xl leading-tight text-left">${item.name}</td><td class="p-10 text-slate-500 font-[900] text-2xl italic text-left">${item.date}</td><td class="p-10 text-center text-left">${statusLabel}</td><td class="p-10 text-left">${actionBtn}</td></tr>`;
+            const statusLabel = avail <= 0 ? '<span class="bg-slate-200 text-slate-500 px-6 py-2 rounded-full text-sm">満員御礼</span>' : `<span class="bg-sky-100 text-[#001a33] px-6 py-2 rounded-full text-base font-black border border-sky-200 shadow-sm text-center">残り ${avail} 席</span>`;
+            let actionBtn = `<div class="flex flex-col gap-3"><a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] shadow-lg hover:bg-accent transition text-white border-2 border-[#001a33]">WEB本申込</a><a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-white text-navy border-2 border-slate-100 px-8 py-3 rounded-2xl text-xs text-center font-black italic hover:bg-slate-50 transition">予約のみ(紙提出)</a></div>`;
+            
+            // スマホ用HTML生成
+            html += `
+                <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-slate-100 text-left">
+                    <div class="text-accent font-black text-sm mb-1">${item.date}</div>
+                    <h4 class="text-xl font-[900] text-[#001a33] mb-4 leading-tight">${item.name}</h4>
+                    <div class="mb-6 flex justify-start">${statusLabel}</div>
+                    ${actionBtn}
+                </div>`;
+            
+            // PC用HTML生成 (text-3xlからtext-2xlへ、スマホサイズに負けないよう調整)
+            tableHtml += `<tr class="border-b-2 border-slate-100 hover:bg-sky-50 transition-colors text-left"><td class="p-10 text-[#001a33] font-[900] text-2xl leading-tight text-left">${item.name}</td><td class="p-10 text-slate-500 font-[900] text-xl italic text-left">${item.date}</td><td class="p-10 text-center text-left">${statusLabel}</td><td class="p-10 text-left">${actionBtn}</td></tr>`;
         });
-        container.innerHTML = tableHtml + '</tbody></table>';
+        container.innerHTML = html + '</div>' + tableHtml + '</tbody></table>';
     }
 
     window.renderGantt = function(month) {
         const ganttData = document.getElementById('gantt-data');
         if (!ganttData) return;
-        let html = '<div class="grid gap-0 mb-8 border-b-2 border-white/10 pb-6" style="grid-template-columns: 350px repeat(31, 1fr);"><div class="font-[900] text-xl text-white italic uppercase text-left text-white/50">COURSE NAME</div>';
-        for(let i=1; i<=31; i++) { html += `<div class="text-base text-white/50 font-[900] text-center font-en">${i}</div>`; }
+        let html = '<div class="grid gap-0 mb-8 border-b-2 border-white/10 pb-6" style="grid-template-columns: 250px repeat(31, 1fr);"><div class="font-[900] text-lg text-white italic uppercase text-left text-white/50">COURSE NAME</div>';
+        for(let i=1; i<=31; i++) { html += `<div class="text-sm text-white/50 font-[900] text-center font-en">${i}</div>`; }
         html += '</div>';
         const monthSchedules = schedules.filter(s => s.month === month);
         const coursesByName = {};
         monthSchedules.forEach(item => { if (!coursesByName[item.name]) { coursesByName[item.name] = []; } coursesByName[item.name].push(item); });
         Object.entries(coursesByName).forEach(([courseName, items]) => {
-            html += `<div class="grid gap-0 items-center border-b border-white/5 py-5" style="grid-template-columns: 350px repeat(31, 1fr);"><div class="font-[900] text-xl text-white italic truncate pr-10 text-left uppercase text-white">${courseName}</div>`;
+            html += `<div class="grid gap-0 items-center border-b border-white/5 py-4" style="grid-template-columns: 250px repeat(31, 1fr);"><div class="font-[900] text-sm md:text-base text-white italic truncate pr-6 text-left uppercase text-white">${courseName}</div>`;
             const colorClass = courseName.includes("クレーン") ? "bg-pink-500 shadow-lg" : courseName.includes("フォーク") ? "bg-lime-500 shadow-lg" : "bg-sky-500 shadow-lg";
             for (let day = 1; day <= 31; day++) {
                 const isScheduled = items.some(item => item.days.includes(day) || (day >= item.days[0] && day <= item.dayEnd));
-                html += `<div class="h-10 mx-1 rounded-md ${isScheduled ? colorClass : 'bg-white/5'}"></div>`;
+                html += `<div class="h-8 mx-0.5 rounded-md ${isScheduled ? colorClass : 'bg-white/5'}"></div>`;
             }
             html += `</div>`;
         });
@@ -449,14 +469,23 @@
             const listEl = document.getElementById('hp-news-list');
             if(!listEl) return;
             const docs = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)).slice(0, 1);
-            listEl.innerHTML = docs.map(d => `<div class="bg-[#001a33]/80 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center space-x-6 text-left max-w-xl mx-auto shadow-2xl"><span class="bg-red-600 text-[10px] text-white px-3 py-1 rounded font-black">NEWS</span><p class="text-white text-base font-bold italic text-left">${d.content}</p></div>`).join('');
+            listEl.innerHTML = docs.map(d => `<div class="bg-[#001a33]/80 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center space-x-4 text-left max-w-xl mx-auto shadow-xl"><span class="bg-red-600 text-[10px] text-white px-2 py-1 rounded font-black">NEWS</span><p class="text-white text-xs md:text-sm font-bold italic text-left">${d.content}</p></div>`).join('');
         });
     }
 
     window.changeMonth = (diff) => { currentMonth += diff; if (currentMonth > 12) { currentMonth = 1; currentYear++; } if (currentMonth < 1) { currentMonth = 12; currentYear--; } renderCalendar(currentMonth); renderGantt(currentMonth); };
+    
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('main-nav');
-        if (window.pageYOffset > 50) nav.style.backgroundColor = "rgba(0, 26, 51, 0.98)"; else nav.style.backgroundColor = "transparent";
+        if (window.pageYOffset > 50) {
+            nav.style.backgroundColor = "rgba(0, 26, 51, 0.98)";
+            nav.classList.remove('py-4', 'md:py-6');
+            nav.classList.add('py-2', 'md:py-3');
+        } else {
+            nav.style.backgroundColor = "transparent";
+            nav.classList.add('py-4', 'md:py-6');
+            nav.classList.remove('py-2', 'md:py-3');
+        }
         document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); });
     });
     </script>
