@@ -83,15 +83,16 @@
                 </div>
             </section>
 
-            <!-- 03. 写真（WEB申込のみ表示） -->
+                        <!-- 03. 写真の代わりに「当日持参」の案内を表示 -->
             <section id="section-photo" class="form-card p-8 md:p-12">
-                <h2 class="section-title text-xl mb-8 italic text-left">03. 証明写真 / Profile Photo</h2>
-                <div class="flex flex-col md:flex-row items-center gap-8 text-left">
-                    <div id="pre_user" class="w-32 h-40 bg-slate-50 flex items-center justify-center rounded-xl overflow-hidden border-2 border-dashed border-slate-200 shadow-inner"><i class="fas fa-camera text-slate-300 text-3xl"></i></div>
-                    <div class="flex-1 space-y-4">
-                        <p class="text-[10px] font-bold text-slate-500 italic">※修了証に使用します。無帽・無背景・正面のもの。</p>
-                        <input type="file" id="in_user" accept="image/*" class="hidden" onchange="window.processImg(this, 'user')">
-                        <button type="button" onclick="document.getElementById('in_user').click()" class="bg-slate-900 text-white px-8 py-3 rounded-full text-xs font-black italic hover:bg-sky-600 transition">写真を撮影・選択する</button>
+                <h2 class="section-title text-xl mb-6 italic text-left">03. 本人確認書類について</h2>
+                <div class="p-6 bg-rose-50 border-2 border-rose-100 rounded-2xl flex items-center gap-6">
+                    <div class="text-rose-500 text-3xl"><i class="fas fa-id-card"></i></div>
+                    <div class="text-left">
+                        <p class="text-rose-600 font-[900] text-sm mb-1">【原本を当日必ずお持ちください】</p>
+                        <p class="text-slate-500 text-xs font-bold leading-relaxed">
+                            ご本人確認は、講習当日の受付にて原本（運転免許証等）を確認させていただきます。
+                        </p>
                     </div>
                 </div>
             </section>
@@ -202,33 +203,23 @@
                             </div>
                             <input type="text" name="exOrgB" class="input-field bg-white" placeholder="交付局名">
                             <div class="flex gap-6"><label class="flex gap-2 items-center"><input type="radio" name="exDetailB" value="クレーン"> クレーン</label><label class="flex gap-2 items-center"><input type="radio" name="exDetailB" value="デリック"> デリック</label><label class="flex gap-2 items-center"><input type="radio" name="exDetailB" value="揚貨装置"> 揚貨装置</label></div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div onclick="window.triggerFile('licA')" class="photo-box" id="pre_licA"><span>免許証【表面】</span></div>
-                                <div onclick="window.triggerFile('licB')" class="photo-box" id="pre_licB"><span>免許証【裏面】</span></div>
-                            </div>
+                                                    <div class="p-4 bg-rose-50 border border-rose-100 rounded-xl">
+                            <p class="text-xs font-bold text-rose-600 italic">※免許証は当日原本をお持ちください。</p>
+                        </div>
                         </div>
                     </section>`;
                 } else if (course.includes("31H")) {
                     html = `
-                    <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-6">
+                                        <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-6">
                         <h2 class="section-title text-xl italic text-sky-600">運転免許の確認 / Driver License</h2>
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-3 bg-slate-50 p-4 rounded-xl">
-                            <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="大型特殊(キャタピラ)"> 大特(キャタ)</label>
-                            <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="大型"> 大型</label>
-                            <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="中型"> 中型</label>
-                            <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="準中型"> 準中型</label>
-                            <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="普通"> 普通</label>
+                        <div class="p-6 bg-rose-50 border-2 border-rose-100 rounded-2xl flex items-center gap-4">
+                            <i class="fas fa-id-card text-rose-500 text-2xl"></i>
+                            <p class="text-sm font-bold text-rose-600 leading-relaxed">
+                                セキュリティ保護のため、免許証情報の入力と写真添付を廃止しました。<br>
+                                <span class="text-lg">【重要】運転免許証の原本を、当日必ずお持ちください。</span>
+                            </p>
                         </div>
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div><label class="input-label">交付日</label><input type="date" name="licDate" class="input-field"></div>
-                            <div><label class="input-label">有効期限</label><input type="date" name="licExp" class="input-field"></div>
-                        </div>
-                        <input type="text" name="licNo" class="input-field" placeholder="免許証番号 第123456789012号">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div onclick="window.triggerFile('licA')" class="photo-box" id="pre_licA"><span>免許証【表面】</span></div>
-                            <div onclick="window.triggerFile('licB')" class="photo-box" id="pre_licB"><span>免許証【裏面】</span></div>
-                        </div>
-                    </section>`;
+                    </section>
                 } else if (course.includes("11H")) {
                     html = `
                     <section class="form-card p-8 md:p-12 animate-fadeIn text-left space-y-8">
@@ -237,20 +228,10 @@
                             <label class="flex gap-4 p-4 border rounded-xl cursor-pointer"><input type="radio" name="f11" value="A" onchange="window.toggleEx('f_a')"> <div><span class="text-sm font-bold">A：大型特殊免許(限定なし)を保有している</span></div></label>
                             <label class="flex gap-4 p-4 border rounded-xl cursor-pointer"><input type="radio" name="f11" value="B" onchange="window.toggleEx('f_b')"> <div><span class="text-sm font-bold text-rose-600 underline">B：普通・大型免許等あり＋特別教育＋実務3ヶ月以上</span></div></label>
                         </div>
-                        <div id="fl_lic_fields" class="hidden space-y-6">
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 bg-white p-4 rounded-xl border">
-                                <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="大型特殊(キャタピラ)"> 大特(キャタ)</label>
-                                <label class="flex gap-2 text-xs font-bold text-sky-600"><input type="checkbox" name="licT" value="大型特殊(限定なし)"> 大特(限定なし)</label>
-                                <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="大型"> 大型</label>
-                                <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="中型"> 中型</label>
-                                <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="準中型"> 準中型</label>
-                                <label class="flex gap-2 text-xs font-bold"><input type="checkbox" name="licT" value="普通"> 普通</label>
-                            </div>
-                            <input type="text" name="licNo" class="input-field" placeholder="免許証番号 第123456789012号">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div onclick="window.triggerFile('licA')" class="photo-box" id="pre_licA"><span>免許証【表面】</span></div>
-                                <div onclick="window.triggerFile('licB')" class="photo-box" id="pre_licB"><span>免許証【裏面】</span></div>
-                            </div>
+                                                <div id="fl_lic_fields" class="hidden p-6 bg-rose-50 border border-rose-100 rounded-2xl">
+                            <p class="text-sm font-bold text-rose-600 italic">
+                                【重要】当日、免許証の原本を受付にて確認させていただきます。
+                            </p>
                         </div>
                         <div id="fl_b_fields" class="hidden space-y-6 p-6 bg-slate-50 rounded-2xl border">
                             <p class="input-label text-sky-600 font-black">フォークリフト特別教育・実務経験の情報</p>
