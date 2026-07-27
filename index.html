@@ -244,46 +244,50 @@
         </div>
     </section>
 
-           <!-- 5. SCHEDULE (視認性最優先・文字を最大化) -->
-    <section id="schedule-section" class="py-24 bg-[#f8fafc] relative text-left overflow-hidden">
-        <!-- 背景の透かしを極限まで薄くし、文字を邪魔させない -->
-        <div class="absolute inset-0 z-0 opacity-[0.03]">
+              <!-- 5. SCHEDULE (カレンダー2種を確実に復活) -->
+    <section id="schedule-section" class="py-24 bg-white relative text-left overflow-hidden">
+        <!-- 背景の透かし -->
+        <div class="absolute inset-0 z-0 opacity-[0.05]">
             <img src="bg-detail.jpg" alt="detail" class="w-full h-full object-cover">
         </div>
         
         <div class="container mx-auto px-6 relative z-20">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-8">
-                <div class="reveal active text-left">
-                    <!-- 表題をさらに巨大化 -->
+            <!-- タイトルエリア -->
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-8 border-b-4 border-navy pb-10">
+                <div class="text-left">
                     <h3 class="text-[#001a33] text-6xl md:text-8xl font-[900] italic uppercase tracking-tighter leading-none">Schedule</h3>
                     <p class="text-accent font-[900] tracking-[0.4em] text-xl mt-4 italic uppercase">講習開催予定</p>
                 </div>
                 
-                <!-- 月選択：白背景に濃紺文字でハッキリ -->
-                <div class="flex items-center gap-6 bg-[#001a33] p-4 rounded-full shadow-2xl reveal active">
+                <!-- 月選択ボタン -->
+                <div class="flex items-center gap-6 bg-[#001a33] p-4 rounded-full shadow-2xl">
                     <button onclick="changeMonth(-1)" class="w-14 h-14 rounded-full flex items-center justify-center bg-white/10 hover:bg-white text-white hover:text-navy transition-all">
-                        <i class="fas fa-chevron-left text-xl"></i>
+                        <i class="fas fa-chevron-left text-xl text-white"></i>
                     </button>
-                    <span id="current-month-display" class="font-[900] italic text-4xl min-w-[120px] text-center text-white font-en">7月</span>
+                    <span id="current-month-display" class="font-[900] italic text-4xl min-w-[120px] text-center text-white">7月</span>
                     <button onclick="changeMonth(1)" class="w-14 h-14 rounded-full flex items-center justify-center bg-white/10 hover:bg-white text-white hover:text-navy transition-all">
-                        <i class="fas fa-chevron-right text-xl"></i>
+                        <i class="fas fa-chevron-right text-xl text-white"></i>
                     </button>
                 </div>
             </div>
             
-            <!-- カレンダー本体：絶対に消さないID -->
-            <div id="calendar-container" class="bg-white rounded-[2rem] shadow-[0_20px_60px_rgba(0,0,0,0.15)] overflow-hidden reveal active border-4 border-[#001a33]"></div>
+            <!-- 【復活1】リスト型カレンダー：ここにJSがデータを流し込みます -->
+            <div id="calendar-container" class="bg-white rounded-[2rem] shadow-2xl overflow-hidden mb-20 border-2 border-slate-100 min-h-[300px]">
+                <!-- ここに表が表示されます -->
+            </div>
             
-            <!-- 月間概要：背景を真っ黒にして視認性確保 -->
-            <div class="mt-20 hidden md:block reveal active">
+            <!-- 【復活2】ドット型カレンダー（ガントチャート） -->
+            <div class="mt-24 hidden md:block">
                 <h4 class="text-[#001a33] font-[900] italic text-3xl mb-8 uppercase border-l-8 border-accent pl-6">Monthly Overview</h4>
                 <div id="gantt-container" class="bg-[#001a33] p-10 rounded-[2rem] overflow-x-auto shadow-2xl">
-                    <div id="gantt-data" class="min-w-[1000px] space-y-2"></div>
+                    <div id="gantt-data" class="min-w-[1000px] space-y-2">
+                        <!-- ここにドットの予定が表示されます -->
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-
+    
     <!-- 6. POINT (カードの視認性強化) -->
     <section class="py-24 bg-white border-t border-slate-100">
         <div class="container mx-auto px-6 max-w-6xl">
