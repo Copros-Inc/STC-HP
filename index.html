@@ -281,62 +281,87 @@
         </div>
     </section>
 
-        <!-- 6. POINT (欠けていた項目を完全復元) -->
-    <section class="py-32 bg-white border-t border-slate-100">
-        <div class="container mx-auto px-6 max-w-6xl">
+            <!-- 6. POINT (セクション区切り & 真ん中の文字復活) -->
+    <section id="point" class="py-32 bg-slate-50 relative overflow-hidden">
+        <div class="container mx-auto px-6 max-w-6xl relative z-10">
+            <div class="text-left mb-20">
+                <h3 class="text-[#001a33] text-5xl md:text-7xl font-[900] italic uppercase tracking-tighter">Point</h3>
+                <p class="text-accent font-[900] tracking-[0.4em] text-sm mt-4 italic uppercase">受講に関する重要情報</p>
+            </div>
+
             <div class="grid md:grid-cols-3 gap-10">
-                <a href="points.html#qa" class="bg-slate-50 p-12 rounded-[3rem] block border-2 border-slate-100 text-center hover:shadow-2xl transition group">
-                    <i class="fas fa-question-circle text-accent text-5xl mb-6 group-hover:scale-110 transition"></i>
-                    <h4 class="text-3xl font-[900] text-[#001a33] mb-4 italic">よくある質問</h4>
-                    <p class="text-slate-500 font-bold text-sm uppercase">ご不安を事前に解消</p>
+                <!-- よくある質問 -->
+                <a href="points.html#qa" class="bg-white p-12 rounded-[3.5rem] block shadow-xl hover:shadow-2xl transition group border border-slate-100 text-center">
+                    <div class="w-24 h-24 bg-sky-50 rounded-full flex items-center justify-center mx-auto mb-8 group-hover:bg-accent transition duration-500">
+                        <i class="fas fa-question text-accent text-4xl group-hover:text-white"></i>
+                    </div>
+                    <h4 class="text-2xl font-[900] italic mb-4 text-[#001a33]">よくある質問</h4>
+                    <p class="text-slate-400 font-bold text-sm italic">ご不安を事前に解消</p>
                 </a>
-                <a href="points.html#subsidy" class="bg-accent p-12 rounded-[3rem] block text-center hover:shadow-2xl transition group text-white">
-                    <i class="fas fa-hand-holding-usd text-5xl mb-6 text-white group-hover:scale-110 transition"></i>
-                    <h4 class="text-3xl font-[900] mb-4 italic text-white">補助金制度</h4>
-                    <p class="text-white/80 font-bold text-sm uppercase">制度活用でお得に受講</p>
+                
+                <!-- 補助金制度 (文字復活！) -->
+                <a href="points.html#subsidy" class="bg-accent p-12 rounded-[3.5rem] block shadow-xl hover:shadow-2xl transition group text-center text-white">
+                    <div class="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-8 group-hover:bg-white transition duration-500">
+                        <i class="fas fa-hand-holding-usd text-white text-4xl group-hover:text-accent"></i>
+                    </div>
+                    <h4 class="text-2xl font-[900] italic mb-4 text-white">補助金制度</h4>
+                    <p class="text-white/80 font-bold text-sm italic">支援制度でお得に受講</p>
                 </a>
-                <a href="points.html#flow" class="bg-[#001a33] p-12 rounded-[3rem] block text-center hover:shadow-2xl transition group text-white">
-                    <i class="fas fa-route text-5xl mb-6 text-white group-hover:scale-110 transition"></i>
-                    <h4 class="text-3xl font-[900] mb-4 italic text-white">申込の流れ</h4>
-                    <p class="text-white/40 font-bold text-sm uppercase">受講まで3ステップ</p>
+                
+                <!-- 申込の流れ -->
+                <a href="points.html#flow" class="bg-[#001a33] p-12 rounded-[3.5rem] block shadow-xl hover:shadow-2xl transition group text-center text-white">
+                    <div class="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-8 group-hover:bg-accent transition duration-500">
+                        <i class="fas fa-route text-white text-4xl"></i>
+                    </div>
+                    <h4 class="text-2xl font-[900] italic mb-4 text-white">申込の流れ</h4>
+                    <p class="text-white/40 font-bold text-sm italic">受講まで簡単3ステップ</p>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- 7. ACCESS (地図を復活) -->
+    <!-- 7. ACCESS & CONTACT (同じセクションに集約 & 正確な位置の地図) -->
     <section id="access" class="py-32 bg-white">
         <div class="container mx-auto px-6 max-w-6xl">
-            <div class="grid md:grid-cols-2 gap-10 mb-20">
-                <a href="tel:0832460556" class="bg-[#001a33] text-white p-12 rounded-[3rem] shadow-2xl flex items-center justify-between">
-                    <div class="text-left"><span class="text-accent font-black text-sm mb-2 block font-en">TELEPHONE</span><span class="text-4xl md:text-5xl font-[900] italic font-en">083.246.0556</span></div>
-                    <i class="fas fa-phone-alt text-5xl opacity-30"></i>
+            <div class="text-left mb-20">
+                <h3 class="text-[#001a33] text-5xl md:text-7xl font-[900] italic uppercase tracking-tighter">Access</h3>
+                <p class="text-accent font-[900] tracking-[0.4em] text-sm mt-4 italic uppercase">所在地・お問い合わせ</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10 mb-16">
+                <a href="tel:0832460556" class="bg-[#001a33] text-white p-12 rounded-[3.5rem] shadow-2xl flex items-center justify-between group transition hover:bg-accent">
+                    <div class="text-left">
+                        <span class="block text-accent font-black text-sm mb-2 italic group-hover:text-white transition">TELEPHONE</span>
+                        <span class="text-4xl md:text-5xl font-[900] italic font-en">083.246.0556</span>
+                    </div>
+                    <i class="fas fa-phone-alt text-5xl opacity-20"></i>
                 </a>
-                <div class="bg-slate-50 border-4 border-slate-100 p-12 rounded-[3rem] flex items-center justify-between text-navy">
-                    <div class="text-left"><span class="text-slate-400 font-black text-sm mb-2 block font-en">FAX NUMBER</span><span class="text-4xl md:text-5xl font-[900] italic font-en">083.246.2835</span></div>
+                <div class="bg-slate-50 border-4 border-slate-100 p-12 rounded-[3.5rem] flex items-center justify-between text-[#001a33]">
+                    <div class="text-left">
+                        <span class="block text-slate-400 font-black text-sm mb-2 italic">FAX NUMBER</span>
+                        <span class="text-4xl md:text-5xl font-[900] italic font-en">083.246.2835</span>
+                    </div>
                     <i class="fas fa-fax text-5xl opacity-20"></i>
                 </div>
             </div>
-            <div class="w-full h-[500px] rounded-[4rem] overflow-hidden shadow-2xl border-[12px] border-slate-100">
+
+            <!-- ピンの立った正確な地図 -->
+            <div class="w-full h-[550px] rounded-[4rem] overflow-hidden shadow-2xl border-[12px] border-slate-100">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3299.782068478495!2d131.0264004!3d34.010999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3543971e98d98d9d%3A0x7d8a6e8b8e8b8e8b!2z5LiL6Zai44OI44Os44O844OL44Oz44Kw44K744Oz44K_44O8!5e0!3m2!1sja!2sjp!4v1719999999999" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
+            <p class="mt-8 text-center text-slate-400 font-bold italic">〒752-8609 山口県下関市長府安養寺1丁目15-13</p>
         </div>
     </section>
 
     <!-- 8. FOOTER -->
     <footer class="bg-[#001a33] text-white py-32 text-center">
         <div class="container mx-auto px-6">
-            <img src="logo.png" alt="STC" class="h-24 mx-auto mb-10">
+            <img src="logo.png" alt="STC" class="h-20 mx-auto mb-10 opacity-90">
             <h2 class="text-4xl font-[900] italic mb-6">下関トレーニングセンター</h2>
-            <div class="text-slate-400 font-bold text-lg leading-loose italic">
-                <p>〒752-8609 山口県下関市長府安養寺1丁目15-13</p>
-                <p class="mt-4 text-white text-2xl tracking-tighter">TEL 083-246-0556 / FAX 083-246-2835</p>
-            </div>
-            <p class="text-white/20 text-[11px] tracking-[0.5em] mt-20 font-bold uppercase">&copy; 2026 SHIMONOSEKI TRAINING CENTER.</p>
+            <p class="text-accent text-sm tracking-[0.5em] mt-12 font-bold uppercase">&copy; 2026 SHIMONOSEKI TRAINING CENTER.</p>
         </div>
     </footer>
 
-    <!-- LOGIC: SYSTEM (中身をハッキリ描画させる) -->
     <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
