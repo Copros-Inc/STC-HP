@@ -244,41 +244,38 @@
         </div>
     </section>
 
-           <!-- 5. SCHEDULE (背景色・視認性・システム連動を完全修正) -->
-    <section id="schedule-section" class="parallax py-32" style="background-image: url('bg-detail.jpg'); background-attachment: fixed; background-size: cover; background-position: center;">
-        <!-- 背景の模型写真を少し強調 -->
-        <div class="absolute inset-0 z-0 opacity-20">
-            <img src="bg-detail.jpg" alt="detail" class="w-full h-full object-cover grayscale">
-        </div>
+              <!-- 5. SCHEDULE (背景固定 & 枠組みの完全復活) -->
+    <section id="schedule-section" class="parallax py-32" style="background-image: url('bg-detail.jpg'); background-attachment: fixed; background-size: cover; background-position: center; position: relative;">
+        <!-- 背景を暗くして文字を浮かび上がらせる -->
+        <div class="absolute inset-0 bg-[#001a33]/70 z-0"></div>
         
-        <div class="container mx-auto px-6 relative z-20">
-            <!-- タイトルエリア -->
-            <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-8 border-b-2 border-white/20 pb-10">
+        <div class="container mx-auto px-6 relative z-10 text-left text-white">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
                 <div class="text-left">
-                    <h3 class="text-white text-6xl md:text-8xl font-[900] italic uppercase tracking-tighter leading-none">Schedule</h3>
+                    <h3 class="text-white text-6xl md:text-8xl font-[900] italic uppercase leading-none">Schedule</h3>
                     <p class="text-accent font-[900] tracking-[0.4em] text-xl mt-4 italic uppercase">講習開催予定</p>
                 </div>
                 
                 <!-- 月選択：白背景でハッキリ -->
                 <div class="flex items-center gap-6 bg-white p-4 rounded-full shadow-2xl">
-                    <button onclick="changeMonth(-1)" class="w-14 h-14 rounded-full flex items-center justify-center bg-slate-100 hover:bg-accent text-navy hover:text-white transition-all">
+                    <button onclick="changeMonth(-1)" class="w-14 h-14 rounded-full flex items-center justify-center bg-slate-100 hover:bg-accent text-navy transition-all shadow-sm">
                         <i class="fas fa-chevron-left text-xl"></i>
                     </button>
-                    <span id="current-month-display" class="font-[900] italic text-4xl min-w-[120px] text-center text-navy font-en">7月</span>
-                    <button onclick="changeMonth(1)" class="w-14 h-14 rounded-full flex items-center justify-center bg-slate-100 hover:bg-accent text-navy hover:text-white transition-all">
+                    <span id="current-month-display" class="font-[900] italic text-4xl min-w-[120px] text-center text-navy">7月</span>
+                    <button onclick="changeMonth(1)" class="w-14 h-14 rounded-full flex items-center justify-center bg-slate-100 hover:bg-accent text-navy transition-all shadow-sm">
                         <i class="fas fa-chevron-right text-xl"></i>
                     </button>
                 </div>
             </div>
             
-            <!-- リスト型カレンダー -->
-            <div id="calendar-container" class="bg-white rounded-[3rem] shadow-2xl overflow-hidden mb-20 min-h-[300px] text-navy"></div>
+            <!-- リスト型カレンダーの場所 -->
+            <div id="calendar-container" class="bg-white rounded-[2rem] shadow-2xl overflow-hidden mb-20 text-navy min-h-[300px]"></div>
             
-            <!-- ガントチャート -->
+            <!-- ガントチャートの場所 -->
             <div class="mt-24 hidden md:block">
-                <h4 class="text-white font-[900] italic text-3xl mb-8 uppercase border-l-8 border-accent pl-6 tracking-widest">Monthly Overview</h4>
-                <div id="gantt-container" class="bg-navy/50 p-10 rounded-[3rem] overflow-x-auto border-2 border-white/10 backdrop-blur-md">
-                    <div id="gantt-data" class="min-w-[1100px] space-y-2"></div>
+                <h4 class="text-white font-[900] italic text-3xl mb-8 uppercase border-l-8 border-accent pl-6">Monthly Overview</h4>
+                <div id="gantt-container" class="bg-[#001a33]/80 p-10 rounded-[2rem] overflow-x-auto border-2 border-white/10 shadow-2xl backdrop-blur-md">
+                    <div id="gantt-data" class="min-w-[1000px] space-y-2"></div>
                 </div>
             </div>
         </div>
