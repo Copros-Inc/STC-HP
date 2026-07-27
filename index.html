@@ -244,7 +244,7 @@
         </div>
     </section>
 
-              <!-- 5. SCHEDULE (背景固定 & 枠組みの完全復活) -->
+               <!-- 5. SCHEDULE (背景固定 & 枠組みの完全復活) -->
     <section id="schedule-section" class="parallax py-32" style="background-image: url('bg-detail.jpg'); background-attachment: fixed; background-size: cover; background-position: center; position: relative;">
         <!-- 背景を暗くして文字を浮かび上がらせる -->
         <div class="absolute inset-0 bg-[#001a33]/70 z-0"></div>
@@ -281,42 +281,62 @@
         </div>
     </section>
 
-    <!-- 6. POINT & ACCESS & FOOTER (ここも文字を大きく、内容重視で再編) -->
-    <section class="py-24 bg-white border-t border-slate-100">
+        <!-- 6. POINT (欠けていた項目を完全復元) -->
+    <section class="py-32 bg-white border-t border-slate-100">
         <div class="container mx-auto px-6 max-w-6xl">
-            <div class="grid md:grid-cols-3 gap-8">
+            <div class="grid md:grid-cols-3 gap-10">
                 <a href="points.html#qa" class="bg-slate-50 p-12 rounded-[3rem] block border-2 border-slate-100 text-center hover:shadow-2xl transition group">
                     <i class="fas fa-question-circle text-accent text-5xl mb-6 group-hover:scale-110 transition"></i>
                     <h4 class="text-3xl font-[900] text-[#001a33] mb-4 italic">よくある質問</h4>
-                    <p class="text-slate-400 font-bold text-sm italic uppercase tracking-widest">ご不安を事前に解消</p>
+                    <p class="text-slate-500 font-bold text-sm uppercase">ご不安を事前に解消</p>
                 </a>
                 <a href="points.html#subsidy" class="bg-accent p-12 rounded-[3rem] block text-center hover:shadow-2xl transition group text-white">
                     <i class="fas fa-hand-holding-usd text-5xl mb-6 text-white group-hover:scale-110 transition"></i>
                     <h4 class="text-3xl font-[900] mb-4 italic text-white">補助金制度</h4>
-                    <p class="text-white/80 font-bold text-sm italic uppercase tracking-widest text-white">制度活用でお得に受講</p>
+                    <p class="text-white/80 font-bold text-sm uppercase">制度活用でお得に受講</p>
                 </a>
                 <a href="points.html#flow" class="bg-[#001a33] p-12 rounded-[3rem] block text-center hover:shadow-2xl transition group text-white">
                     <i class="fas fa-route text-5xl mb-6 text-white group-hover:scale-110 transition"></i>
                     <h4 class="text-3xl font-[900] mb-4 italic text-white">申込の流れ</h4>
-                    <p class="text-white/40 font-bold text-sm italic uppercase tracking-widest text-white">受講まで3ステップ</p>
+                    <p class="text-white/40 font-bold text-sm uppercase">受講まで3ステップ</p>
                 </a>
             </div>
         </div>
     </section>
 
+    <!-- 7. ACCESS (地図を復活) -->
+    <section id="access" class="py-32 bg-white">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="grid md:grid-cols-2 gap-10 mb-20">
+                <a href="tel:0832460556" class="bg-[#001a33] text-white p-12 rounded-[3rem] shadow-2xl flex items-center justify-between">
+                    <div class="text-left"><span class="text-accent font-black text-sm mb-2 block font-en">TELEPHONE</span><span class="text-4xl md:text-5xl font-[900] italic font-en">083.246.0556</span></div>
+                    <i class="fas fa-phone-alt text-5xl opacity-30"></i>
+                </a>
+                <div class="bg-slate-50 border-4 border-slate-100 p-12 rounded-[3rem] flex items-center justify-between text-navy">
+                    <div class="text-left"><span class="text-slate-400 font-black text-sm mb-2 block font-en">FAX NUMBER</span><span class="text-4xl md:text-5xl font-[900] italic font-en">083.246.2835</span></div>
+                    <i class="fas fa-fax text-5xl opacity-20"></i>
+                </div>
+            </div>
+            <div class="w-full h-[500px] rounded-[4rem] overflow-hidden shadow-2xl border-[12px] border-slate-100">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3299.782068478495!2d131.0264004!3d34.010999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3543971e98d98d9d%3A0x7d8a6e8b8e8b8e8b!2z5LiL6Zai44OI44Os44O844OL44Oz44Kw44K744Oz44K_44O8!5e0!3m2!1sja!2sjp!4v1719999999999" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. FOOTER -->
     <footer class="bg-[#001a33] text-white py-32 text-center">
         <div class="container mx-auto px-6">
             <img src="logo.png" alt="STC" class="h-24 mx-auto mb-10">
             <h2 class="text-4xl font-[900] italic mb-6">下関トレーニングセンター</h2>
             <div class="text-slate-400 font-bold text-lg leading-loose italic">
                 <p>〒752-8609 山口県下関市長府安養寺1丁目15-13</p>
-                <p class="mt-4 text-white text-2xl tracking-tighter font-en">TEL 083-246-0556 / FAX 083-246-2835</p>
+                <p class="mt-4 text-white text-2xl tracking-tighter">TEL 083-246-0556 / FAX 083-246-2835</p>
             </div>
             <p class="text-white/20 text-[11px] tracking-[0.5em] mt-20 font-bold uppercase">&copy; 2026 SHIMONOSEKI TRAINING CENTER.</p>
         </div>
     </footer>
 
-    <!-- LOGIC: SYSTEM (中身を表示させるためのJavaScript復活) -->
+    <!-- LOGIC: SYSTEM (中身をハッキリ描画させる) -->
     <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -338,81 +358,47 @@
     let currentMonth = new Date().getMonth() + 1;
     let currentYear = new Date().getFullYear();
 
-    signInAnonymously(auth).then(() => { 
-        loadSchedules(); 
-        loadNews(); 
-        setTimeout(() => document.body.classList.add('hero-active'), 100);
-    });
+    signInAnonymously(auth).then(() => { loadSchedules(); loadNews(); setTimeout(() => document.body.classList.add('hero-active'), 100); });
 
     function loadSchedules() {
         onSnapshot(collection(db, "schedules"), (snapshot) => {
             schedules = snapshot.docs.map(doc => {
                 const data = doc.data();
                 const rawStart = String(data.dayStart || "");
-                return {
-                    id: doc.id,
-                    name: data.courseName || "名称未設定",
-                    date: data.date || "",
-                    month: parseInt(data.month),
-                    days: rawStart.includes(',') ? rawStart.split(',').map(n => parseInt(n.trim())) : [parseInt(rawStart)],
-                    dayEnd: parseInt(data.dayEnd || 0),
-                    capacity: parseInt(data.capacity || 10),
-                    fullApplied: parseInt(data.fullApplied || 0),
-                    reserved: parseInt(data.reserved || 0)
-                };
+                return { id: doc.id, name: data.courseName || "名称未設定", date: data.date || "", month: parseInt(data.month), days: rawStart.includes(',') ? rawStart.split(',').map(n => parseInt(n.trim())) : [parseInt(rawStart)], dayEnd: parseInt(data.dayEnd || 0), capacity: parseInt(data.capacity || 10), fullApplied: parseInt(data.fullApplied || 0), reserved: parseInt(data.reserved || 0) };
             });
-            renderCalendar(currentMonth);
-            renderGantt(currentMonth);
+            renderCalendar(currentMonth); renderGantt(currentMonth);
         });
     }
 
     window.renderCalendar = function(month) {
         const container = document.getElementById('calendar-container');
         document.getElementById('current-month-display').innerText = `${month}月`;
-        let html = '<div class="md:hidden">'; 
-        let tableHtml = '<table class="w-full text-left border-collapse hidden md:table"><thead><tr class="bg-slate-100 font-[900] text-2xl border-b-4 border-navy text-navy text-left"><th class="p-12">講習名称</th><th class="p-12">開催日程</th><th class="p-12 text-center">状況</th><th class="p-12 text-left">お申し込み</th></tr></thead><tbody class="font-bold italic text-left text-navy">';
-
+        let tableHtml = '<table class="w-full text-left border-collapse hidden md:table"><thead><tr class="bg-slate-800 text-white font-[900] text-xl border-b-4 border-navy"><th class="p-10">講習名称</th><th class="p-10">開催日程</th><th class="p-10 text-center">状況</th><th class="p-10">申込</th></tr></thead><tbody class="font-bold text-navy">';
         const monthSchedules = schedules.filter(s => s.month === month);
         if (monthSchedules.length === 0) { container.innerHTML = '<p class="p-24 text-slate-400 italic text-center font-[900] text-2xl">現在、講習予定はございません。</p>'; return; }
-
         monthSchedules.forEach(item => {
             const avail = item.capacity - (item.fullApplied + item.reserved);
-            const statusLabel = avail <= 0 ? '<span class="bg-slate-200 text-slate-500 px-8 py-3 rounded-full text-base">満員御礼</span>' : `<span class="bg-sky-100 text-[#001a33] px-8 py-3 rounded-full text-lg font-black border-2 border-sky-200 shadow-sm">残り ${avail} 席</span>`;
-            let actionBtn = "";
-            if (item.name.includes("テールゲート") || item.name.includes("フルハーネス")) {
-                actionBtn = `<a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-amber-500 text-white px-8 py-4 rounded-2xl text-base font-black italic block text-center shadow-xl hover:bg-navy transition border-2 border-amber-600">予約のみ(書類持参)</a>`;
-            } else if (avail <= 0) {
-                actionBtn = `<button onclick="alert('お電話にてキャンセル待ちを承ります\\n083-246-0556')" class="w-full bg-slate-100 text-slate-400 py-4 rounded-2xl text-sm font-black italic cursor-not-allowed text-center">キャンセル待ち(電話)</button>`;
-            } else {
-                actionBtn = `<div class="flex flex-col gap-3"><a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-base text-center font-black italic shadow-lg hover:bg-accent transition border-2 border-[#001a33]">WEBで本申込</a><a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-white text-navy border-2 border-slate-200 px-8 py-3 rounded-2xl text-xs text-center font-black italic hover:bg-slate-50 transition">予約のみ(紙提出)</a></div>`;
-            }
-            html += `<div class="mobile-card"><div class="text-2xl text-accent font-[900] mb-2">${item.date}</div><h4 class="text-3xl font-[900] italic mb-6 text-navy">${item.name}</h4><div class="mb-8">${statusLabel}</div>${actionBtn}</div>`;
-            tableHtml += `<tr class="border-b-2 border-slate-100 hover:bg-sky-50 transition-colors text-left"><td class="p-12 text-navy font-[900] text-3xl leading-tight">${item.name}</td><td class="p-12 text-slate-400 font-[900] text-2xl italic">${item.date}</td><td class="p-12 text-center">${statusLabel}</td><td class="p-12 text-left">${actionBtn}</td></tr>`;
+            const statusLabel = avail <= 0 ? '<span class="bg-slate-200 text-slate-500 px-8 py-3 rounded-full text-base">満員御礼</span>' : `<span class="bg-sky-100 text-[#001a33] px-8 py-3 rounded-full text-lg font-[900] border-2 border-sky-200 shadow-sm">残り ${avail} 席</span>`;
+            let actionBtn = `<div class="flex flex-col gap-3"><a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] shadow-lg hover:bg-accent transition text-white border-2 border-[#001a33]">WEB本申込</a><a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-white text-navy border-2 border-slate-200 px-8 py-3 rounded-2xl text-[12px] text-center font-black italic hover:bg-slate-50 transition">予約のみ(紙提出)</a></div>`;
+            tableHtml += `<tr class="border-b-2 border-slate-100 hover:bg-sky-50 transition-colors text-left"><td class="p-10 text-[#001a33] font-[900] text-3xl leading-tight text-left">${item.name}</td><td class="p-10 text-slate-500 font-[900] text-2xl italic text-left">${item.date}</td><td class="p-10 text-center text-left">${statusLabel}</td><td class="p-10 text-left">${actionBtn}</td></tr>`;
         });
-        container.innerHTML = html + '</div>' + tableHtml + '</tbody></table>';
-    }
-
-    function loadNews() {
-        onSnapshot(collection(db, "news"), (snap) => {
-            const listEl = document.getElementById('hp-news-list');
-            if(!listEl) return;
-            const docs = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)).slice(0, 1);
-            listEl.innerHTML = docs.map(d => `<div class="bg-navy/80 backdrop-blur-md border-2 border-white/20 p-6 rounded-[2.5rem] flex items-center space-x-6 text-left shadow-2xl"><span class="bg-red-600 text-[11px] text-white px-4 py-2 rounded-xl font-[900] italic text-white shadow-lg">NEWS</span><p class="text-white text-base font-bold italic text-left text-white">${d.content}</p></div>`).join('');
-        });
+        container.innerHTML = tableHtml + '</tbody></table>';
     }
 
     window.renderGantt = function(month) {
         const ganttData = document.getElementById('gantt-data');
         if (!ganttData) return;
-        let html = '<div class="grid gap-0 mb-8 border-b-2 border-white/10 pb-6" style="grid-template-columns: 300px repeat(31, 1fr);"><div class="font-[900] text-xl text-white italic uppercase tracking-[0.2em] text-left">講習名称</div>';
-        for(let i=1; i<=31; i++) { html += `<div class="text-base text-white font-[900] text-center italic">${i}</div>`; }
+        let html = '<div class="grid gap-0 mb-8 border-b-2 border-white/10 pb-6" style="grid-template-columns: 350px repeat(31, 1fr);"><div class="font-[900] text-xl text-white italic uppercase text-left text-white/50">COURSE NAME</div>';
+        for(let i=1; i<=31; i++) { html += `<div class="text-base text-white/50 font-[900] text-center font-en">${i}</div>`; }
         html += '</div>';
         const monthSchedules = schedules.filter(s => s.month === month);
         const coursesByName = {};
         monthSchedules.forEach(item => { if (!coursesByName[item.name]) { coursesByName[item.name] = []; } coursesByName[item.name].push(item); });
         Object.entries(coursesByName).forEach(([courseName, items]) => {
-            html += `<div class="grid gap-0 items-center border-b border-white/5 py-4 hover:bg-white/5 transition" style="grid-template-columns: 300px repeat(31, 1fr);"><div class="font-[900] text-xl text-white italic truncate pr-8 text-left uppercase tracking-tighter">${courseName}</div>`;
-            const colorClass = courseName.includes("クレーン") ? "bg-pink-500 shadow-lg" : courseName.includes("フォーク") ? "bg-lime-500 shadow-lg" : "bg-sky-600 shadow-lg";
+            html += `<div class="grid gap-0 items-center border-b border-white/5 py-5" style="grid-template-columns: 350px repeat(31, 1fr);"><div class="font-[900] text-xl text-white italic truncate pr-10 text-left uppercase text-white">${courseName}</div>`;
+            const colorClass = courseName.includes("クレーン") ? "bg-pink-500 shadow-lg" : courseName.includes("フォーク") ? "bg-lime-500 shadow-lg" : "bg-sky-500 shadow-lg";
+            for (let day = 1; day <= 31; day++) {
                 const isScheduled = items.some(item => item.days.includes(day) || (day >= item.days[0] && day <= item.dayEnd));
                 html += `<div class="h-10 mx-1 rounded-md ${isScheduled ? colorClass : 'bg-white/5'}"></div>`;
             }
@@ -421,10 +407,19 @@
         ganttData.innerHTML = html;
     }
 
+    function loadNews() {
+        onSnapshot(collection(db, "news"), (snap) => {
+            const listEl = document.getElementById('hp-news-list');
+            if(!listEl) return;
+            const docs = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)).slice(0, 1);
+            listEl.innerHTML = docs.map(d => `<div class="bg-white/10 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center space-x-6 text-left max-w-xl mx-auto"><span class="bg-red-600 text-[10px] text-white px-3 py-1 rounded font-black">NEWS</span><p class="text-white text-base font-bold italic text-left">${d.content}</p></div>`).join('');
+        });
+    }
+
     window.changeMonth = (diff) => { currentMonth += diff; if (currentMonth > 12) { currentMonth = 1; currentYear++; } if (currentMonth < 1) { currentMonth = 12; currentYear--; } renderCalendar(currentMonth); renderGantt(currentMonth); };
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('main-nav');
-        if (window.pageYOffset > 50) nav.style.backgroundColor = "rgba(0, 26, 51, 0.98)"; else nav.style.backgroundColor = "rgba(0, 26, 51, 0.90)";
+        if (window.pageYOffset > 50) nav.style.backgroundColor = "rgba(0, 26, 51, 0.98)"; else nav.style.backgroundColor = "transparent";
         document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); });
     });
     </script>
