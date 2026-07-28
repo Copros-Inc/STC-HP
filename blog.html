@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>現場レポート & ブログ | STC 下関トレーニングセンター</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --navy: #001a33; --accent: #00a2ff; }
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #f8fafc; color: var(--navy); overflow-x: hidden; }
+        .parallax { background-attachment: fixed; background-position: center; background-size: cover; position: relative; }
+        .blog-card { background: white; border-radius: 2.5rem; overflow: hidden; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #e2e8f0; }
+        .blog-card:hover { transform: translateY(-10px); shadow: 0 40px 80px rgba(0,26,51,0.1); border-color: var(--accent); }
+        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        @media (max-width: 768px) { .parallax { background-attachment: scroll; } }
+    </style>
+</head>
+<body>
+
+    <!-- 0. HEADER (Indexと統一) -->
+    <header class="fixed top-0 w-full z-50 bg-[#001a33]/95 backdrop-blur-md border-b border-white/10 px-6 py-4 flex justify-between items-center text-white">
+        <a href="index.html" class="flex items-center gap-3">
+            <img src="logo.png" alt="STC" class="h-10 bg-white p-1 rounded">
+            <div class="text-left leading-none">
+                <h1 class="font-[900] text-sm md:text-lg italic">下関トレーニングセンター</h1>
+                <p class="text-[8px] text-accent font-black uppercase tracking-widest mt-1">Blog & Reports</p>
+            </div>
+        </a>
+        <a href="index.html" class="text-xs font-bold hover:text-accent transition italic">← HOMEに戻る</a>
+    </header>
+
+    <!-- 1. BLOG HERO (教室の写真をパララックスで) -->
+    <section class="parallax h-[50vh] flex items-center justify-center text-center" style="background-image: url('bg-blog.jpg');">
+        <div class="absolute inset-0 bg-[#001a33]/60 backdrop-blur-[2px]"></div>
+        <div class="relative z-10">
+            <h2 class="text-white text-6xl md:text-9xl font-[900] italic uppercase tracking-tighter drop-shadow-2xl">Blog</h2>
+            <p class="text-accent font-[900] tracking-[0.5em] text-sm md:text-xl mt-4 italic uppercase">現場のリアルを、言葉と写真で。</p>
+        </div>
+    </section>
+
+    <!-- 2. BLOG LIST -->
+    <main class="py-24 bg-white min-h-screen">
+        <div class="container mx-auto px-6 max-w-7xl">
+            <!-- 記事一覧（ここにFirebaseからデータが入ります） -->
+            <div id="blog-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 text-left">
+                <!-- 読み込み中表示 -->
+                <p class="col-span-full text-center py-20 text-slate-400 font-bold italic animate-pulse">最新の記事を読み込み中...</p>
+            </div>
+            
+            <!-- ページネーション（必要に応じて） -->
+            <div class="mt-20 text-center">
+                <button class="bg-slate-100 text-[#001a33] px-10 py-4 rounded-full font-[900] italic hover:bg-accent hover:text-white transition-all shadow-lg">もっと読み込む</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 3. FOOTER -->
+    <footer class="bg-[#001a33] text-white py-24 text-center">
+        <div class="container mx-auto px-6">
+            <img src="logo.png" alt="STC" class="h-20 mx-auto mb-8 opacity-80">
+            <h2 class="text-2xl font-[900] italic mb-12">下関トレーニングセンター</h2>
+            <p class="text-white/20 text-[10px] tracking-[0.5em] font-bold uppercase">&copy; 2026 SHIMONOSEKI TRAINING CENTER.</p>
+        </div>
+    </footer>
+
+    <!-- LOGIC: FIREBASE BLOG SYSTEM -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyCrRf1MMckR_dTIT4mpz2MWdNPJZt3GpYw",
+            authDomain: "stc-hp.firebaseapp.com",
+            projectId: "stc-hp",
+            storageBucket: "stc-hp.firebasestorage.app",
+            messagingSenderId: "795332931918",
+            appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f" 
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ブログデータを取得して表示
+        function loadBlogs() {
+            const blogList = document.getElementById('blog-list');
+            // 'blogs'コレクションを日付順に取得（まだ作っていない場合は後で作成）
+            const q = query(collection(db, "blogs"), orderBy("createdAt", "desc"));
+            
+            onSnapshot(q, (snapshot) => {
+                if (snapshot.empty) {
+                    blogList.innerHTML = '<p class="col-span-full text-center py-20 text-slate-300 font-bold italic text-xl">現在、ブログ記事を準備中です。<br>これからの更新をお楽しみに！</p>';
+                    return;
+                }
+                
+                blogList.innerHTML = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    const date = data.createdAt?.toDate().toLocaleDateString('ja-JP') || '2024.07.29';
+                    return `
+                        <article class="blog-card shadow-xl group cursor-pointer" onclick="location.href='blog-detail.html?id=${doc.id}'">
+                            <div class="aspect-video overflow-hidden relative">
+                                <img src="${data.image || 'bg-blog.jpg'}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                                <div class="absolute top-4 left-4 bg-accent text-white text-[10px] font-black px-3 py-1 rounded-full italic shadow-lg uppercase tracking-widest">${data.category || 'Report'}</div>
+                            </div>
+                            <div class="p-8 md:p-10 text-left">
+                                <p class="text-accent font-black text-xs mb-4 italic font-en">${date} UPDATE</p>
+                                <h3 class="text-2xl font-[900] text-[#001a33] mb-6 leading-tight group-hover:text-accent transition-colors">${data.title}</h3>
+                                <p class="text-slate-500 text-sm font-bold leading-loose line-clamp-3">${data.summary || data.content.substring(0, 100) + '...'}</p>
+                                <div class="mt-8 pt-8 border-t border-slate-100 flex items-center justify-between">
+                                    <span class="text-xs font-black text-[#001a33] italic uppercase border-b-2 border-accent pb-1">READ MORE</span>
+                                    <i class="fas fa-arrow-right text-accent transform group-hover:translate-x-2 transition"></i>
+                                </div>
+                            </div>
+                        </article>
+                    `;
+                }).join('');
+            });
+        }
+
+        loadBlogs();
+    </script>
+</body>
+</html>
