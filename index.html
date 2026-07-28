@@ -43,51 +43,65 @@
         .status-few { background: #f59e0b; color: white; animation: pulse 2s infinite; }
         .status-full { background: #64748b; color: white; }
 
-        @media (max-width: 768px) {
+             @media (max-width: 768px) {
             .parallax { background-attachment: scroll; }
             #calendar-container table { display: none; }
             .mobile-card { background: white; margin-bottom: 15px; padding: 25px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.06); }
+            
+            /* 追加：文字サイズと折り返しの最適化 */
+            h1, h2, h3 { word-break: keep-all; overflow-wrap: break-word; line-height: 1.2 !important; }
+            .text-5xl, .text-6xl, .text-7xl, .text-8xl, .text-9xl { font-size: 3rem !important; line-height: 1.1 !important; }
+            .copy-outline { -webkit-text-stroke: 1px white; }
+            p { font-size: 1.1rem !important; line-height: 1.7 !important; }
         }
     </style>
 </head>
 <body>
 
-           <!-- 0. HEADER (スマホ視認性・重厚感強化版) -->
+               <!-- 0. HEADER (スマホ用メニュー完備 & 全リンク集約) -->
     <header class="fixed top-0 w-full z-50 transition-all duration-500 px-4 md:px-8 py-4 md:py-6" id="main-nav">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <!-- ロゴ & センター名 -->
-            <div class="flex items-center gap-3 md:gap-5">
+            <a href="index.html" class="flex items-center gap-3">
                 <div class="bg-white p-1 rounded shadow-lg">
-                    <img src="logo.png" alt="STC" class="h-9 md:h-16 object-contain">
+                    <img src="logo.png" alt="STC" class="h-9 md:h-14 object-contain">
                 </div>
-                <div class="leading-none text-left">
-                    <h1 class="font-[900] text-base md:text-2xl tracking-tighter italic text-white drop-shadow-lg mb-0.5 md:mb-1">
-                        下関トレーニングセンター
-                    </h1>
-                    <p class="text-[7px] md:text-[10px] text-accent font-black uppercase tracking-[0.2em] italic drop-shadow-md">
-                        Shimonoseki Training Center
-                    </p>
+                <div class="text-left text-white leading-none">
+                    <h1 class="font-[900] text-sm md:text-xl italic">下関トレーニングセンター</h1>
+                    <p class="text-[7px] md:text-[9px] text-accent font-black uppercase tracking-widest mt-1">Shimonoseki Training Center</p>
                 </div>
-            </div>
+            </a>
 
-            <!-- PC用日本語メニュー -->
-            <nav class="hidden lg:flex items-center space-x-8 text-white text-sm font-[900] italic tracking-widest">
-                <a href="#service" class="hover:text-accent transition-colors border-b-2 border-transparent hover:border-accent pb-1">事業内容</a>
-                <a href="#courses" class="hover:text-accent transition-colors border-b-2 border-transparent hover:border-accent pb-1">主要コース</a>
-                <a href="#schedule-section" class="hover:text-accent transition-colors border-b-2 border-transparent hover:border-accent pb-1">講習日程</a>
-                <a href="#access" class="hover:text-accent transition-colors border-b-2 border-transparent hover:border-accent pb-1">アクセス</a>
+            <!-- PC用フルメニュー（主要リンクすべて網羅） -->
+            <nav class="hidden lg:flex items-center space-x-6 text-white text-[13px] font-[900] italic uppercase">
+                <a href="#service" class="hover:text-accent transition">事業内容</a>
+                <a href="#courses" class="hover:text-accent transition">主要コース</a>
+                <a href="#schedule-section" class="hover:text-accent transition">講習日程</a>
+                <a href="#point" class="hover:text-accent transition">Point</a>
+                <a href="#access" class="hover:text-accent transition">Access</a>
+                <a href="blog.html" class="bg-accent/20 border border-accent/40 px-4 py-1.5 rounded text-accent hover:bg-accent hover:text-white transition ml-4">ブログ</a>
             </nav>
 
-            <!-- 電話ボタン：スマホではアイコンを強調 -->
-            <div class="flex items-center">
-                <a href="tel:0832460556" class="bg-accent text-white px-4 py-2.5 md:px-8 md:py-4 rounded-full text-[10px] md:text-sm font-[900] shadow-[0_10px_30px_rgba(0,162,255,0.4)] border-2 border-accent hover:bg-white hover:text-navy transition-all duration-300 italic flex items-center gap-2 text-white">
-                    <i class="fas fa-phone-alt animate-pulse"></i>
-                    <span class="text-white">今すぐ相談</span>
+            <!-- スマホ用のアクションエリア -->
+            <div class="flex items-center gap-3">
+                <!-- 電話ボタン -->
+                <a href="tel:0832460556" class="bg-accent text-white p-2.5 md:px-8 md:py-4 rounded-full shadow-lg border-2 border-accent hover:bg-white hover:text-navy transition-all italic flex items-center justify-center">
+                    <i class="fas fa-phone-alt md:mr-2"></i>
+                    <span class="hidden md:inline">今すぐ相談</span>
                 </a>
+                
+                <!-- 【スマホ専用】簡易メニュー（指一本で飛ばせます） -->
+                <div class="lg:hidden flex gap-2">
+                    <a href="#schedule-section" class="bg-white/10 backdrop-blur-md p-2.5 rounded-lg border border-white/20 text-white text-[10px] font-black italic text-center leading-tight">
+                        <i class="fas fa-calendar-alt block text-sm mb-0.5"></i>日程
+                    </a>
+                    <a href="blog.html" class="bg-white/10 backdrop-blur-md p-2.5 rounded-lg border border-white/20 text-accent text-[10px] font-black italic text-center leading-tight">
+                        <i class="fas fa-edit block text-sm mb-0.5"></i>ブログ
+                    </a>
+                </div>
             </div>
         </div>
     </header>
-
     <!-- 1. HERO SECTION -->
     <section class="relative h-screen flex items-center justify-center text-center overflow-hidden bg-slate-950">
         <div class="hero-bg"></div>
@@ -355,7 +369,56 @@
             <p class="mt-12 text-center text-slate-400 font-bold text-lg italic tracking-widest">〒752-8609 山口県下関市長府安養寺1丁目15-13</p>
         </div>
     </section>
+　　    <!-- 7.5 BLOG SECTION (シャレオツ & 実録感：写真を活かす) -->
+    <section id="blog-section" class="parallax py-40 bg-white" style="background-image: url('bg-blog.jpg'); background-attachment: fixed; background-size: cover; position: relative;">
+        <!-- あえてボカしと薄い白をかけ、写真の質感を残したまま文字を読ませます -->
+        <div class="absolute inset-0 bg-white/70 backdrop-blur-[2px]"></div>
+        
+        <div class="container mx-auto px-6 max-w-6xl relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+                <div class="text-left">
+                    <h3 class="text-[#001a33] text-6xl md:text-8xl font-[900] italic uppercase tracking-tighter">Blog</h3>
+                    <p class="text-accent font-[900] tracking-[0.4em] text-sm md:text-lg mt-4 italic uppercase">最新の現場レポート</p>
+                </div>
+                <a href="blog.html" class="bg-[#001a33] text-white px-10 py-4 rounded-full font-[900] italic hover:bg-accent transition-all shadow-2xl flex items-center gap-3">
+                    全記事を見る <i class="fas fa-chevron-right text-xs"></i>
+                </a>
+            </div>
 
+            <div class="grid md:grid-cols-2 gap-12 text-left">
+                <!-- ブログ記事1 -->
+                <div class="group cursor-pointer">
+                    <div class="aspect-video rounded-[3rem] overflow-hidden mb-8 shadow-[0_30px_60px_rgba(0,0,0,0.15)] relative">
+                        <img src="bg-classroom.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                        <div class="absolute inset-0 border-[10px] border-white/20 rounded-[3rem]"></div>
+                    </div>
+                    <div class="px-4">
+                        <span class="text-accent font-black text-sm mb-4 block italic">2024.07.29 UPDATE</span>
+                        <h4 class="text-2xl md:text-4xl font-[900] text-[#001a33] leading-tight group-hover:text-accent transition-colors">
+                            実技講習の様子をレポート！<br>
+                            真剣な眼差しが未来を創る。
+                        </h4>
+                    </div>
+                </div>
+
+                <!-- ブログ記事2 -->
+                <div class="group cursor-pointer">
+                    <div class="aspect-video rounded-[3rem] overflow-hidden mb-8 shadow-[0_30px_60px_rgba(0,0,0,0.15)] relative">
+                        <img src="bg-practical.jpg" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                        <div class="absolute inset-0 border-[10px] border-white/20 rounded-[3rem]"></div>
+                    </div>
+                    <div class="px-4">
+                        <span class="text-accent font-black text-sm mb-4 block italic">2024.07.28 INFO</span>
+                        <h4 class="text-2xl md:text-4xl font-[900] text-[#001a33] leading-tight group-hover:text-accent transition-colors">
+                            安全第一、現場のリアル。<br>
+                            資格取得後の活躍を支える指導。
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <!-- 8. FOOTER (内容・重厚感を完全復活) -->
     <footer class="bg-[#001a33] text-white py-32 text-center border-t border-white/5">
         <div class="container mx-auto px-6">
