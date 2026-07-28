@@ -7,13 +7,34 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
-    <style>
+        <style>
         :root { --navy: #001a33; --accent: #00a2ff; }
         body { font-family: 'Noto Sans JP', sans-serif; background-color: #f8fafc; color: var(--navy); overflow-x: hidden; }
         .parallax { background-attachment: fixed; background-position: center; background-size: cover; position: relative; }
-        .blog-card { background: white; border-radius: 2.5rem; overflow: hidden; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #e2e8f0; }
-        .blog-card:hover { transform: translateY(-10px); shadow: 0 40px 80px rgba(0,26,51,0.1); border-color: var(--accent); }
-        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        /* エフェクト1：ふわっと浮き上がるアニメーション */
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* エフェクト2：タイトルのキラリと光るアニメーション */
+        .shine-text {
+            position: relative; overflow: hidden;
+        }
+        .shine-text::after {
+            content: ''; position: absolute; top: -50%; left: -60%; width: 20%; height: 200%;
+            background: rgba(255, 255, 255, 0.3); transform: rotate(30deg);
+            animation: shine 4s infinite;
+        }
+        @keyframes shine { 0% { left: -60%; } 20% { left: 120%; } 100% { left: 120%; } }
+
+        /* エフェクト3：カードのホバー（ネオングロー） */
+        .blog-card { background: white; border-radius: 2.5rem; overflow: hidden; transition: all 0.5s; border: 1px solid #e2e8f0; }
+        .blog-card:hover { 
+            transform: translateY(-12px) scale(1.02); 
+            box-shadow: 0 30px 60px rgba(0, 162, 255, 0.15); 
+            border-color: var(--accent); 
+        }
+
         @media (max-width: 768px) { .parallax { background-attachment: scroll; } }
     </style>
 </head>
@@ -33,10 +54,16 @@
 
     <!-- 1. BLOG HERO (教室の写真をパララックスで) -->
     <section class="parallax h-[50vh] flex items-center justify-center text-center" style="background-image: url('bg-blog.jpg');">
-        <div class="absolute inset-0 bg-[#001a33]/60 backdrop-blur-[2px]"></div>
-        <div class="relative z-10">
-            <h2 class="text-white text-6xl md:text-9xl font-[900] italic uppercase tracking-tighter drop-shadow-2xl">Blog</h2>
-            <p class="text-accent font-[900] tracking-[0.5em] text-sm md:text-xl mt-4 italic uppercase">現場のリアルを、言葉と写真で。</p>
+        <!-- 膜を少し濃くして、文字とのコントラストを上げます -->
+        <div class="absolute inset-0 bg-[#001a33]/70 backdrop-blur-[2px]"></div>
+        
+        <div class="relative z-10 px-4">
+            <h2 class="text-white text-6xl md:text-9xl font-[900] italic uppercase tracking-tighter drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]">Blog</h2>
+            <!-- キャッチコピー：法改正などの重要性も含めた表現に変更 -->
+            <p class="text-[#00a2ff] font-[900] tracking-[0.3em] text-sm md:text-2xl mt-6 italic uppercase drop-shadow-lg">
+                確かな知識が、安全な現場を創る。
+            </p>
+            <div class="h-1.5 w-20 bg-[#00a2ff] mx-auto mt-6 rounded-full shadow-lg"></div>
         </div>
     </section>
 
@@ -71,7 +98,7 @@
         import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = { 
-            apiKey: "AIzaSyCrRf1MMckR_dTIT4mpz2MWdNPJZt3GpYw",
+            apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw",
             authDomain: "stc-hp.firebaseapp.com",
             projectId: "stc-hp",
             storageBucket: "stc-hp.firebasestorage.app",
