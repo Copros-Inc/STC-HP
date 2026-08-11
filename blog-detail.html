@@ -107,8 +107,10 @@
                     // タイトルとメタ情報
                     document.title = `${data.title} | STC`;
                     document.getElementById('post-title').innerText = data.title;
-                    document.getElementById('post-category').innerText = data.category || 'Report';
-                    document.getElementById('post-category').style.backgroundColor = themeColor;
+                    const categoryTag = document.getElementById('post-category');
+                    categoryTag.innerText = data.category || 'Report';
+                    categoryTag.style.backgroundColor = themeColor;
+                    categoryTag.className = "text-[10px] font-[900] px-4 py-1.5 rounded shadow-xl italic mb-6 inline-block uppercase tracking-widest border border-white/20 text-white";
                     
                     const dateObj = data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
                     document.getElementById('post-date').innerText = dateObj.toLocaleDateString('ja-JP') + ' UPDATE';
