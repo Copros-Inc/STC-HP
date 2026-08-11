@@ -90,54 +90,55 @@
         const params = new URLSearchParams(window.location.search);
         const postId = params.get('id');
 
-                if (postId) {
-                        onSnapshot(doc(db, "blogs", postId), (snapshot) => {
+                        if (postId) {
+            onSnapshot(doc(db, "blogs", postId), (snapshot) => {
                 if (snapshot.exists()) {
                     const data = snapshot.data();
                     
-                    // カテゴリー別カラー設定
+                    // 1. カテゴリー別カラー設定（index.htmlと完全に統一）
                     const colors = {
-                        '資格・講習ガイド': '#001a33',
-                        '法改正・業界ニュース': '#7f1d1d',
-                        '現場レポート': '#064e3b',
-                        '重要なお知らせ': '#0c4a6e',
+                        '資格・講習ガイド': '#001a33', // 濃紺
+                        '法改正・業界ニュース': '#7f1d1d', // 赤
+                        '現場レポート': '#064e3b', // 緑
+                        '重要なお知らせ': '#0c4a6e', // 青
                     };
                     const themeColor = colors[data.category] || '#001a33';
 
-                    // タイトルとメタ情報
+                    // 2. タイトルとメタ情報のセット
                     document.title = `${data.title} | STC`;
                     document.getElementById('post-title').innerText = data.title;
+                    
+                    // カテゴリータグのデザイン反映
                     const categoryTag = document.getElementById('post-category');
                     categoryTag.innerText = data.category || 'Report';
                     categoryTag.style.backgroundColor = themeColor;
                     categoryTag.className = "text-[10px] font-[900] px-4 py-1.5 rounded shadow-xl italic mb-6 inline-block uppercase tracking-widest border border-white/20 text-white";
                     
+                    // 日付の処理
                     const dateObj = data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
                     document.getElementById('post-date').innerText = dateObj.toLocaleDateString('ja-JP') + ' UPDATE';
 
-                    // 【追加】表示する画像の決定
-                    const displayImg = data.image ? data.image : 'bg-blog-default.jpg';
+                    // 3. ヒーロー背景の決定（なければ模型写真）
+                    const displayImg = data.image ? data.image : './bg-blog-default.jpg';
                     const heroBg = document.getElementById('hero-bg');
-
-                    // ヒーロー背景のセット
                     heroBg.style.backgroundImage = `url(${displayImg})`;
-                    // スモークの色をカテゴリーカラーと連動させる
+                    
+                    // オーバーレイのスモーク色をカテゴリー色に同期
                     heroBg.querySelector('.absolute.inset-0').style.background = `linear-gradient(to top, ${themeColor}, rgba(0,26,51,0.4), transparent)`;
 
-                                        // 本文の整形（太字・見出し・改行対応）
+                    // 4. 本文の整形（見出し・太字・改行をすべてオシャレに変換）
                     let content = data.content;
                     
-                    // 1. 【見出し】をh2に変換
+                    // 【見出し】をh2に変換
                     content = content.replace(/【(.*?)】/g, '<h2>$1</h2>');
                     
-                    // 2. **太字** を strongタグに変換
+                    // **太字** を strongタグ（青い強調）に変換
                     content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                     
-                    // 3. 改行をpタグに変換して読みやすく
+                    // 改行をpタグに変換
                     content = content.split('\n').map(line => {
                         if(!line.trim()) return '';
-                        // 見出しタグが含まれている行はそのまま、それ以外はpで囲む
-                        if(line.includes('<h2>')) return line;
+                        if(line.startsWith('<h2>')) return line;
                         return `<p>${line}</p>`;
                     }).join('');
                     
