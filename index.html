@@ -543,23 +543,32 @@
                 };
                 const bgColor = bgColors[data.category] || 'from-[#001a33] to-[#002a4d]';
 
+                                // 1. カテゴリー別カラー設定
                 const colors = {
-    '資格・講習ガイド': 'from-[#001a33]', // 信頼の濃紺
-    '法改正・業界ニュース': 'from-red-900', // 注意の赤
-    '現場レポート': 'from-emerald-900', // 活気の緑
-    '重要なお知らせ': 'from-sky-900',   // 誠実な青
-};
-const themeColor = colors[data.category] || 'from-[#001a33]';
+                    '資格・講習ガイド': 'from-[#001a33]', // 濃紺
+                    '法改正・業界ニュース': 'from-red-900', // 赤
+                    '現場レポート': 'from-emerald-900', // 緑
+                    '重要なお知らせ': 'from-sky-900',   // 青
+                };
+                const themeColor = colors[data.category] || 'from-[#001a33]';
 
-const imageTag = data.image 
-    ? `<div class="relative w-full h-full overflow-hidden">
-         <img src="${data.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
-         <div class="absolute inset-0 bg-gradient-to-t ${themeColor} via-transparent to-transparent opacity-70"></div>
-       </div>`
-    : `<div class="w-full h-full bg-gradient-to-br ${themeColor.replace('from-', 'from-').replace('[#001a33]', 'navy')} to-slate-900 flex flex-col items-center justify-center p-8 text-white/10 relative overflow-hidden">
-         <i class="fas fa-book-reader text-6xl mb-2 opacity-20"></i>
-         <span class="text-[12px] font-black uppercase tracking-[0.4em] relative z-10">${data.category}</span>
-       </div>`;
+                // 2. 表示する画像の決定（アップロード画像がなければ模型写真）
+                const displayImg = data.image ? data.image : 'bg-blog-default.jpg';
+
+                // 3. 画像タグの生成（スモーク＆ロゴ透かし入り）
+                const imageTag = `<div class="relative w-full h-full overflow-hidden bg-slate-900">
+                     <img src="${displayImg}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                     <!-- カテゴリー別のオーバーレイスモーク -->
+                     <div class="absolute inset-0 bg-gradient-to-t ${themeColor} via-transparent to-transparent opacity-80"></div>
+                     
+                     <!-- 画像がない場合のみ中央にアイコンを表示 -->
+                     ${!data.image ? `
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-white/20">
+                            <i class="fas fa-book-reader text-5xl mb-2"></i>
+                            <span class="text-[10px] font-black uppercase tracking-[0.4em]">${data.category}</span>
+                        </div>
+                     ` : ''}
+                   </div>`;
                 return `
                 <div class="group cursor-pointer" onclick="location.href='blog-detail.html?id=${doc.id}'">
                     <div class="aspect-video rounded-[3rem] overflow-hidden mb-8 shadow-2xl relative bg-slate-100">
