@@ -6,33 +6,35 @@
     <title>講習詳細 | STC 下関トレーニングセンター</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+JP:wght@300;700;900&display=swap');
-        
-        :root { --navy: #001a33; --accent: #00a2ff; --slate: #334155; }
-        body { font-family: 'Noto Sans JP', sans-serif; background-color: #ffffff; color: var(--navy); overflow-x: hidden; }
-        .font-en { font-family: 'Montserrat', sans-serif; }
+   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+JP:wght@400;700;900&display=swap');
+    
+    :root { --navy: #001a33; --accent: #00a2ff; }
+    body { font-family: 'Noto Sans JP', sans-serif; background-color: #ffffff; color: var(--navy); }
+    .font-en { font-family: 'Montserrat', sans-serif; }
 
-        /* 背景：白ベースだが、薄く濃紺のグラデを敷く */
-        .bg-base { position: fixed; inset: 0; background: radial-gradient(circle at 10% 10%, #f0f5fa 0%, #ffffff 100%); z-index: -1; }
+    /* 背景：白を基調にしつつ、清潔感のある微細なドットパターン */
+    .bg-dot { background-image: radial-gradient(#e2e8f0 1px, transparent 1px); background-size: 20px 20px; }
 
-        /* ガラスカード：より重厚なシャドウ */
-        .glass-card { background: #ffffff; border: 1px solid rgba(0, 26, 51, 0.05); box-shadow: 0 25px 70px rgba(0, 26, 51, 0.05); transition: 0.4s; }
-        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 40px 90px rgba(0, 26, 51, 0.1); }
+    /* セクションタイトル：極太のアクセントライン */
+    .section-title { border-left: 8px solid var(--accent); padding-left: 1.5rem; margin-bottom: 2rem; }
+    .section-title h2 { font-weight: 900; font-style: italic; font-size: 1.25rem; letter-spacing: 0.1em; color: var(--navy); }
 
-        /* ラベル：トップページと同期した濃紺・水色 */
-        .spec-label { background: var(--navy); color: #fff; padding: 10px 30px; border-radius: 0 50px 50px 0; font-weight: 900; font-style: italic; display: inline-flex; align-items: center; }
-        
-        /* 料金ボックス：重厚感を出す濃紺グラデーション */
-        .price-box { background: linear-gradient(135deg, var(--navy) 0%, #002a4d 100%); color: white; padding: 50px; border-radius: 3rem; box-shadow: 0 30px 60px rgba(0, 26, 51, 0.2); }
+    /* カード：枠線を消し、深い「重厚な影」で浮かせる */
+    .heavy-card { background: white; border-radius: 2rem; box-shadow: 0 40px 100px rgba(0, 26, 51, 0.08); transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+    .heavy-card:hover { transform: translateY(-10px); box-shadow: 0 50px 120px rgba(0, 26, 51, 0.12); }
 
-        /* 申し込みボタン：トップのボタンと同期 */
-        .cta-navy { background: var(--navy); color: white; transition: 0.4s; border: 2px solid var(--navy); }
-        .cta-navy:hover { background: var(--accent); border-color: var(--accent); transform: scale(1.02); }
+    /* 料金ボックス：最高級の重厚グラデーション */
+    .price-box { background: linear-gradient(135deg, #001a33 0%, #003366 100%); border-radius: 3rem; position: relative; overflow: hidden; }
+    .price-box::before { content: 'PRICE'; position: absolute; top: -10%; right: -5%; font-family: 'Montserrat'; font-size: 10rem; color: rgba(255,255,255,0.03); font-weight: 900; font-style: italic; }
 
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-    </style>
+    /* 申込ボタン：ネオン感のあるモダンデザイン */
+    .btn-stc { background: var(--navy); color: white; transition: 0.5s; border: 2px solid var(--navy); }
+    .btn-stc:hover { background: var(--accent); border-color: var(--accent); transform: scale(1.02); box-shadow: 0 20px 40px rgba(0, 162, 255, 0.3); }
+
+    .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
+</style>
 </head>
 <body class="pb-20">
     <div class="bg-bright-effect"></div>
@@ -71,62 +73,79 @@
                 </a>
             </div>
 
-            <!-- 右側：スペック詳細 -->
-            <div class="space-y-10 py-4">
-                <div class="reveal active space-y-12">
-                    
-                    <!-- コース説明 -->
-                    <div class="pl-2">
-                        <span class="label-en-sub text-sky-600 ml-1">COURSE OVERVIEW</span>
-                        <div class="spec-label-jp mb-6 italic">コース説明</div>
-                        <p id="desc" class="text-slate-600 font-bold italic leading-relaxed text-lg pl-2"></p>
+            <!-- 右カラム：全情報を網羅したスペック詳細 -->
+            <div class="lg:col-span-7 space-y-14">
+                
+                <!-- 1. コース説明 -->
+                <div class="reveal active">
+                    <div class="border-l-[8px] border-l-accent pl-6 mb-6">
+                        <span class="font-en text-[10px] font-black text-accent tracking-[0.3em] block mb-1">COURSE OVERVIEW</span>
+                        <h2 class="text-navy font-black text-2xl italic uppercase">コース説明</h2>
                     </div>
+                    <p id="desc" class="text-slate-600 font-bold italic leading-loose text-xl pl-2"></p>
+                </div>
 
-                    <!-- 受講資格・条件 -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pl-2">
-                        <div class="glass-white-card p-8 rounded-[2rem] border-t-4 border-t-sky-400">
-                            <span class="label-en-sub text-slate-400">受講対象</span>
-                            <div class="text-sky-600 font-black italic text-2xl mt-2" id="eligibility"></div>
-                            <p class="text-xs text-slate-400 font-bold mt-2 italic">受講資格：満18歳以上</p>
+                <!-- 2. 受講資格 ＆ 受講条件（グリッド） -->
+                <div class="grid md:grid-cols-2 gap-6 reveal active">
+                    <!-- 受講対象 -->
+                    <div class="bg-white p-8 rounded-[2rem] shadow-xl border-l-[10px] border-l-navy flex flex-col justify-between hover:border-l-accent transition-all duration-500">
+                        <div>
+                            <span class="font-en text-[9px] font-black text-slate-400 tracking-widest block mb-4">TARGET</span>
+                            <p class="text-slate-500 font-black text-xs mb-2">受講対象</p>
+                            <div class="text-navy font-black italic text-2xl" id="eligibility"></div>
                         </div>
-                        <div class="glass-white-card p-8 rounded-[2rem] border-t-4 border-t-slate-300">
-                            <span class="label-en-sub text-slate-400">受講条件</span>
-                            <div class="text-slate-700 font-black italic text-base mt-2 whitespace-pre-wrap" id="condition"></div>
-                        </div>
+                        <p class="text-[10px] text-slate-400 mt-6 font-bold italic underline decoration-accent/30 underline-offset-4">※満18歳以上の方</p>
                     </div>
-
-                    <!-- 対応重機 -->
-                    <div class="pl-2">
-                        <span class="label-en-sub text-sky-600 ml-1">APPLICABLE MACHINES</span>
-                        <div class="spec-label-jp mb-6 italic">対応重機・業務</div>
-                        <p id="machines" class="text-slate-600 font-black italic pl-2 text-lg leading-relaxed whitespace-pre-wrap"></p>
-                    </div>
-
-                    <!-- 料金（明るく目立たせる） -->
-                    <div class="price-box relative overflow-hidden group">
-                        <div class="relative z-10">
-                            <span class="label-en-sub text-sky-100/60">TOTAL FEE</span>
-                            <div class="spec-label-jp mb-6 italic bg-white/20 border-white text-white">受講料金</div>
-                            <div class="flex items-baseline gap-4">
-                                <span id="price" class="text-7xl font-en font-black italic text-white tracking-tighter"></span>
-                                <span class="text-white font-black italic text-2xl">円</span>
-                            </div>
-                            <p id="tax-note" class="text-sky-100 text-sm mt-6 font-bold italic border-t border-white/20 pt-4"></p>
-                        </div>
-                    </div>
-
-                    <!-- その他 -->
-                    <div class="glass-white-card p-10 rounded-[2.5rem] reveal active border-l-8 border-l-slate-300">
-                        <span class="label-en-sub text-slate-400">SCHEDULE & DETAILS</span>
-                        <div class="spec-label-jp mb-8 italic bg-slate-800 text-white">講習日数・その他</div>
-                        <ul id="others" class="text-lg text-slate-700 font-bold italic space-y-6 list-none pl-2"></ul>
+                    <!-- 受講要件 -->
+                    <div class="bg-white p-8 rounded-[2rem] shadow-xl border-l-[10px] border-l-slate-300 flex flex-col hover:border-l-navy transition-all duration-500">
+                        <span class="font-en text-[9px] font-black text-slate-400 tracking-widest block mb-4">REQUIREMENT</span>
+                        <p class="text-slate-500 font-black text-xs mb-2">受講要件</p>
+                        <div class="text-slate-700 font-bold italic text-base leading-relaxed whitespace-pre-wrap" id="condition"></div>
                     </div>
                 </div>
 
-                <!-- 申し込みボタン -->
+                <!-- 3. 対応重機・業務 -->
+                <div class="reveal active">
+                    <div class="border-l-[8px] border-l-navy pl-6 mb-6">
+                        <span class="font-en text-[10px] font-black text-accent tracking-[0.3em] block mb-1">APPLICABLE MACHINES</span>
+                        <h2 class="text-navy font-black text-2xl italic uppercase">対応重機・業務</h2>
+                    </div>
+                    <div class="bg-slate-50 p-10 rounded-[2.5rem] border-2 border-white shadow-inner">
+                        <p id="machines" class="text-navy font-black italic text-lg leading-relaxed whitespace-pre-wrap"></p>
+                    </div>
+                </div>
+
+                <!-- 4. 料金ボックス（最大の重厚感） -->
+                <div class="bg-gradient-to-br from-[#001a33] to-[#003366] p-12 rounded-[3rem] text-white shadow-2xl relative overflow-hidden reveal active group">
+                    <!-- 背景の巨大なPRICE透かし -->
+                    <div class="absolute -bottom-10 -right-10 font-en text-[10rem] font-black italic opacity-[0.03] pointer-events-none select-none">PRICE</div>
+                    
+                    <div class="relative z-10">
+                        <span class="font-en text-[10px] font-black text-sky-400 tracking-[0.4em] block mb-6">INVESTMENT</span>
+                        <h2 class="text-xl font-black italic mb-10 border-b border-white/10 pb-4 inline-block">受講料金（税込・テキスト代込）</h2>
+                        <div class="flex items-baseline gap-4">
+                            <span id="price" class="text-8xl md:text-9xl font-en font-black italic tracking-tighter text-white drop-shadow-2xl"></span>
+                            <span class="text-2xl font-black italic opacity-60">円</span>
+                        </div>
+                        <p id="tax-note" class="text-sky-200/50 text-xs mt-10 font-bold italic pt-6 border-t border-white/5"></p>
+                    </div>
+                </div>
+
+                <!-- 5. 講習日数・その他 -->
+                <div class="reveal active">
+                    <div class="border-l-[8px] border-l-slate-400 pl-6 mb-6">
+                        <span class="font-en text-[10px] font-black text-slate-400 tracking-[0.3em] block mb-1">DETAILS</span>
+                        <h2 class="text-navy font-black text-2xl italic uppercase">講習日数・その他</h2>
+                    </div>
+                    <div class="bg-white p-10 rounded-[2.5rem] shadow-xl border border-slate-50">
+                        <ul id="others" class="text-lg text-slate-700 font-bold italic space-y-6"></ul>
+                    </div>
+                </div>
+
+                <!-- 6. 申し込みボタン（9/1開始への伏線も考慮） -->
                 <div class="pt-10 reveal active">
-                    <a href="index.html#schedule-section" class="cta-bright group block w-full text-center py-10 rounded-full font-black text-2xl italic tracking-[0.4em] shadow-xl uppercase">
-                        <i class="fas fa-calendar-check mr-4"></i> 開催予定を確認・申込む
+                    <a href="index.html#schedule-section" class="bg-[#001a33] hover:bg-[#00a2ff] text-white block w-full text-center py-10 rounded-full font-[900] text-2xl italic tracking-[0.3em] shadow-2xl transition-all duration-500 hover:scale-[1.02] uppercase border-2 border-[#001a33]">
+                        <i class="fas fa-calendar-alt mr-4"></i> 開催予定を確認・申込む
                     </a>
                 </div>
             </div>
