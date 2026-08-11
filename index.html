@@ -543,41 +543,53 @@
                 };
                 const bgColor = bgColors[data.category] || 'from-[#001a33] to-[#002a4d]';
 
-                                // 1. カテゴリー別カラー設定
+                                // 1. カテゴリー別カラー設定（ここを管理画面の文字と完全に一致させました）
                 const colors = {
                     '資格・講習ガイド': 'from-[#001a33]', // 濃紺
                     '法改正・業界ニュース': 'from-red-900', // 赤
                     '現場レポート': 'from-emerald-900', // 緑
                     '重要なお知らせ': 'from-sky-900',   // 青
                 };
+                
+                // 現在のカテゴリーに合わせて色を決定（一致しない場合は濃紺にする）
                 const themeColor = colors[data.category] || 'from-[#001a33]';
 
                 // 2. 表示する画像の決定（アップロード画像がなければ模型写真）
-                const displayImg = data.image ? data.image : 'bg-blog-default.jpg';
+                const displayImg = data.image ? data.image : './bg-blog-default.jpg';
 
-                // 3. 画像タグの生成（スモーク＆ロゴ透かし入り）
-                const imageTag = `<div class="relative w-full h-full overflow-hidden bg-slate-900">
-                     <img src="${displayImg}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
-                     <!-- カテゴリー別のオーバーレイスモーク -->
-                     <div class="absolute inset-0 bg-gradient-to-t ${themeColor} via-transparent to-transparent opacity-80"></div>
-                     <div class="absolute top-4 left-4 z-20 px-3 py-1 rounded bg-white text-[#001a33] text-[10px] font-black uppercase tracking-widest shadow-lg">${data.category}</div>
-                     <!-- 画像がない場合のみ中央にアイコンを表示 -->
-                     ${!data.image ? `
-                        <div class="absolute inset-0 flex flex-col items-center justify-center text-white/20">
-                            <i class="fas fa-book-reader text-5xl mb-2"></i>
-                            <span class="text-[10px] font-black uppercase tracking-[0.2em] relative z-10 px-3 py-1 rounded bg-white/20 backdrop-blur-md text-white border border-white/30">${data.category}</span>
+                // 3. 画像エリア（imageTag）の生成
+                const imageTag = `
+                    <div class="relative w-full h-full overflow-hidden bg-slate-900">
+                        <img src="${displayImg}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                        
+                        <!-- カテゴリー別のオーバーレイスモーク -->
+                        <div class="absolute inset-0 bg-gradient-to-t ${themeColor} via-transparent to-transparent opacity-80"></div>
+                        
+                        <!-- 左上のパキッとしたカテゴリータグ -->
+                        <div class="absolute top-4 left-4 z-20 px-3 py-1 rounded bg-white text-[#001a33] text-[10px] font-[900] uppercase tracking-widest shadow-lg border border-white/50">
+                            ${data.category || 'INFO'}
                         </div>
-                     ` : ''}
-                   </div>`;
+
+                        <!-- 画像がない場合のみ中央にアイコンと透過文字を表示 -->
+                        ${!data.image ? `
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-white/10">
+                                <i class="fas fa-book-reader text-5xl mb-2 opacity-20"></i>
+                                <span class="text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded bg-white/10 backdrop-blur-sm border border-white/20 text-white/40">
+                                    ${data.category}
+                                </span>
+                            </div>
+                        ` : ''}
+                    </div>`;
+
                 return `
                 <div class="group cursor-pointer" onclick="location.href='blog-detail.html?id=${doc.id}'">
                     <div class="aspect-video rounded-[3rem] overflow-hidden mb-8 shadow-2xl relative bg-slate-100">
                         ${imageTag}
                         <div class="absolute inset-0 border-[10px] border-white/20 rounded-[3rem]"></div>
                     </div>
-                    <div class="px-4">
+                    <div class="px-4 text-left">
                         <span class="text-accent font-black text-sm mb-4 block italic uppercase tracking-widest">${dateStr} UPDATE</span>
-                        <h4 class="text-2xl md:text-3xl font-[900] text-[#001a33] leading-tight group-hover:text-accent transition-colors">${data.title || '無題の記事'}</h4>
+                        <h4 class="text-2xl md:text-3xl font-[900] text-[#001a33] leading-tight group-hover:text-accent transition-colors line-clamp-2">${data.title || '無題の記事'}</h4>
                     </div>
                 </div>`;
             }).join('');
