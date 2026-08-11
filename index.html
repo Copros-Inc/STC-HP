@@ -535,10 +535,31 @@
                 }
 
                 // 画像があるかチェック（なければロゴを背景にする）
-                const imageTag = data.image 
-                    ? `<img src="${data.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">`
-                    : `<div class="w-full h-full bg-gradient-to-br from-[#001a33] to-[#002a4d] flex items-center justify-center p-8"><img src="logo.png" class="w-1/3 opacity-10 grayscale invert"><i class="fas fa-file-alt text-white/10 text-6xl absolute"></i></div>`;
+                                // 画像がない場合の背景パターン定義
+                const bgColors = {
+                    '法改正情報': 'from-[#001a33] to-sky-700',
+                    '現場レポート': 'from-slate-700 to-slate-900',
+                    'お知らせ': 'from-sky-400 to-[#00a2ff]'
+                };
+                const bgColor = bgColors[data.category] || 'from-[#001a33] to-[#002a4d]';
 
+                const colors = {
+    '資格・講習ガイド': 'from-[#001a33]', // 信頼の濃紺
+    '法改正・業界ニュース': 'from-red-900', // 注意の赤
+    '現場レポート': 'from-emerald-900', // 活気の緑
+    '重要なお知らせ': 'from-sky-900',   // 誠実な青
+};
+const themeColor = colors[data.category] || 'from-[#001a33]';
+
+const imageTag = data.image 
+    ? `<div class="relative w-full h-full overflow-hidden">
+         <img src="${data.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+         <div class="absolute inset-0 bg-gradient-to-t ${themeColor} via-transparent to-transparent opacity-70"></div>
+       </div>`
+    : `<div class="w-full h-full bg-gradient-to-br ${themeColor.replace('from-', 'from-').replace('[#001a33]', 'navy')} to-slate-900 flex flex-col items-center justify-center p-8 text-white/10 relative overflow-hidden">
+         <i class="fas fa-book-reader text-6xl mb-2 opacity-20"></i>
+         <span class="text-[12px] font-black uppercase tracking-[0.4em] relative z-10">${data.category}</span>
+       </div>`;
                 return `
                 <div class="group cursor-pointer" onclick="location.href='blog-detail.html?id=${doc.id}'">
                     <div class="aspect-video rounded-[3rem] overflow-hidden mb-8 shadow-2xl relative bg-slate-100">
