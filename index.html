@@ -560,12 +560,12 @@
                      <img src="${displayImg}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
                      <!-- カテゴリー別のオーバーレイスモーク -->
                      <div class="absolute inset-0 bg-gradient-to-t ${themeColor} via-transparent to-transparent opacity-80"></div>
-                     
+                     <div class="absolute top-4 left-4 z-20 px-3 py-1 rounded bg-white text-[#001a33] text-[10px] font-black uppercase tracking-widest shadow-lg">${data.category}</div>
                      <!-- 画像がない場合のみ中央にアイコンを表示 -->
                      ${!data.image ? `
                         <div class="absolute inset-0 flex flex-col items-center justify-center text-white/20">
                             <i class="fas fa-book-reader text-5xl mb-2"></i>
-                            <span class="text-[10px] font-black uppercase tracking-[0.4em]">${data.category}</span>
+                            <span class="text-[10px] font-black uppercase tracking-[0.2em] relative z-10 px-3 py-1 rounded bg-white/20 backdrop-blur-md text-white border border-white/30">${data.category}</span>
                         </div>
                      ` : ''}
                    </div>`;
