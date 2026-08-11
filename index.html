@@ -543,40 +543,35 @@
                 };
                 const bgColor = bgColors[data.category] || 'from-[#001a33] to-[#002a4d]';
 
-                                // 1. カテゴリー別カラー設定（ここを管理画面の文字と完全に一致させました）
+                // 1. カテゴリー別カラー設定（管理画面の文字と完全一致）
                 const colors = {
-                    '資格・講習ガイド': 'from-[#001a33]', // 濃紺
-                    '法改正・業界ニュース': 'from-red-900', // 赤
-                    '現場レポート': 'from-emerald-900', // 緑
-                    '重要なお知らせ': 'from-sky-900',   // 青
+                    '資格・講習ガイド': '#001a33', // 濃紺
+                    '法改正・業界ニュース': '#7f1d1d', // 赤
+                    '現場レポート': '#064e3b', // 緑
+                    '重要なお知らせ': '#0c4a6e', // 青
                 };
-                
-                // 現在のカテゴリーに合わせて色を決定（一致しない場合は濃紺にする）
-                const themeColor = colors[data.category] || 'from-[#001a33]';
+                const themeColor = colors[data.category] || '#001a33';
+                const tailwindColor = data.category === '法改正・業界ニュース' ? 'from-red-900' : 'from-[#001a33]';
 
-                // 2. 表示する画像の決定（アップロード画像がなければ模型写真）
+                // 2. 表示する画像の決定
                 const displayImg = data.image ? data.image : './bg-blog-default.jpg';
 
-                // 3. 画像エリア（imageTag）の生成
+                // 3. 画像エリア（imageTag）の生成（中央の文字を消し、左上タグを強化）
                 const imageTag = `
                     <div class="relative w-full h-full overflow-hidden bg-slate-900">
                         <img src="${displayImg}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                        <div class="absolute inset-0 bg-gradient-to-t ${tailwindColor} via-transparent to-transparent opacity-80"></div>
                         
-                        <!-- カテゴリー別のオーバーレイスモーク -->
-                        <div class="absolute inset-0 bg-gradient-to-t ${themeColor} via-transparent to-transparent opacity-80"></div>
-                        
-                        <!-- 左上のパキッとしたカテゴリータグ -->
-                        <div class="absolute top-4 left-4 z-20 px-3 py-1 rounded bg-white text-[#001a33] text-[10px] font-[900] uppercase tracking-widest shadow-lg border border-white/50">
+                        <!-- 左上のカテゴリータグ（背景に色を付け、白文字にする） -->
+                        <div class="absolute top-4 left-4 z-20 px-3 py-1 rounded shadow-xl text-[10px] font-[900] uppercase tracking-widest text-white border border-white/20" 
+                             style="background-color: ${themeColor};">
                             ${data.category || 'INFO'}
                         </div>
 
-                        <!-- 画像がない場合のみ中央にアイコンと透過文字を表示 -->
+                        <!-- 画像がない場合のみ中央にアイコンを表示 -->
                         ${!data.image ? `
-                            <div class="absolute inset-0 flex flex-col items-center justify-center text-white/10">
-                                <i class="fas fa-book-reader text-5xl mb-2 opacity-20"></i>
-                                <span class="text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded bg-white/10 backdrop-blur-sm border border-white/20 text-white/40">
-                                    ${data.category}
-                                </span>
+                            <div class="absolute inset-0 flex items-center justify-center text-white/5">
+                                <i class="fas fa-book-reader text-7xl"></i>
                             </div>
                         ` : ''}
                     </div>`;
