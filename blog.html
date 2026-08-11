@@ -118,7 +118,7 @@
                     return;
                 }
                 
-                                blogList.innerHTML = snapshot.docs.map(doc => {
+                                    blogList.innerHTML = snapshot.docs.map(doc => {
                     const data = doc.data();
                     
                     // 日付の変換
@@ -128,7 +128,7 @@
                         dateStr = dateObj.toLocaleDateString('ja-JP');
                     }
                     
-                    // カテゴリー別カラー設定（index.htmlと統一）
+                    // カテゴリー別カラー設定
                     const colors = {
                         '資格・講習ガイド': 'from-[#001a33]',
                         '法改正・業界ニュース': 'from-red-900',
@@ -137,18 +137,22 @@
                     };
                     const themeColor = colors[data.category] || 'from-[#001a33]';
 
+                    // 【追加】表示する画像の決定（なければ模型写真）
+                    const displayImg = data.image ? data.image : 'bg-blog-default.jpg';
+
                     // 画像セクションの生成（オーバーレイ & カテゴリー別背景）
-                    const imageSection = data.image 
-                        ? `<div class="aspect-video overflow-hidden relative">
-                               <img src="${data.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
-                               <div class="absolute inset-0 bg-gradient-to-t ${themeColor} via-transparent to-transparent opacity-60"></div>
+                    const imageSection = `
+                        <div class="aspect-video overflow-hidden relative bg-slate-900">
+                               <img src="${displayImg}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                               <div class="absolute inset-0 bg-gradient-to-t ${themeColor} via-transparent to-transparent opacity-70"></div>
                                <div class="absolute top-6 left-6 bg-white text-[#001a33] text-[10px] font-black px-4 py-1.5 rounded-full italic shadow-lg uppercase tracking-widest z-10">${data.category}</div>
-                           </div>`
-                        : `<div class="aspect-video bg-gradient-to-br ${themeColor.replace('from-', 'from-').replace('[#001a33]', 'navy')} to-slate-900 relative flex flex-col items-center justify-center p-8 border-b border-white/5 overflow-hidden">
-                               <div class="absolute top-6 left-6 bg-white text-[#001a33] text-[10px] font-black px-4 py-1.5 rounded-full italic shadow-lg uppercase tracking-widest z-10">${data.category}</div>
-                               <i class="fas fa-book-reader text-white/10 text-7xl relative z-0"></i>
-                               <div class="absolute -bottom-6 -right-6 text-white/5 text-9xl font-black italic select-none uppercase tracking-tighter">${data.category.substring(0,2)}</div>
-                           </div>`;
+                               
+                               ${!data.image ? `
+                                <div class="absolute inset-0 flex flex-col items-center justify-center text-white/20">
+                                    <i class="fas fa-book-reader text-5xl mb-2"></i>
+                                </div>
+                               ` : ''}
+                        </div>`;
 
                     return `
                         <article class="blog-card shadow-xl group cursor-pointer reveal active" onclick="location.href='blog-detail.html?id=${doc.id}'">
