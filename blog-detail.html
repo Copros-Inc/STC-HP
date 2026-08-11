@@ -122,12 +122,20 @@
                     // スモークの色をカテゴリーカラーと連動させる
                     heroBg.querySelector('.absolute.inset-0').style.background = `linear-gradient(to top, ${themeColor}, rgba(0,26,51,0.4), transparent)`;
 
-                    // 本文の整形
+                                        // 本文の整形（太字・見出し・改行対応）
                     let content = data.content;
+                    
+                    // 1. 【見出し】をh2に変換
                     content = content.replace(/【(.*?)】/g, '<h2>$1</h2>');
+                    
+                    // 2. **太字** を strongタグに変換
+                    content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    
+                    // 3. 改行をpタグに変換して読みやすく
                     content = content.split('\n').map(line => {
                         if(!line.trim()) return '';
-                        if(line.startsWith('<h2>')) return line;
+                        // 見出しタグが含まれている行はそのまま、それ以外はpで囲む
+                        if(line.includes('<h2>')) return line;
                         return `<p>${line}</p>`;
                     }).join('');
                     
