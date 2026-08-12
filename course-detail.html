@@ -140,7 +140,6 @@
     </footer>
 
     <script>
-        // 既存のコースデータをそのまま利用
         const courseData = {
             'tamakake': {
                 name: '玉掛け技能講習<br><span class="text-accent text-2xl md:text-3xl">(19時間コース)</span>',
@@ -162,34 +161,26 @@
                 others: ['学科講習 10時間 / 実技講習 6時間','講習日数：3日間','現役プロ講師による実技指導'],
                 pdf: 'pdf/crane.pdf'
             },
-            'fork31': {
-                name: 'フォークリフト運転<br><span class="text-accent text-2xl md:text-3xl">(31時間コース)</span>',
-                en: 'FORKLIFT 31H', img: 'course2.jpg',
-                desc: '最大荷重1トン以上のフォークリフトの運転業務を行うことができる資格です。自動車免許をお持ちの方を対象としています。',
+            // ★IDを fork に統一（index.htmlからのリンクに合わせました）
+            'fork': {
+                name: 'フォークリフト運転<br><span class="text-accent text-2xl md:text-3xl">(技能講習)</span>',
+                en: 'FORKLIFT', img: 'course2.jpg',
+                desc: '最大荷重1トン以上のフォークリフトの運転業務を行うことができる資格です。物流現場や製造、建設現場で最も需要の高い資格の一つです。',
                 eligibility: '免許所持者', condition: '普通・準中型・中型・大型自動車免許のいずれかをお持ちの方',
                 machines: '全種類のフォークリフト（カウンタバランス、リーチ、サイド等すべて）',
-                price: '30,000', tax: '※ テキスト代 2,000円、及び消費税を含む。',
-                others: ['学科講習 7時間 / 実技講習 24時間','講習日数：4日間','物流現場で即戦力となる技術を習得'],
+                price: '30,000', tax: '※ 自動車免許所持(31H)の場合。テキスト代込・税込。',
+                others: ['学科講習 7時間 / 実技講習 24時間','講習日数：標準4日間','即戦力となる技術を徹底指導'],
                 pdf: 'pdf/fork31.pdf'
             },
-            'fork11': {
-                name: 'フォークリフト運転<br><span class="text-accent text-2xl md:text-3xl">(11時間コース)</span>',
-                en: 'FORKLIFT 11H', img: 'course2.jpg',
-                desc: '最大荷重1トン以上のフォークリフトの運転。大型特殊免許所持者、または特別教育修了後の実務経験者を対象とした短縮コースです。',
-                eligibility: '特定経験者', condition: '・大型特殊免許(限定なし)所持者\n・普通免許所持＋1t未満特別教育後実務3ヶ月以上',
-                machines: '全種類のフォークリフト',
-                price: '20,000', tax: '※ テキスト代 2,000円、及び消費税を含む。',
-                others: ['学科講習 7時間 / 実技講習 4時間','講習日数：最短2日間','経験を活かしてスピーディーに取得'],
-                pdf: 'pdf/fork11.pdf'
-            },
-            'tailgate': {
-                name: 'テールゲートリフター<br><span class="text-accent text-2xl md:text-3xl">(特別教育)</span>',
-                en: 'TAILGATE LIFTER', img: 'hero.png',
-                desc: '荷を積み卸す作業におけるテールゲートリフター（パワーゲート）の操作の業務を行う方を対象とした特別教育です。2024年の法改正により義務化されました。',
-                eligibility: '経験不問', condition: 'どなたでも受講可能です。運送・配送業務に携わる方に必須の教育です。',
-                machines: 'トラック等の後部昇降装置（テールゲートリフター）操作全般',
-                price: '15,000', tax: '※ テキスト代 2,000円、及び消費税を含む。',
-                others: ['学科講習 4時間 / 実技講習 2時間','講習日数：1日間','法改正に完全対応した最新カリキュラム'],
+            // ★IDを special に統一（特別教育全般）
+            'special': {
+                name: '特別教育・各種教育<br><span class="text-accent text-2xl md:text-3xl">(テールゲートリフター等)</span>',
+                en: 'SPECIAL EDUCATION', img: 'hero.png',
+                desc: 'テールゲートリフター、フルハーネス、研削といしなど、現場への入場に必須となる各種特別教育を実施しています。',
+                eligibility: '経験不問', condition: 'どなたでも受講可能です。2024年の法改正（TGL義務化）にも完全対応。',
+                machines: 'テールゲートリフター、墜落制止用器具(フルハーネス)など',
+                price: '15,000', tax: '※ 各教育により異なります。詳細はお問い合わせください。',
+                others: ['最短1日で取得可能','企業の業務日程に合わせた調整可能','法改正に完全対応した最新カリキュラム'],
                 pdf: 'pdf/tail.pdf'
             }
         };
@@ -211,6 +202,7 @@
             document.getElementById('pdf-link').href = data.pdf;
             
             const othersList = document.getElementById('others');
+            othersList.innerHTML = ''; // 一旦クリア
             data.others.forEach(text => {
                 const li = document.createElement('li');
                 li.innerHTML = `<div class="flex items-start gap-4 text-left"><i class="fas fa-check-square text-accent mt-1"></i><span>${text}</span></div>`;
