@@ -3,64 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STCが選ばれる理由 | 下関トレーニングセンター</title>
+    <title>選ばれる理由 | STC 下関トレーニングセンター</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
     
     <style>
-        /* index.html と完全に共通のカラーとフォント設定 */
         :root { --navy: #001a33; --accent: #00a2ff; --light-navy: #f0f5fa; }
         body { font-family: 'Noto Sans JP', sans-serif; background-color: #ffffff; color: var(--navy); overflow-x: hidden; }
 
-        /* 重厚感のあるカード設定 */
-        .card-navy { background: var(--navy); color: white; border-radius: 3rem; box-shadow: 0 30px 60px rgba(0,0,0,0.2); }
-        .card-white { background: white; color: var(--navy); border-radius: 3rem; border: 1px solid #e2e8f0; box-shadow: 0 30px 60px rgba(0,0,0,0.05); }
+        /* indexと同じ重厚なカードデザイン（水色を廃止） */
+        .card-navy { background: var(--navy); color: white; border-radius: 3.5rem; box-shadow: 0 30px 60px rgba(0,0,0,0.2); overflow: hidden; }
+        .card-white { background: white; color: var(--navy); border-radius: 3.5rem; border: 1px solid #e2e8f0; box-shadow: 0 30px 60px rgba(0,0,0,0.05); overflow: hidden; }
 
-        /* indexと同じ透かし背景デカ文字（Watermark） */
+        /* indexと同じ透かし背景文字 */
         .watermark {
             position: absolute; font-family: 'Oswald', sans-serif; font-size: 18vw;
             color: rgba(0, 40, 77, 0.03); font-weight: 700; z-index: 0;
             pointer-events: none; white-space: nowrap; text-transform: uppercase; font-style: italic;
         }
 
-        /* アニメーション演出 */
-        .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* ナビゲーションの透過設定 */
-        #main-nav { transition: all 0.5s; }
-
         @media (max-width: 768px) {
-            .text-9xl { font-size: 5rem !important; }
-            .card-navy, .card-white { border-radius: 2rem; }
+            .text-9xl { font-size: 4rem !important; }
+            .card-navy, .card-white { border-radius: 2.5rem; }
         }
     </style>
 </head>
 <body class="bg-white">
-    <!-- ナビゲーション（indexに合わせる） -->
-    <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-navy/5 py-4 px-8" id="main-nav">
+
+    <!-- ナビゲーション（indexと同期） -->
+    <nav class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-navy/5 py-4 px-6 md:px-12">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <a href="index.html" class="flex items-center gap-3">
-                <img src="logo.png" alt="STC" class="h-10 md:h-12 object-contain">
-                <div class="text-navy leading-none">
-                    <h1 class="font-[900] text-sm md:text-lg italic">下関トレーニングセンター</h1>
-                </div>
+                <img src="logo.png" alt="STC" class="h-10 md:h-12 object-contain bg-white p-1 rounded">
+                <h1 class="font-[900] text-sm md:text-xl italic text-navy">下関トレーニングセンター</h1>
             </a>
-            <a href="index.html#features" class="text-navy font-black italic text-xs tracking-widest hover:text-accent transition">
-                <i class="fas fa-arrow-left mr-2"></i> BACK TO HOME
+            <a href="index.html#features" class="inline-flex items-center text-navy hover:text-accent transition font-black italic text-xs tracking-widest group">
+                <i class="fas fa-arrow-left mr-3 group-hover:-translate-x-2 transition-transform"></i> BACK TO HOME
             </a>
         </div>
     </nav>
 
-    <header class="container mx-auto px-6 py-20 text-center relative">
-        <span class="font-en font-black text-sky-500/5 text-8xl md:text-[12rem] absolute left-1/2 -translate-x-1/2 top-0 select-none italic uppercase">REASON</span>
-        <h1 class="text-4xl md:text-6xl font-black italic tracking-tighter text-slate-900 relative z-10 uppercase">
-            下関トレーニングセンターが<br><span class="text-sky-500">選ばれる理由</span>
-        </h1>
+    <!-- ヘッダー（indexのヒーロー演出を継承） -->
+    <header class="relative pt-40 pb-20 overflow-hidden bg-white">
+        <div class="watermark" style="top: 15%; left: 50%; transform: translateX(-50%);">REASONS</div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h2 class="reveal active">
+                <span class="block text-navy text-3xl md:text-6xl font-black italic tracking-tighter leading-none mb-4 uppercase">下関トレーニングセンターが</span>
+                <span class="block text-accent text-6xl md:text-9xl font-black italic tracking-tighter leading-none uppercase">選ばれる理由</span>
+            </h2>
+            <div class="w-24 h-2 bg-accent mx-auto mt-12"></div>
+        </div>
     </header>
 
-    <main class="container mx-auto px-6 max-w-6xl space-y-32 mt-10">
+    <main class="container mx-auto px-6 max-w-6xl space-y-32">
         
        <!-- 01. 労働局登録セクション -->
 <section id="reason01" class="relative py-24 overflow-hidden">
