@@ -61,97 +61,87 @@
 
     <main class="container mx-auto px-6 max-w-6xl space-y-32">
         
-       <!-- 01. 労働局登録セクション -->
-<section id="reason01" class="relative py-24 overflow-hidden">
-    <!-- indexと同じ巨大な透かし文字 -->
-    <div class="absolute top-10 left-0 text-[15vw] font-black italic text-slate-100 uppercase pointer-events-none z-0 leading-none">
-        Official
-    </div>
+               <!-- 01. 労働局登録 (洗練・スッキリ調整版) -->
+        <section id="reason01" class="relative py-20 reveal active">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- 左側：説明文（文字サイズと改行を最適化） -->
+                <div class="space-y-6">
+                    <div class="flex items-baseline gap-4">
+                        <span class="text-7xl md:text-8xl font-black italic text-accent opacity-10 leading-none font-en">01</span>
+                        <div class="border-l-4 border-accent pl-6">
+                            <h2 class="text-3xl md:text-4xl font-black italic text-navy leading-tight uppercase">
+                                山口労働局長登録<br>教習機関
+                            </h2>
+                            <p class="text-accent font-[900] tracking-widest text-[10px] mt-1 italic uppercase">Certified Institution</p>
+                        </div>
+                    </div>
 
-    <div class="container mx-auto px-6 relative z-10">
-        <div class="grid lg:grid-cols-2 gap-16 items-start">
-            
-            <!-- 左側：説明文 -->
-            <div class="space-y-8">
-                <div class="flex items-baseline gap-4">
-                    <span class="text-7xl md:text-9xl font-black italic text-accent opacity-20 leading-none">01</span>
-                    <div class="border-l-8 border-accent pl-6">
-                        <h2 class="text-4xl md:text-5xl font-black italic text-navy leading-tight uppercase">
-                            山口労働局長登録<br>教習機関
-                        </h2>
-                        <p class="text-accent font-black tracking-widest text-sm mt-2 italic">CERTIFIED INSTITUTION</p>
+                    <div class="text-navy font-bold text-base md:text-lg leading-relaxed italic max-w-xl">
+                        下関トレーニングセンターは、厚生労働省・山口労働局から認可を受けた「公式」の登録教習機関です。<br class="hidden md:block">
+                        下関市唯一の認可機関として、最新の法令に基づいた安全かつ高品質な教習を徹底しています。<br><br>
+                        ここで取得した修了証は、**全国すべての現場・工場で一生涯有効**な公的資格となります。
+                    </div>
+
+                    <!-- 登録バッジ（シンプル化） -->
+                    <div class="inline-flex items-center gap-3 bg-navy text-white px-6 py-3 rounded-xl shadow-lg">
+                        <i class="fas fa-shield-alt text-accent text-xl"></i>
+                        <p class="text-sm font-black italic">山口労働局長登録教習機関 第68号</p>
                     </div>
                 </div>
 
-                <p class="text-navy font-bold text-lg md:text-xl leading-loose italic">
-                    下関トレーニングセンターは、厚生労働省・山口労働局から認可を受けた「公式」の登録教習機関です。<br>
-                    下関市唯一の認可機関として、最新の法令に基づいた安全かつ高品質な教習を徹底。ここで取得した資格は、**全国すべての現場で一生涯有効**な武器となります。
-                </p>
+                <!-- 右側：登録番号カード（改行と幅を微調整） -->
+                <div class="card-navy p-1 shadow-[0_40px_80px_rgba(0,0,0,0.2)]">
+                    <div class="bg-navy border border-white/10 rounded-[3.3rem] overflow-hidden">
+                        <div class="p-6 md:p-8 border-b border-white/10 bg-white/5">
+                            <h3 class="text-white text-xl font-black italic flex items-center gap-3">
+                                <i class="fas fa-list-check text-accent"></i> 登録技能講習一覧
+                            </h3>
+                        </div>
+                        
+                        <div class="divide-y divide-white/5">
+                            <!-- 玉掛け -->
+                            <div class="p-6 md:p-8 hover:bg-white/5 transition">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <span class="text-white text-lg font-black">玉掛け技能講習</span>
+                                    <div class="flex gap-6">
+                                        <div class="text-[9px] text-white/40 font-black uppercase">登録番号<br><span class="text-xs text-white italic">第165号</span></div>
+                                        <div class="text-[9px] text-white/40 font-black uppercase">有効期限<br><span class="text-xs text-accent italic">R12.4.7</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- クレーン -->
+                            <div class="p-6 md:p-8 hover:bg-white/5 transition">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <span class="text-white text-lg font-black">小型移動式クレーン運転</span>
+                                    <div class="flex gap-6">
+                                        <div class="text-[9px] text-white/40 font-black uppercase">登録番号<br><span class="text-xs text-white italic">第166号</span></div>
+                                        <div class="text-[9px] text-white/40 font-black uppercase">有効期限<br><span class="text-xs text-accent italic">R12.11.8</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- フォークリフト -->
+                            <div class="p-6 md:p-8 hover:bg-white/5 transition">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <span class="text-white text-lg font-black">フォークリフト運転</span>
+                                    <div class="flex gap-6">
+                                        <div class="text-[9px] text-white/40 font-black uppercase">登録番号<br><span class="text-xs text-white italic">第170号</span></div>
+                                        <div class="text-[9px] text-white/40 font-black uppercase">有効期限<br><span class="text-xs text-accent italic">R10.2.2</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                <!-- 信頼を裏付けるバッジ -->
-                <div class="inline-flex items-center gap-4 bg-navy text-white px-8 py-4 rounded-2xl shadow-xl">
-                    <i class="fas fa-shield-alt text-accent text-2xl"></i>
-                    <div>
-                        <p class="text-[10px] font-black text-accent tracking-widest leading-none mb-1">REGISTRATION NUMBER</p>
-                        <p class="text-lg font-black italic">山口労働局長登録 第68号</p>
+                        <div class="bg-white/5 p-4 text-[10px] text-white/30 font-bold italic text-center">
+                            労働安全衛生法に基づき適正に運用管理されています。
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- 右側：登録番号の「重厚な」カード -->
-            <div class="card-navy p-1 md:p-2 shadow-[0_50px_100px_rgba(0,0,0,0.3)]">
-                <div class="bg-navy border border-white/10 rounded-[2.8rem] overflow-hidden">
-                    <div class="p-8 md:p-10 border-b border-white/10">
-                        <h3 class="text-white text-2xl font-black italic flex items-center gap-3">
-                            <i class="fas fa-list-check text-accent"></i> 登録技能講習一覧
-                        </h3>
-                    </div>
-                    
-                    <!-- 登録番号リスト（資料に基づいた最新データ） -->
-                    <div class="p-0">
-                        <!-- 玉掛け -->
-                        <div class="p-8 border-b border-white/5 hover:bg-white/5 transition">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                <span class="text-white text-xl font-black">玉掛け技能講習</span>
-                                <div class="flex gap-4">
-                                    <div class="text-[10px] text-white/40 font-black">登録番号<br><span class="text-sm text-white italic">第165号</span></div>
-                                    <div class="text-[10px] text-white/40 font-black">有効期限<br><span class="text-sm text-accent italic">令和12年4月7日</span></div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- クレーン -->
-                        <div class="p-8 border-b border-white/5 hover:bg-white/5 transition">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                <span class="text-white text-xl font-black">小型移動式クレーン運転</span>
-                                <div class="flex gap-4">
-                                    <div class="text-[10px] text-white/40 font-black">登録番号<br><span class="text-sm text-white italic">第166号</span></div>
-                                    <div class="text-[10px] text-white/40 font-black">有効期限<br><span class="text-sm text-accent italic">令和12年11月8日</span></div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- フォークリフト -->
-                        <div class="p-8 hover:bg-white/5 transition">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                <span class="text-white text-xl font-black">フォークリフト運転</span>
-                                <div class="flex gap-4">
-                                    <div class="text-[10px] text-white/40 font-black">登録番号<br><span class="text-sm text-white italic">第170号</span></div>
-                                    <div class="text-[10px] text-white/40 font-black">有効期限<br><span class="text-sm text-accent italic">令和10年2月2日</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 注釈 -->
-                    <div class="bg-white/5 p-6 text-[11px] text-white/30 font-bold italic text-center">
-                        ※労働安全衛生法に基づき定期的に登録更新を行っております。
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+        </section>
+        
         <!-- 02. アクセス (id="reason02" を付与) -->
         <section id="reason02" class="feature-card grid md:grid-cols-2 scroll-mt-32">
             <div class="bg-slate-50 flex items-center justify-center p-8 order-2 md:order-1 border-r border-white/50">
