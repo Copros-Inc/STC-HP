@@ -275,27 +275,167 @@
 }
     </script>
 
-        <!-- 03. 指導陣 (id="reason03" を付与) -->
-        <section id="reason03" class="feature-card grid md:grid-cols-2 scroll-mt-32">
-            <div class="p-10 md:p-16 space-y-8">
-                <div class="flex items-center gap-6">
-                    <span class="text-8xl font-en font-black italic text-sky-500/10 leading-none">03</span>
-                    <h2 class="text-3xl md:text-4xl font-black italic text-slate-900 leading-tight">ベテラン職人による<br><span class="text-sky-600 underline">生きた実技指導</span></h2>
+                <!-- 03. ベテラン講師陣 (重厚カード形式・6名分) -->
+        <section id="reason03" class="relative py-24 reveal overflow-hidden">
+            <div class="watermark" style="top: 0; right: -5%; opacity: 0.03;">PROFESSIONAL</div>
+            
+            <div class="space-y-16 relative z-10">
+                <!-- セクションタイトル -->
+                <div class="flex items-baseline gap-4 mb-20">
+                    <span class="text-7xl md:text-8xl font-black italic text-accent opacity-10 leading-none font-en">03</span>
+                    <div class="border-l-4 border-accent pl-6">
+                        <h2 class="text-3xl md:text-4xl font-black italic text-navy leading-tight uppercase">
+                            ベテラン職人による<br>生きた実技指導
+                        </h2>
+                        <p class="text-accent font-[900] tracking-widest text-[10px] mt-1 italic uppercase text-left">Experienced Instructors</p>
+                    </div>
                 </div>
-                <div class="spec-label-jp italic">「現場で通用する」がモットー</div>
-                <p class="text-slate-600 font-bold italic leading-loose text-lg">
-                    講師陣は全員、建設や土木の第一線で活躍してきた現役バリバリの職人経験者です。教科書通りの教え方だけでなく、「現場ではここが危険」「こう動かせば効率が良い」といった、実務に即した具体的なアドバイスを行います。愛のある丁寧な指導で、未経験者も即戦力へと導きます。
+
+                <p class="text-navy font-bold text-lg md:text-xl leading-loose italic max-w-3xl mb-12">
+                    講師陣は全員、建設や土木の第一線で活躍してきた現役バリバリの職人経験者です。教科書通りの教え方だけでなく、「現場ではここが危険」「こう動かせば効率が良い」といった、実務に即した具体的なアドバイスを行います。
                 </p>
-                <div class="bg-slate-900 p-8 rounded-[2rem] text-white italic shadow-xl">
-                    <p class="text-sky-400 font-black mb-2 uppercase tracking-widest text-xs">Instructor Message</p>
-                    <p class="font-bold text-lg leading-relaxed">「ただ免許を取らせるだけではない。教え子の命を現場で守るのが、我々の使命です。」</p>
+
+                <!-- 職員カードグリッド (2カラム構成) -->
+                <div class="grid md:grid-cols-2 gap-8 mt-16">
+                    
+                    <!-- 1. 東丸 豊（実質トップ） -->
+                    <div class="card-navy p-8 border-l-8 border-accent">
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="w-32 h-40 bg-white/10 rounded-2xl overflow-hidden shrink-0 border border-white/20 italic flex items-center justify-center">
+                                <span class="text-white/20 text-[10px] font-black italic uppercase">Photo<br>Coming Soon</span>
+                                <!-- <img src="teacher-higashimaru.jpg" class="w-full h-full object-cover"> -->
+                            </div>
+                            <div class="flex-1 space-y-4">
+                                <div class="flex items-center gap-3 border-b border-white/20 pb-2">
+                                    <i class="fas fa-id-badge text-accent text-2xl"></i>
+                                    <h3 class="text-2xl font-black italic">東丸 豊 <span class="text-[10px] ml-2 font-normal opacity-60 uppercase font-en tracking-widest text-white">Yutaka Higashimaru</span></h3>
+                                </div>
+                                <div class="grid grid-cols-2 gap-y-2 text-[11px] font-bold italic">
+                                    <div class="text-white/40">血液型 / 出身地</div><div class="text-white">A型 / 下関市</div>
+                                    <div class="text-white/40">趣味</div><div class="text-white text-white">釣り・ゴルフ・ビール</div>
+                                    <div class="text-white/40">入社年</div><div class="text-white text-white">1998年入社</div>
+                                    <div class="text-white/40">得意な重機</div><div class="text-accent text-white text-white">フォークリフト・クレーン・玉掛け</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-white/10 italic">
+                            <p class="text-white/50 text-[9px] font-black uppercase mb-1">Instructor Message</p>
+                            <p class="text-sm font-bold text-white leading-relaxed">「現場で一番大切なのは安全確認の習慣化です。基本を徹底的に、かつ楽しく伝えられるよう心がけています！」</p>
+                        </div>
+                    </div>
+
+                    <!-- 2. 宮﨑 隆司（センター長） -->
+                    <div class="card-white p-8 border-l-8 border-navy">
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="w-32 h-40 bg-slate-100 rounded-2xl overflow-hidden shrink-0 border border-slate-200">
+                                <img src="teacher-miyazaki.jpg" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-4">
+                                <div class="flex items-center gap-3 border-b border-slate-100 pb-2 text-navy">
+                                    <i class="fas fa-crown text-accent text-2xl"></i>
+                                    <h3 class="text-2xl font-black italic">宮﨑 隆司 <span class="text-xs ml-2 font-normal text-slate-400 italic">センター長</span></h3>
+                                </div>
+                                <div class="grid grid-cols-2 gap-y-2 text-[11px] font-bold italic text-navy">
+                                    <div class="text-slate-400">血液型 / 出身地</div><div>O型 / 下関市</div>
+                                    <div class="text-slate-400">趣味</div><div>マラソン</div>
+                                    <div class="text-slate-400">入社年</div><div>2013年入社</div>
+                                    <div class="text-slate-400">保有資格</div><div class="text-accent">1級土木・建築施工管理技士 他</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 italic">
+                            <p class="text-slate-400 text-[9px] font-black uppercase mb-1">Instructor Message</p>
+                            <p class="text-sm font-bold text-navy leading-relaxed">「受講者の皆さまの立場に立った丁寧な指導を。一生の武器となる技術を共に磨きましょう。」</p>
+                        </div>
+                    </div>
+
+                    <!-- 3. 稲員 一也 -->
+                    <div class="card-white p-8 border-l-8 border-navy">
+                        <div class="flex flex-col md:flex-row gap-6">
+                            <div class="w-32 h-40 bg-slate-100 rounded-2xl overflow-hidden shrink-0 border border-slate-200">
+                                <img src="teacher-inakazu.jpg" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-4">
+                                <div class="flex items-center gap-3 border-b border-slate-100 pb-2 text-navy text-left text-left">
+                                    <i class="fas fa-id-badge text-navy/20 text-2xl text-left text-left"></i>
+                                    <h3 class="text-2xl font-black italic text-left text-left text-left">稲員 一也 <span class="text-xs ml-2 font-normal text-slate-400 italic text-left text-left text-left">Instructor</span></h3>
+                                </div>
+                                <div class="grid grid-cols-2 gap-y-2 text-[11px] font-bold italic text-navy text-left text-left text-left">
+                                    <div class="text-slate-400">血液型 / 出身地</div><div class="text-left">A型 / 下関市</div>
+                                    <div class="text-slate-400">入社年</div><div class="text-left text-left text-left">2015年入社</div>
+                                    <div class="text-slate-400">得意な重機</div><div class="text-accent text-left text-left text-left">フォークリフト</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 italic text-left text-left text-left text-left">
+                            <p class="text-sm font-bold text-navy leading-relaxed text-left">アットホームで気軽に教え合える雰囲気作りを重視しています。</p>
+                        </div>
+                    </div>
+
+                    <!-- 4. 末永 一美 -->
+                    <div class="card-white p-8 border-l-8 border-navy text-left text-left">
+                        <div class="flex flex-col md:flex-row gap-6 text-left text-left">
+                            <div class="w-32 h-40 bg-slate-100 rounded-2xl overflow-hidden shrink-0 border border-slate-200 text-left text-left">
+                                <img src="teacher-suenaga.jpg" class="w-full h-full object-cover text-left text-left">
+                            </div>
+                            <div class="flex-1 space-y-4 text-left text-left text-left">
+                                <div class="flex items-center gap-3 border-b border-slate-100 pb-2 text-navy text-left text-left text-left text-left">
+                                    <i class="fas fa-id-badge text-navy/20 text-2xl text-left text-left text-left"></i>
+                                    <h3 class="text-2xl font-black italic text-left text-left text-left text-left">末永 一美 <span class="text-xs ml-2 font-normal text-slate-400 italic text-left text-left text-left text-left">Instructor</span></h3>
+                                </div>
+                                <div class="grid grid-cols-2 gap-y-2 text-[11px] font-bold italic text-navy text-left text-left text-left text-left text-left text-left">
+                                    <div class="text-slate-400">血液型 / 出身地</div><div class="text-left text-left text-left">A型 / 下関市</div>
+                                    <div class="text-slate-400 text-left">入社年</div><div class="text-left text-left">1987年入社</div>
+                                    <div class="text-slate-400">得意な重機</div><div class="text-accent text-left text-left text-left text-left">クレーン</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-100 italic text-left text-left text-left text-left text-left text-left">
+                            <p class="text-sm font-bold text-navy leading-relaxed text-left text-left text-left text-left">分かりやすい説明を心がけております。現場に活きる技術を。</p>
+                        </div>
+                    </div>
+
+                    <!-- 5. 今冨 弘（新規追加用テンプレート） -->
+                    <div class="card-white p-8 border-l-8 border-navy text-left text-left">
+                        <div class="flex flex-col md:flex-row gap-6 text-left">
+                            <div class="w-32 h-40 bg-slate-50 rounded-2xl shrink-0 flex items-center justify-center border border-dashed border-slate-300 text-left">
+                                <i class="fas fa-user text-slate-200 text-4xl text-left"></i>
+                            </div>
+                            <div class="flex-1 space-y-4 text-left text-left">
+                                <div class="flex items-center gap-3 border-b border-slate-100 pb-2 text-navy text-left">
+                                    <i class="fas fa-id-badge text-navy/20 text-2xl text-left text-left"></i>
+                                    <h3 class="text-2xl font-black italic text-left">今冨 弘 <span class="text-xs ml-2 font-normal text-slate-400 italic text-left">Instructor</span></h3>
+                                </div>
+                                <div class="grid grid-cols-2 gap-y-2 text-[11px] font-bold italic text-navy text-left text-left">
+                                    <div class="text-slate-400 text-left">入社年</div><div class="text-left">（ここに西暦を入力）</div>
+                                    <div class="text-slate-400 text-left text-left">保有資格</div><div class="text-accent text-left text-left">（保有資格を入力）</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 6. 臨泉 和稔（新規追加用テンプレート） -->
+                    <div class="card-white p-8 border-l-8 border-navy text-left text-left text-left text-left">
+                        <div class="flex flex-col md:flex-row gap-6 text-left">
+                            <div class="w-32 h-40 bg-slate-50 rounded-2xl shrink-0 flex items-center justify-center border border-dashed border-slate-300 text-left text-left">
+                                <i class="fas fa-user text-slate-200 text-4xl text-left text-left"></i>
+                            </div>
+                            <div class="flex-1 space-y-4 text-left text-left text-left text-left">
+                                <div class="flex items-center gap-3 border-b border-slate-100 pb-2 text-navy text-left text-left">
+                                    <i class="fas fa-id-badge text-navy/20 text-2xl text-left text-left text-left text-left"></i>
+                                    <h3 class="text-2xl font-black italic text-left text-left">臨泉 和稔 <span class="text-xs ml-2 font-normal text-slate-400 italic text-left text-left text-left">Instructor</span></h3>
+                                </div>
+                                <div class="grid grid-cols-2 gap-y-2 text-[11px] font-bold italic text-navy text-left text-left text-left text-left text-left">
+                                    <div class="text-slate-400 text-left text-left text-left">入社年</div><div class="text-left text-left text-left text-left text-left">（ここに西暦を入力）</div>
+                                    <div class="text-slate-400 text-left text-left text-left text-left text-left text-left">保有資格</div><div class="text-accent text-left text-left text-left text-left text-left">（保有資格を入力）</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
-            <div class="bg-slate-50 flex items-center justify-center p-8 border-l border-white/50">
-                <img src="features-03.jpg" alt="ベテラン指導陣" class="rounded-[2rem] shadow-2xl w-full h-full object-cover">
             </div>
         </section>
-
     </main>
 
     <footer class="py-24 text-center">
