@@ -181,12 +181,12 @@
                     <!-- 2. 詳細会場案内図（タブのデザインを改善） -->
                     <div class="card-white p-2 shadow-xl border border-slate-100 overflow-hidden">
                         <div class="bg-slate-50 rounded-[2.8rem] overflow-hidden">
-                            <!-- 改良版タブボタン：選択中がハッキリわかるデザイン -->
-                            <div class="flex text-[11px] md:text-xs font-black italic border-b border-slate-200 bg-slate-100">
-                                <button onclick="showMap(1)" id="tab1" class="flex-1 py-4 bg-navy text-white transition-all duration-300">全・学科会場</button>
-                                <button onclick="showMap(2)" id="tab2" class="flex-1 py-4 text-navy/30 hover:bg-slate-200 transition-all duration-300">クレーン・フォーク</button>
-                                <button onclick="showMap(3)" id="tab3" class="flex-1 py-4 text-navy/30 hover:bg-slate-200 transition-all duration-300">玉掛実地</button>
-                            </div>
+                            <!-- 改良版タブボタン：非選択時の視認性を向上 -->
+<div class="flex text-[11px] md:text-xs font-[900] italic border-b border-slate-200 bg-slate-100">
+    <button onclick="showMap(1)" id="tab1" class="flex-1 py-4 bg-navy text-white transition-all duration-300">全・学科会場</button>
+    <button onclick="showMap(2)" id="tab2" class="flex-1 py-4 text-navy/60 hover:bg-slate-200 transition-all duration-300">クレーン・フォーク</button>
+    <button onclick="showMap(3)" id="tab3" class="flex-1 py-4 text-navy/60 hover:bg-slate-200 transition-all duration-300">玉掛実地</button>
+</div>
                             <!-- 画像表示エリア -->
                             <div class="p-4 bg-white aspect-[3/4] md:aspect-video relative overflow-hidden group">
                                 <img id="mapImage" src="map-all.jpg" class="w-full h-full object-contain cursor-zoom-in transition-transform duration-500 hover:scale-105" alt="会場案内図">
@@ -254,25 +254,25 @@
 
     <!-- 案内図切り替えスクリプト (機能改善版) -->
     <script>
-        function showMap(num) {
-            const img = document.getElementById('mapImage');
-            const tabs = [document.getElementById('tab1'), document.getElementById('tab2'), document.getElementById('tab3')];
-            const maps = ['map-all.jpg', 'map-crane-fork.jpg', 'map-tamakake.jpg'];
-            
-            img.src = maps[num-1];
-            
-            tabs.forEach((tab, index) => {
-                if (index === num - 1) {
-                    // 選択中：濃紺背景 + 白文字
-                    tab.classList.add('bg-navy', 'text-white');
-                    tab.classList.remove('text-navy/30', 'bg-slate-100');
-                } else {
-                    // 非選択：薄い背景 + 透かし文字
-                    tab.classList.remove('bg-navy', 'text-white');
-                    tab.classList.add('text-navy/30', 'bg-slate-100');
-                }
-            });
+       function showMap(num) {
+    const img = document.getElementById('mapImage');
+    const tabs = [document.getElementById('tab1'), document.getElementById('tab2'), document.getElementById('tab3')];
+    const maps = ['map-all.jpg', 'map-crane-fork.jpg', 'map-tamakake.jpg'];
+    
+    img.src = maps[num-1];
+    
+    tabs.forEach((tab, index) => {
+        if (index === num - 1) {
+            // 【選択中】濃紺背景 ＋ 白文字
+            tab.classList.add('bg-navy', 'text-white');
+            tab.classList.remove('text-navy/60', 'bg-slate-100');
+        } else {
+            // 【非選択】しっかり読める濃いめのネイビーグレー
+            tab.classList.remove('bg-navy', 'text-white');
+            tab.classList.add('text-navy/60', 'bg-slate-100');
         }
+    });
+}
     </script>
 
         <!-- 03. 指導陣 (id="reason03" を付与) -->
