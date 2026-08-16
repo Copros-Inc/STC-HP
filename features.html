@@ -165,32 +165,122 @@
             </div>
         </section>
         
-        <!-- 02. アクセス (id="reason02" を付与) -->
-        <section id="reason02" class="feature-card grid md:grid-cols-2 scroll-mt-32">
-            <div class="bg-slate-50 flex items-center justify-center p-8 order-2 md:order-1 border-r border-white/50">
-                <div class="rounded-[2rem] overflow-hidden shadow-2xl w-full h-full min-h-[400px]">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3299.782068478495!2d131.0264004!3d34.010999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3543971e98d98d9d%3A0x7d8a6e8b8e8b8e8b!2z5LiL6Zai44OI44Os44O844OL44Oz44Kw44K744Oz44K_44O8!5e0!3m2!1sja!2sjp!4v1719999999999" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                </div>
-            </div>
-            <div class="p-10 md:p-16 space-y-8 order-1 md:order-2">
-                <div class="flex items-center gap-6">
-                    <span class="text-8xl font-en font-black italic text-sky-500/10 leading-none">02</span>
-                    <h2 class="text-3xl md:text-4xl font-black italic text-slate-900 leading-tight">国道2号線から<br><span class="text-sky-600 underline">アクセス抜群</span></h2>
-                </div>
-                <div class="spec-label-jp italic">車での来園が非常にスムーズ</div>
-                <p class="text-slate-600 font-bold italic leading-loose text-lg">
-                    下関市の主要幹線道路である国道2号線（小月バイパス）に隣接。下関市内はもちろん、山陽小野田市、宇部市、さらには北九州方面からも迷わずにお越しいただけます。広大な敷地内に大型駐車場を完備しており、自家用車だけでなく社用車でのご来園も大歓迎です。
-                </p>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-4 text-slate-500 italic font-black text-sm">
-                        <i class="fas fa-car text-sky-500"></i> 小月ICから車で約10分
+                <!-- 02. アクセス抜群 (案内図3枚統合 & 重厚ナビゲーション) -->
+        <section id="reason02" class="relative py-24 reveal overflow-hidden">
+            <div class="watermark" style="top: 10%; left: -5%; opacity: 0.03;">NAVIGATION</div>
+            
+            <div class="grid lg:grid-cols-2 gap-16 items-start relative z-10">
+                
+                <!-- 左側：視覚的ナビゲーション（Googleマップ & 案内図切り替え） -->
+                <div class="space-y-8 order-2 lg:order-1">
+                    <!-- 1. Googleマップ（正確なピン位置） -->
+                    <div class="w-full h-80 rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white relative group">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3299.8398436669925!2d130.97947327646453!3d34.00625427317377!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x354399fccbeabf81%3A0x40566497cb1e911a!2z5LiL6Zai44OI44Os44O844OL44Oz44Kw44K744Oz44K_44O8!5e0!3m2!1sja!2sjp!4v1723393000000!5m2!1sja!2sjp" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        <div class="absolute top-4 left-6 bg-navy text-white px-5 py-2 rounded-full text-[9px] font-black italic border border-white/20 shadow-xl">
+                            <i class="fas fa-location-dot text-accent mr-2"></i> 学科会場：(株)コプロス 購買課内
+                        </div>
                     </div>
-                    <div class="flex items-center gap-4 text-slate-500 italic font-black text-sm">
-                        <i class="fas fa-bus text-sky-500"></i> 小月駅より送迎バス運行（要予約）
+
+                    <!-- 2. 詳細会場案内図（タブ切り替え形式） -->
+                    <div class="card-white p-2 shadow-xl border border-slate-100">
+                        <div class="bg-slate-50 rounded-[2.5rem] overflow-hidden">
+                            <!-- タブボタン -->
+                            <div class="grid grid-cols-3 text-[10px] md:text-xs font-black italic text-center border-b border-slate-200">
+                                <button onclick="showMap(1)" id="tab1" class="py-4 bg-navy text-white transition-all">全・学科会場</button>
+                                <button onclick="showMap(2)" id="tab2" class="py-4 text-navy/40 hover:bg-slate-100 transition-all">クレーン・フォーク</button>
+                                <button onclick="showMap(3)" id="tab3" class="py-4 text-navy/40 hover:bg-slate-100 transition-all">玉掛実地</button>
+                            </div>
+                            <!-- 画像表示エリア -->
+                            <div class="p-4 bg-white aspect-[3/4] md:aspect-video relative overflow-hidden group">
+                                <img id="mapImage" src="map-all.jpg" class="w-full h-full object-contain cursor-zoom-in transition-transform duration-500 hover:scale-105" alt="会場案内図">
+                                <div class="absolute bottom-4 right-4 bg-navy/80 text-white text-[9px] px-3 py-1 rounded-full font-black italic backdrop-blur">
+                                    <i class="fas fa-search-plus mr-1"></i> タップで拡大
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                <!-- 右側：テキスト解説 -->
+                <div class="space-y-10 order-1 lg:order-2">
+                    <div class="flex items-baseline gap-4">
+                        <span class="text-7xl md:text-8xl font-black italic text-accent opacity-10 leading-none font-en">02</span>
+                        <div class="border-l-4 border-accent pl-6">
+                            <h2 class="text-3xl md:text-4xl font-black italic text-navy leading-tight uppercase">
+                                国道2号線から<br>アクセス抜群
+                            </h2>
+                            <p class="text-accent font-[900] tracking-widest text-[10px] mt-1 italic uppercase">Strategic Location</p>
+                        </div>
+                    </div>
+
+                    <div class="text-navy font-bold text-base md:text-lg leading-loose italic border-b-2 border-slate-100 pb-8">
+                        下関市の主要バイパス「国道2号線」に隣接。<br class="hidden md:block">
+                        下関市内はもちろん、北九州・山陽小野田方面からも<br class="hidden md:block">
+                        迷わずアクセスできる、現場のプロに適した立地です。
+                    </div>
+
+                    <!-- 駐車場と道順の案内（文言修正版） -->
+                    <div class="space-y-6">
+                        <div class="flex gap-5">
+                            <div class="w-12 h-12 bg-navy rounded-2xl flex items-center justify-center text-accent shrink-0 shadow-lg">
+                                <i class="fas fa-parking text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-navy font-[900] italic text-lg leading-none mb-2">カラーコーン枠内へ駐車を</p>
+                                <p class="text-slate-500 text-sm font-bold leading-relaxed">
+                                    敷地内には十分な駐車スペースを確保しています。<br>
+                                    指定のカラーコーン枠内に駐車の上、学科会場（購買課）まで<br>
+                                    徒歩約4分ほど余裕を持ってお越しください。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-5">
+                            <div class="w-12 h-12 bg-navy rounded-2xl flex items-center justify-center text-accent shrink-0 shadow-lg">
+                                <i class="fas fa-signs-post text-xl"></i>
+                            </div>
+                            <div>
+                                <p class="text-navy font-[900] italic text-lg leading-none mb-2">初めての方も安心のナビ誘導</p>
+                                <p class="text-slate-500 text-sm font-bold leading-relaxed">
+                                    長府印内・関門トンネル・新下関の各方面からの<br>
+                                    詳細なルート図をご用意。坂道や曲がり角の目印も<br>
+                                    写真付きで解説しています。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 補足：Googleマップで開くボタン -->
+                    <a href="https://maps.app.goo.gl/..." target="_blank" class="inline-flex items-center gap-4 bg-slate-100 text-navy px-8 py-4 rounded-2xl font-black italic hover:bg-navy hover:text-white transition-all group">
+                        Googleマップでルート確認 
+                        <i class="fas fa-external-link-alt text-xs group-hover:translate-x-1 transition"></i>
+                    </a>
                 </div>
             </div>
         </section>
+
+    <!-- 案内図切り替え用スクリプト (footerの手前などに入れてください) -->
+    <script>
+        function showMap(num) {
+            const img = document.getElementById('mapImage');
+            const tabs = [document.getElementById('tab1'), document.getElementById('tab2'), document.getElementById('tab3')];
+            
+            // 画像の切り替え (ファイル名は適宜合わせてください)
+            const maps = ['map-all.jpg', 'map-crane-fork.jpg', 'map-tamakake.jpg'];
+            img.src = maps[num-1];
+            
+            // ボタンのスタイル切り替え
+            tabs.forEach((tab, index) => {
+                if (index === num - 1) {
+                    tab.classList.add('bg-navy', 'text-white');
+                    tab.classList.remove('text-navy/40');
+                } else {
+                    tab.classList.remove('bg-navy', 'text-white');
+                    tab.classList.add('text-navy/40');
+                }
+            });
+        }
+    </script>
 
         <!-- 03. 指導陣 (id="reason03" を付与) -->
         <section id="reason03" class="feature-card grid md:grid-cols-2 scroll-mt-32">
