@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+  pull_request:  # ← これを追加することで下書き時も動くようになります
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -12,5 +13,5 @@ jobs:
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COPROS_INC_STC }}'
-          channelId: live
           projectId: stc-hp
+          # channelId を指定しないことで、PRの時はプレビュー、mainの時は本番へ自動で出し分けられます
