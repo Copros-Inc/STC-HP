@@ -495,7 +495,7 @@
             tableHtml += `<tr class="border-b-2 border-slate-100 hover:bg-sky-50 transition-colors text-left"><td class="p-10 text-[#001a33] font-[900] text-2xl leading-tight text-left">${item.name}</td><td class="p-10 text-slate-500 font-[900] text-xl italic text-left">${item.date}</td><td class="p-10 text-center text-left">${statusLabel}</td><td class="p-10 text-left">${actionBtn}</td></tr>`;
         });
 
-        container.innerHTML = mobileHtml + '</div>' + tableHtml + '</tbody></table>';
+        container.innerHTML = mobileHtml + '</div></div>' + tableHtml + '</tbody></table>';
     }
 
     window.renderGantt = function(month) {
