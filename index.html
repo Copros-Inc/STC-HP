@@ -476,18 +476,16 @@
                 </div>`;
             
             // スマホ用HTML生成
-// スマホ用HTML生成
-html += `
-    <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-slate-100 text-left">
-        <!-- 日付をハッキリと表示 -->
-        <div class="flex items-center gap-2 mb-2">
-            <span class="bg-accent text-white text-[10px] font-black px-2 py-0.5 rounded italic">DATE</span>
-            <div class="text-navy font-black text-base italic leading-none">${item.date}</div>
-        </div>
-        <h4 class="text-xl font-[900] text-[#001a33] mb-4 leading-tight border-l-4 border-accent pl-3">${item.name}</h4>
-        <div class="mb-6 flex justify-start">${statusLabel}</div>
-        ${actionBtn}
-    </div>`;
+            html += `
+                <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-slate-100 text-left">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="bg-accent text-white text-[10px] font-black px-2 py-0.5 rounded italic">DATE</span>
+                        <div class="text-navy font-black text-base italic leading-none">${item.date}</div>
+                    </div>
+                    <h4 class="text-xl font-[900] text-[#001a33] mb-4 leading-tight border-l-4 border-accent pl-3">${item.name}</h4>
+                    <div class="mb-6 flex justify-start">${statusLabel}</div>
+                    ${actionBtn}
+                </div>`;
             
             // PC用HTML生成 (text-3xlからtext-2xlへ、スマホサイズに負けないよう調整)
             tableHtml += `<tr class="border-b-2 border-slate-100 hover:bg-sky-50 transition-colors text-left"><td class="p-10 text-[#001a33] font-[900] text-2xl leading-tight text-left">${item.name}</td><td class="p-10 text-slate-500 font-[900] text-xl italic text-left">${item.date}</td><td class="p-10 text-center text-left">${statusLabel}</td><td class="p-10 text-left">${actionBtn}</td></tr>`;
