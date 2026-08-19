@@ -453,18 +453,22 @@
         const container = document.getElementById('calendar-container');
         document.getElementById('current-month-display').innerText = `${month}月`;
         
+        const monthSchedules = schedules.filter(s => s.month === month);
+        if (monthSchedules.length === 0) { 
+            container.innerHTML = '<p class="p-20 text-slate-400 italic text-center font-[900] text-lg">現在、講習予定はございません。</p>'; 
+            return; 
+        }
+
         // スマホ用カード表示の準備
-        let html = '<div class="md:hidden space-y-4 p-4">'; 
+        let mobileHtml = '<div class="md:hidden space-y-4 p-4">'; 
         // PC用テーブル表示の準備
         let tableHtml = '<table class="w-full text-left border-collapse hidden md:table"><thead><tr class="bg-slate-800 text-white font-[900] text-xl border-b-4 border-navy"><th class="p-10 text-left">講習名称</th><th class="p-10 text-left">開催日程</th><th class="p-10 text-center">状況</th><th class="p-10 text-left">申込</th></tr></thead><tbody class="font-bold text-navy">';
-        
-        const monthSchedules = schedules.filter(s => s.month === month);
-        if (monthSchedules.length === 0) { container.innerHTML = '<p class="p-20 text-slate-400 italic text-center font-[900] text-lg">現在、講習予定はございません。</p>'; return; }
 
         monthSchedules.forEach(item => {
             const avail = item.capacity - (item.fullApplied + item.reserved);
             const statusLabel = avail <= 0 ? '<span class="bg-slate-200 text-slate-500 px-6 py-2 rounded-full text-sm">満員御礼</span>' : `<span class="bg-sky-100 text-[#001a33] px-6 py-2 rounded-full text-base font-black border border-sky-200 shadow-sm text-center">残り ${avail} 席</span>`;
-            // 9/1までWeb申込を停止するボタンデザイン
+            
+            // 9/1までWeb申込を停止するボタンデザイン（完全復活）
             let actionBtn = `
                 <div class="flex flex-col gap-3">
                     <div class="bg-slate-100 text-slate-400 px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-slate-200 cursor-not-allowed">
@@ -475,8 +479,8 @@
                     </p>
                 </div>`;
             
-            // スマホ用HTML生成
-            html += `
+            // スマホ用HTML（日付を一番上に表示）
+            mobileHtml += `
                 <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-slate-100 text-left">
                     <div class="flex items-center gap-2 mb-2">
                         <span class="bg-accent text-white text-[10px] font-black px-2 py-0.5 rounded italic">DATE</span>
@@ -487,10 +491,11 @@
                     ${actionBtn}
                 </div>`;
             
-            // PC用HTML生成 (text-3xlからtext-2xlへ、スマホサイズに負けないよう調整)
+            // PC用HTML
             tableHtml += `<tr class="border-b-2 border-slate-100 hover:bg-sky-50 transition-colors text-left"><td class="p-10 text-[#001a33] font-[900] text-2xl leading-tight text-left">${item.name}</td><td class="p-10 text-slate-500 font-[900] text-xl italic text-left">${item.date}</td><td class="p-10 text-center text-left">${statusLabel}</td><td class="p-10 text-left">${actionBtn}</td></tr>`;
         });
-        container.innerHTML = html + '</div>' + tableHtml + '</tbody></table>';
+
+        container.innerHTML = mobileHtml + '</div>' + tableHtml + '</tbody></table>';
     }
 
     window.renderGantt = function(month) {
