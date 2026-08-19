@@ -459,16 +459,15 @@
             return; 
         }
 
-        // スマホ用カード表示の準備
+        // スマホ用カード表示（PCでは隠す）
         let mobileHtml = '<div class="md:hidden space-y-4 p-4">'; 
-        // PC用テーブル表示の準備
+        // PC用テーブル表示（スマホでは隠す）
         let tableHtml = '<table class="w-full text-left border-collapse hidden md:table"><thead><tr class="bg-slate-800 text-white font-[900] text-xl border-b-4 border-navy"><th class="p-10 text-left">講習名称</th><th class="p-10 text-left">開催日程</th><th class="p-10 text-center">状況</th><th class="p-10 text-left">申込</th></tr></thead><tbody class="font-bold text-navy">';
 
         monthSchedules.forEach(item => {
             const avail = item.capacity - (item.fullApplied + item.reserved);
             const statusLabel = avail <= 0 ? '<span class="bg-slate-200 text-slate-500 px-6 py-2 rounded-full text-sm">満員御礼</span>' : `<span class="bg-sky-100 text-[#001a33] px-6 py-2 rounded-full text-base font-black border border-sky-200 shadow-sm text-center">残り ${avail} 席</span>`;
             
-            // 9/1までWeb申込を停止するボタンデザイン（完全復活）
             let actionBtn = `
                 <div class="flex flex-col gap-3">
                     <div class="bg-slate-100 text-slate-400 px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-slate-200 cursor-not-allowed">
@@ -479,25 +478,23 @@
                     </p>
                 </div>`;
             
-            // スマホ用HTML（日付を一番上に表示）
+            // スマホ用カード：講習名称の下に日程を表示
             mobileHtml += `
                 <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-slate-100 text-left">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="bg-accent text-white text-[10px] font-black px-2 py-0.5 rounded italic">DATE</span>
+                    <h4 class="text-xl font-[900] text-[#001a33] mb-2 leading-tight border-l-4 border-accent pl-3">${item.name}</h4>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="bg-accent text-white text-[10px] font-black px-2 py-0.5 rounded italic">開催日程</span>
                         <div class="text-navy font-black text-base italic leading-none">${item.date}</div>
                     </div>
-                    <h4 class="text-xl font-[900] text-[#001a33] mb-4 leading-tight border-l-4 border-accent pl-3">${item.name}</h4>
                     <div class="mb-6 flex justify-start">${statusLabel}</div>
                     ${actionBtn}
                 </div>`;
             
-            // PC用HTML
             tableHtml += `<tr class="border-b-2 border-slate-100 hover:bg-sky-50 transition-colors text-left"><td class="p-10 text-[#001a33] font-[900] text-2xl leading-tight text-left">${item.name}</td><td class="p-10 text-slate-500 font-[900] text-xl italic text-left">${item.date}</td><td class="p-10 text-center text-left">${statusLabel}</td><td class="p-10 text-left">${actionBtn}</td></tr>`;
         });
 
-        container.innerHTML = mobileHtml + '</div></div>' + tableHtml + '</tbody></table>';
+        container.innerHTML = mobileHtml + '</div>' + tableHtml + '</tbody></table>';
     }
-
     window.renderGantt = function(month) {
         const ganttData = document.getElementById('gantt-data');
         if (!ganttData) return;
