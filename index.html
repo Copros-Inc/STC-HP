@@ -478,14 +478,16 @@
                     </p>
                 </div>`;
             
-            // スマホ用カード：講習名称の下に日程を表示
             mobileHtml += `
                 <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-slate-100 text-left">
                     <h4 class="text-xl font-[900] text-[#001a33] mb-2 leading-tight border-l-4 border-accent pl-3">${item.name}</h4>
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="bg-accent text-white text-[10px] font-black px-2 py-0.5 rounded italic">開催日程</span>
-                        <div class="text-navy font-black text-base italic leading-none">${item.date}</div>
+                    
+                    <!-- ここが日程表示エリア：絶対に出るように構造を簡素化 -->
+                    <div style="display:block !important; margin-bottom: 15px;">
+                        <span style="background:#00a2ff; color:white; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:900; margin-right:5px;">開催日程★</span>
+                        <span style="color:#001a33; font-weight:900; font-size:16px;">${item.date}</span>
                     </div>
+
                     <div class="mb-6 flex justify-start">${statusLabel}</div>
                     ${actionBtn}
                 </div>`;
