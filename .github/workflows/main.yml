@@ -14,15 +14,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      # ここを追加：Node.jsのバージョンを固定してエラーを防ぐ
+      # Node.jsのセットアップ（念のため維持）
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # 【修正】ビルドせず、そのままデプロイする設定に変更
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COPROS_INC_STC }}'
           projectId: stc-hp
+          channelId: live
