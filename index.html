@@ -456,8 +456,9 @@
         const container = document.getElementById('calendar-container');
         // --- 修正：年号の自動判定（4月〜12月は2026、1月〜3月は2027） ---
         const displayYear = (month >= 4) ? 2026 : 2027;
-        document.getElementById('current-month-display').innerText = `${displayYear}年 ${month}月`;
-        
+        document.getElementById('current-month-display').style.whiteSpace = 'nowrap';
+        document.getElementById('current-month-display').innerText = `${displayYear}年${month}月`;
+
         const monthSchedules = schedules.filter(s => s.month === month);
         if (monthSchedules.length === 0) { 
             container.innerHTML = '<p class="p-20 text-slate-400 italic text-center font-[900] text-lg">現在、講習予定はございません。</p>'; 
