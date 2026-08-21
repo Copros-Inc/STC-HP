@@ -605,6 +605,19 @@
             section.style.transition = '1s ease-out';
             observer.observe(section);
         });
+
+            // --- ヘッダーのスクロール演出（ここから追加） ---
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('sub-nav'); // 先ほどの名前に合わせます
+        if (window.pageYOffset > 50) {
+            nav.classList.add('py-2', 'shadow-2xl');
+            nav.classList.remove('py-4', 'shadow-xl');
+        } else {
+            nav.classList.add('py-4', 'shadow-xl');
+            nav.classList.remove('py-2', 'shadow-2xl');
+        }
+    });
+    
     </script>
 </body>
 </html>
