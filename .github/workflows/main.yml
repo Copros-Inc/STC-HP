@@ -3,28 +3,23 @@ on:
   push:
     branches:
       - main
-  pull_request:
+  # pull_request を一時的に削除（プレビュー作成を止めるため）
 permissions:
   checks: write
   contents: read
-  pull-requests: write
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      # Node.jsのセットアップ（念のため維持）
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      # 【修正】ビルドせず、そのままデプロイする設定に変更
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COPROS_INC_STC }}'
           projectId: stc-hp
-          channelId: live
+          channelId: live # 本番へ直接反映
