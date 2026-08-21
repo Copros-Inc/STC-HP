@@ -54,12 +54,31 @@
             .copy-outline { -webkit-text-stroke: 1px white; }
             p { font-size: 1.1rem !important; line-height: 1.7 !important; }
         }
+        /* --- 修正箇所：ヘッダーの初期化とコンテンツ被り防止 --- */
+#sub-nav {
+    background-color: transparent !important; /* 最初は強制透明 */
+    box-shadow: none !important;
+    transition: all 0.4s ease;
+}
+
+/* スクロール後に適用されるクラス */
+.header-scrolled {
+    background-color: #001a33 !important; /* 濃紺 */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+
+/* コンテンツ消失対策：HEROセクションの中身を押し下げる */
+.hero-active .relative.z-10 {
+    margin-top: 100px; /* ヘッダーの高さ分確保 */
+}
     </style>
 </head>
 <body>
 
-    <!-- 0. SUBPAGE HEADER (背景濃紺固定・主要コース強調版) -->
-    <header class="fixed top-0 w-full z-50 py-4 bg-[#001a33] shadow-xl" id="sub-nav">
+    <!-- 0. SUBPAGE HEADER (主要コース強調版) -->
+    <header class="fixed top-0 w-full z-50 py-4 transition-all duration-300" id="sub-nav">
         <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-8 gap-4">
             <a href="index.html" class="flex items-center gap-3 group shrink-0">
                 <div class="bg-white p-1 rounded shadow-lg group-hover:scale-105 transition-transform">
@@ -655,19 +674,21 @@
             
     window.changeMonth = (diff) => { currentMonth += diff; if (currentMonth > 12) { currentMonth = 1; currentYear++; } if (currentMonth < 1) { currentMonth = 12; currentYear--; } renderCalendar(currentMonth); renderGantt(currentMonth); };
     
-    window.addEventListener('scroll', () => {
-        const nav = document.getElementById('main-nav');
-        if (window.pageYOffset > 50) {
-            nav.style.backgroundColor = "rgba(0, 26, 51, 0.98)";
-            nav.classList.remove('py-4', 'md:py-6');
-            nav.classList.add('py-2', 'md:py-3');
-        } else {
-            nav.style.backgroundColor = "transparent";
-            nav.classList.add('py-4', 'md:py-6');
-            nav.classList.remove('py-2', 'md:py-3');
+   window.addEventListener('scroll', () => {
+    const nav = document.getElementById('sub-nav'); // sub-nav に修正
+    if (window.pageYOffset > 50) {
+        nav.classList.add('header-scrolled');
+    } else {
+        nav.classList.remove('header-scrolled');
+    }
+    
+    // スクロール時のふわっと出すアニメーションは維持
+    document.querySelectorAll('.reveal').forEach(el => { 
+        if (el.getBoundingClientRect().top < window.innerHeight - 50) {
+            el.classList.add('active'); 
         }
-        document.querySelectorAll('.reveal').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); });
     });
+});
     </script>
 </body>
 </html>
