@@ -30,11 +30,44 @@
 </head>
 <body class="bg-dot pb-20">
 
-    <nav class="p-8">
-        <a href="index.html#courses" class="inline-flex items-center text-slate-400 hover:text-navy transition font-black italic text-xs tracking-widest group">
-            <i class="fas fa-arrow-left mr-3 group-hover:-translate-x-2 transition-transform"></i> 講習一覧へ戻る
-        </a>
-    </nav>
+    <!-- 0. SUBPAGE HEADER (背景濃紺固定・主要コース強調版) -->
+    <header class="fixed top-0 w-full z-50 py-4 bg-[#001a33] shadow-xl" id="sub-nav">
+        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-8 gap-4">
+            <a href="index.html" class="flex items-center gap-3 group shrink-0">
+                <div class="bg-white p-1 rounded shadow-lg group-hover:scale-105 transition-transform">
+                    <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
+                </div>
+                <div class="text-left text-white leading-none whitespace-nowrap">
+                    <h1 class="font-[900] text-xs md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
+                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.2em]">Shimonoseki Training Center</p>
+                </div>
+            </a>
+            <!-- PC用メニュー：並び順整理済 -->
+            <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase whitespace-nowrap">
+                <a href="index.html#service" class="hover:text-[#00a2ff] transition">事業内容</a>
+                <a href="index.html#courses" class="text-[#00a2ff] border-b-2 border-[#00a2ff]">主要コース</a>
+                <a href="features.html" class="hover:text-[#00a2ff] transition">選ばれる理由</a>
+                <a href="index.html#schedule-section" class="hover:text-[#00a2ff] transition">開催予定</a>
+                <a href="points.html" class="hover:text-[#00a2ff] transition">受講ガイド</a>
+                <a href="index.html#access" class="hover:text-[#00a2ff] transition">Access</a>
+                <a href="blog.html" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">ブログ</a>
+                <a href="mailto:info@shimonoseki-tc.com" class="text-[#00a2ff] border border-[#00a2ff]/60 hover:bg-[#00a2ff] hover:text-white transition px-3 py-1 rounded flex items-center gap-2 shadow-sm">
+                    <i class="fas fa-envelope text-[10px]"></i>メール
+                </a>
+            </nav>
+            <div class="flex items-center gap-2 shrink-0">
+                <a href="tel:0832460556" class="bg-[#00a2ff] text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all flex items-center justify-center gap-2">
+                    <i class="fas fa-phone-alt text-xs"></i>
+                    <span class="hidden sm:inline text-xs font-black italic">お問合せ</span>
+                </a>
+                <div class="lg:hidden flex gap-1.5">
+                    <a href="index.html#schedule-section" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10"><i class="fas fa-calendar-alt block text-sm mb-0.5"></i>日程</a>
+                    <a href="mailto:info@shimonoseki-tc.com" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10"><i class="fas fa-envelope block text-sm mb-0.5"></i>メール</a>
+                    <a href="blog.html" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10"><i class="fas fa-edit block text-sm mb-0.5"></i>ブログ</a>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <main class="container mx-auto px-6 max-w-7xl mt-4">
         <!-- レイアウト：PCで2カラム、スマホで1カラムにしっかり分ける -->
@@ -135,6 +168,30 @@
         </div>
     </main>
 
+        <!--フッター前のダメ押し誘導 -->
+    <section class="py-32 bg-slate-100 relative overflow-hidden">
+        <div class="absolute -top-10 -right-20 text-[20rem] font-[900] text-slate-200/60 italic pointer-events-none z-0 tracking-tighter">MAIL</div>
+        <div class="container mx-auto px-6 max-w-6xl relative z-10">
+            <div class="bg-white rounded-[4rem] p-12 md:p-24 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-12 border border-slate-200">
+                <div class="text-left md:w-2/3">
+                    <h3 class="text-[#001a33] text-4xl md:text-6xl font-[900] italic mb-8 leading-[1.1] tracking-tighter" style="word-break: keep-all;">
+                        受講に関する、<br><span class="text-[#00a2ff]">お悩みをご相談ください。</span>
+                    </h3>
+                    <p class="text-slate-600 font-bold text-lg md:text-xl leading-loose">
+                        「どのコースを受ければいい？」「助成金は使える？」など、<br class="hidden md:block">
+                        専門スタッフがメールでも丁寧にお答えいたします。
+                    </p>
+                </div>
+                <div class="md:w-1/3 w-full">
+                    <a href="mailto:info@shimonoseki-tc.com" class="group bg-[#001a33] text-white w-full py-10 rounded-[2.5rem] font-[900] text-2xl italic flex items-center justify-center gap-4 hover:bg-[#00a2ff] transition-all duration-500 shadow-[0_30px_60px_rgba(0,26,51,0.2)]">
+                        <i class="fas fa-envelope text-4xl group-hover:rotate-12 transition"></i>
+                        メールで送る
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <footer class="py-10 text-center opacity-20 font-black italic text-[10px] tracking-[0.6em] uppercase">
         SHIMONOSEKI TRAINING CENTER
     </footer>
@@ -210,6 +267,19 @@
             });
             document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
         }
+
+        // ヘッダーのスクロール演出
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('sub-nav');
+        if (window.pageYOffset > 50) {
+            nav.classList.add('py-2', 'shadow-2xl');
+            nav.classList.remove('py-4', 'shadow-xl');
+        } else {
+            nav.classList.add('py-4', 'shadow-xl');
+            nav.classList.remove('py-2', 'shadow-2xl');
+        }
+    });
+        
     </script>
 </body>
 </html>
