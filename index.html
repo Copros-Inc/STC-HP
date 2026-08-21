@@ -402,27 +402,27 @@
         </div>
     </section>
 
-    <!-- 7.8 CONTACT SECTION (デザイン微調整版) -->
-    <section class="py-24 bg-slate-100 relative overflow-hidden">
-        <!-- 背景の透かし文字：位置を下げ、不透明度を調整して馴染ませる -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[25rem] font-black text-slate-200/40 italic pointer-events-none z-0">MAIL</div>
+    <!-- 7.8 CONTACT SECTION (デザイン最終調整版) -->
+    <section class="py-32 bg-slate-100 relative overflow-hidden">
+        <!-- 背景の透かし文字：位置を右上にずらし、サイズを調整 -->
+        <div class="absolute -top-10 -right-20 text-[20rem] font-[900] text-slate-200/60 italic pointer-events-none z-0 tracking-tighter">MAIL</div>
         
-        <div class="container mx-auto px-6 max-w-5xl relative z-10">
-            <div class="bg-white rounded-[4rem] p-12 md:p-20 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-12 border border-slate-200">
+        <div class="container mx-auto px-6 max-w-6xl relative z-10">
+            <div class="bg-white rounded-[4rem] p-12 md:p-24 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-12 border border-slate-200">
                 <div class="text-left md:w-2/3">
-                    <!-- 改行位置を md:block 等で制御し、PCでも「い。」が落ちないように固定 -->
-                    <h3 class="text-[#001a33] text-4xl md:text-5xl font-[900] italic mb-6 leading-[1.2]">
+                    <!-- word-break: keep-all で「い。」の泣き別れを防止 -->
+                    <h3 class="text-[#001a33] text-4xl md:text-6xl font-[900] italic mb-8 leading-[1.1] tracking-tighter" style="word-break: keep-all;">
                         ご不明な点は、<br>
-                        <span class="text-accent block md:inline mt-2 md:mt-0">お気軽にご相談ください。</span>
+                        <span class="text-accent">お気軽にご相談ください。</span>
                     </h3>
-                    <p class="text-slate-600 font-bold text-lg leading-loose">
+                    <p class="text-slate-600 font-bold text-lg md:text-xl leading-loose">
                         受講に関するご質問、企業様による団体受講のご相談など、<br class="hidden md:block">
                         専門スタッフが丁寧にお答えいたします。
                     </p>
                 </div>
                 <div class="md:w-1/3 w-full">
-                    <a href="mailto:info@shimonoseki-tc.com" class="group bg-[#001a33] text-white w-full py-8 rounded-3xl font-[900] text-xl italic flex items-center justify-center gap-4 hover:bg-accent transition-all duration-500 shadow-[0_20px_40px_rgba(0,26,51,0.2)]">
-                        <i class="fas fa-envelope text-3xl group-hover:rotate-12 transition"></i>
+                    <a href="mailto:info@shimonoseki-tc.com" class="group bg-[#001a33] text-white w-full py-10 rounded-[2.5rem] font-[900] text-2xl italic flex items-center justify-center gap-4 hover:bg-accent transition-all duration-500 shadow-[0_30px_60px_rgba(0,26,51,0.2)]">
+                        <i class="fas fa-envelope text-4xl group-hover:rotate-12 transition"></i>
                         メールで送る
                     </a>
                 </div>
