@@ -3,11 +3,11 @@ on:
   push:
     branches:
       - main
-  pull_request: # これでプレビュー作成が復活します
+  pull_request:
 permissions:
   checks: write
   contents: read
-  pull-requests: write # プレビューURLを書き込むために必要
+  pull-requests: write
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -23,4 +23,6 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COPROS_INC_STC }}'
           projectId: stc-hp
-          expires: 1h # 1時間でプレビューを消して容量を節約
+          # ここが重要：PR時はプレビュー、main時は本番(live)へ
+          channelId: ${{ github.event_name == 'push' && 'live' || '' }}
+          expires: 1h
