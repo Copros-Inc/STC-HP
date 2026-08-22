@@ -66,8 +66,17 @@
 
     <main class="container mx-auto px-6 max-w-5xl py-24 space-y-40">
         
+
+        <!-- よくある質問 (FAQ) -->
+        <section id="qa" class="reveal">
+            <div class="text-left mb-16 border-l-8 border-accent pl-8">
+                <h2 class="text-navy text-4xl md:text-6xl font-[900] italic uppercase">よくある質問</h2>
+            </div>
+            <div id="faq-container" class="space-y-6"></div>
+        </section>
+
         <!-- 補助金制度 -->
-        <section id="subsidy" class="reveal">
+        <section id="subsidy" class="reveal active">
             <div class="text-left mb-16 border-l-8 border-accent pl-8">
                 <h2 class="text-navy text-4xl md:text-6xl font-[900] italic uppercase leading-none">補助金制度</h2>
                 <p class="text-accent font-black tracking-widest mt-2">SUBSIDY SYSTEM</p>
@@ -88,87 +97,88 @@
                     </div>
                 </div>
 
-                <!-- フロー図（画像1枚目の構成を完全再現） -->
-                <div class="text-center pt-10 border-t border-slate-100">
+                <!-- 申込み・手続きフロー（矢印方向修正版） -->
+                <div class="text-center pt-10 border-t border-slate-100 overflow-visible">
                     <h3 class="font-black italic text-navy text-2xl mb-12">申込み・手続きフロー</h3>
                     
-                    <div class="flex flex-col items-center w-full max-w-2xl mx-auto space-y-2">
+                    <div class="flex flex-col items-center w-full max-w-2xl mx-auto">
                         <!-- 1. 教習所 -->
-                        <div class="w-full bg-[#001a33] text-white py-6 rounded-2xl font-black italic shadow-lg text-xl tracking-widest">下関トレーニングセンター</div>
+                        <div class="w-full bg-[#001a33] text-white py-6 rounded-2xl font-black italic shadow-lg text-xl tracking-widest relative z-10">下関トレーニングセンター</div>
                         
-                        <!-- 矢印 -->
-                        <div class="flex justify-around w-full px-10">
-                            <i class="fas fa-arrow-down flow-arrow"></i>
-                            <i class="fas fa-arrow-up flow-arrow" style="color:#cbd5e1"></i>
-                            <i class="fas fa-arrow-down flow-arrow"></i>
+                        <!-- 矢印グリッド（上段） -->
+                        <div class="grid grid-cols-3 w-full px-4 text-accent text-2xl py-2">
+                            <div class="flex flex-col items-center">
+                                <i class="fas fa-arrow-down"></i>
+                                <div class="bg-accent text-white w-full mt-2 p-3 rounded-xl text-[10px] md:text-xs font-black italic shadow-md min-h-[70px] flex items-center justify-center">
+                                    01 取り寄せ<br>申請書類送付
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <i class="fas fa-arrow-up text-slate-300"></i>
+                                <div class="bg-white border-2 border-accent text-navy w-full mt-2 p-3 rounded-xl text-[10px] md:text-xs font-black italic shadow-md min-h-[70px] flex items-center justify-center">
+                                    02 書類提出<br>1週間前まで
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <i class="fas fa-arrow-down"></i>
+                                <div class="bg-accent text-white w-full mt-2 p-3 rounded-xl text-[10px] md:text-xs font-black italic shadow-md min-h-[70px] flex items-center justify-center">
+                                    03 請求書お渡し<br>受講終了後
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- 3つのアクション -->
-                        <div class="grid grid-cols-3 gap-3 w-full">
-                            <div class="bg-accent text-white p-4 rounded-xl text-[10px] md:text-xs font-black italic flex flex-col justify-center min-h-[80px] shadow-md leading-tight">
-                                <span>01 取り寄せ</span><br><span class="text-[9px] opacity-80">申請書類 送付可</span>
-                            </div>
-                            <div class="bg-accent text-white p-4 rounded-xl text-[10px] md:text-xs font-black italic flex flex-col justify-center min-h-[80px] shadow-md leading-tight">
-                                <span>02 書類提出</span><br><span class="text-[9px] opacity-80">1週間前まで</span>
-                            </div>
-                            <div class="bg-accent text-white p-4 rounded-xl text-[10px] md:text-xs font-black italic flex flex-col justify-center min-h-[80px] shadow-md leading-tight">
-                                <span>03 請求書お渡し</span><br><span class="text-[9px] opacity-80">受講終了後</span>
-                            </div>
+                        <!-- 2. 事業者（中心） -->
+                        <div class="w-full flex justify-center py-4">
+                            <i class="fas fa-arrow-down text-accent text-2xl"></i>
                         </div>
-
-                        <!-- 矢印 -->
-                        <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
-
-                        <!-- 2. 事業者 -->
-                        <div class="w-full border-4 border-accent bg-white py-8 rounded-[2rem] shadow-xl relative overflow-hidden">
+                        <div class="w-full border-4 border-accent bg-white py-8 rounded-[2rem] shadow-xl">
                             <span class="text-navy font-[900] text-2xl md:text-3xl italic tracking-tighter">助成金申請事業者</span>
-                            <p class="text-[10px] font-black text-slate-300 tracking-[0.3em] uppercase mt-1">Application Entity</p>
+                        </div>
+                        <div class="w-full flex justify-center py-4">
+                            <i class="fas fa-arrow-down text-accent text-2xl"></i>
                         </div>
 
-                        <!-- 矢印 -->
-                        <div class="flex justify-center gap-20 w-full">
-                            <i class="fas fa-arrow-down flow-arrow"></i>
-                            <i class="fas fa-arrow-up flow-arrow" style="color:#ef4444"></i>
-                        </div>
-
-                        <!-- 下部アクション -->
-                        <div class="grid grid-cols-2 gap-4 w-full">
-                            <div class="bg-slate-800 text-white p-6 rounded-xl text-[10px] md:text-xs font-black italic flex flex-col justify-center shadow-md">
-                                <span>04 請求書類 提出</span><br><span class="text-accent">2ヶ月以内</span>
+                        <!-- 矢印グリッド（下段：労働局へ） -->
+                        <div class="grid grid-cols-2 gap-4 w-full px-4">
+                            <div class="flex flex-col items-center">
+                                <div class="bg-slate-800 text-white w-full p-4 rounded-xl text-[10px] md:text-xs font-black italic shadow-md">
+                                    04 請求書類 提出<br><span class="text-accent">2ヶ月以内</span>
+                                </div>
+                                <i class="fas fa-arrow-down text-accent text-2xl mt-2"></i>
                             </div>
-                            <div class="bg-slate-800 text-white p-6 rounded-xl text-[10px] md:text-xs font-black italic flex flex-col justify-center shadow-md">
-                                <span>05 助成金 振込</span><br><span class="text-accent">約2ヶ月後</span>
+                            <div class="flex flex-col items-center">
+                                <div class="bg-slate-800 text-white w-full p-4 rounded-xl text-[10px] md:text-xs font-black italic shadow-md">
+                                    05 助成金 振込<br><span class="text-accent">約2ヶ月後</span>
+                                </div>
+                                <i class="fas fa-arrow-up text-red-500 text-2xl mt-2"></i>
                             </div>
                         </div>
-
-                        <!-- 矢印 -->
-                        <div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
 
                         <!-- 3. 労働局 -->
-                        <div class="w-full bg-slate-200 text-navy py-6 rounded-2xl font-black italic text-lg shadow-inner">厚生労働省 山口労働局</div>
+                        <div class="w-full bg-slate-200 text-navy py-6 rounded-2xl font-black italic text-lg shadow-inner mt-2">厚生労働省 山口労働局</div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 申込の流れ -->
-        <section id="flow" class="reveal">
+        <!-- 申込の流れ（背景色調整版） -->
+        <section id="flow" class="reveal active">
             <div class="text-left mb-16 border-l-8 border-accent pl-8">
                 <h2 class="text-navy text-4xl md:text-6xl font-[900] italic uppercase">申込の流れ</h2>
             </div>
             
             <div class="grid lg:grid-cols-2 gap-8">
-                <!-- ROUTE A -->
-                <div class="bg-[#001a33] p-10 md:p-12 rounded-[3rem] shadow-2xl text-white text-left relative overflow-hidden group">
+                <!-- ROUTE A (背景色を少し明るく調整) -->
+                <div class="bg-[#1a2e44] p-10 md:p-12 rounded-[3rem] shadow-2xl text-white text-left relative overflow-hidden group">
                     <span class="font-en font-black text-white/5 text-8xl italic absolute -top-4 -right-4">A</span>
                     <h3 class="text-2xl font-black italic mb-10 border-b border-white/20 pb-4">WEB本申込をご利用の方</h3>
-                    <div class="space-y-4 relative z-10">
+                    <div class="space-y-4">
                         <div class="bg-white/10 p-5 rounded-2xl border-l-4 border-accent font-bold text-sm">① HPの「WEB本申込」から送信</div>
-                        <div class="flex justify-center py-1"><i class="fas fa-chevron-down text-accent opacity-50"></i></div>
+                        <div class="flex justify-center py-1"><i class="fas fa-chevron-down text-accent/50"></i></div>
                         <div class="bg-white/10 p-5 rounded-2xl border-l-4 border-accent font-bold text-sm">② 自動返信メールを確認</div>
-                        <div class="flex justify-center py-1"><i class="fas fa-chevron-down text-accent opacity-50"></i></div>
+                        <div class="flex justify-center py-1"><i class="fas fa-chevron-down text-accent/50"></i></div>
                         <div class="bg-accent text-[#001a33] p-5 rounded-2xl font-black text-center shadow-lg">③ 事務局より本受付メール受信</div>
-                        <div class="flex justify-center py-1"><i class="fas fa-chevron-down text-accent opacity-50"></i></div>
+                        <div class="flex justify-center py-1"><i class="fas fa-chevron-down text-accent/50"></i></div>
                         <div class="bg-white/10 p-5 rounded-2xl border-l-4 border-accent font-bold text-sm">④ 受講1週間前までに入金</div>
                         <div class="flex justify-center py-1"><i class="fas fa-chevron-down text-accent"></i></div>
                         <div class="bg-white text-[#001a33] py-6 rounded-2xl text-center font-black text-xl tracking-widest italic shadow-xl">⑤ 受講開始</div>
@@ -179,16 +189,16 @@
                 <div class="bg-slate-50 p-10 md:p-12 rounded-[3rem] shadow-2xl text-navy text-left relative overflow-hidden border border-slate-200">
                     <span class="font-en font-black text-slate-200/50 text-8xl italic absolute -top-4 -right-4">B</span>
                     <h3 class="text-2xl font-black italic mb-10 border-b border-slate-200 pb-4">WEB予約（書類持参）の方</h3>
-                    <div class="space-y-3 relative z-10">
-                        <div class="step-box font-bold text-sm">① HPの「予約のみ」から送信</div>
+                    <div class="space-y-3">
+                        <div class="bg-white p-5 rounded-2xl border-l-4 border-slate-300 font-bold text-sm shadow-sm">① HPの「予約のみ」から送信</div>
                         <div class="flex justify-center text-slate-300 py-0.5"><i class="fas fa-chevron-down"></i></div>
-                        <div class="step-box font-bold text-sm">② 自動返信メールを確認</div>
+                        <div class="bg-white p-5 rounded-2xl border-l-4 border-slate-300 font-bold text-sm shadow-sm">② 自動返信メールを確認</div>
                         <div class="flex justify-center text-slate-300 py-0.5"><i class="fas fa-chevron-down"></i></div>
                         <div class="bg-amber-50 border-2 border-amber-200 p-5 rounded-2xl text-amber-800 font-bold text-sm text-center">③ 2週間前までに申込書を郵送</div>
                         <div class="flex justify-center text-slate-300 py-0.5"><i class="fas fa-chevron-down"></i></div>
                         <div class="bg-[#001a33] text-white p-5 rounded-2xl font-black text-center shadow-lg">④ 事務局より本受付メール受信</div>
                         <div class="flex justify-center text-slate-300 py-0.5"><i class="fas fa-chevron-down"></i></div>
-                        <div class="step-box font-bold text-sm text-center">⑤ 受講1週間前までに入金</div>
+                        <div class="bg-white border border-slate-200 p-5 rounded-2xl font-bold text-sm text-center">⑤ 受講1週間前までに入金</div>
                         <div class="flex justify-center text-[#001a33] py-1"><i class="fas fa-chevron-down"></i></div>
                         <div class="bg-slate-900 text-white py-6 rounded-2xl text-center font-black text-xl tracking-widest italic shadow-xl">⑥ 受講開始</div>
                     </div>
@@ -196,13 +206,7 @@
             </div>
         </section>
 
-        <!-- よくある質問 (FAQ) -->
-        <section id="qa" class="reveal">
-            <div class="text-left mb-16 border-l-8 border-accent pl-8">
-                <h2 class="text-navy text-4xl md:text-6xl font-[900] italic uppercase">よくある質問</h2>
-            </div>
-            <div id="faq-container" class="space-y-6"></div>
-        </section>
+        
 
     </main>
 
