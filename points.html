@@ -6,279 +6,253 @@
     <title>受講ガイド | STC 下関トレーニングセンター</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@700&family=Montserrat:wght@900&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Noto+Sans+JP:wght@300;700;900&display=swap');
-        body { font-family: 'Noto Sans JP', sans-serif; background-color: #f8fafc; color: #1e293b; scroll-behavior: smooth; }
+        :root { --navy: #001a33; --accent: #00a2ff; --light-blue: #f0f9ff; }
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #ffffff; color: var(--navy); overflow-x: hidden; scroll-behavior: smooth; }
         .font-en { font-family: 'Montserrat', sans-serif; }
-        .bg-bright-effect { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); z-index: -2; }
+        .watermark { position: absolute; font-family: 'Oswald', sans-serif; font-size: 18vw; color: rgba(0, 40, 77, 0.03); font-weight: 700; z-index: 0; pointer-events: none; white-space: nowrap; text-transform: uppercase; font-style: italic; }
         
-        /* カードの質感をさらに向上 */
-        .point-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); border-radius: 3rem; border: 1px solid rgba(56, 189, 248, 0.2); box-shadow: 0 25px 60px rgba(0,0,0,0.06); }
-        
+        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
         summary { list-style: none; }
         summary::-webkit-details-marker { display: none; }
-
-        /* 図解ボックス */
-        .box-label { font-size: 0.65rem; font-weight: 900; color: #fff; opacity: 0.8; margin-bottom: 4px; display: block; }
-        .action-box { border-radius: 1.5rem; padding: 1rem; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        
-        /* 申し込みフロー */
-        .flow-col { border-radius: 2.5rem; padding: 2.5rem; height: 100%; transition: all 0.4s; }
-        .flow-node { position: relative; padding: 1.2rem; border-radius: 1.2rem; font-weight: 900; font-style: italic; text-align: center; font-size: 0.8rem; background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.03); }
-        .arrow-v::after { content: '▼'; position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); color: #cbd5e1; font-size: 0.6rem; }
     </style>
 </head>
-<body class="pb-32">
-    <div class="bg-bright-effect"></div>
+<body class="bg-white">
 
-    <nav class="p-8 sticky top-0 z-50 bg-white/40 backdrop-blur-md border-b border-white/50">
-        <a href="index.html#point-section" class="inline-flex items-center text-sky-600 hover:text-slate-900 transition font-black italic text-xs tracking-[0.3em] group">
-            <i class="fas fa-chevron-left mr-3 group-hover:-translate-x-2 transition-transform"></i> BACK TO HOME
-        </a>
-    </nav>
-
-    <header class="container mx-auto px-6 py-12 text-center">
-        <h1 class="text-5xl md:text-6xl font-black italic tracking-tighter text-slate-900 uppercase">SUPPORT <span class="text-sky-500">POINTS</span></h1>
-        <p class="text-slate-400 font-bold italic text-xs mt-2 tracking-widest uppercase">受講に関するガイドライン</p>
+    <!-- 0. MASTER HEADER -->
+    <header class="fixed top-0 w-full z-50 py-4 bg-[#001a33] shadow-xl" id="sub-nav">
+        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-8 gap-4">
+            <a href="index.html" class="flex items-center gap-3 shrink-0">
+                <div class="bg-white p-1 rounded shadow-lg"><img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain"></div>
+                <div class="text-left text-white leading-none whitespace-nowrap">
+                    <h1 class="font-[900] text-xs md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
+                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.2em] mt-1">Shimonoseki Training Center</p>
+                </div>
+            </a>
+            <nav class="hidden xl:flex items-center gap-x-5 text-white text-[12px] font-[900] italic uppercase">
+                <a href="index.html#service" class="hover:text-[#00a2ff] transition">事業内容</a>
+                <a href="index.html#courses" class="hover:text-[#00a2ff] transition">主要コース</a>
+                <a href="features.html" class="hover:text-[#00a2ff] transition">選ばれる理由</a>
+                <a href="index.html#schedule-section" class="hover:text-[#00a2ff] transition">開催予定</a>
+                <a href="points.html" class="text-[#00a2ff] border-b-2 border-[#00a2ff]">受講ガイド</a>
+                <a href="index.html#access" class="hover:text-[#00a2ff] transition">Access</a>
+                <a href="blog.html" class="border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded">ブログ</a>
+            </nav>
+            <a href="tel:0832460556" class="bg-[#00a2ff] text-white px-6 py-3 rounded-full font-black italic text-xs shadow-lg hover:bg-white hover:text-[#001a33] transition-all flex items-center gap-2">
+                <i class="fas fa-phone-alt"></i><span>お問合せ</span>
+            </a>
+        </div>
     </header>
 
-    <main class="container mx-auto px-6 max-w-6xl space-y-24">
-        
-        <!-- 01. よくある質問 -->
-        <section id="qa" class="point-card p-8 md:p-16">
-            <div class="flex items-center gap-4 mb-12 border-b-2 border-sky-100 pb-6">
-                <div class="w-12 h-12 bg-sky-500 text-white rounded-2xl flex items-center justify-center italic font-black text-xl shadow-lg">Q</div>
-                <h2 class="text-3xl font-black italic text-slate-800 uppercase">よくある質問 / FAQ</h2>
-            </div>
-            <div id="faq-container" class="space-y-4"></div>
-        </section>
-
-        <!-- 02. 補助金制度 (修正矢印版) -->
-        <section id="subsidy" class="point-card p-8 md:p-16 bg-white">
-            <div class="flex items-center gap-4 mb-12 border-b-2 border-sky-100 pb-6">
-                <div class="w-12 h-12 bg-sky-500 text-white rounded-2xl flex items-center justify-center italic font-black text-xl shadow-lg">S</div>
-                <h2 class="text-3xl font-black italic text-slate-800 uppercase">補助金制度の手引き</h2>
-            </div>
-            
-            <div class="space-y-20">
-                <!-- 条件 -->
-                <div class="max-w-4xl mx-auto">
-                    <h3 class="font-black italic text-sky-600 mb-8 flex items-center gap-3">
-                        <span class="text-2xl font-en">01.</span> 受給対象となる5条件（すべて必須）
-                    </h3>
-                    <div class="grid gap-4">
-                        <div class="flex items-center gap-6 bg-slate-50 p-5 rounded-2xl border-l-8 border-sky-500 font-bold italic">
-                            <span class="text-sky-600 font-en">①</span> 建設業の雇用保険料率を適用している事業主
-                        </div>
-                        <div class="flex items-center gap-6 bg-slate-50 p-5 rounded-2xl border-l-8 border-sky-500 font-bold italic">
-                            <span class="text-sky-600 font-en">②</span> 従業員300人以下、または資本金3億円以下の事業主
-                        </div>
-                        <div class="flex items-center gap-6 bg-slate-50 p-5 rounded-2xl border-l-8 border-sky-500 font-bold italic">
-                            <span class="text-sky-600 font-en">③</span> 受講料を事業主が全額負担すること
-                        </div>
-                        <div class="flex items-center gap-6 bg-slate-50 p-5 rounded-2xl border-l-8 border-sky-500 font-bold italic">
-                            <span class="text-sky-600 font-en">④</span> 受講生が雇用保険被保険者であること
-                        </div>
-                        <div class="flex items-center gap-6 bg-slate-50 p-5 rounded-2xl border-l-8 border-sky-500 font-bold italic">
-                            <span class="text-sky-600 font-en">⑤</span> 受講期間中に正規の賃金を支払うこと
-                        </div>
-                    </div>
-                    <div class="mt-8 bg-sky-50 p-6 rounded-2xl border border-sky-100">
-                        <p class="text-xs font-bold text-slate-500 italic mb-2">※年度によって変更になる場合がございます。詳細は下記URLよりご確認ください。</p>
-                        <a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000201717_00006.html" target="_blank" class="text-sky-600 underline break-all font-en text-sm font-bold">厚生労働省：人材開発支援助成金ページ</a>
-                    </div>
-                </div>
-
-                <!-- 手続き図解：矢印の向きを修正 -->
-                <div class="max-w-3xl mx-auto text-center">
-                    <h3 class="font-black italic text-sky-600 mb-12 flex items-center justify-center gap-3">
-                        <span class="text-2xl font-en">02.</span> 申込み・手続きフロー
-                    </h3>
-                    
-                    <div class="flex flex-col items-center gap-4">
-                        <div class="w-full bg-slate-800 text-white p-6 rounded-[2.5rem] text-center font-black italic shadow-xl">下関トレーニングセンター</div>
-                        
-                        <!-- STCとのやり取り -->
-                        <div class="grid grid-cols-3 gap-3 w-full">
-                            <div class="flex flex-col items-center">
-                                <i class="fas fa-arrow-down text-sky-400 mb-2"></i>
-                                <div class="action-box bg-sky-600 text-white w-full h-full text-[10px] font-black italic">
-                                    <span class="box-label">01 取り寄せ</span>申請書類 送付可
-                                </div>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <div class="action-box bg-sky-600 text-white w-full h-full text-[10px] font-black italic">
-                                    <span class="box-label">02 書類提出</span>1週間前まで
-                                </div>
-                                <i class="fas fa-arrow-up text-sky-400 mt-2"></i>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <i class="fas fa-arrow-down text-sky-400 mb-2"></i>
-                                <div class="action-box bg-sky-600 text-white w-full h-full text-[10px] font-black italic">
-                                    <span class="box-label">03 請求書お渡し</span>受講終了後
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- お客様 -->
-                        <div class="w-full bg-white border-4 border-sky-500 p-8 rounded-[3rem] text-center font-black italic text-2xl text-slate-800 shadow-2xl my-4">
-                            助成金申請事業者 <span class="text-[10px] text-slate-400 block tracking-widest font-en">(APPLICATION ENTITY)</span>
-                        </div>
-
-                        <!-- 労働局とのやり取り -->
-                        <div class="grid grid-cols-2 gap-8 w-full">
-                            <div class="flex flex-col items-center">
-                                <div class="action-box bg-rose-600 text-white w-full text-[10px] font-black italic shadow-lg">
-                                    <span class="box-label">04 請求書類 提出</span>2ヶ月以内
-                                </div>
-                                <i class="fas fa-arrow-down text-rose-400 mt-2"></i>
-                            </div>
-                            <div class="flex flex-col items-center">
-                                <i class="fas fa-arrow-up text-rose-400 mb-2"></i>
-                                <div class="action-box bg-rose-600 text-white w-full text-[10px] font-black italic shadow-lg">
-                                    <span class="box-label">05 助成金 振込</span>約2ヶ月後
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="w-full bg-red-700 text-white p-6 rounded-[2.5rem] text-center font-black italic text-sm shadow-xl">厚生労働省 山口労働局</div>
-                    </div>
-                </div>
-            </div>
-                          <!-- 03. 助成金の構成イメージ -->
-                <div class="mt-24 max-w-4xl mx-auto">
-                    <h3 class="font-black italic text-sky-600 mb-10 flex items-center justify-center gap-3 text-center">
-                        <span class="text-2xl font-en">03.</span> 助成金の構成イメージ
-                    </h3>
-                    <div class="flex flex-col lg:flex-row items-center justify-between gap-6 px-4">
-                        <div class="flex-1 w-full group">
-                            <div class="bg-gradient-to-br from-slate-800 to-slate-900 text-white p-10 rounded-[2.5rem] text-center shadow-xl border-b-8 border-sky-600 transition-transform group-hover:-translate-y-2">
-                                <span class="text-[10px] font-black text-sky-400 uppercase tracking-widest mb-2 block italic">Expenses</span>
-                                <p class="text-2xl font-black italic tracking-tighter">経費 助成金</p>
-                            </div>
-                        </div>
-                        <div class="text-4xl font-black text-sky-500 italic font-en">+</div>
-                        <div class="flex-1 w-full group">
-                            <div class="bg-gradient-to-br from-slate-800 to-slate-900 text-white p-10 rounded-[2.5rem] text-center shadow-xl border-b-8 border-sky-600 transition-transform group-hover:-translate-y-2">
-                                <span class="text-[10px] font-black text-sky-400 uppercase tracking-widest mb-2 block italic">Wages</span>
-                                <p class="text-2xl font-black italic tracking-tighter">賃金 助成金</p>
-                            </div>
-                        </div>
-                        <div class="text-4xl font-black text-sky-500 italic font-en">=</div>
-                        <div class="flex-1 w-full group">
-                            <div class="bg-gradient-to-br from-sky-600 to-sky-700 text-white p-10 rounded-[2.5rem] text-center shadow-[0_20px_50px_rgba(14,165,233,0.3)] border-b-8 border-white transition-transform group-hover:-translate-y-2 relative overflow-hidden">
-                                <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl font-black italic select-none uppercase">Total</div>
-                                <span class="text-[10px] font-black text-sky-100 uppercase tracking-widest mb-2 block italic">Total Benefit</span>
-                                <p class="text-2xl font-black italic tracking-tighter">合計 助成金</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="text-[11px] font-bold text-slate-400 mt-12 text-center leading-loose italic">
-                        ※年度によって変更になる場合が御座います。詳細は厚生労働省ホームページをご確認下さい。
-                    </p>
-                </div>
-        </section>
-
-        <!-- 03. お申し込みの流れ (左右セパレート) -->
-        <section id="flow" class="point-card p-8 md:p-16 reveal active">
-            <h2 class="text-3xl font-black italic text-slate-800 uppercase border-b-2 border-sky-100 pb-6 mb-16 flex items-center gap-3">
-                <i class="fas fa-route text-sky-500"></i> お申し込みの流れ
+    <!-- 1. HERO -->
+    <header class="relative pt-60 pb-24 overflow-hidden bg-slate-50">
+        <div class="watermark" style="top: 20%; left: 50%; transform: translateX(-50%);">GUIDELINES</div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h2 class="reveal active">
+                <span class="block text-navy text-4xl md:text-6xl font-black italic tracking-tighter mb-4">受講に関する</span>
+                <span class="block text-accent text-7xl md:text-9xl font-black italic tracking-tighter uppercase">Point</span>
             </h2>
-            
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- パターンA：WEB本申込者 -->
-                <div class="flow-col bg-sky-50 border-2 border-sky-200 shadow-inner">
-                    <div class="text-center mb-10">
-                        <span class="font-en font-black text-sky-600/20 text-5xl italic block leading-none">ROUTE A</span>
-                        <h3 class="text-xl font-black italic text-sky-700 uppercase">WEB本申込をご利用の方</h3>
-                        <p class="text-[10px] font-bold text-sky-600 mt-2">（写真・個人情報をWEBで完結）</p>
-                    </div>
-                    <div class="space-y-8">
-                        <div class="flow-node arrow-v">HPの「WEB本申込」から送信</div>
-                        <div class="flow-node arrow-v bg-sky-500 text-white border-none">自動返信メールを確認</div>
-                        <div class="flow-node arrow-v bg-slate-800 text-white border-none italic">事務局より「本受付完了メール」受信</div>
-                        <div class="flow-node arrow-v bg-sky-600 text-white border-none shadow-xl">受講1週間前までに入金</div>
-                        <div class="flow-node bg-slate-900 text-white border-none">当日・受講開始</div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 max-w-5xl py-24 space-y-40">
+        
+        <!-- 1. よくある質問 (最上部へ移動) -->
+        <section id="qa" class="reveal active">
+            <div class="text-left mb-16 border-l-8 border-accent pl-8 text-left">
+                <h2 class="text-navy text-4xl md:text-6xl font-[900] italic uppercase text-left">よくある質問</h2>
+                <p class="text-accent font-black tracking-widest mt-2 text-left text-left">FREQUENTLY ASKED QUESTIONS</p>
+            </div>
+            <div id="faq-container" class="space-y-6 text-left"></div>
+        </section>
+
+        <!-- 2. 補助金制度 -->
+        <section id="subsidy" class="reveal active">
+            <div class="text-left mb-16 border-l-8 border-accent pl-8 text-left">
+                <h2 class="text-navy text-4xl md:text-6xl font-[900] italic uppercase leading-none text-left">補助金制度</h2>
+                <p class="text-accent font-black tracking-widest mt-2 text-left">SUBSIDY SYSTEM</p>
+            </div>
+
+            <div class="bg-white rounded-[3rem] p-8 md:p-16 shadow-2xl border border-slate-100 space-y-16">
+                <!-- 条件 -->
+                <div class="text-left">
+                    <h3 class="font-black italic text-navy text-2xl mb-8 flex items-center gap-3 text-left text-left">
+                        <i class="fas fa-check-circle text-accent"></i>受給対象となる5条件
+                    </h3>
+                    <div class="grid gap-3 text-left">
+                        <div class="bg-sky-50 p-6 rounded-2xl border-l-8 border-navy font-bold text-navy text-left text-sm md:text-base">① 建設業の雇用保険料率を適用している事業主</div>
+                        <div class="bg-sky-50 p-6 rounded-2xl border-l-8 border-navy font-bold text-navy text-left text-sm md:text-base">② 従業員300人以下、または資本金3億円以下の事業主</div>
+                        <div class="bg-sky-50 p-6 rounded-2xl border-l-8 border-navy font-bold text-navy text-left text-sm md:text-base">③ 受講料を事業主が全額負担すること</div>
+                        <div class="bg-sky-50 p-6 rounded-2xl border-l-8 border-navy font-bold text-navy text-left text-sm md:text-base">④ 受講生が雇用保険被保険者であること</div>
+                        <div class="bg-sky-50 p-6 rounded-2xl border-l-8 border-navy font-bold text-navy text-left text-sm md:text-base">⑤ 受講期間中に正規の賃金を支払うこと</div>
                     </div>
                 </div>
 
-                <!-- パターンB：WEB予約者 -->
-                <div class="flow-col bg-slate-50 border-2 border-slate-200">
-                    <div class="text-center mb-10">
-                        <span class="font-en font-black text-slate-300 text-5xl italic block leading-none">ROUTE B</span>
-                        <h3 class="text-xl font-black italic text-slate-700 uppercase">WEB予約(書類持参)の方</h3>
-                        <p class="text-[10px] font-bold text-slate-400 mt-2">（申込書を後日郵送・持参）</p>
+                <!-- 申込み・手続きフロー (矢印方向修正) -->
+                <div class="text-center pt-10 border-t border-slate-100">
+                    <h3 class="font-black italic text-navy text-2xl mb-12">申込み・手続きフロー</h3>
+                    <div class="flex flex-col items-center w-full max-w-2xl mx-auto text-center">
+                        <div class="w-full bg-[#001a33] text-white py-6 rounded-2xl font-black italic shadow-lg text-xl tracking-widest">下関トレーニングセンター</div>
+                        
+                        <!-- 上段矢印 -->
+                        <div class="grid grid-cols-3 w-full px-4 text-accent text-2xl py-2 text-center">
+                            <div class="flex flex-col items-center">
+                                <i class="fas fa-arrow-down mb-2"></i>
+                                <div class="bg-accent text-white w-full p-3 rounded-xl text-[10px] md:text-xs font-black shadow-md min-h-[70px] flex items-center justify-center italic">01 取り寄せ<br>申請書類送付</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <i class="fas fa-arrow-up text-slate-300 mb-2"></i>
+                                <div class="bg-white border-2 border-accent text-navy w-full p-3 rounded-xl text-[10px] md:text-xs font-black shadow-md min-h-[70px] flex items-center justify-center italic">02 書類提出<br>1週間前まで</div>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <i class="fas fa-arrow-down mb-2"></i>
+                                <div class="bg-accent text-white w-full p-3 rounded-xl text-[10px] md:text-xs font-black shadow-md min-h-[70px] flex items-center justify-center italic">03 請求書お渡し<br>受講終了後</div>
+                            </div>
+                        </div>
+
+                        <i class="fas fa-arrow-down text-accent text-2xl my-4"></i>
+                        <div class="w-full border-4 border-accent bg-white py-8 rounded-[2rem] shadow-xl font-black text-2xl md:text-3xl italic text-navy">助成金申請事業者</div>
+                        <i class="fas fa-arrow-down text-accent text-2xl my-4"></i>
+
+                        <!-- 下段矢印 -->
+                        <div class="grid grid-cols-2 gap-8 w-full px-4 text-center">
+                            <div class="flex flex-col items-center">
+                                <div class="bg-slate-800 text-white w-full p-5 rounded-xl text-[10px] md:text-xs font-black italic">04 請求書類 提出<br><span class="text-accent">2ヶ月以内</span></div>
+                                <i class="fas fa-arrow-down text-accent text-2xl mt-2 text-center"></i>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="bg-slate-800 text-white w-full p-5 rounded-xl text-[10px] md:text-xs font-black italic text-center">05 助成金 振込<br><span class="text-accent">約2ヶ月後</span></div>
+                                <i class="fas fa-arrow-up text-red-500 text-2xl mt-2 text-center"></i>
+                            </div>
+                        </div>
+
+                        <div class="w-full bg-slate-200 text-navy py-6 rounded-2xl font-black italic text-lg shadow-inner mt-2">厚生労働省 山口労働局</div>
                     </div>
-                    <div class="space-y-8">
-                        <div class="flow-node arrow-v">HPの「予約のみ」から送信</div>
-                        <div class="flow-node arrow-v bg-sky-500 text-white border-none">自動返信メールを確認</div>
-                        <div class="flow-node arrow-v bg-amber-50 text-amber-700 border-2 border-amber-400">2週間前までに申込書を郵送・持参</div>
-                        <div class="flow-node arrow-v bg-slate-800 text-white border-none italic">事務局より「本受付完了メール」受信</div>
-                        <div class="flow-node arrow-v bg-sky-600 text-white border-none shadow-xl">受講1週間前までに入金</div>
-                        <div class="flow-node bg-slate-900 text-white border-none">当日・受講開始</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 申込の流れ -->
+        <section id="flow" class="reveal active text-left">
+            <div class="text-left mb-16 border-l-8 border-accent pl-8 text-left">
+                <h2 class="text-navy text-4xl md:text-6xl font-[900] italic uppercase text-left">申込の流れ</h2>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8 text-left">
+                <!-- ROUTE A -->
+                <div class="bg-[#2a3f55] p-10 md:p-12 rounded-[3rem] shadow-2xl text-white text-left relative overflow-hidden text-left">
+                    <span class="font-en font-black text-white/5 text-8xl italic absolute -top-4 -right-4">A</span>
+                    <h3 class="text-2xl font-black italic mb-10 border-b border-white/20 pb-4 text-left">WEB本申込をご利用の方</h3>
+                    <div class="space-y-4 text-left">
+                        <div class="bg-white/10 p-5 rounded-2xl border-l-4 border-accent font-bold text-sm text-left">① HPの「WEB本申込」から送信</div>
+                        <div class="flex justify-center py-1 text-center"><i class="fas fa-chevron-down text-accent/50 text-center"></i></div>
+                        <div class="bg-white/10 p-5 rounded-2xl border-l-4 border-accent font-bold text-sm text-left text-left">② 自動返信メールを確認</div>
+                        <div class="flex justify-center py-1 text-center"><i class="fas fa-chevron-down text-accent/50 text-center"></i></div>
+                        <div class="bg-accent text-[#001a33] p-5 rounded-2xl font-black text-center shadow-lg text-center">③ 事務局より本受付メール受信</div>
+                        <div class="flex justify-center py-1 text-center"><i class="fas fa-chevron-down text-accent/50 text-center text-center"></i></div>
+                        <div class="bg-white/10 p-5 rounded-2xl border-l-4 border-accent font-bold text-sm text-left text-left text-left">④ 受講1週間前までに入金</div>
+                        <div class="flex justify-center py-1 text-center text-center"><i class="fas fa-chevron-down text-accent text-center"></i></div>
+                        <div class="bg-white text-[#001a33] py-6 rounded-2xl text-center font-black text-xl tracking-widest italic shadow-xl text-center">⑤ 受講開始</div>
+                    </div>
+                </div>
+
+                <!-- ROUTE B -->
+                <div class="bg-slate-50 p-10 md:p-12 rounded-[3rem] shadow-2xl text-navy text-left relative overflow-hidden border border-slate-200 text-left">
+                    <span class="font-en font-black text-slate-200/50 text-8xl italic absolute -top-4 -right-4">B</span>
+                    <h3 class="text-2xl font-black italic mb-10 border-b border-slate-200 pb-4 text-left">WEB予約（書類持参）の方</h3>
+                    <div class="space-y-3 text-left">
+                        <div class="bg-white p-5 rounded-2xl border-l-4 border-slate-300 font-bold text-sm shadow-sm text-left">① HPの「予約のみ」から送信</div>
+                        <div class="flex justify-center text-slate-300 py-0.5 text-center"><i class="fas fa-chevron-down text-center"></i></div>
+                        <div class="bg-white p-5 rounded-2xl border-l-4 border-slate-300 font-bold text-sm shadow-sm text-left">② 自動返信メールを確認</div>
+                        <div class="flex justify-center text-slate-300 py-0.5 text-center"><i class="fas fa-chevron-down text-center"></i></div>
+                        <div class="bg-amber-50 border-2 border-amber-200 p-5 rounded-2xl text-amber-800 font-bold text-sm text-center text-center">③ 2週間前までに申込書を郵送</div>
+                        <div class="flex justify-center text-slate-300 py-0.5 text-center"><i class="fas fa-chevron-down text-center text-center"></i></div>
+                        <div class="bg-[#001a33] text-white p-5 rounded-2xl font-black text-center shadow-lg text-center">④ 事務局より本受付メール受信</div>
+                        <div class="flex justify-center text-slate-300 py-0.5 text-center text-center"><i class="fas fa-chevron-down text-center"></i></div>
+                        <div class="bg-white border border-slate-200 p-5 rounded-2xl font-bold text-sm text-center text-center">⑤ 受講1週間前までに入金</div>
+                        <div class="flex justify-center text-[#001a33] py-1 text-center"><i class="fas fa-chevron-down text-center"></i></div>
+                        <div class="bg-slate-900 text-white py-6 rounded-2xl text-center font-black text-xl tracking-widest italic shadow-xl text-center">⑥ 受講開始</div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- 固定フッター -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 p-4 bg-slate-950/90 backdrop-blur-xl z-[100] border-t border-white/10 shadow-2xl">
-        <a href="tel:0832460556" class="bg-gradient-to-r from-sky-500 to-sky-600 text-white py-5 rounded-[1.5rem] flex items-center justify-center gap-4 font-black italic shadow-xl">
-            <i class="fas fa-phone-alt animate-bounce"></i> お電話で相談 083-246-0556
-        </a>
-    </div>
+    <!-- CONTACT AREA -->
+    <section class="py-32 bg-slate-100 relative overflow-hidden text-left">
+        <div class="absolute -top-10 -right-20 text-[20rem] font-[900] text-slate-200/60 italic pointer-events-none z-0 tracking-tighter uppercase">MAIL</div>
+        <div class="container mx-auto px-6 max-w-6xl relative z-10 text-left">
+            <div class="bg-white rounded-[4rem] p-12 md:p-24 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-12 border border-slate-200 text-left">
+                <div class="text-left md:w-2/3">
+                    <h3 class="text-[#001a33] text-4xl md:text-6xl font-[900] italic mb-8 leading-[1.1] tracking-tighter text-left">ご不明な点は、<br><span class="text-accent text-left">お気軽にご相談ください。</span></h3>
+                    <p class="text-slate-600 font-bold text-lg md:text-xl leading-loose text-left">受講に関するご質問、企業様による団体受講のご相談など、専門スタッフが丁寧にお答えいたします。</p>
+                </div>
+                <div class="md:w-1/3 w-full text-center">
+                    <a href="mailto:info@shimonoseki-tc.com" class="group bg-[#001a33] text-white w-full py-10 rounded-[2.5rem] font-[900] text-2xl italic flex items-center justify-center gap-4 hover:bg-accent transition-all duration-500 shadow-xl text-center">
+                        <i class="fas fa-envelope text-4xl group-hover:rotate-12 transition text-center"></i>メールで送る
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#001a33] text-white/20 py-20 text-center font-black italic text-xs tracking-[0.6em] uppercase text-center">
+        &copy; 2026 SHIMONOSEKI TRAINING CENTER.
+    </footer>
 
     <script type="module">
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    const firebaseConfig = { 
-        apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw", 
-        authDomain: "stc-hp.firebaseapp.com", 
-        projectId: "stc-hp",
-        storageBucket: "stc-hp.firebasestorage.app",
-        messagingSenderId: "795332931918",
-        appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f"
-    };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-
-    signInAnonymously(auth).then(() => {
-        // --- 魔法のFAQ読み込みロジック ---
-        // order（表示順）が小さい順に並べて取得
-        const faqQuery = query(collection(db, "faq"), orderBy("order", "asc"));
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         
-        onSnapshot(faqQuery, (snapshot) => {
-            const container = document.getElementById('faq-container');
-            if (!container) return;
-
+        const firebaseConfig = { 
+            apiKey: "ふせます。",
+            authDomain: "stc-hp.firebaseapp.com", projectId: "stc-hp", 
+            storageBucket: "stc-hp.firebasestorage.app", messagingSenderId: "795332931918", 
+            appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f" 
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        
+        signInAnonymously(auth).then(() => {
+            onSnapshot(query(collection(db, "faq"), orderBy("order", "asc")), (snapshot) => {
+                const container = document.getElementById('faq-container');
+                if (!container) return;
                 container.innerHTML = snapshot.docs.map(doc => {
-                const data = doc.data();
-                return `
-                <details class="faq-details group bg-white rounded-[1.5rem] border border-slate-200 overflow-hidden shadow-sm hover:border-sky-400 hover:shadow-md transition-all mb-4">
-                    <summary class="p-8 cursor-pointer flex justify-between items-center font-black italic text-slate-800">
-                        <span class="flex gap-4 items-center">
-                            <span class="text-sky-500 font-en text-2xl">Q.</span> 
-                            <span class="text-lg">${data.question}</span>
-                        </span>
-                        <i class="fas fa-chevron-down text-slate-300 transition-transform duration-300 group-open:rotate-180"></i>
-                    </summary>
-                    <div class="px-10 pb-10 pt-4 border-t border-slate-50">
-                        <div class="flex gap-6">
-                            <!-- Aの文字を少しだけ濃い水色にして存在感アップ -->
-                            <span class="text-sky-200 font-en font-black text-3xl">A.</span>
-                            <!-- 本文を text-slate-800（濃いグレー）にして視認性を最大化 -->
-                            <p class="text-slate-800 font-bold italic leading-loose text-base whitespace-pre-wrap">${data.answer}</p>
+                    const data = doc.data();
+                    return `
+                    <details class="group bg-white rounded-[2rem] border border-slate-200 overflow-hidden shadow-sm hover:border-accent transition-all text-left text-left">
+                        <summary class="p-8 cursor-pointer flex justify-between items-center font-black italic text-navy text-left text-left">
+                            <span class="flex gap-4 items-center text-left"><span class="text-accent font-en text-3xl text-left">Q.</span><span class="text-lg md:text-xl text-navy text-left">${data.question}</span></span>
+                            <i class="fas fa-chevron-down text-slate-300 transition-transform group-open:rotate-180 text-center"></i>
+                        </summary>
+                        <div class="px-10 pb-10 pt-4 border-t border-slate-50 flex gap-6 text-left text-left">
+                            <span class="text-slate-200 font-en font-black text-4xl text-left">A.</span>
+                            <p class="text-slate-600 font-bold leading-loose text-base md:text-lg whitespace-pre-wrap text-left">${data.answer}</p>
                         </div>
-                    </div>
-                </details>`;
-            }).join('') || '<p class="text-center text-slate-400 py-10 italic">現在、よくある質問を準備中です。</p>';
+                    </details>`;
+                }).join('');
+            });
         });
-    });
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('sub-nav');
+            if (window.pageYOffset > 50) {
+                nav.classList.add('py-2'); nav.classList.remove('py-4');
+            } else {
+                nav.classList.add('py-4'); nav.classList.remove('py-2');
+            }
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
-
