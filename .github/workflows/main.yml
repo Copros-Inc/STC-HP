@@ -3,10 +3,11 @@ on:
   push:
     branches:
       - main
-  # pull_request を一時的に削除（プレビュー作成を止めるため）
+  pull_request: # プレビュー作成を復活
 permissions:
   checks: write
   contents: read
+  pull-requests: write # PRにコメントを残すために必要
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -22,4 +23,5 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COPROS_INC_STC }}'
           projectId: stc-hp
-          channelId: live # 本番へ直接反映
+          # ここを修正：PR時はプレビュー、main時は本番へ
+          expires: 1h # プレビューの有効期限を1時間に設定（容量節約）
