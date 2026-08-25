@@ -694,13 +694,12 @@
 
 // 年間スケジュール表示ボタン（ブラウザで開く）
 document.getElementById('annual-schedule-btn')?.addEventListener('click', () => {
-    window.open('https://github.com/Caprius-Inc/STC-HP/raw/main/pdf/STC_Annual_Schedule_2026.pdf', '_blank');
-});
+    window.open('https://raw.githubusercontent.com/Copros-Inc/STC-HP/main/pdf/STC_Annual_Schedule_2026.pdf', '_blank');
 
 // PDFダウンロードボタン
 document.getElementById('download-schedule-btn')?.addEventListener('click', () => {
     const link = document.createElement('a');
-    link.href = 'https://github.com/Caprius-Inc/STC-HP/raw/main/pdf/STC_Annual_Schedule_2026.pdf';
+    link.href = 'https://raw.githubusercontent.com/Copros-Inc/STC-HP/main/pdf/STC_Annual_Schedule_2026.pdf';
     link.download = 'STC_Annual_Schedule_2026.pdf';
     link.click();
 });
