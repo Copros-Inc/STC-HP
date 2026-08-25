@@ -695,10 +695,6 @@
 // 年間スケジュール表示ボタン（ブラウザで開く）
 document.getElementById('annual-schedule-btn')?.addEventListener('click', () => {
     window.open('https://raw.githubusercontent.com/Copros-Inc/STC-HP/main/pdf/STC_Annual_Schedule_2026.pdf', '_blank');
-
-// 年間スケジュール表示ボタン（ブラウザで開く）
-document.getElementById('annual-schedule-btn')?.addEventListener('click', () => {
-    window.open('https://raw.githubusercontent.com/Copros-Inc/STC-HP/main/pdf/STC_Annual_Schedule_2026.pdf', '_blank');
 });
 
 // PDFダウンロードボタン
@@ -712,16 +708,15 @@ document.getElementById('download-schedule-btn')?.addEventListener('click', () =
 // ダウンロードボタンを有効化
 document.getElementById('download-schedule-btn').disabled = false;
 document.getElementById('download-schedule-btn').classList.remove('opacity-50', 'cursor-not-allowed');
-            
+
 window.addEventListener('scroll', () => {
-        const nav = document.getElementById('sub-nav'); // sub-navに変更
+        const nav = document.getElementById('sub-nav');
         if (window.scrollY > 50) {
             nav.classList.add('header-scrolled');
         } else {
             nav.classList.remove('header-scrolled');
         }
         
-        // ふわっと出る演出（既存のまま）
         document.querySelectorAll('.reveal').forEach(el => { 
             if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); 
         });
