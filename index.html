@@ -55,7 +55,7 @@
             p { font-size: 1.1rem !important; line-height: 1.7 !important; }
         }
 
-        /* --- ヘッダー完全修復：PC整列・スマホ消失防止 --- */
+         /* --- index専用：初期は透明、スクロールで紺色 --- */
         #sub-nav {
             background-color: transparent;
             box-shadow: none;
@@ -63,7 +63,7 @@
             z-index: 9999;
         }
 
-        /* スクロール時の背景（濃紺） */
+        /* スクロール後に付与されるクラス */
         #sub-nav.header-scrolled {
             background-color: #001a33 !important;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
@@ -71,17 +71,10 @@
             padding-bottom: 0.5rem;
         }
 
-        /* スマホ・タブレットでの強制横並び設定 */
-        @media (max-width: 1279px) {
-            #sub-nav .max-w-\[1500px\] {
-                flex-wrap: nowrap !important;
-                justify-content: space-between !important;
-            }
-            #sub-nav h1 {
-                font-size: 10px !important; /* 日本語名をスマホで見えるサイズに */
-                white-space: nowrap;
-            }
-        }
+        /* PC・スマホ共通：ロゴを縮ませない */
+        .shrink-0 { flex-shrink: 0 !important; }
+
+
 /* コンテンツ消失対策：HEROセクションの中身を押し下げる */
 .hero-active .relative.z-10 {
     margin-top: 100px; /* ヘッダーの高さ分確保 */
@@ -99,43 +92,40 @@
 </head>
 <body>
 
-    <!-- 0. INDEX HEADER (PC・スマホ完全修復版) -->
+    <!-- 0. INDEX MASTER HEADER (透過/紺切り替え・完全同期版) -->
     <header class="fixed top-0 w-full z-[9999] py-4 transition-all duration-300" id="sub-nav">
-        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-10">
-            
-            <!-- 左：ロゴとタイトル（shrink-0で絶対に縮ませない） -->
-            <a href="index.html" class="flex items-center gap-3 shrink-0">
-                <div class="bg-white p-1 rounded shadow-lg shrink-0">
+        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-8 gap-4">
+            <a href="index.html" class="flex items-center gap-3 group shrink-0"> <!-- shrink-0を追加 -->
+                <div class="bg-white p-1 rounded shadow-lg group-hover:scale-105 transition-transform">
                     <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
                 </div>
-                <div class="text-left text-white leading-none shrink-0">
-                    <h1 class="font-[900] text-[10px] md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
-                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.1em]">Shimonoseki Training Center</p>
+                <div class="text-left text-white leading-none whitespace-nowrap">
+                    <h1 class="font-[900] text-xs md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
+                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.2em]">Shimonoseki Training Center</p>
                 </div>
             </a>
-            
-            <!-- 中：PCメニュー（スマホでは自動で消え、PCでは中央に整列） -->
-            <nav class="hidden xl:flex items-center gap-x-6 text-white text-[12px] font-[900] italic uppercase mx-auto px-4">
+            <!-- PC用メニュー -->
+            <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase whitespace-nowrap">
                 <a href="#service" class="hover:text-[#00a2ff] transition">事業内容</a>
                 <a href="#courses" class="hover:text-[#00a2ff] transition">主要コース</a>
                 <a href="features.html" class="hover:text-[#00a2ff] transition">選ばれる理由</a>
                 <a href="#schedule-section" class="hover:text-[#00a2ff] transition">開催予定</a>
                 <a href="points.html" class="hover:text-[#00a2ff] transition">受講ガイド</a>
                 <a href="#access" class="hover:text-[#00a2ff] transition">Access</a>
-                <a href="blog.html" class="border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded">ブログ</a>
+                <a href="blog.html" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">ブログ</a>
+                <a href="mailto:info@shimonoseki-tc.com" class="text-[#00a2ff] border border-[#00a2ff]/60 hover:bg-[#00a2ff] hover:text-white transition px-3 py-1 rounded flex items-center gap-2 shadow-sm">
+                    <i class="fas fa-envelope text-[10px]"></i>メール
+                </a>
             </nav>
-
-            <!-- 右：お問い合わせとモバイルアイコン（絶対に縮ませない） -->
-            <div class="flex items-center gap-2 shrink-0">
-                <a href="tel:0832460556" class="bg-[#00a2ff] text-white p-2 md:px-6 md:py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all flex items-center justify-center gap-1">
+            <div class="flex items-center gap-2 shrink-0"> <!-- shrink-0を追加 -->
+                <a href="tel:0832460556" class="bg-[#00a2ff] text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all flex items-center justify-center gap-2">
                     <i class="fas fa-phone-alt text-xs"></i>
                     <span class="hidden sm:inline text-xs font-black italic">お問合せ</span>
                 </a>
-                
-                <div class="lg:hidden flex gap-1 shrink-0">
-                    <a href="#schedule-section" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center border border-white/10 shrink-0"><i class="fas fa-calendar-alt block text-sm mb-0.5"></i>日程</a>
-                    <a href="mailto:info@shimonoseki-tc.com" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center border border-white/10 shrink-0"><i class="fas fa-envelope block text-sm mb-0.5"></i>メール</a>
-                    <a href="blog.html" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center border border-white/10 shrink-0"><i class="fas fa-edit block text-sm mb-0.5"></i>ブログ</a>
+                <div class="lg:hidden flex gap-1.5 shrink-0"> <!-- shrink-0を追加 -->
+                    <a href="#schedule-section" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10 shrink-0"><i class="fas fa-calendar-alt block text-sm mb-0.5"></i>日程</a>
+                    <a href="mailto:info@shimonoseki-tc.com" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10 shrink-0"><i class="fas fa-envelope block text-sm mb-0.5"></i>メール</a>
+                    <a href="blog.html" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10 shrink-0"><i class="fas fa-edit block text-sm mb-0.5"></i>ブログ</a>
                 </div>
             </div>
         </div>
@@ -323,13 +313,13 @@
 
             <!-- 年間スケジュール：左は表示、右は保存 -->
             <div class="flex flex-col md:flex-row gap-4 mb-16 relative z-20 px-4 md:px-0">
-                <!-- ボタン1：表示のみ（download属性を入れないのが正解） -->
+                <!-- ボタン1：表示のみ（閲覧用） -->
                 <a href="pdf/STC_Annual_Schedule_2026.pdf" target="_blank" class="w-full md:w-auto bg-white text-[#001a33] px-8 py-3 rounded-full font-[900] italic shadow-lg hover:bg-sky-50 transition-all flex items-center justify-center gap-3 border-2 border-white text-sm">
                     <i class="fas fa-eye text-[#00a2ff]"></i>
                     <span>年間カレンダーを表示</span>
                 </a>
 
-                <!-- ボタン2：保存用（download属性を入れるのが正解） -->
+                <!-- ボタン2：保存用（ダウンロード実行） -->
                 <a href="pdf/STC_Annual_Schedule_2026.pdf" download="STC_年間スケジュール_2026.pdf" class="w-full md:w-auto bg-[#00a2ff] text-white px-8 py-3 rounded-full font-[900] italic shadow-lg hover:bg-[#001a33] transition-all flex items-center justify-center gap-3 border-2 border-[#00a2ff] text-sm">
                     <i class="fas fa-download"></i>
                     <span>PDFをダウンロード</span>
@@ -721,13 +711,10 @@
         const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
 
         if (scrollPos > 50) {
-            // 背景を濃紺にする（index専用）
             nav.classList.add('header-scrolled');
-            // 他のページと同じく上下の余白を詰める
             nav.classList.add('py-2');
             nav.classList.remove('py-4');
         } else {
-            // 最初は透明に戻す
             nav.classList.remove('header-scrolled');
             nav.classList.add('py-4');
             nav.classList.remove('py-2');
