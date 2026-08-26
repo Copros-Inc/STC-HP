@@ -29,6 +29,15 @@
         @media (max-width: 768px) {
             .text-9xl { font-size: 4rem !important; }
             .card-navy, .card-white { border-radius: 2.5rem; }
+            
+            /* --- 追加：スマホヘッダーの見切れ解消 --- */
+            h1.font-\[900\] { font-size: 9px !important; } /* 日本語名 */
+            header p.text-\[6px\], header p.text-\[8px\] { 
+                max-width: 140px !important; 
+                letter-spacing: -0.01em !important; 
+                overflow: visible !important; 
+                white-space: nowrap !important; 
+            } /* 英語名の見切れ(SHIM...)を解除 */
         }
     </style>
 </head>
@@ -36,7 +45,7 @@
 
     <!-- 0. SUBPAGE HEADER (背景濃紺固定・崩れ防止・並び順整理済) -->
     <header class="fixed top-0 w-full z-50 py-4 bg-[#001a33] shadow-xl" id="sub-nav">
-        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-8 gap-4">
+        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-8 gap-2">
             
             <!-- ロゴ & センター名 -->
             <a href="index.html" class="flex items-center gap-3 group shrink-0">
