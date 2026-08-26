@@ -30,3 +30,4 @@ jobs:
         with:
           source-dir: .
           umbrella-dir: pr-preview
+          custom-url: https://shimonoseki-tc.com
