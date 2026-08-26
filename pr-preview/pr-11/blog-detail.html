@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>記事詳細 | STC 下関トレーニングセンター</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --navy: #001a33; --accent: #00a2ff; }
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #f1f5f9; color: var(--navy); }
+        .article-content h2 { font-size: 1.8rem; font-weight: 900; border-left: 8px solid var(--accent); padding-left: 1rem; margin-top: 3rem; margin-bottom: 1.5rem; color: var(--navy); italic: true; }
+        .article-content h3 { font-size: 1.4rem; font-weight: 900; margin-top: 2rem; margin-bottom: 1rem; color: var(--accent); }
+        .article-content p { line-height: 2; margin-bottom: 1.5rem; font-weight: 500; color: #334155; }
+        .article-content table { width: 100%; border-collapse: collapse; margin: 2rem 0; background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .article-content th { background: var(--navy); color: white; padding: 1rem; text-align: left; font-size: 0.8rem; }
+        .article-content td { padding: 1rem; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; font-weight: 700; }
+        .article-content strong { color: var(--accent); font-weight: 900; }
+        .highlight-box { background: #e0f2fe; border-radius: 1.5rem; padding: 2rem; margin: 2rem 0; border-left: 5px solid var(--accent); }
+    </style>
+</head>
+<body class="text-left">
+
+    <!-- 0. SUBPAGE HEADER (背景濃紺固定・主要コース強調版) -->
+    <header class="fixed top-0 w-full z-50 py-4 bg-[#001a33] shadow-xl" id="sub-nav">
+        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-8 gap-4">
+            <a href="index.html" class="flex items-center gap-3 group shrink-0">
+                <div class="bg-white p-1 rounded shadow-lg group-hover:scale-105 transition-transform">
+                    <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
+                </div>
+                <div class="text-left text-white leading-none whitespace-nowrap">
+                    <h1 class="font-[900] text-xs md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
+                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.2em]">Shimonoseki Training Center</p>
+                </div>
+            </a>
+            <!-- PC用メニュー：並び順整理済 -->
+            <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase whitespace-nowrap">
+                <a href="index.html#service" class="hover:text-[#00a2ff] transition">事業内容</a>
+                <a href="index.html#courses" class="text-[#00a2ff] border-b-2 border-[#00a2ff]">主要コース</a>
+                <a href="features.html" class="hover:text-[#00a2ff] transition">選ばれる理由</a>
+                <a href="index.html#schedule-section" class="hover:text-[#00a2ff] transition">開催予定</a>
+                <a href="points.html" class="hover:text-[#00a2ff] transition">受講ガイド</a>
+                <a href="index.html#access" class="hover:text-[#00a2ff] transition">Access</a>
+                <a href="blog.html" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">ブログ</a>
+                <a href="mailto:info@shimonoseki-tc.com" class="text-[#00a2ff] border border-[#00a2ff]/60 hover:bg-[#00a2ff] hover:text-white transition px-3 py-1 rounded flex items-center gap-2 shadow-sm">
+                    <i class="fas fa-envelope text-[10px]"></i>メール
+                </a>
+            </nav>
+            <div class="flex items-center gap-2 shrink-0">
+                <a href="tel:0832460556" class="bg-[#00a2ff] text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all flex items-center justify-center gap-2">
+                    <i class="fas fa-phone-alt text-xs"></i>
+                    <span class="hidden sm:inline text-xs font-black italic">お問合せ</span>
+                </a>
+                <div class="lg:hidden flex gap-1.5">
+                    <a href="index.html#schedule-section" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10"><i class="fas fa-calendar-alt block text-sm mb-0.5"></i>日程</a>
+                    <a href="mailto:info@shimonoseki-tc.com" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10"><i class="fas fa-envelope block text-sm mb-0.5"></i>メール</a>
+                    <a href="blog.html" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10"><i class="fas fa-edit block text-sm mb-0.5"></i>ブログ</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 1. ARTICLE HERO -->
+    <section id="hero-bg" class="relative h-[60vh] flex items-end pb-20 px-6 bg-cover bg-center" style="background-image: url('bg-blog.jpg');">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#001a33] via-[#001a33]/40 to-transparent"></div>
+        <div class="container mx-auto max-w-4xl relative z-10 text-left">
+            <span id="post-category" class="bg-accent text-white text-[10px] font-black px-4 py-1 rounded-full italic mb-6 inline-block uppercase tracking-widest shadow-lg">CATEGORY</span>
+            <h1 id="post-title" class="text-white text-3xl md:text-5xl font-[900] leading-tight italic drop-shadow-2xl">読み込み中...</h1>
+            <p id="post-date" class="text-white/60 font-black text-sm mt-6 italic font-en">DATE UPDATE</p>
+        </div>
+    </section>
+
+    <!-- 2. ARTICLE BODY -->
+    <main class="container mx-auto max-w-4xl px-6 -mt-10 relative z-20 pb-40">
+        <article class="bg-white rounded-[3rem] p-8 md:p-20 shadow-2xl">
+            <div id="post-content" class="article-content text-left">
+                <!-- ここに本文がオシャレに展開されます -->
+            </div>
+            
+            <!-- お問い合わせ誘導 -->
+            <div class="mt-20 p-10 bg-[#001a33] rounded-[2.5rem] text-center text-white shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('bg-detail.jpg')] bg-cover"></div>
+                <div class="relative z-10">
+                    <h4 class="text-2xl font-[900] italic mb-4">講習に関するご相談はお気軽に</h4>
+                    <p class="text-sm font-bold text-sky-300 mb-8 tracking-widest">専任の講師が丁寧にお答えいたします。</p>
+                    <a href="tel:0832460556" class="inline-flex items-center gap-4 bg-accent text-white px-10 py-4 rounded-full font-[900] text-xl shadow-xl hover:scale-105 transition-all italic">
+                        <i class="fas fa-phone-alt"></i> 083.246.0556
+                    </a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- 3. FOOTER -->
+    <footer class="bg-[#001a33] text-white py-24 text-center">
+        <p class="text-white/20 text-[10px] font-bold uppercase tracking-widest">&copy; 2026 SHIMONOSEKI TRAINING CENTER.</p>
+    </footer>
+
+    <!-- LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = { 
+            apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw", 
+            authDomain: "stc-hp.firebaseapp.com", 
+            projectId: "stc-hp", 
+            storageBucket: "stc-hp.firebasestorage.app", 
+            messagingSenderId: "795332931918", 
+            appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f" 
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // URLから記事IDを取得
+        const params = new URLSearchParams(window.location.search);
+        const postId = params.get('id');
+
+        if (postId) {
+            onSnapshot(doc(db, "blogs", postId), (snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.data();
+                    
+                    // カテゴリー別カラー設定
+                    const colors = {
+                        '資格・講習ガイド': '#001a33',
+                        '法改正・業界ニュース': '#7f1d1d',
+                        '現場レポート': '#064e3b',
+                        '重要なお知らせ': '#0c4a6e',
+                    };
+                    const themeColor = colors[data.category] || '#001a33';
+
+                    document.title = `${data.title} | STC`;
+                    document.getElementById('post-title').innerText = data.title;
+                    
+                    // カテゴリータグのデザイン反映（ここを強化しました）
+                    const categoryTag = document.getElementById('post-category');
+                    categoryTag.innerText = data.category || 'Report';
+                    categoryTag.style.backgroundColor = themeColor;
+                    categoryTag.style.color = '#ffffff';
+                    categoryTag.className = "text-[10px] font-[900] px-4 py-1.5 rounded shadow-xl italic mb-6 inline-block uppercase tracking-widest border border-white/20";
+                    
+                    // 日付
+                    const dateObj = data.createdAt?.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+                    document.getElementById('post-date').innerText = dateObj.toLocaleDateString('ja-JP') + ' UPDATE';
+
+                    // ヒーロー背景（模型写真対応）
+                    const displayImg = data.image ? data.image : './bg-blog-default.jpg';
+                    const heroBg = document.getElementById('hero-bg');
+                    heroBg.style.backgroundImage = `url(${displayImg})`;
+                    heroBg.querySelector('.absolute.inset-0').style.background = `linear-gradient(to top, ${themeColor}, rgba(0,26,51,0.4), transparent)`;
+
+                    // 本文の整形（太字対応版）
+                    let content = data.content;
+                    content = content.replace(/【(.*?)】/g, '<h2>$1</h2>');
+                    content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    content = content.split('\n').map(line => {
+                        if(!line.trim()) return '';
+                        if(line.startsWith('<h2>')) return line;
+                        return `<p>${line}</p>`;
+                    }).join('');
+                    
+                    document.getElementById('post-content').innerHTML = content;
+                }
+            });
+        }
+
+            // ヘッダーのスクロール演出
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('sub-nav');
+        if (window.pageYOffset > 50) {
+            nav.classList.add('py-2', 'shadow-2xl');
+            nav.classList.remove('py-4', 'shadow-xl');
+        } else {
+            nav.classList.add('py-4', 'shadow-xl');
+            nav.classList.remove('py-2', 'shadow-2xl');
+        }
+    });
+        
+    </script>
+</body>
+</html>
