@@ -23,7 +23,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
 
-      # プレビュー（PR作成時）：gh-pagesブランチのサブディレクトリにプッシュ
+      # プレビュー（PR作成時）：トークンを明示的に渡して権限不足を回避
       - name: Deploy PR Preview
         if: github.event_name == 'pull_request'
         uses: rossjrw/pr-preview-action@v1
@@ -32,3 +32,4 @@ jobs:
           preview-branch: gh-pages
           umbrella-dir: pr-preview
           action: auto
+          token: ${{ secrets.GITHUB_TOKEN }} # この1行を追加
