@@ -1,19 +1,34 @@
-name: Deploy to GitHub Pages Preview
+name: GitHub Pages Preview
 on:
   push:
     branches:
       - main
   pull_request: # PR作成時にプレビューを動かす
 permissions:
-  contents: write # プレビュー作成に必要
+  contents: write
   pages: write
   id-token: write
+  pull-requests: write # PRにコメントを残すために必須
 jobs:
-  build_and_preview:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy Preview
+
+      # 本番（main）への反映
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+      - name: Deploying to Pages
+        if: github.event_name == 'push'
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      # プレビュー（Pull Request）の作成
+      - name: Deploy PR Preview
+        if: github.event_name == 'pull_request'
         uses: rossjrw/pr-preview-action@v1
         with:
-          source-dir: . # ルートディレクトリを公開
+          source-dir: .
