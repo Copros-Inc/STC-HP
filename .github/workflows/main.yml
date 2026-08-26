@@ -34,3 +34,5 @@ jobs:
         with:
           source-dir: .
           action: auto
+          # この1行を追加：カスタムドメインのサブディレクトリであることを明示
+          base-url: https://shimonoseki-tc.com/pr-preview/pr-${{ github.event.number }}/
