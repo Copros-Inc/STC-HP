@@ -1,38 +1,36 @@
-name: GitHub Pages Preview
+name: GitHub Pages
 on:
   push:
-    branches:
-      - main
-  pull_request: # PR作成時にプレビューを動かす
+    branches: ["main"]
+  pull_request:
+
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
-  pull-requests: write # PRにコメントを残すために必須
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      # 成果物を一時保存（Actions方式の必須ステップ）
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
-
-      # 本番デプロイ（mainへのpush時のみ実行）
+      
       - name: Deploy to GitHub Pages
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         id: deployment
         uses: actions/deploy-pages@v4
-
-      # プレビューデプロイ（PR時のみ実行）
-      - name: Deploy PR Preview
-        if: github.event_name == 'pull_request'
-        uses: rossjrw/pr-preview-action@v1
-        with:
-          source-dir: .
-          action: auto
-          # この1行を追加：カスタムドメインのサブディレクトリであることを明示
-          base-url: https://shimonoseki-tc.com/pr-preview/pr-${{ github.event.number }}/
