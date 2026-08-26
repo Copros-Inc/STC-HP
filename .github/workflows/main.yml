@@ -32,3 +32,4 @@ jobs:
         uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: .
+          umbrella-dir: pr-preview # ここを明示的に指定
