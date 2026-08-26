@@ -15,21 +15,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 本番（main）への反映
-      - name: Deploy to GitHub Pages
-        if: github.event_name == 'push'
-        uses: actions/upload-pages-artifact@v3
+      # 本番（mainへのpush時）は gh-pages ブランチのルートにデプロイ
+      - name: Deploy to GitHub Pages (Production)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: '.'
-      - name: Deploying to Pages
-        if: github.event_name == 'push'
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
 
-      # プレビュー（Pull Request）の作成
+      # プレビュー（PR作成時）は gh-pages ブランチのサブディレクトリにデプロイ
       - name: Deploy PR Preview
         if: github.event_name == 'pull_request'
         uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: .
-          umbrella-dir: pr-preview # ここを明示的に指定
+          umbrella-dir: pr-preview
