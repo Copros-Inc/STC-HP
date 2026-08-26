@@ -23,11 +23,12 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
 
-      # プレビュー（PR作成時）は gh-pages ブランチのサブディレクトリにデプロイ
+      # プレビュー（PR作成時）
       - name: Deploy PR Preview
         if: github.event_name == 'pull_request'
         uses: rossjrw/pr-preview-action@v1
         with:
           source-dir: .
+          preview-branch: gh-pages
           umbrella-dir: pr-preview
-          custom-url: https://shimonoseki-tc.com
+          action: auto
