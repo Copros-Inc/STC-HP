@@ -53,17 +53,20 @@
             .text-5xl, .text-6xl, .text-7xl, .text-8xl, .text-9xl { font-size: 3rem !important; line-height: 1.1 !important; }
             .copy-outline { -webkit-text-stroke: 1px white; }
             p { font-size: 1.1rem !important; line-height: 1.7 !important; }
-             /* --- ヘッダーとカードのスマホ最適化追加 --- */
-            h1.font-\[900\] { font-size: 9px !important; } /* 日本語名を9pxに */
-            header p.text-\[6px\] { 
-                max-width: 80px; 
-                overflow: hidden; 
-                text-overflow: ellipsis; 
-                white-space: nowrap; 
-            } /* 英語名を省略して右側ボタンを守る */
-            .p-12, .p-14, .p-24 { padding: 1.5rem !important; } /* はみ出し防止：パディング抑制 */
-            .rounded-\[4rem\], .rounded-\[3.5rem\], .rounded-\[2.5rem\] { border-radius: 2rem !important; } /* 角丸の調整 */
-            .text-6xl, .text-8xl { font-size: 2.5rem !important; } /* はみ出し防止：デカ文字の抑制 */
+            /* --- ヘッダーとカードの最適化（見切れ完全排除版） --- */
+            h1.font-\[900\] { font-size: 9px !important; }
+            header p.text-\[6px\], header p.text-\[7px\], header p.text-\[8px\] { 
+                max-width: none !important; 
+                min-width: max-content !important;
+                letter-spacing: -0.01em !important; 
+                overflow: visible !important; 
+                text-overflow: clip !important; 
+                white-space: nowrap !important; 
+            }
+            header a.shrink-0 { flex-shrink: 0 !important; min-width: max-content !important; }
+            .p-12, .p-14, .p-24 { padding: 1.5rem !important; }
+            .rounded-\[4rem\], .rounded-\[3.5rem\], .rounded-\[2.5rem\] { border-radius: 2rem !important; }
+            .text-6xl, .text-8xl { font-size: 2.5rem !important; }
         }
 
          /* --- index専用：初期は透明、スクロールで紺色 --- */
@@ -105,7 +108,7 @@
 
     <!-- 0. MASTER HEADER (GitHub Pages完全移行版) -->
     <header class="fixed top-0 w-full z-[9999] py-4 transition-all duration-300" id="sub-nav">
-        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-10">
+        <div class="max-w-[1500px] mx-auto flex justify-start items-center px-4 md:px-10">
             <a href="index.html" class="flex items-center gap-3 shrink-0">
                 <div class="bg-white p-1 rounded shadow-lg shrink-0">
                     <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
