@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STC | 下関トレーニングセンター - 山口県唯一の認可教習機関</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --navy: #001a33; --accent: #00a2ff; --light-navy: #f0f5fa; }
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #ffffff; color: var(--navy); overflow-x: hidden; }
+
+        /* パララックス効果 */
+        .parallax { background-attachment: fixed; background-position: center; background-size: cover; position: relative; }
+        
+        /* ヒーロー演出 */
+        .hero-bg { 
+            position: absolute; inset: 0; background-image: url('hero.png'); 
+            background-size: cover; background-position: center; z-index: 0; 
+            transition: 3s ease-out; filter: brightness(0.7);
+        }
+        .hero-active .hero-bg { transform: scale(1.05); filter: brightness(0.8); }
+
+        /* 白抜き文字 */
+        .copy-outline { color: transparent; -webkit-text-stroke: 1.5px white; }
+
+        /* 透かし背景デカ文字 */
+        .watermark {
+            position: absolute; font-family: 'Oswald', sans-serif; font-size: 18vw;
+            color: rgba(0, 40, 77, 0.03); font-weight: 700; z-index: 0;
+            pointer-events: none; white-space: nowrap; text-transform: uppercase; font-style: italic;
+        }
+
+        /* アニメーション */
+        .reveal { opacity: 0; transform: translateY(40px); transition: 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* カレンダー・ステータス（システム維持） */
+        .status-badge { padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 900; }
+        .status-ok { background: var(--accent); color: white; }
+        .status-few { background: #f59e0b; color: white; animation: pulse 2s infinite; }
+        .status-full { background: #64748b; color: white; }
+
+             @media (max-width: 768px) {
+            .parallax { background-attachment: scroll; }
+            #calendar-container table { display: none; }
+            .mobile-card { background: white; margin-bottom: 15px; padding: 25px; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.06); }
+            
+            /* 追加：文字サイズと折り返しの最適化 */
+            h1, h2, h3 { word-break: keep-all; overflow-wrap: break-word; line-height: 1.2 !important; }
+            .text-5xl, .text-6xl, .text-7xl, .text-8xl, .text-9xl { font-size: 3rem !important; line-height: 1.1 !important; }
+            .copy-outline { -webkit-text-stroke: 1px white; }
+            p { font-size: 1.1rem !important; line-height: 1.7 !important; }
+        }
+
+         /* --- index専用：初期は透明、スクロールで紺色 --- */
+        #sub-nav {
+            background-color: transparent;
+            box-shadow: none;
+            transition: all 0.4s ease;
+            z-index: 9999;
+        }
+
+        /* スクロール後に付与されるクラス */
+        #sub-nav.header-scrolled {
+            background-color: #001a33 !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        /* PC・スマホ共通：ロゴを縮ませない */
+        .shrink-0 { flex-shrink: 0 !important; }
+
+
+/* コンテンツ消失対策：HEROセクションの中身を押し下げる */
+.hero-active .relative.z-10 {
+    margin-top: 100px; /* ヘッダーの高さ分確保 */
+}
+                /* スマホでヘッダーの中身が消えるのを防ぐ設定 */
+        @media (max-width: 640px) {
+            #sub-nav .flex {
+                flex-wrap: nowrap !important; /* 横並びを維持 */
+            }
+            #sub-nav a.shrink-0 {
+                flex-shrink: 0 !important; /* ロゴを絶対に縮ませない */
+            }
+        }
+        /* スマホ・実機でのレイアウト崩れを物理的に防ぐ */
+        @media (max-width: 480px) {
+            /* 1. 英語名の幅を制限してボタンを押し出さないようにする */
+            #sub-nav p { 
+                font-size: 5px !important; 
+                letter-spacing: 0.05em !important; 
+                max-width: 120px; /* 幅を制限 */
+                white-space: normal !important; /* 折り返しを許可 */
+                line-height: 1 !important;
+            }
+            /* 2. 日本語名もさらに小さく */
+            #sub-nav h1 { font-size: 8px !important; }
+
+            /* 3. 右側のアイコン同士の間隔を詰める */
+            #sub-nav .lg\:hidden { gap: 0.2rem !important; }
+            #sub-nav .lg\:hidden a { padding: 0.3rem !important; }
+        }
+
+        /* 料金やデカ文字のはみ出し修正 */
+        @media (max-width: 768px) {
+            .text-[10rem], .text-[15rem], .text-[18vw] { font-size: 14vw !important; }
+            .text-7xl, .text-8xl, .text-9xl { font-size: 2.8rem !important; }
+        } 
+        
+    </style>
+</head>
+<body>
+
+    <!-- 0. MASTER HEADER (GitHub Pages完全移行版) -->
+    <header class="fixed top-0 w-full z-[9999] py-3 transition-all duration-300" id="sub-nav">
+        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-2 md:px-10">
+            <!-- 左：ロゴとタイトル -->
+            <a href="index.html" class="flex items-center gap-1.5 shrink">
+                <div class="bg-white p-1 rounded shadow-lg shrink-0">
+                    <img src="logo.png" alt="STC" class="h-6 md:h-12 object-contain">
+                </div>
+                <div class="text-left text-white leading-tight">
+                    <h1 class="font-[900] text-[9px] md:text-lg italic uppercase tracking-tighter whitespace-nowrap">下関トレーニングセンター</h1>
+                    <!-- 英語名をスマホで極小にし、右側を空ける -->
+                    <p class="text-[5px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.1em] opacity-90">SHIMONOSEKI TRAINING CENTER</p>
+                </div>
+            </a>
+
+            <!-- 右：ボタン・アイコン群 -->
+            <div class="flex items-center gap-1 shrink-0">
+                <!-- お問合せ（電話） -->
+                <a href="tel:0832460556" class="bg-[#00a2ff] text-white p-2 rounded-lg shadow-lg flex items-center justify-center">
+                    <i class="fas fa-phone-alt text-[10px]"></i>
+                </a>
+                <!-- スマホ専用メニュー：日程・メール・ブログ -->
+                <div class="lg:hidden flex gap-1">
+                    <a href="#schedule-section" class="bg-white/10 p-1.5 rounded text-white text-[7px] font-black italic text-center border border-white/10 shrink-0">
+                        <i class="fas fa-calendar-alt block text-xs"></i>日程
+                    </a>
+                    <a href="mailto:info@shimonoseki-tc.com" class="bg-white/10 p-1.5 rounded text-white text-[7px] font-black italic text-center border border-white/10 shrink-0">
+                        <i class="fas fa-envelope block text-xs"></i>メール
+                    </a>
+                    <a href="blog.html" class="bg-white/10 p-1.5 rounded text-white text-[7px] font-black italic text-center border border-white/10 shrink-0">
+                        <i class="fas fa-edit block text-xs"></i>ブログ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 1. HERO SECTION -->
+    <section class="relative h-screen flex items-center justify-center text-center overflow-hidden bg-slate-950">
+        <div class="hero-bg"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-navy/40 via-transparent to-navy/90"></div>
+
+        <div class="relative z-10 px-4 mt-20">
+            <!-- 認可情報は削除し、キャッチコピーを最大化 -->
+            <h2 class="italic text-white reveal active">
+                <span class="text-5xl md:text-9xl font-black block mb-4 drop-shadow-2xl">その資格が、</span>
+                <span class="copy-outline text-6xl md:text-[10rem] font-black block leading-none">一生の武器になる。</span>
+            </h2>
+            <p class="text-white text-base md:text-2xl font-bold tracking-[0.5em] my-14 reveal active italic drop-shadow-lg">
+                山口県下関市唯一の認可教習機関
+            </p>
+            
+            <!-- ボタンの視認性・ホバーアクションを強化 -->
+            <div class="flex flex-col sm:flex-row gap-8 justify-center items-center mb-16 reveal active px-4">
+                <!-- 受講申し込み：濃紺縁取り・強力なシャドウ -->
+                <a href="#schedule-section" class="w-full sm:w-80 bg-accent text-white py-6 rounded-full font-black text-2xl shadow-[0_20px_50px_rgba(0,162,255,0.4)] border-2 border-navy hover:bg-navy hover:scale-105 transition-all duration-300 italic flex items-center justify-center gap-3 group">
+                    受講申し込み <i class="fas fa-chevron-right text-lg group-hover:translate-x-1 transition"></i>
+                </a>
+                
+                <!-- 講習日程表：白ベース・濃紺文字（消えない設定） -->
+                <a href="#schedule-section" class="w-full sm:w-80 bg-white text-navy py-6 rounded-full font-black text-2xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] border-2 border-white hover:bg-navy hover:text-white hover:border-navy hover:scale-105 transition-all duration-300 italic flex items-center justify-center gap-3 group">
+                    <i class="fas fa-calendar-alt text-lg"></i> 講習日程表
+                </a>
+            </div>
+
+            <!-- News: ヒーローの雰囲気を壊さないよう透過度を調整 -->
+            <div id="hp-news-list" class="max-w-xl mx-auto reveal active opacity-90"></div>
+        </div>
+        
+        <!-- スクロールを促す動的なライン -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center">
+            <span class="text-white/30 text-[10px] font-black tracking-widest uppercase italic mb-4">Scroll</span>
+            <div class="w-1 h-24 bg-gradient-to-b from-accent to-transparent"></div>
+        </div>
+    </section>
+
+             <!-- 2. SERVICE (ボタンの色を絶対に消えない「濃紺」に固定) -->
+    <section id="service" class="py-24 md:py-32 bg-white relative overflow-hidden text-left">
+        <div class="watermark" style="top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.02;">SKILL SERVICE</div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 md:gap-20 items-center text-left">
+                <div class="reveal text-left">
+                    <h3 class="text-4xl md:text-6xl font-[900] mb-8 border-l-8 border-accent pl-6 md:pl-8 leading-tight text-navy text-left">
+                        現場の「即戦力」を、<br>
+                        <span class="text-accent text-5xl md:text-7xl italic uppercase tracking-tighter">最短ルートで。</span>
+                    </h3>
+                    <p class="text-slate-600 leading-loose text-lg md:text-xl font-bold max-w-xl text-left">
+                        下関トレーニングセンターは、現場で真に通用する「安全」と「技術」を習得するための山口県下関市唯一の認可教習機関です。
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 reveal text-left">
+                    <!-- 受講申し込み：背景を濃紺(navy)に、文字を白に強制 -->
+                    <a href="#schedule-section" class="group bg-[#001a33] p-10 md:p-12 rounded-[2.5rem] shadow-2xl hover:bg-accent transition-all duration-500 flex justify-between items-center border-4 border-[#001a33]">
+                        <div class="text-left">
+                            <h4 class="text-3xl md:text-4xl font-[900] mb-2 italic text-white">受講申し込み</h4>
+                            <p class="text-xs md:text-sm font-black text-sky-400 uppercase tracking-widest italic">WEB予約・資料請求はこちら</p>
+                        </div>
+                        <i class="fas fa-edit text-4xl text-white opacity-40"></i>
+                    </a>
+
+                    <!-- 講習カレンダー：背景を薄い水色に -->
+                    <a href="#schedule-section" class="group bg-sky-50 p-10 md:p-12 rounded-[2.5rem] border-4 border-sky-100 shadow-xl hover:bg-white hover:border-accent transition-all duration-500 flex justify-between items-center">
+                        <div class="text-left">
+                            <h4 class="text-3xl md:text-4xl font-[900] mb-2 italic text-navy">講習カレンダー</h4>
+                            <p class="text-xs md:text-sm font-black text-accent uppercase tracking-widest italic">最新のスケジュールを確認</p>
+                        </div>
+                        <i class="fas fa-calendar-alt text-4xl text-accent opacity-40"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. MAJOR COURSES (そのまま維持) -->
+    <section id="courses" class="parallax py-40 text-left" style="background-image: url('bg-practical.jpg'); background-attachment: fixed; background-size: cover; background-position: center; position: relative;">
+        <div class="absolute inset-0 bg-[#001a33]/80"></div>
+        <div class="container mx-auto px-6 relative z-10 text-left">
+            <h3 class="text-white text-center text-5xl md:text-8xl font-[900] italic mb-24 reveal uppercase tracking-tighter">Major Courses</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-left text-white">
+                <a href="course-detail.html?id=tamakake" class="group relative aspect-[3/4] rounded-[2.5rem] overflow-hidden shadow-2xl reveal block border-2 border-white/10 transition-all duration-500 hover:-translate-y-4 text-white">
+                    <img src="course1.jpg" class="w-full h-full object-cover transition duration-1000 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-transparent opacity-90 transition-opacity"></div>
+                    <div class="absolute bottom-10 left-8 right-8 text-white">
+                        <span class="text-accent text-sm font-black uppercase tracking-widest italic mb-3 block">01. Slinging</span>
+                        <h4 class="text-3xl md:text-4xl font-[900] italic leading-tight text-white">玉掛け<br>技能講習</h4>
+                        <div class="h-1.5 w-0 bg-accent mt-4 group-hover:w-full transition-all duration-700 text-white"></div>
+                    </div>
+                </a>
+                <a href="course-detail.html?id=crane" class="group relative aspect-[3/4] rounded-[2.5rem] overflow-hidden shadow-2xl reveal block border-2 border-white/10 transition-all duration-500 hover:-translate-y-4 text-white">
+                    <img src="course3.jpg" class="w-full h-full object-cover transition duration-1000 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-transparent opacity-90 transition-opacity text-white"></div>
+                    <div class="absolute bottom-10 left-8 right-8 text-white">
+                        <span class="text-accent text-sm font-black uppercase tracking-widest italic mb-3 block text-white">02. Crane</span>
+                        <h4 class="text-3xl md:text-4xl font-[900] italic leading-tight text-white">小型移動式<br>クレーン</h4>
+                        <div class="h-1.5 w-0 bg-accent mt-4 group-hover:w-full transition-all duration-700 text-white"></div>
+                    </div>
+                </a>
+                <a href="course-detail.html?id=fork" class="group relative aspect-[3/4] rounded-[2.5rem] overflow-hidden shadow-2xl reveal block border-2 border-white/10 transition-all duration-500 hover:-translate-y-4 text-white">
+                    <img src="course2.jpg" class="w-full h-full object-cover transition duration-1000 group-hover:scale-110 text-white">
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-transparent opacity-90 transition-opacity text-white"></div>
+                    <div class="absolute bottom-10 left-8 right-8 text-white">
+                        <span class="text-accent text-sm font-black uppercase tracking-widest italic mb-3 block text-white">03. Forklift</span>
+                        <h4 class="text-3xl md:text-4xl font-[900] italic leading-tight text-white">フォークリフト<br>運転技能講習</h4>
+                        <div class="h-1.5 w-0 bg-accent mt-4 group-hover:w-full transition-all duration-700 text-white"></div>
+                    </div>
+                </a>
+                <a href="course-detail.html?id=special" class="group bg-white/10 backdrop-blur-xl rounded-[2.5rem] flex items-center justify-center p-8 text-center text-white border-2 border-white/20 transition-all duration-500 hover:bg-accent/20 hover:-translate-y-4 text-white">
+                    <div class="text-white text-center"><span class="text-accent text-sm font-black italic block mb-4 uppercase tracking-widest text-center">And More</span><h4 class="text-3xl md:text-4xl font-[900] italic leading-tight text-white text-center">特別教育・<br>各種教育</h4></div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+        <!-- 4. WHY CHOOSE STC (数字がはみ出す「しゃれおつ」デザイン) -->
+    <section id="features" class="parallax py-40" style="background-image: url('bg-theory.jpg');">
+        <!-- 背景を適度に透過させて講師の写真を見せる -->
+        <div class="absolute inset-0 bg-white/80 backdrop-blur-sm"></div>
+        <div class="container mx-auto px-6 relative z-10 text-left">
+            <div class="text-left mb-24 reveal">
+                <h3 class="text-[#001a33] text-5xl md:text-8xl font-[900] italic uppercase tracking-tighter">Why Choose STC</h3>
+                <p class="text-accent font-[900] tracking-[0.4em] text-sm mt-4 italic uppercase">下関トレーニングセンターが選ばれる理由</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-16 md:gap-12 mt-20">
+                <!-- 01: 数字を枠からはみ出させる演出 -->
+                <a href="features.html#reason01" class="relative bg-white p-12 pt-16 rounded-[3rem] shadow-2xl reveal border border-slate-100 group hover:-translate-y-4 transition duration-500 block text-left">
+                    <!-- はみ出すデカ数字 -->
+                    <div class="absolute -top-12 -left-4 text-8xl md:text-9xl font-[900] text-accent italic opacity-20 group-hover:opacity-100 group-hover:-rotate-12 transition-all duration-700 pointer-events-none">01</div>
+                    <h4 class="text-3xl font-[900] mb-8 italic text-[#001a33] leading-tight relative z-10">山口労働局長登録の<br>確実な信頼</h4>
+                    <p class="text-slate-600 font-bold text-lg leading-loose relative z-10">山口県下関市で唯一の認可機関。履歴書に一生書ける、公的な資格取得を保証します。</p>
+                    <div class="mt-8 text-accent text-xs font-[900] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition">詳しく見る →</div>
+                </a>
+
+                <!-- 02 -->
+                <a href="features.html#reason02" class="relative bg-white p-12 pt-16 rounded-[3rem] shadow-2xl reveal border border-slate-100 group hover:-translate-y-4 transition duration-500 block text-left">
+                    <div class="absolute -top-12 -left-4 text-8xl md:text-9xl font-[900] text-accent italic opacity-20 group-hover:opacity-100 group-hover:-rotate-12 transition-all duration-700 pointer-events-none">02</div>
+                    <h4 class="text-3xl font-[900] mb-8 italic text-[#001a33] leading-tight relative z-10 text-left">国道2号線沿い<br>アクセス抜群</h4>
+                    <p class="text-slate-600 font-bold text-lg leading-loose relative z-10 text-left text-left">長府安養寺、国道2号線からすぐ。広い駐車場も完備し、遠方からの受講も快適です。</p>
+                    <div class="mt-8 text-accent text-xs font-[900] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition text-left text-left">詳しく見る →</div>
+                </a>
+
+                <!-- 03 -->
+                <a href="features.html#reason03" class="relative bg-white p-12 pt-16 rounded-[3rem] shadow-2xl reveal border border-slate-100 group hover:-translate-y-4 transition duration-500 block text-left">
+                    <div class="absolute -top-12 -left-4 text-8xl md:text-9xl font-[900] text-accent italic opacity-20 group-hover:opacity-100 group-hover:-rotate-12 transition-all duration-700 pointer-events-none">03</div>
+                    <h4 class="text-3xl font-[900] mb-8 italic text-[#001a33] leading-tight relative z-10 text-left">現場を知るベテラン<br>による実践指導</h4>
+                    <p class="text-slate-600 font-bold text-lg leading-loose relative z-10 text-left text-left">講師は全員プロ。事故を防ぎ、即戦力として活躍する術を教えます。</p>
+                    <div class="mt-8 text-accent text-xs font-[900] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition text-left text-left">詳しく見る →</div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+               <!-- 5. SCHEDULE (背景固定 & 枠組みの完全復活) -->
+    <section id="schedule-section" class="parallax py-32" style="background-image: url('bg-detail.jpg'); background-attachment: fixed; background-size: cover; background-position: center; position: relative;">
+        <!-- 背景を暗くして文字を浮かび上がらせる -->
+        <div class="absolute inset-0 bg-[#001a33]/70 z-0"></div>
+        
+        <div class="container mx-auto px-6 relative z-10 text-left text-white">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
+                <div class="text-left">
+                    <h3 class="text-white text-6xl md:text-8xl font-[900] italic uppercase leading-none">Schedule</h3>
+                    <p class="text-accent font-[900] tracking-[0.4em] text-xl mt-4 italic uppercase">講習開催予定</p>
+                </div>
+                
+                <!-- 月選択：白背景でハッキリ -->
+                <div class="flex items-center gap-6 bg-white p-4 rounded-full shadow-2xl relative z-30">
+                    <button onclick="changeMonth(-1)" class="w-14 h-14 rounded-full flex items-center justify-center bg-slate-100 hover:bg-accent transition-all">
+                        <i class="fas fa-chevron-left text-xl text-[#001a33]"></i>
+                    </button>
+                    <span id="current-month-display" class="font-[900] italic text-4xl min-w-[120px] text-center text-[#001a33]">7月</span>
+                    <button onclick="changeMonth(1)" class="w-14 h-14 rounded-full flex items-center justify-center bg-slate-100 hover:bg-accent transition-all">
+                        <i class="fas fa-chevron-right text-xl text-[#001a33]"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 年間スケジュール：左は表示、右は保存 -->
+            <div class="flex flex-col md:flex-row gap-4 mb-16 relative z-20 px-4 md:px-0">
+                <a href="pdf/STC_Annual_Schedule_2026.pdf" target="_blank" class="w-full md:w-auto bg-white text-[#001a33] px-8 py-3 rounded-full font-[900] italic shadow-lg hover:bg-sky-50 transition-all flex items-center justify-center gap-3 border-2 border-white text-sm">
+                    <i class="fas fa-eye text-[#00a2ff]"></i><span>年間カレンダーを表示</span>
+                </a>
+                <a href="pdf/STC_Annual_Schedule_2026.pdf" download="STC_年間スケジュール_2026.pdf" class="w-full md:w-auto bg-[#00a2ff] text-white px-8 py-3 rounded-full font-[900] italic shadow-lg hover:bg-[#001a33] transition-all flex items-center justify-center gap-3 border-2 border-[#00a2ff] text-sm">
+                    <i class="fas fa-download"></i><span>PDFをダウンロード</span>
+                </a>
+            </div>
+            
+            <!-- リスト</div>型カレンダーの場所 -->
+            <div id="calendar-container" class="bg-white rounded-[2rem] shadow-2xl overflow-hidden mb-20 text-navy min-h-[300px]"></div>
+            
+            <!-- ガントチャートの場所 -->
+            <div class="mt-24 hidden md:block">
+                <h4 class="text-white font-[900] italic text-3xl mb-8 uppercase border-l-8 border-accent pl-6">Monthly Overview</h4>
+                <div id="gantt-container" class="bg-[#001a33]/80 p-10 rounded-[2rem] overflow-x-auto border-2 border-white/10 shadow-2xl backdrop-blur-md">
+                    <div id="gantt-data" class="min-w-[1000px] space-y-2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+               <!-- 6. POINT (シャレオツ感アップ & 文字視認性 完璧版) -->
+    <section id="point" class="parallax py-40" style="background-image: url('bg-classroom.jpg'); background-attachment: fixed; background-size: cover;">
+        <!-- 背景を白で明るく覆い、清潔感と視認性を両立 -->
+        <div class="absolute inset-0 bg-white/90 backdrop-blur-[2px]"></div>
+        
+        <div class="container mx-auto px-6 max-w-6xl relative z-10 text-left">
+            <div class="text-left mb-24">
+                <h3 class="text-[#001a33] text-6xl md:text-8xl font-[900] italic uppercase tracking-tighter">Point</h3>
+                <p class="text-accent font-[900] tracking-[0.4em] text-sm md:text-lg mt-4 italic uppercase">受講に関する重要情報</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12">
+                <!-- よくある質問 -->
+                <a href="points.html#qa" class="bg-white p-12 rounded-[3.5rem] block shadow-2xl hover:shadow-sky-200 transition-all duration-500 group border border-slate-100 text-center hover:-translate-y-2">
+                    <div class="w-24 h-24 bg-sky-50 rounded-full flex items-center justify-center mx-auto mb-10 group-hover:bg-accent transition duration-500">
+                        <i class="fas fa-question text-accent text-4xl group-hover:text-white"></i>
+                    </div>
+                    <h4 class="text-3xl font-[900] italic mb-6 text-[#001a33]">よくある質問</h4>
+                    <p class="text-slate-400 font-bold text-base italic uppercase tracking-widest">ご不安を事前に解消</p>
+                </a>
+                
+                <!-- 補助金制度 (背景を水色にして、文字を濃紺でハッキリさせる) -->
+                <a href="points.html#subsidy" class="bg-sky-100 p-12 rounded-[3.5rem] block shadow-2xl hover:shadow-sky-300 transition-all duration-500 group border-4 border-white text-center hover:-translate-y-2">
+                    <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-10 group-hover:bg-[#001a33] transition duration-500">
+                        <i class="fas fa-hand-holding-usd text-accent text-4xl group-hover:text-white"></i>
+                    </div>
+                    <h4 class="text-3xl font-[900] italic mb-6 text-[#001a33]">補助金制度</h4>
+                    <p class="text-[#001a33] font-[900] text-base italic uppercase tracking-widest">支援制度でお得に受講</p>
+                </a>
+                
+                <!-- 申込の流れ -->
+                <a href="points.html#flow" class="bg-[#001a33] p-12 rounded-[3.5rem] block shadow-2xl hover:shadow-slate-400 transition-all duration-500 group text-center hover:-translate-y-2">
+                    <div class="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-10 group-hover:bg-accent transition duration-500">
+                        <i class="fas fa-route text-white text-4xl"></i>
+                    </div>
+                    <h4 class="text-3xl font-[900] italic mb-6 text-white text-center">申込の流れ</h4>
+                    <p class="text-white/40 font-bold text-base italic uppercase tracking-widest text-center">受講まで簡単3ステップ</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. ACCESS (地図のピンを正確な位置に修正) -->
+    <section id="access" class="py-32 bg-white">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="text-left mb-24">
+                <h3 class="text-[#001a33] text-6xl md:text-8xl font-[900] italic uppercase tracking-tighter">Access</h3>
+                <p class="text-accent font-[900] tracking-[0.4em] text-sm md:text-lg mt-4 italic uppercase">所在地・お問い合わせ</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10 mb-20">
+                <a href="tel:0832460556" class="bg-[#001a33] text-white p-14 rounded-[4rem] shadow-2xl flex items-center justify-between group transition-all duration-500 hover:bg-accent">
+                    <div class="text-left">
+                        <span class="block text-accent font-black text-sm mb-4 italic group-hover:text-white transition">TELEPHONE</span>
+                        <span class="text-4xl md:text-5xl font-[900] italic font-en tracking-tighter">083.246.0556</span>
+                    </div>
+                    <i class="fas fa-phone-alt text-6xl opacity-10 group-hover:opacity-40 transition"></i>
+                </a>
+                <div class="bg-slate-50 border-4 border-slate-100 p-14 rounded-[4rem] flex items-center justify-between text-[#001a33]">
+                    <div class="text-left">
+                        <span class="block text-slate-400 font-black text-sm mb-4 italic">FAX NUMBER</span>
+                        <span class="text-4xl md:text-5xl font-[900] italic font-en tracking-tighter">083.246.2835</span>
+                    </div>
+                    <i class="fas fa-fax text-6xl opacity-5"></i>
+                </div>
+            </div>
+
+            <!-- ピンの立った正確な地図（山口県下関市長府安養寺1丁目15-13） -->
+<div class="w-full h-[600px] rounded-[4rem] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.2)] border-[15px] border-white">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3299.8398436669925!2d130.97947327646453!3d34.00625427317377!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x354399fccbeabf81%3A0x40566497cb1e911a!2z5LiL6Zai44OI44Os44O844OL44Oz44Kw44K744Oz44K_44O8!5e0!3m2!1sja!2sjp!4v1723393000000!5m2!1sja!2sjp" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+            <p class="mt-12 text-center text-slate-400 font-bold text-lg italic tracking-widest">〒752-8609 山口県下関市長府安養寺1丁目15-13</p>
+        </div>
+    </section>
+　　   
+    <!-- 7.5 BLOG SECTION (シャレオツ & 実録感：写真を活かす) -->
+    <section id="blog-section" class="parallax py-40 bg-white" style="background-image: url('bg-blog.jpg'); background-attachment: fixed; background-size: cover; position: relative;">
+        <!-- あえてボカしと薄い白をかけ、写真の質感を残したまま文字を読ませます -->
+        <div class="absolute inset-0 bg-white/70 backdrop-blur-[2px]"></div>
+        
+        <div class="container mx-auto px-6 max-w-6xl relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 gap-8 text-center md:text-left">
+                <div class="text-left">
+                    <h3 class="text-[#001a33] text-6xl md:text-8xl font-[900] italic uppercase tracking-tighter">Blog</h3>
+                    <p class="text-accent font-[900] tracking-[0.4em] text-sm md:text-lg mt-4 italic uppercase">最新の現場レポート</p>
+                </div>
+                <a href="blog.html" class="bg-[#001a33] text-white px-10 py-4 rounded-full font-[900] italic hover:bg-accent transition-all shadow-2xl flex items-center gap-3">
+                    全記事を見る <i class="fas fa-chevron-right text-xs"></i>
+                </a>
+            </div>
+
+                       <div id="latest-blog-container" class="grid md:grid-cols-2 gap-12 text-left">
+                <p class="text-slate-400 italic font-bold py-20 col-span-2 text-center animate-pulse">最新ブログを読み込み中...</p>
+            </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7.8 CONTACT SECTION (デザイン最終調整版) -->
+    <section class="py-32 bg-slate-100 relative overflow-hidden">
+        <!-- 背景の透かし文字：位置を右上にずらし、サイズを調整 -->
+        <div class="absolute -top-10 -right-20 text-[20rem] font-[900] text-slate-200/60 italic pointer-events-none z-0 tracking-tighter">MAIL</div>
+        
+        <div class="container mx-auto px-6 max-w-6xl relative z-10">
+            <div class="bg-white rounded-[4rem] p-12 md:p-24 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-12 border border-slate-200">
+                <div class="text-left md:w-2/3">
+                    <!-- word-break: keep-all で「い。」の泣き別れを防止 -->
+                    <h3 class="text-[#001a33] text-4xl md:text-6xl font-[900] italic mb-8 leading-[1.1] tracking-tighter" style="word-break: keep-all;">
+                        ご不明な点は、<br>
+                        <span class="text-accent">お気軽にご相談ください。</span>
+                    </h3>
+                    <p class="text-slate-600 font-bold text-lg md:text-xl leading-loose">
+                        受講に関するご質問、企業様による団体受講のご相談など、<br class="hidden md:block">
+                        専門スタッフが丁寧にお答えいたします。
+                    </p>
+                </div>
+                <div class="md:w-1/3 w-full">
+                    <a href="mailto:info@shimonoseki-tc.com" class="group bg-[#001a33] text-white w-full py-10 rounded-[2.5rem] font-[900] text-2xl italic flex items-center justify-center gap-4 hover:bg-accent transition-all duration-500 shadow-[0_30px_60px_rgba(0,26,51,0.2)]">
+                        <i class="fas fa-envelope text-4xl group-hover:rotate-12 transition"></i>
+                        メールで送る
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. FOOTER (内容・重厚感を完全復活) -->
+    <footer class="bg-[#001a33] text-white py-32 text-center border-t border-white/5">
+        <div class="container mx-auto px-6">
+            <p class="text-[10px] md:text-xs font-bold text-accent uppercase tracking-[0.4em] mb-20 leading-loose max-w-4xl mx-auto opacity-70">
+                対応エリア：山口県全域（下関市、宇部市、山口市、萩市、防府市、下松市、岩国市、光市、長門市、柳井市、美祢市、周南市、山陽小野田市）、福岡県北九州市
+            </p>
+            <img src="logo.png" alt="STC" class="h-28 mx-auto mb-12 drop-shadow-2xl">
+            <h2 class="text-3xl md:text-4xl font-[900] italic mb-8 tracking-[0.1em] whitespace-nowrap">下関トレーニングセンター</h2>
+  <div class="text-slate-400 font-bold text-base md:text-lg leading-loose italic mb-20">
+    <p>〒752-8609 山口県下関市長府安養寺1丁目15-13</p>
+    <p class="mt-4 text-white text-2xl md:text-3xl tracking-tighter font-en"><a href="tel:0832460556" class="hover:text-accent transition">TEL 083-246-0556</a> / FAX 083-246-2835</p>
+            <div class="w-20 h-1 bg-accent mx-auto mb-12"></div>
+            <p class="text-white/20 text-[11px] tracking-[0.6em] font-bold uppercase">&copy; 2026 SHIMONOSEKI TRAINING CENTER.</p>
+        </div>
+    </footer>
+
+        <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = { 
+        apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw",
+        authDomain: "stc-hp.firebaseapp.com",
+        projectId: "stc-hp",
+        storageBucket: "stc-hp.firebasestorage.app",
+        messagingSenderId: "795332931918",
+        appId: "1:795332931918:web:dee7ea9d9fbe0ab0942e1f" 
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    let schedules = []; 
+    let currentMonth = new Date().getMonth() + 1;
+    let currentYear = new Date().getFullYear();
+
+    signInAnonymously(auth).then(() => { 
+        loadSchedules(); 
+        loadNews();
+        loadLatestBlogs();
+        setTimeout(() => document.body.classList.add('hero-active'), 100);
+    });
+
+    function loadSchedules() {
+        onSnapshot(collection(db, "schedules"), (snapshot) => {
+            schedules = snapshot.docs.map(doc => {
+                const data = doc.data();
+                const rawStart = String(data.dayStart || "");
+                return { id: doc.id, name: data.courseName || "名称未設定", date: data.date || "", month: parseInt(data.month), days: rawStart.includes(',') ? rawStart.split(',').map(n => parseInt(n.trim())) : [parseInt(rawStart)], dayEnd: parseInt(data.dayEnd || 0), capacity: parseInt(data.capacity || 10), fullApplied: parseInt(data.fullApplied || 0), reserved: parseInt(data.reserved || 0) };
+            });
+            renderCalendar(currentMonth); renderGantt(currentMonth);
+        });
+    }
+
+    window.renderCalendar = function(month) {
+        const container = document.getElementById('calendar-container');
+        // --- 修正：年号の自動判定（4月〜12月は2026、1月〜3月は2027） ---
+        const displayYear = (month >= 4) ? 2026 : 2027;
+        document.getElementById('current-month-display').style.whiteSpace = 'nowrap';
+        document.getElementById('current-month-display').innerText = `${displayYear}年${month}月`;
+
+        const monthSchedules = schedules.filter(s => s.month === month);
+        if (monthSchedules.length === 0) { 
+            container.innerHTML = '<p class="p-20 text-slate-400 italic text-center font-[900] text-lg">現在、講習予定はございません。</p>'; 
+            return; 
+        }
+
+        let mobileHtml = '<div class="md:hidden space-y-4 p-4">'; 
+        let tableHtml = '<table class="w-full text-left border-collapse hidden md:table"><thead><tr class="bg-slate-800 text-white font-[900] text-xl border-b-4 border-navy"><th class="p-10 text-left">講習名称</th><th class="p-10 text-left">開催日程</th><th class="p-10 text-center">状況</th><th class="p-10 text-left">申込</th></tr></thead><tbody class="font-bold text-navy">';
+
+        monthSchedules.forEach(item => {
+            // --- 修正：防御ロジック（管理画面からのデータ変更に耐える） ---
+            const today = new Date();
+            const dayValue = Array.isArray(item.days) ? item.days[0] : parseInt(item.days);
+            // 判定用の年も displayYear を使用
+            const startDate = new Date(displayYear, item.month - 1, dayValue || 1);
+            
+            const diffTime = startDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const avail = item.capacity - (item.fullApplied + item.reserved);
+            
+            let statusLabel = '';
+            if (diffDays <= 10) {
+                statusLabel = '<span class="bg-slate-500 text-white px-6 py-2 rounded-full text-base font-black shadow-sm text-center">受付終了</span>';
+            } else if (avail <= 0) {
+                statusLabel = '<span class="bg-slate-200 text-slate-500 px-6 py-2 rounded-full text-sm">満員御礼</span>';
+            } else {
+                statusLabel = `<span class="bg-sky-100 text-[#001a33] px-6 py-2 rounded-full text-base font-black border border-sky-200 shadow-sm text-center">残り ${avail} 席</span>`;
+            }
+
+                        let actionBtn = `
+                <div class="flex flex-col gap-3">
+                    <!-- 9/1予約開始の案内（完全維持） -->
+                    <div class="bg-slate-100 text-slate-400 px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-slate-200 cursor-not-allowed">
+                        <i class="fas fa-clock mr-2"></i> 9/1 Web予約開始
+                    </div>
+                    
+                                        <!-- メール問い合わせボタン（アイコン付き・濃紺デザイン） -->
+                    <a href="mailto:info@shimonoseki-tc.com?subject=講習の問い合わせ(${item.name})" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-[#001a33] hover:bg-accent hover:border-accent transition-all italic flex items-center justify-center gap-2 shadow-lg">
+                        <i class="fas fa-envelope text-lg"></i>
+                        <span>メールで相談・申込</span>
+                    </a>
+
+                    <p class="text-[11px] text-center text-slate-500 font-bold leading-tight">
+                        ※現在、システム準備中です。<br>お急ぎの方はお電話またはメールください。
+                    </p>
+                </div>`;
+            
+            // スマホ用カード：どんな時も絶対に消えないよう style 属性で固定
+           mobileHtml += `
+                <div class="bg-white p-6 rounded-[2rem] shadow-lg border border-slate-100 text-left">
+                    <h4 class="text-xl font-[900] text-[#001a33] mb-2 leading-tight border-l-4 border-accent pl-3">${item.name}</h4>
+                    <div style="display: block !important; margin: 12px 0; min-height: 24px;">
+                        <span style="background: #00a2ff; color: white; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; margin-right: 6px; vertical-align: middle; display: inline-block;">開催日程</span>
+                        <span style="color: #001a33 !important; font-weight: 900; font-size: 16px; vertical-align: middle; display: inline-block;">${item.date}</span>
+                    </div>
+                    <div class="mb-6 flex justify-start">${statusLabel}</div>
+                    ${actionBtn}
+                </div>`;
+            
+            tableHtml += `<tr class="border-b-2 border-slate-100 hover:bg-sky-50 transition-colors text-left"><td class="p-10 text-[#001a33] font-[900] text-2xl leading-tight text-left">${item.name}</td><td class="p-10 text-slate-500 font-[900] text-xl italic text-left">${item.date}</td><td class="p-10 text-center text-left">${statusLabel}</td><td class="p-10 text-left">${actionBtn}</td></tr>`;
+        });
+
+        container.innerHTML = mobileHtml + '</div>' + tableHtml + '</tbody></table>';
+    }
+            
+    window.renderGantt = function(month) {
+        const ganttData = document.getElementById('gantt-data');
+        if (!ganttData) return;
+        let html = '<div class="grid gap-0 mb-8 border-b-2 border-white/10 pb-6" style="grid-template-columns: 250px repeat(31, 1fr);"><div class="font-[900] text-lg text-white italic uppercase text-left text-white/50">COURSE NAME</div>';
+        for(let i=1; i<=31; i++) { html += `<div class="text-sm text-white/50 font-[900] text-center font-en">${i}</div>`; }
+        html += '</div>';
+        const monthSchedules = schedules.filter(s => s.month === month);
+        const coursesByName = {};
+        monthSchedules.forEach(item => { if (!coursesByName[item.name]) { coursesByName[item.name] = []; } coursesByName[item.name].push(item); });
+        Object.entries(coursesByName).forEach(([courseName, items]) => {
+            html += `<div class="grid gap-0 items-center border-b border-white/5 py-4" style="grid-template-columns: 250px repeat(31, 1fr);"><div class="font-[900] text-sm md:text-base text-white italic truncate pr-6 text-left uppercase text-white">${courseName}</div>`;
+            const colorClass = courseName.includes("クレーン") ? "bg-pink-500 shadow-lg" : courseName.includes("フォーク") ? "bg-lime-500 shadow-lg" : "bg-sky-500 shadow-lg";
+            for (let day = 1; day <= 31; day++) {
+                const isScheduled = items.some(item => item.days.includes(day) || (day >= item.days[0] && day <= item.dayEnd));
+                html += `<div class="h-8 mx-0.5 rounded-md ${isScheduled ? colorClass : 'bg-white/5'}"></div>`;
+            }
+            html += `</div>`;
+        });
+        ganttData.innerHTML = html;
+    }
+
+    function loadNews() {
+        onSnapshot(collection(db, "news"), (snap) => {
+            const listEl = document.getElementById('hp-news-list');
+            if(!listEl) return;
+            const docs = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)).slice(0, 1);
+            listEl.innerHTML = docs.map(d => `<div class="bg-[#001a33]/80 backdrop-blur-md border border-white/20 p-5 rounded-2xl flex items-center space-x-4 text-left max-w-xl mx-auto shadow-xl"><span class="bg-red-600 text-[10px] text-white px-2 py-1 rounded font-black">NEWS</span><p class="text-white text-xs md:text-sm font-bold italic text-left">${d.content}</p></div>`).join('');
+        });
+    }
+    function loadLatestBlogs() {
+        const container = document.getElementById('latest-blog-container');
+        if(!container) return;
+
+        // createdAt（投稿日）の新しい順に2件取得
+        const q = query(collection(db, "blogs"), orderBy("createdAt", "desc"), limit(2));
+        
+        onSnapshot(q, (snapshot) => {
+            if (snapshot.empty) {
+                container.innerHTML = '<p class="text-slate-400 italic font-bold py-20 col-span-2 text-center">現在、投稿されたブログはありません。</p>';
+                return;
+            }
+            
+            container.innerHTML = snapshot.docs.map(doc => {
+                const data = doc.data();
+                
+                // 1. 日付の変換
+                let dateStr = 'NEW';
+                if (data.createdAt) {
+                    const dateObj = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+                    dateStr = dateObj.toLocaleDateString('ja-JP');
+                }
+
+                // 2. カテゴリー別カラー設定（管理画面と完全同期）
+                const colors = {
+                    '資格・講習ガイド': '#001a33', // 濃紺
+                    '法改正・業界ニュース': '#7f1d1d', // 赤
+                    '現場レポート': '#064e3b', // 緑
+                    '重要なお知らせ': '#0c4a6e', // 青
+                };
+                const themeColor = colors[data.category] || '#001a33';
+
+                // Tailwind用グラデーション色判定
+                const tailwindColor = 
+                    data.category === '法改正・業界ニュース' ? 'from-red-900' : 
+                    data.category === '現場レポート' ? 'from-emerald-900' : 
+                    data.category === '重要なお知らせ' ? 'from-sky-900' : 'from-[#001a33]';
+
+                // 3. 表示する画像の決定
+                const displayImg = data.image ? data.image : './bg-blog-default.jpg';
+
+                // 4. 画像エリア（imageTag）の生成
+                const imageTag = `
+                    <div class="relative w-full h-full overflow-hidden bg-slate-900">
+                        <img src="${displayImg}" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                        
+                        <!-- カテゴリー別のオーバーレイスモーク -->
+                        <div class="absolute inset-0 bg-gradient-to-t ${tailwindColor} via-transparent to-transparent opacity-80"></div>
+                        
+                        <!-- 左上のカテゴリータグ（背景色を動的に設定） -->
+                        <div class="absolute top-4 left-4 z-20 px-3 py-1 rounded shadow-xl text-[10px] font-[900] uppercase tracking-widest text-white border border-white/20" 
+                             style="background-color: ${themeColor};">
+                            ${data.category || 'INFO'}
+                        </div>
+
+                        <!-- 画像がない場合のみ中央にアイコンを表示（透かし文字は廃止しスッキリ） -->
+                        ${!data.image ? `
+                            <div class="absolute inset-0 flex items-center justify-center text-white/5">
+                                <i class="fas fa-book-reader text-7xl"></i>
+                            </div>
+                        ` : ''}
+                    </div>`;
+
+                return `
+                <div class="group cursor-pointer" onclick="location.href='blog-detail.html?id=${doc.id}'">
+                    <div class="aspect-video rounded-[3rem] overflow-hidden mb-8 shadow-2xl relative bg-slate-100">
+                        ${imageTag}
+                        <div class="absolute inset-0 border-[10px] border-white/20 rounded-[3rem]"></div>
+                    </div>
+                    <div class="px-4 text-left">
+                        <span class="text-accent font-black text-sm mb-4 block italic uppercase tracking-widest">${dateStr} UPDATE</span>
+                        <h4 class="text-2xl md:text-3xl font-[900] text-[#001a33] leading-tight group-hover:text-accent transition-colors line-clamp-2">${data.title || '無題の記事'}</h4>
+                    </div>
+                </div>`;
+            }).join('');
+        }, (error) => {
+            console.error("Firestore Read Error:", error);
+        });
+    }
+            
+    window.changeMonth = (diff) => { currentMonth += diff; if (currentMonth > 12) { currentMonth = 1; currentYear++; } if (currentMonth < 1) { currentMonth = 12; currentYear--; } renderCalendar(currentMonth); renderGantt(currentMonth); };
+
+    // 他のページで動いている仕組みを index.html にも適用
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('sub-nav');
+        // スマホでもPCでも確実に取れる位置判定
+        const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollPos > 50) {
+            nav.classList.add('header-scrolled');
+            nav.classList.add('py-2');
+            nav.classList.remove('py-4');
+        } else {
+            nav.classList.remove('header-scrolled');
+            nav.classList.add('py-4');
+            nav.classList.remove('py-2');
+        }
+        
+        // 既存のふわっと出る演出
+        document.querySelectorAll('.reveal').forEach(el => { 
+            if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); 
+        });
+    });
+            
+    </script>
+</body>
+</html>
