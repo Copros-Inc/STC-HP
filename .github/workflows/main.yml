@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 本番（mainへのpush時）は gh-pages ブランチのルートにデプロイ
+      # 本番（main）への反映：gh-pagesブランチのルートにプッシュ
       - name: Deploy to GitHub Pages (Production)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v3
@@ -23,7 +23,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
 
-      # プレビュー（PR作成時）
+      # プレビュー（PR作成時）：gh-pagesブランチのサブディレクトリにプッシュ
       - name: Deploy PR Preview
         if: github.event_name == 'pull_request'
         uses: rossjrw/pr-preview-action@v1
