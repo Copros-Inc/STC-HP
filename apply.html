@@ -19,7 +19,7 @@
         .input-field { width: 100%; padding: 0.85rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; font-weight: bold; background: #f8fafc; outline: none; }
         .input-label { display: block; text-[11px] font-black text-slate-400 mb-1 uppercase tracking-widest; }
     </style>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
 </head>
 <body class="pb-20">
     <nav class="bg-slate-900 text-white py-6 px-8 mb-12">
@@ -146,8 +146,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-           // EmailJSの初期化
-emailjs.init("9b2XZtU7jPZZPvYFo"); 
+          
 
         // ページ読み込み時の処理
         window.addEventListener('load', () => {
@@ -261,13 +260,14 @@ emailjs.init("9b2XZtU7jPZZPvYFo");
                     email: data.email
                 };
 
-                await emailjs.send("service_ry0ghki", "template_lstjhu9", emailParams);
+                await window.emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
 
                 alert("お申し込みありがとうございました！\n自動返信メールをお送りしましたのでご確認ください。"); 
                 window.location.href = "index.html";
             } catch (err) { 
                 console.error("Error details:", err);
-                alert("送信に失敗しました。お電話にてお問い合わせください。\nエラー: " + err.message); 
+                                console.error("Error details:", err);
+                alert("送信に失敗しました。\n\n詳細エラー: " + JSON.stringify(err));  
                 btn.disabled = false; 
                 btn.innerText = "申し込みを送信する";
             }
@@ -279,5 +279,9 @@ emailjs.init("9b2XZtU7jPZZPvYFo");
     <input type="file" id="in_spA" accept="image/*" class="hidden" onchange="window.processImg(this, 'spA')">
     <input type="file" id="in_spB" accept="image/*" class="hidden" onchange="window.processImg(this, 'spB')">
     <input type="file" id="in_emp" accept="image/*" class="hidden" onchange="window.processImg(this, 'emp')">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript">
+    emailjs.init("9b2XZtU7jPZZPvYFo");
+</script>
 </body>
 </html>
