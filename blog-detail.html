@@ -19,17 +19,18 @@
         .article-content strong { color: var(--accent); font-weight: 900; }
         .highlight-box { background: #e0f2fe; border-radius: 1.5rem; padding: 2rem; margin: 2rem 0; border-left: 5px solid var(--accent); }
 
-        /* 下層ページ専用スマホヘッダー調整（2連ボタン対応） */
+        /* 下層ページ専用スマホヘッダー調整（見切れ完全排除版） */
         @media (max-width: 768px) {
-            h1.font-\[900\] { font-size: 9px !important; } /* indexと完全一致 */
+            h1.font-\[900\] { font-size: 9px !important; }
             header p.text-\[6px\], header p.text-\[8px\] { 
                 display: block !important; 
-                font-size: 6px !important; 
+                font-size: 5.5px !important; /* 1pxだけ小さく */
+                letter-spacing: -0.02em !important; /* 文字の間隔をギリギリまで詰める */
                 color: #00a2ff !important; 
-                max-width: 100px !important; /* ボタンが増えた分、少しだけ制限 */
+                max-width: none !important; /* 幅制限を撤廃 */
+                overflow: visible !important; 
+                text-overflow: clip !important; 
                 white-space: nowrap !important;
-                overflow: hidden !important;
-                text-overflow: ellipsis !important;
             }
             .rounded-\[3rem\] { border-radius: 2rem !important; }
         }
