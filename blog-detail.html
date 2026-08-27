@@ -18,45 +18,53 @@
         .article-content td { padding: 1rem; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; font-weight: 700; }
         .article-content strong { color: var(--accent); font-weight: 900; }
         .highlight-box { background: #e0f2fe; border-radius: 1.5rem; padding: 2rem; margin: 2rem 0; border-left: 5px solid var(--accent); }
+
+        /* 下層ページ専用スマホヘッダー調整 */
+        @media (max-width: 768px) {
+            h1.font-\[900\] { font-size: 11px !important; }
+            header p.text-\[6px\] { display: none; } /* スマホでは英語名を消してスッキリさせる */
+            .rounded-\[3rem\] { border-radius: 2rem !important; } /* コンテンツのはみ出し防止 */
+        }
     </style>
 </head>
 <body class="text-left">
 
     <!-- 0. SUBPAGE HEADER (背景濃紺固定・主要コース強調版) -->
     <header class="fixed top-0 w-full z-50 py-4 bg-[#001a33] shadow-xl" id="sub-nav">
-        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-8 gap-4">
-            <a href="index.html" class="flex items-center gap-3 group shrink-0">
-                <div class="bg-white p-1 rounded shadow-lg group-hover:scale-105 transition-transform">
+        <div class="max-w-[1500px] mx-auto flex justify-start items-center px-4 md:px-8 gap-4">
+            <!-- ロゴ & センター名 -->
+            <a href="index.html" class="flex items-center gap-3 shrink-0">
+                <div class="bg-white p-1 rounded shadow-lg shrink-0">
                     <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
                 </div>
-                <div class="text-left text-white leading-none whitespace-nowrap">
+                <div class="text-left text-white leading-none shrink-0">
                     <h1 class="font-[900] text-xs md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
-                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.2em]">Shimonoseki Training Center</p>
+                    <!-- PCのみ英語名を表示 -->
+                    <p class="hidden md:block text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.2em]">Shimonoseki Training Center</p>
                 </div>
             </a>
-            <!-- PC用メニュー：並び順整理済 -->
-            <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase whitespace-nowrap">
-                <a href="index.html#service" class="hover:text-[#00a2ff] transition">事業内容</a>
-                <a href="index.html#courses" class="text-[#00a2ff] border-b-2 border-[#00a2ff]">主要コース</a>
-                <a href="features.html" class="hover:text-[#00a2ff] transition">選ばれる理由</a>
-                <a href="index.html#schedule-section" class="hover:text-[#00a2ff] transition">開催予定</a>
-                <a href="points.html" class="hover:text-[#00a2ff] transition">受講ガイド</a>
-                <a href="index.html#access" class="hover:text-[#00a2ff] transition">Access</a>
+
+            <!-- PC用メニュー：現状維持 -->
+            <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase mx-auto px-4 whitespace-nowrap">
+                <a href="index.html#service" class="hover:text-[#00a2ff] transition text-white">事業内容</a>
+                <a href="index.html#courses" class="hover:text-[#00a2ff] transition text-white">主要コース</a>
+                <a href="features.html" class="hover:text-[#00a2ff] transition text-white">選ばれる理由</a>
+                <a href="index.html#schedule-section" class="hover:text-[#00a2ff] transition text-white">開催予定</a>
+                <a href="points.html" class="hover:text-[#00a2ff] transition text-white">受講ガイド</a>
+                <a href="index.html#access" class="hover:text-[#00a2ff] transition text-white">Access</a>
                 <a href="blog.html" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">ブログ</a>
-                <a href="mailto:info@shimonoseki-tc.com" class="text-[#00a2ff] border border-[#00a2ff]/60 hover:bg-[#00a2ff] hover:text-white transition px-3 py-1 rounded flex items-center gap-2 shadow-sm">
-                    <i class="fas fa-envelope text-[10px]"></i>メール
-                </a>
             </nav>
-            <div class="flex items-center gap-2 shrink-0">
-                <a href="tel:0832460556" class="bg-[#00a2ff] text-white px-4 py-2 md:px-6 md:py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all flex items-center justify-center gap-2">
-                    <i class="fas fa-phone-alt text-xs"></i>
-                    <span class="hidden sm:inline text-xs font-black italic">お問合せ</span>
+
+            <!-- 右側アクションエリア：スマホではHOMEボタン -->
+            <div class="flex items-center gap-2 ml-auto shrink-0">
+                <!-- PC用お問合せ -->
+                <a href="tel:0832460556" class="hidden md:flex bg-[#00a2ff] text-white px-6 py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all items-center justify-center gap-2">
+                    <i class="fas fa-phone-alt text-xs"></i><span class="text-xs font-black italic">お問合せ</span>
                 </a>
-                <div class="lg:hidden flex gap-1.5">
-                    <a href="index.html#schedule-section" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10"><i class="fas fa-calendar-alt block text-sm mb-0.5"></i>日程</a>
-                    <a href="mailto:info@shimonoseki-tc.com" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10"><i class="fas fa-envelope block text-sm mb-0.5"></i>メール</a>
-                    <a href="blog.html" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10"><i class="fas fa-edit block text-sm mb-0.5"></i>ブログ</a>
-                </div>
+                <!-- スマホ用HOMEへ戻るボタン -->
+                <a href="index.html#blog-section" class="xl:hidden bg-white/10 text-white px-4 py-2 rounded-lg border border-white/20 flex items-center gap-2 text-[10px] font-black italic">
+                    <i class="fas fa-home"></i> HOME
+                </a>
             </div>
         </div>
     </header>
