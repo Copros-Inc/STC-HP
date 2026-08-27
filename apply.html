@@ -19,6 +19,7 @@
         .input-field { width: 100%; padding: 0.85rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; font-weight: bold; background: #f8fafc; outline: none; }
         .input-label { display: block; text-[11px] font-black text-slate-400 mb-1 uppercase tracking-widest; }
     </style>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body class="pb-20">
     <nav class="bg-slate-900 text-white py-6 px-8 mb-12">
@@ -145,6 +146,9 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+           // EmailJSの初期化
+emailjs.init("9b2XZtU7jPZZPvYFo"); 
+
         // ページ読み込み時の処理
         window.addEventListener('load', () => {
             const params = new URLSearchParams(window.location.search);
@@ -228,11 +232,13 @@
             }
         });
 
-        // 送信処理
+        // 送信処理（メール送信とFirebase保存を統合）
         document.getElementById('applyForm').addEventListener('submit', async e => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn'); 
-            btn.disabled = true; btn.innerText = "送信中...";
+            btn.disabled = true; 
+            btn.innerText = "送信中...";
+
             try {
                 const formData = new FormData(e.target);
                 const data = {
@@ -241,12 +247,29 @@
                     createdAt: serverTimestamp()
                 };
                 formData.forEach((value, key) => { data[key] = value; });
+
+                // 1. Firebase Firestoreへ保存
                 await addDoc(collection(db, "reservations"), data);
-                alert("お申し込みありがとうございました！\n送信が完了しました。\n\n※本人確認書類の原本を当日必ずお持ちください。"); 
+
+                // 2. EmailJSで自動返信メールを送信
+                const emailParams = {
+                    userName: data.userName,
+                    userKana: data.userKana,
+                    courseName: data.courseName,
+                    courseDate: data.courseDate,
+                    phone: data.phone,
+                    email: data.email
+                };
+
+                await emailjs.send("service_ry0ghki", "template_lstjhu9", emailParams);
+
+                alert("お申し込みありがとうございました！\n自動返信メールをお送りしましたのでご確認ください。"); 
                 window.location.href = "index.html";
             } catch (err) { 
-                alert("エラー: " + err.message); 
-                btn.disabled = false; btn.innerText = "申し込みを送信する";
+                console.error("Error details:", err);
+                alert("送信に失敗しました。お電話にてお問い合わせください。\nエラー: " + err.message); 
+                btn.disabled = false; 
+                btn.innerText = "申し込みを送信する";
             }
         });
     </script>
