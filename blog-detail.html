@@ -19,11 +19,19 @@
         .article-content strong { color: var(--accent); font-weight: 900; }
         .highlight-box { background: #e0f2fe; border-radius: 1.5rem; padding: 2rem; margin: 2rem 0; border-left: 5px solid var(--accent); }
 
-        /* 下層ページ専用スマホヘッダー調整 */
+        /* 下層ページ専用スマホヘッダー調整（2連ボタン対応） */
         @media (max-width: 768px) {
-            h1.font-\[900\] { font-size: 11px !important; }
-            header p.text-\[6px\] { display: none; } /* スマホでは英語名を消してスッキリさせる */
-            .rounded-\[3rem\] { border-radius: 2rem !important; } /* コンテンツのはみ出し防止 */
+            h1.font-\[900\] { font-size: 9px !important; } /* indexと完全一致 */
+            header p.text-\[6px\], header p.text-\[8px\] { 
+                display: block !important; 
+                font-size: 6px !important; 
+                color: #00a2ff !important; 
+                max-width: 100px !important; /* ボタンが増えた分、少しだけ制限 */
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+            }
+            .rounded-\[3rem\] { border-radius: 2rem !important; }
         }
     </style>
 </head>
@@ -39,8 +47,8 @@
                 </div>
                 <div class="text-left text-white leading-none shrink-0">
                     <h1 class="font-[900] text-xs md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
-                    <!-- PCのみ英語名を表示 -->
-                    <p class="hidden md:block text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.2em]">Shimonoseki Training Center</p>
+                    <!-- スマホでもPCでも英語名を表示（色はCSSで指定） -->
+                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.2em]">Shimonoseki Training Center</p>
                 </div>
             </a>
 
@@ -55,14 +63,20 @@
                 <a href="blog.html" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">ブログ</a>
             </nav>
 
-            <!-- 右側アクションエリア：スマホではHOMEボタン -->
-            <div class="flex items-center gap-2 ml-auto shrink-0">
-                <!-- PC用お問合せ -->
-                <a href="tel:0832460556" class="hidden md:flex bg-[#00a2ff] text-white px-6 py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all items-center justify-center gap-2">
+            <!-- 右側アクションエリア：スマホ2連ボタン版 -->
+            <div class="flex items-center gap-1.5 ml-auto shrink-0">
+                <!-- PC用お問合せ（非表示維持） -->
+                <a href="tel:0832460556" class="hidden xl:flex bg-[#00a2ff] text-white px-6 py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all items-center justify-center gap-2">
                     <i class="fas fa-phone-alt text-xs"></i><span class="text-xs font-black italic">お問合せ</span>
                 </a>
-                <!-- スマホ用HOMEへ戻るボタン -->
-                <a href="index.html#blog-section" class="xl:hidden bg-white/10 text-white px-4 py-2 rounded-lg border border-white/20 flex items-center gap-2 text-[10px] font-black italic">
+                
+                <!-- スマホ用：一覧ボタン（blog.htmlへ） -->
+                <a href="blog.html" class="xl:hidden bg-white/10 text-white px-2 py-2 rounded-lg border border-white/20 flex items-center gap-1 text-[9px] font-black italic">
+                    <i class="fas fa-list-ul"></i> 一覧
+                </a>
+                
+                <!-- スマホ用：HOMEボタン（indexのブログセクションへ） -->
+                <a href="index.html#blog-section" class="xl:hidden bg-white/10 text-white px-2 py-2 rounded-lg border border-white/20 flex items-center gap-1 text-[9px] font-black italic">
                     <i class="fas fa-home"></i> HOME
                 </a>
             </div>
