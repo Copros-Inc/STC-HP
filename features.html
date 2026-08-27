@@ -29,15 +29,13 @@
         @media (max-width: 768px) {
             .text-9xl { font-size: 4rem !important; }
             .card-navy, .card-white { border-radius: 2.5rem; }
-            
-            /* --- 追加：スマホヘッダーの見切れ解消 --- */
-            h1.font-\[900\] { font-size: 9px !important; } /* 日本語名 */
+            /* index同期：スマホヘッダー最適化 */
+            h1.font-\[900\] { font-size: 11px !important; }
             header p.text-\[6px\], header p.text-\[8px\] { 
-                max-width: 140px !important; 
-                letter-spacing: -0.01em !important; 
-                overflow: visible !important; 
-                white-space: nowrap !important; 
-            } /* 英語名の見切れ(SHIM...)を解除 */
+                display: block !important; font-size: 7px !important; 
+                color: #00a2ff !important; letter-spacing: -0.01em !important; 
+                max-width: none !important; overflow: visible !important; white-space: nowrap !important;
+            }
         }
     </style>
 </head>
@@ -53,7 +51,7 @@
                     <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
                 </div>
                 <div class="text-left text-white leading-none whitespace-nowrap">
-                    <h1 class="font-[900] text-xs md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
+                    <h1 class="font-[900] text-[10px] md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
                     <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.2em]">Shimonoseki Training Center</p>
                 </div>
             </a>
@@ -85,18 +83,15 @@
                     <span class="hidden sm:inline text-xs font-black italic">お問合せ</span>
                 </a>
                 
-                <!-- スマホ用3ボタン -->
-                <div class="lg:hidden flex gap-1.5">
-                    <a href="index.html#schedule-section" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10">
-                        <i class="fas fa-calendar-alt block text-sm mb-0.5"></i>日程
-                    </a>
-                    <a href="mailto:info@shimonoseki-tc.com" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10">
-                        <i class="fas fa-envelope block text-sm mb-0.5"></i>メール
-                    </a>
-                    <a href="blog.html" class="bg-white/10 p-2 rounded-lg text-white text-[8px] font-black italic text-center leading-tight border border-white/10">
-                        <i class="fas fa-edit block text-sm mb-0.5"></i>ブログ
-                    </a>
-                </div>
+            <div class="flex items-center gap-2 ml-auto shrink-0">
+                <a href="tel:0832460556" class="hidden xl:flex bg-[#00a2ff] text-white px-6 py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all items-center justify-center gap-2">
+                    <i class="fas fa-phone-alt text-xs"></i><span class="text-xs font-black italic">お問合せ</span>
+                </a>
+                <!-- HOMEボタン：選ばれる理由セクションへ正確に戻す -->
+                <a href="index.html#features" class="xl:hidden bg-white/10 text-white px-3 py-2 rounded-lg border border-white/20 flex items-center gap-1.5 text-[10px] font-black italic">
+                    <i class="fas fa-home"></i> HOME
+                </a>
+            </div>
             </div>
         </div>
     </header>
