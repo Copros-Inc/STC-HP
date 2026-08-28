@@ -114,7 +114,7 @@
             <section id="section-payment" class="form-card p-8 md:p-12">
                 <h2 class="section-title text-xl mb-8 italic text-left">04. 領収書について / Receipt</h2>
                 <div class="space-y-6 text-left">
-                    <p class="text-sm font-bold">支払方法：銀行振込（山口銀行 長府支店 当座 125391）</p>
+                    <p class="text-sm font-bold">支払方法：銀行振込（山口銀行 長府支店 普通 5076778）</p>
                     <div class="flex flex-wrap items-center gap-6">
                         <label class="flex items-center gap-2 whitespace-nowrap"><input type="radio" name="receipt" value="不要" checked> <span class="text-sm font-bold">領収書不要</span></label>
                         <div class="flex items-center gap-2 flex-1"><label class="flex items-center gap-2 whitespace-nowrap"><input type="radio" name="receipt" value="必要"> <span class="text-sm font-bold">領収書必要</span></label><input type="text" name="receiptName" class="input-field py-1 text-xs" placeholder="宛名（会社名など）"></div>
@@ -214,37 +214,54 @@
 
             // 本申込（full）の場合のみ、資格確認欄を出す
             if (!isSimple) {
-                if (course.includes("小型移動式クレーン")) {
-                    html = `
-                    <section class="form-card p-8 md:p-12 text-left space-y-6">
-                        <h2 class="section-title text-xl italic text-sky-600">免除条件の確認 / Qualification</h2>
-                        <p class="text-xs font-bold text-rose-500">※写真の添付は不要です。当日原本をお持ちください。</p>
-                        <div class="space-y-4">
-                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer bg-slate-50"><input type="radio" name="exType" value="玉掛所持" onclick="document.getElementById('lic_input').classList.remove('hidden')"> <span class="text-sm font-bold">玉掛け・床上操作式クレーン等の資格を所持している</span></label>
+            if (course.includes("小型移動式クレーン")) {
+                html = `
+                <section class="form-card p-8 md:p-12 text-left space-y-6">
+                    <h2 class="section-title text-xl italic text-sky-600">免除条件の確認 / Qualification *</h2>
+                    <p class="text-[10px] font-bold text-slate-400 mb-4">どちらか一方を選択し、詳細を入力してください。</p>
+                    <div class="space-y-4">
+                        <label class="flex gap-4 p-4 border rounded-xl cursor-pointer bg-slate-50 border-slate-200">
+                            <input type="radio" name="exType" value="A:技能講習所持" required onclick="document.getElementById('group_a').classList.remove('hidden'); document.getElementById('group_b').classList.add('hidden');">
+                            <span class="text-sm font-bold text-slate-700">A：玉掛け または 床上操作式クレーン等の技能講習を修了している</span>
+                        </label>
+                        <label class="flex gap-4 p-4 border rounded-xl cursor-pointer bg-slate-50 border-slate-200">
+                            <input type="radio" name="exType" value="B:運転士免許所持" required onclick="document.getElementById('group_b').classList.remove('hidden'); document.getElementById('group_a').classList.add('hidden');">
+                            <span class="text-sm font-bold text-slate-700">B：クレーン・デリック または 揚貨装置運転士免許を所持している</span>
+                        </label>
+                    </div>
+                    <div id="group_a" class="hidden p-6 border-2 border-dashed border-sky-100 rounded-2xl space-y-4 bg-sky-50/30">
+                        <div class="flex gap-4 mb-4">
+                            <label class="flex items-center gap-2"><input type="radio" name="licKindA" value="玉掛け"> <span class="text-xs font-bold">玉掛け</span></label>
+                            <label class="flex items-center gap-2"><input type="radio" name="licKindA" value="床上操作式"> <span class="text-xs font-bold">床上操作式クレーン</span></label>
                         </div>
-                        <div id="lic_input" class="hidden p-6 border-2 border-dashed border-slate-200 rounded-2xl space-y-4">
-                            <div><label class="input-label">修了証番号</label><input type="text" name="exNo" class="input-field bg-white" placeholder="第12345号"></div>
-                            <div><label class="input-label">交付機関名</label><input type="text" name="exOrg" class="input-field bg-white" placeholder="山口労働局など"></div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div><label class="input-label">修了年月日（和暦）</label><input type="text" name="exDateA" class="input-field bg-white" placeholder="令和〇年〇月〇日"></div>
+                            <div><label class="input-label">修了証番号</label><input type="text" name="exNoA" class="input-field bg-white" placeholder="第〇号"></div>
+                            <div class="md:col-span-2"><label class="input-label">交付機関名</label><input type="text" name="exOrgA" class="input-field bg-white" placeholder="〇〇労働局登録教習所"></div>
                         </div>
-                    </section>`;
-                } else if (course.includes("31H")) {
-                    html = `
-                    <section class="form-card p-8 md:p-12 text-left space-y-6">
-                        <h2 class="section-title text-xl italic text-sky-600">所持免許の確認 / Driver License</h2>
-                        <div class="p-4 bg-rose-50 rounded-xl"><p class="text-xs font-[900] text-rose-600">【重要】運転免許証の原本を当日受付にて提示してください。</p></div>
-                        <div><label class="input-label">運転免許証番号</label><input type="text" name="licNo" class="input-field" placeholder="第000000000000号"></div>
-                    </section>`;
-                } else if (course.includes("11H")) {
-                    html = `
-                    <section class="form-card p-8 md:p-12 text-left space-y-6">
-                        <h2 class="section-title text-xl italic text-sky-600">免除条件（11H）の確認</h2>
-                        <div class="p-4 bg-rose-50 rounded-xl text-xs font-bold text-rose-600">※大型特殊免許（限定なし）等の原本を当日お持ちください。</div>
-                        <div><label class="input-label">免許証番号</label><input type="text" name="licNo" class="input-field" placeholder="第000000000000号"></div>
-                    </section>`;
-                }
+                    </div>
+                    <div id="group_b" class="hidden p-6 border-2 border-dashed border-sky-100 rounded-2xl space-y-4 bg-sky-50/30">
+                        <div class="flex gap-4 mb-4">
+                            <label class="flex items-center gap-2"><input type="radio" name="licKindB" value="クレーン・デリック"> <span class="text-xs font-bold">クレーン・デリック</span></label>
+                            <label class="flex items-center gap-2"><input type="radio" name="licKindB" value="揚貨装置"> <span class="text-xs font-bold">揚貨装置</span></label>
+                        </div>
+                        <div><label class="input-label">免許取得年月日（和暦）</label><input type="text" name="exDateB" class="input-field bg-white" placeholder="令和〇年〇月〇日"></div>
+                    </div>
+                </section>`;
+            } else if (course.includes("31H")) {
+                html = `
+                <section class="form-card p-8 md:p-12 text-left space-y-6">
+                    <h2 class="section-title text-xl italic text-sky-600">免除条件の確認 / Qualification *</h2>
+                    <div class="p-4 bg-rose-50 rounded-xl mb-4"><p class="text-[10px] font-[900] text-rose-600">【重要】運転免許証の原本を当日受付にて提示してください。</p></div>
+                    <label class="flex gap-4 p-4 border rounded-xl cursor-pointer bg-slate-50 border-slate-200">
+                        <input type="radio" name="licNo" value="普通自動車免許あり（当日持参）" required>
+                        <span class="text-sm font-bold text-slate-700">普通自動車免許（または大型・中型）を保有している</span>
+                    </label>
+                </section>`;
+            } else if (course.includes("11H")) {
+                // 11Hは予約のみ（詳細入力なし）
+                html = ``;
             }
-            dynamicEl.innerHTML = html;
-        }
 
         // 同意チェック
         document.addEventListener('change', (e) => {
