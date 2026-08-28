@@ -209,12 +209,11 @@
             // 受講料計算と全角・半角対応の判定
             const c = String(course);
 
+            // 判定と金額セット
             if (c.includes("玉掛け")) {
-                fee = "¥25,000-"; 
-                if(subsidyEl) subsidyEl.classList.remove('hidden');
+                fee = "¥25,000-";
             } else if (c.includes("小型移動式")) {
                 fee = "¥35,000-";
-                if(subsidyEl) subsidyEl.classList.remove('hidden');
             } else if (c.includes("31H") || c.includes("３１Ｈ")) {
                 fee = "¥30,000-";
             } else if (c.includes("11H") || c.includes("１１Ｈ")) {
@@ -224,60 +223,57 @@
             }
             feeEl.innerText = fee;
 
-            // 助成金案内の表示
-            if (course.includes("玉掛け") || course.includes("小型移動式クレーン")) {
+            // 助成金案内の表示制御
+            if (c.includes("玉掛け") || c.includes("小型移動式")) {
                 if(subsidyEl) subsidyEl.classList.remove('hidden');
             }
 
-            // 本申込（full）の場合のみ、資格確認欄を出す
+            // 免除条件の表示（本申込のみ）
             if (!isSimple) {
-            if (course.includes("小型移動式クレーン")) {
-                html = `
-                <section class="form-card p-8 md:p-12 text-left space-y-6">
-                    <h2 class="section-title text-xl italic text-sky-600">免除条件の確認 / Qualification *</h2>
-                    <p class="text-[10px] font-bold text-slate-400 mb-4">どちらか一方を選択し、詳細を入力してください。</p>
-                    <div class="space-y-4">
+                if (c.includes("小型移動式")) {
+                    html = `
+                    <section class="form-card p-8 md:p-12 text-left space-y-6">
+                        <h2 class="section-title text-xl italic text-sky-600">免除条件の確認 / Qualification *</h2>
+                        <div class="space-y-4">
+                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer bg-slate-50 border-slate-200">
+                                <input type="radio" name="exType" value="A:技能講習所持" required onclick="document.getElementById('group_a').classList.remove('hidden'); document.getElementById('group_b').classList.add('hidden');">
+                                <span class="text-sm font-bold text-slate-700">A：玉掛け または 床上操作式クレーン等の技能講習を修了している</span>
+                            </label>
+                            <label class="flex gap-4 p-4 border rounded-xl cursor-pointer bg-slate-50 border-slate-200">
+                                <input type="radio" name="exType" value="B:運転士免許所持" required onclick="document.getElementById('group_b').classList.remove('hidden'); document.getElementById('group_a').classList.add('hidden');">
+                                <span class="text-sm font-bold text-slate-700">B：クレーン・デリック または 揚貨装置運転士免許を所持している</span>
+                            </label>
+                        </div>
+                        <div id="group_a" class="hidden p-6 border-2 border-dashed border-sky-100 rounded-2xl space-y-4 bg-sky-50/30">
+                            <div class="flex gap-4 mb-4">
+                                <label class="flex items-center gap-2"><input type="radio" name="licKindA" value="玉掛け"> <span class="text-xs font-bold">玉掛け</span></label>
+                                <label class="flex items-center gap-2"><input type="radio" name="licKindA" value="床上操作式"> <span class="text-xs font-bold">床上操作式</span></label>
+                            </div>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div><label class="input-label">修了年月日(和暦)</label><input type="text" name="exDateA" class="input-field bg-white" placeholder="令和〇年〇月〇日"></div>
+                                <div><label class="input-label">修了証番号</label><input type="text" name="exNoA" class="input-field bg-white" placeholder="第〇号"></div>
+                                <div class="md:col-span-2"><label class="input-label">交付機関名</label><input type="text" name="exOrgA" class="input-field bg-white" placeholder="〇〇登録教習所"></div>
+                            </div>
+                        </div>
+                        <div id="group_b" class="hidden p-6 border-2 border-dashed border-sky-100 rounded-2xl space-y-4 bg-sky-50/30">
+                            <div class="flex gap-4 mb-4">
+                                <label class="flex items-center gap-2"><input type="radio" name="licKindB" value="クレーン"> <span class="text-xs font-bold">クレーン・デリック</span></label>
+                                <label class="flex items-center gap-2"><input type="radio" name="licKindB" value="揚貨装置"> <span class="text-xs font-bold">揚貨装置</span></label>
+                            </div>
+                            <div><label class="input-label">免許取得年月日(和暦)</label><input type="text" name="exDateB" class="input-field bg-white" placeholder="令和〇年〇月〇日"></div>
+                        </div>
+                    </section>`;
+                } else if (c.includes("31H") || c.includes("３１Ｈ")) {
+                    html = `
+                    <section class="form-card p-8 md:p-12 text-left space-y-6">
+                        <h2 class="section-title text-xl italic text-sky-600">免除条件の確認 / Qualification *</h2>
+                        <div class="p-4 bg-rose-50 rounded-xl mb-4"><p class="text-[10px] font-[900] text-rose-600">【重要】免許証原本を当日提示してください。</p></div>
                         <label class="flex gap-4 p-4 border rounded-xl cursor-pointer bg-slate-50 border-slate-200">
-                            <input type="radio" name="exType" value="A:技能講習所持" required onclick="document.getElementById('group_a').classList.remove('hidden'); document.getElementById('group_b').classList.add('hidden');">
-                            <span class="text-sm font-bold text-slate-700">A：玉掛け または 床上操作式クレーン等の技能講習を修了している</span>
+                            <input type="radio" name="licNo" value="普通自動車免許あり（当日持参）" required>
+                            <span class="text-sm font-bold text-slate-700">普通自動車免許（または大型・中型）を保有している</span>
                         </label>
-                        <label class="flex gap-4 p-4 border rounded-xl cursor-pointer bg-slate-50 border-slate-200">
-                            <input type="radio" name="exType" value="B:運転士免許所持" required onclick="document.getElementById('group_b').classList.remove('hidden'); document.getElementById('group_a').classList.add('hidden');">
-                            <span class="text-sm font-bold text-slate-700">B：クレーン・デリック または 揚貨装置運転士免許を所持している</span>
-                        </label>
-                    </div>
-                    <div id="group_a" class="hidden p-6 border-2 border-dashed border-sky-100 rounded-2xl space-y-4 bg-sky-50/30">
-                        <div class="flex gap-4 mb-4">
-                            <label class="flex items-center gap-2"><input type="radio" name="licKindA" value="玉掛け"> <span class="text-xs font-bold">玉掛け</span></label>
-                            <label class="flex items-center gap-2"><input type="radio" name="licKindA" value="床上操作式"> <span class="text-xs font-bold">床上操作式クレーン</span></label>
-                        </div>
-                        <div class="grid md:grid-cols-2 gap-4">
-                            <div><label class="input-label">修了年月日（和暦）</label><input type="text" name="exDateA" class="input-field bg-white" placeholder="令和〇年〇月〇日"></div>
-                            <div><label class="input-label">修了証番号</label><input type="text" name="exNoA" class="input-field bg-white" placeholder="第〇号"></div>
-                            <div class="md:col-span-2"><label class="input-label">交付機関名</label><input type="text" name="exOrgA" class="input-field bg-white" placeholder="〇〇労働局登録教習所"></div>
-                        </div>
-                    </div>
-                    <div id="group_b" class="hidden p-6 border-2 border-dashed border-sky-100 rounded-2xl space-y-4 bg-sky-50/30">
-                        <div class="flex gap-4 mb-4">
-                            <label class="flex items-center gap-2"><input type="radio" name="licKindB" value="クレーン・デリック"> <span class="text-xs font-bold">クレーン・デリック</span></label>
-                            <label class="flex items-center gap-2"><input type="radio" name="licKindB" value="揚貨装置"> <span class="text-xs font-bold">揚貨装置</span></label>
-                        </div>
-                        <div><label class="input-label">免許取得年月日（和暦）</label><input type="text" name="exDateB" class="input-field bg-white" placeholder="令和〇年〇月〇日"></div>
-                    </div>
-                </section>`;
-            } else if (course.includes("31H")) {
-                html = `
-                <section class="form-card p-8 md:p-12 text-left space-y-6">
-                    <h2 class="section-title text-xl italic text-sky-600">免除条件の確認 / Qualification *</h2>
-                    <div class="p-4 bg-rose-50 rounded-xl mb-4"><p class="text-[10px] font-[900] text-rose-600">【重要】運転免許証の原本を当日受付にて提示してください。</p></div>
-                    <label class="flex gap-4 p-4 border rounded-xl cursor-pointer bg-slate-50 border-slate-200">
-                        <input type="radio" name="licNo" value="普通自動車免許あり（当日持参）" required>
-                        <span class="text-sm font-bold text-slate-700">普通自動車免許（または大型・中型）を保有している</span>
-                    </label>
-                </section>`;
-              } else if (course.includes("11H")) {
-                // 11Hは予約のみ（詳細入力なし）
-                html = ``;
+                    </section>`;
+                }
             }
             dynamicEl.innerHTML = html;
         }
