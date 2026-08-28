@@ -53,10 +53,15 @@
         #sub-nav.header-scrolled { background-color: #001a33 !important; box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding-top: 0.5rem; padding-bottom: 0.5rem; }
         .shrink-0 { flex-shrink: 0 !important; }
         .hero-active .relative.z-10 { margin-top: 100px; }
-                /* ページ内ジャンプの着地位置調整（ヘッダー被り防止） */
-        section[id] { scroll-margin-top: 100px; }
+        /* ページ内ジャンプの着地位置調整（ヘッダー被り防止：最適化版） */
+        section[id] { scroll-margin-top: 150px; } /* PC：100pxから150pxへ大幅増 */
         @media (max-width: 768px) {
-            section[id] { scroll-margin-top: 80px; }
+            section[id] { scroll-margin-top: 130px; } /* スマホ：80pxから130pxへ大幅増 */
+        }
+        /* ページ内ジャンプの着地位置調整（ヘッダー被り防止） */
+        #qa, #subsidy, #flow { scroll-margin-top: 130px; }
+        @media (max-width: 768px) {
+            #qa, #subsidy, #flow { scroll-margin-top: 110px; }
         }
     </style>
 </head>
@@ -480,6 +485,14 @@
                 return { id: doc.id, name: data.courseName || "名称未設定", date: data.date || "", month: parseInt(data.month), days: rawStart.includes(',') ? rawStart.split(',').map(n => parseInt(n.trim())) : [parseInt(rawStart)], dayEnd: parseInt(data.dayEnd || 0), capacity: parseInt(data.capacity || 10), fullApplied: parseInt(data.fullApplied || 0), reserved: parseInt(data.reserved || 0) };
             });
             renderCalendar(currentMonth); renderGantt(currentMonth);
+             // 追加：アンカーリンク（#ID）で来訪時、描画後のズレを補正する
+            if (window.location.hash) {
+                const targetId = window.location.hash;
+                setTimeout(() => {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 800);
+            }           
         });
     }
 
