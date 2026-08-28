@@ -172,13 +172,19 @@
             // モードに応じた表示切り替え
             if (mode === 'simple') {
                 document.getElementById('mode-badge').innerText = "簡易予約モード（仮押さえ）";
-                if(document.getElementById('section-photo')) document.getElementById('section-photo').style.display = 'none';
+                // 仮予約では写真を隠し、必須も解除する
+                if(document.getElementById('section-photo')) {
+                    document.getElementById('section-photo').style.display = 'none';
+                    document.getElementById('userPhotoBase64').required = false;
+                }
                 if(document.getElementById('section-payment')) document.getElementById('section-payment').style.display = 'none';
-                // 勤務先は隠さない（表示したままにする）
                 updateCourseUI(course, true);
             } else {
                 document.getElementById('mode-badge').innerText = "Full Web Application";
-                if(document.getElementById('section-photo')) document.getElementById('section-photo').style.display = 'block';
+                if(document.getElementById('section-photo')) {
+                    document.getElementById('section-photo').style.display = 'block';
+                    document.getElementById('userPhotoBase64').required = true;
+                }
                 if(document.getElementById('section-payment')) document.getElementById('section-payment').style.display = 'block';
                 updateCourseUI(course, false);
             }
