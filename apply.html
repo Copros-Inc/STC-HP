@@ -72,11 +72,11 @@
                     <div><label class="input-label">現住所（市区町村・番地） *</label><input type="text" name="address" required class="input-field" placeholder="下関市長府安養寺..."></div>
                     <div><label class="input-label">メールアドレス *</label><input type="email" name="email" required class="input-field" placeholder="example@mail.com"></div>
                     
-                    <div class="mt-10 pt-10 border-t border-slate-100 space-y-6">
+                    <div id="section-company" class="mt-10 pt-10 border-t border-slate-100 space-y-6 text-left">
                         <h3 class="font-black text-slate-900 italic">勤務先情報 / Employment</h3>
                         <div class="grid md:grid-cols-2 gap-6">
-                            <input type="text" name="company" class="input-field" placeholder="会社名">
-                            <input type="text" name="compPhone" class="input-field" placeholder="会社電話番号">
+                            <div><label class="input-label">会社名（任意）</label><input type="text" name="company" class="input-field" placeholder="株式会社〇〇"></div>
+                            <div><label class="input-label">会社電話番号（任意）</label><input type="text" name="compPhone" class="input-field" placeholder="083-000-0000"></div>
                             <input type="text" name="compZip" class="input-field" placeholder="会社郵便番号">
                             <input type="text" name="compAddress" class="input-field" placeholder="会社住所">
                         </div>
@@ -171,9 +171,10 @@
             
             // モードに応じた表示切り替え
             if (mode === 'simple') {
-                document.getElementById('mode-badge').innerText = "簡易予約モード（書類は当日持参）";
+                document.getElementById('mode-badge').innerText = "簡易予約モード（仮押さえ）";
                 if(document.getElementById('section-photo')) document.getElementById('section-photo').style.display = 'none';
                 if(document.getElementById('section-payment')) document.getElementById('section-payment').style.display = 'none';
+                // 勤務先は隠さない（表示したままにする）
                 updateCourseUI(course, true);
             } else {
                 document.getElementById('mode-badge').innerText = "Full Web Application";
