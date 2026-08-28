@@ -96,6 +96,15 @@
                         </p>
                     </div>
                 </div>
+                <div class="mt-6">
+                    <label class="input-label text-sky-600">証明写真の添付（必須） / Profile Photo *</label>
+                    <div onclick="document.getElementById('in_photo').click()" class="photo-box" id="photo-preview-box">
+                        <i class="fas fa-camera text-2xl text-slate-300 mb-2"></i>
+                        <p class="text-[10px] font-bold text-slate-400">タップして撮影または選択</p>
+                    </div>
+                    <input type="file" id="in_photo" accept="image/*" class="hidden">
+                    <input type="hidden" name="userPhotoBase64" id="userPhotoBase64" required>
+                </div>                
             </section>
 
             <!-- 講習別分岐セクション -->
@@ -168,6 +177,20 @@
             }
         });
 
+    document.getElementById('in_photo').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const base64String = event.target.result;
+            const previewBox = document.getElementById('photo-preview-box');
+            previewBox.innerHTML = `<img src="${base64String}" class="w-full h-full object-cover rounded-xl">`;
+            document.getElementById('userPhotoBase64').value = base64String;
+        };
+        reader.readAsDataURL(file);
+    });
+
         // 講習ごとの受講料・追加項目切り替え
         function updateCourseUI(course, isSimple) {
             const feeEl = document.getElementById('displayFee');
@@ -239,13 +262,22 @@
             btn.innerText = "送信中...";
 
             try {
+                // --- 265行目からの書き換え ---
                 const formData = new FormData(e.target);
+                const params = new URLSearchParams(window.location.search);
                 const data = {
                     courseName: document.getElementById('courseName').value,
                     courseDate: document.getElementById('courseDate').value,
-                    createdAt: serverTimestamp()
+                    createdAt: serverTimestamp(),
+                    mode: params.get('mode') || "full",
+                    status: "new",
+                    photos: {
+                        user: document.getElementById('userPhotoBase64').value
+                    }
                 };
-                formData.forEach((value, key) => { data[key] = value; });
+                formData.forEach((value, key) => { 
+                    if(key !== "userPhotoBase64") data[key] = value; 
+                });
 
                 // 1. Firebase Firestoreへ保存
                 await addDoc(collection(db, "reservations"), data);
