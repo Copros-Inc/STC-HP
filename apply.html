@@ -206,12 +206,22 @@
             let fee = "金額未定";
             let html = "";
 
-            // 受講料計算
-            if (course.includes("玉掛け")) fee = "¥25,000-"; 
-            else if (course.includes("小型移動式クレーン")) fee = "¥35,000-";
-            else if (course.includes("31H")) fee = "¥30,000-";
-            else if (course.includes("11H")) fee = "¥20,000-";
-            else if (course.includes("テールゲート")) fee = "¥15,000-";
+            // 受講料計算と全角・半角対応の判定
+            const c = String(course);
+
+            if (c.includes("玉掛け")) {
+                fee = "¥25,000-"; 
+                if(subsidyEl) subsidyEl.classList.remove('hidden');
+            } else if (c.includes("小型移動式")) {
+                fee = "¥35,000-";
+                if(subsidyEl) subsidyEl.classList.remove('hidden');
+            } else if (c.includes("31H") || c.includes("３１Ｈ")) {
+                fee = "¥30,000-";
+            } else if (c.includes("11H") || c.includes("１１Ｈ")) {
+                fee = "¥20,000-";
+            } else if (c.includes("テールゲート") || c.includes("フルハーネス")) {
+                fee = "¥15,000-";
+            }
             feeEl.innerText = fee;
 
             // 助成金案内の表示
@@ -265,12 +275,14 @@
                         <span class="text-sm font-bold text-slate-700">普通自動車免許（または大型・中型）を保有している</span>
                     </label>
                 </section>`;
-            } else if (course.includes("11H")) {
+              } else if (course.includes("11H")) {
                 // 11Hは予約のみ（詳細入力なし）
                 html = ``;
             }
+            dynamicEl.innerHTML = html;
+        }
 
-        // 同意チェック
+          // 同意チェック
         document.addEventListener('change', (e) => {
             if (e.target.classList.contains('consent-check')) {
                 const checks = document.querySelectorAll('.consent-check');
