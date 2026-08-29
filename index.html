@@ -513,19 +513,14 @@
         let tableHtml = '<table class="w-full text-left border-collapse hidden md:table"><thead><tr class="bg-slate-800 text-white font-[900] text-xl border-b-4 border-navy"><th class="p-10 text-left">講習名称</th><th class="p-10 text-left">開催日程</th><th class="p-10 text-center">状況</th><th class="p-10 text-left">申込</th></tr></thead><tbody class="font-bold text-navy">';
 
         monthSchedules.forEach(item => {
-            // --- 修正：防御ロジック（管理画面からのデータ変更に耐える） ---
+            // --- [修正] 判定ロジックの統合と重複削除 ---
             const today = new Date();
             const dayValue = Array.isArray(item.days) ? item.days[0] : parseInt(item.days);
-            // 判定用の年も displayYear を使用
             const startDate = new Date(displayYear, item.month - 1, dayValue || 1);
             
             const diffTime = startDate - today;
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             const avail = item.capacity - (item.fullApplied + item.reserved);
-            
-            // --- [統合版] 残席表示とボタン制御 ---
-            const avail = item.capacity - (item.fullApplied + item.reserved);
-            const diffDays = Math.ceil((new Date(displayYear, item.month - 1, item.days[0] || 1) - new Date()) / (1000 * 60 * 60 * 24));
             
             let statusLabel = '';
             if (diffDays <= 7) {
@@ -540,7 +535,6 @@
 
             let actionBtn = `<div class="flex flex-col gap-3">`;
             if (avail <= 0 && diffDays > 7) {
-                // 満員時のキャンセル待ちボタン（mode=simpleを付与）
                 actionBtn += `
                     <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&status=waiting&mode=simple" class="bg-amber-600 text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-amber-600 hover:bg-[#001a33] transition-all italic flex items-center justify-center gap-2 shadow-lg">
                         <i class="fas fa-hourglass-half text-lg"></i>
@@ -549,7 +543,6 @@
             } else if (diffDays <= 7) {
                 actionBtn += `<p class="text-[10px] text-slate-400 font-bold italic text-center">※受付期間を終了しました</p>`;
             } else {
-                // 通常時：コース別のボタン出し分け
                 const isSimpleOnly = item.name.includes("11H") || item.name.includes("１１Ｈ") || item.name.includes("テールゲート") || item.name.includes("フルハーネス");
                 if (isSimpleOnly) {
                     actionBtn += `<a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-[#001a33] hover:bg-accent transition-all italic flex items-center justify-center gap-2"><span>まずは仮予約（席確保）</span></a>`;
