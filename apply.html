@@ -339,14 +339,30 @@
                 // 1. Firebase Firestoreへ保存
                 await addDoc(collection(db, "reservations"), data);
 
-                // 2. EmailJSで自動返信メールを送信
+                // 2. スケジュールの残席を自動減算（キャンセル待ち以外の場合）
+                if (data.status !== "waiting") {
+                    try {
+                        const { query, where, getDocs, updateDoc, doc, increment } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+                        const q = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
+                        const schedSnap = await getDocs(q);
+                        if (!schedSnap.empty) {
+                            const schedDoc = schedSnap.docs[0];
+                            const field = data.mode === 'full' ? 'fullApplied' : 'reserved';
+                            await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
+                        }
+                    } catch (e) { console.error("Counter update failed", e); }
+                }
+
+                // 3. EmailJSで自動返信メールを送信（全項目を網羅）
                 const emailParams = {
                     userName: data.userName,
                     userKana: data.userKana,
                     courseName: data.courseName,
                     courseDate: data.courseDate,
                     phone: data.phone,
-                    email: data.email
+                    email: data.email,
+                    company: data.company || "個人",
+                    deadline_note: data.mode === 'simple' ? "【重要】本予約は「仮予約」です。7日以内に本申込がない場合は自動キャンセルとなります。" : "お申し込みありがとうございました。"
                 };
 
                 await window.emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
