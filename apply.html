@@ -188,6 +188,25 @@
                 if(document.getElementById('section-payment')) document.getElementById('section-payment').style.display = 'block';
                 updateCourseUI(course, false);
             }
+                        // --- 同意事項の出し分け ---
+            const consentList = document.getElementById('consent-list');
+            if (mode === 'simple') {
+                consentList.innerHTML = `
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-sky-300 italic underline">本申込は「仮予約」であり、別途本申込の手続きが必要であることに同意します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">事務局からの確認メール受領後、7日以内に本申込がない場合は枠をキャンセル待ちの方へ譲ることに同意します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">本申込書に虚偽の記載が無いことを確約します。</span></label>
+                `;
+            } else {
+                consentList.innerHTML = `
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">本申込書に虚偽の記載が無いことを確約します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">自らが反社会的勢力に属さず、密接な関係をもたず、受講期間中も属さないことを確約します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">当講習所内では講師の注意に従い、一切の講習妨害行為をしないことを確約します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">講習中、上記事項に反することが判明した場合、講習を中止し退場することに同意します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">これにより損害が生じても、講習所は一切賠償しないことに同意します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">予期せぬ事態で講習が開催できなかった場合、教習所は一切賠償しないことに同意します。</span></label>
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-sky-300 underline">遅刻・早退・欠席は失格となり、受講料の返金はできないことを承知しました。</span></label>
+                `;
+            }
         });
 
     document.getElementById('in_photo').addEventListener('change', function(e) {
