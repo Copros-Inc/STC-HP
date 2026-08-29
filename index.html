@@ -526,13 +526,18 @@
             if (diffDays <= 7) {
                 statusLabel = '<span class="bg-slate-500 text-white px-6 py-2 rounded-full text-base font-black shadow-sm text-center">受付終了</span>';
             } else if (avail <= 0) {
-                statusLabel = '<span class="bg-rose-600 text-white px-6 py-2 rounded-full text-base font-black shadow-md text-center animate-pulse">満員御礼</span>';
+                // 満員時の表示：人数を schedules の waiting から取得して表示
+                const waitCount = item.waiting || 0;
+                statusLabel = `
+                    <div class="flex flex-col items-center gap-2">
+                        <span class="bg-rose-600 text-white px-6 py-2 rounded-full text-base font-black shadow-md text-center animate-pulse">満員御礼</span>
+                        <span class="text-[10px] text-rose-600 font-bold italic">※現在 ${waitCount} 名がキャンセル待ちです</span>
+                    </div>`;
             } else if (avail <= 3) {
                 statusLabel = `<span class="bg-white text-rose-600 border-2 border-rose-600 px-6 py-2 rounded-full text-base font-black shadow-sm text-center font-en">残り ${avail} 席</span>`;
             } else {
                 statusLabel = `<span class="bg-sky-100 text-[#001a33] px-6 py-2 rounded-full text-base font-black border border-sky-200 shadow-sm text-center font-en">残り ${avail} 席</span>`;
             }
-
             let actionBtn = `<div class="flex flex-col gap-3">`;
             if (avail <= 0 && diffDays > 7) {
                 actionBtn += `
