@@ -532,20 +532,27 @@
                 statusLabel = `<span class="bg-sky-100 text-[#001a33] px-6 py-2 rounded-full text-base font-black border border-sky-200 shadow-sm text-center">残り ${avail} 席</span>`;
             }
 
-            // 修正：9/1を待たずに apply.html へ遷移できるように変更（テスト用）
+            // --- [修正後] 本申込と仮予約の2ボタン制（11H制御付き） ---
+            const is11H = item.name.includes("11H") || item.name.includes("１１Ｈ");
+            
             let actionBtn = `
                 <div class="flex flex-col gap-3">
-                    <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}" class="bg-[#00a2ff] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-[#00a2ff] hover:bg-[#001a33] transition-all italic flex items-center justify-center gap-2 shadow-lg">
-                        <i class="fas fa-edit text-lg"></i>
-                        <span>Webでお申し込み</span>
-                    </a>
+                    ${is11H ? 
+                        `<div class="bg-slate-300 text-slate-500 px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-slate-300 italic flex items-center justify-center gap-2 cursor-not-allowed">
+                            <i class="fas fa-lock text-lg"></i>
+                            <span>本申込は書類確認後</span>
+                        </div>` : 
+                        `<a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-[#00a2ff] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-[#00a2ff] hover:bg-[#001a33] transition-all italic flex items-center justify-center gap-2 shadow-lg">
+                            <i class="fas fa-edit text-lg"></i>
+                            <span>Webで本申し込み</span>
+                        </a>`
+                    }
                     
-                    <a href="mailto:info@shimonoseki-tc.com?subject=講習の問い合わせ(${item.name})" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-[12px] text-center font-[900] border-2 border-[#001a33] hover:bg-accent hover:border-accent transition-all italic flex items-center justify-center gap-2 shadow-md">
-                        <i class="fas fa-envelope text-xs"></i>
-                        <span>メールで相談・申込</span>
+                    <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-[12px] text-center font-[900] border-2 border-[#001a33] hover:bg-accent hover:border-accent transition-all italic flex items-center justify-center gap-2 shadow-md">
+                        <i class="fas fa-clock text-xs"></i>
+                        <span>まずは仮予約（席確保）</span>
                     </a>
-                </div>`;
-                    
+                </div>`;       
             
             // スマホ用カード：どんな時も絶対に消えないよう style 属性で固定
            mobileHtml += `
