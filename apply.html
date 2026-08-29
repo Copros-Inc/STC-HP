@@ -339,19 +339,25 @@
                 // 1. Firebase Firestoreへ保存
                 await addDoc(collection(db, "reservations"), data);
 
-                // 2. スケジュールの残席を自動減算（キャンセル待ち以外の場合）
-                if (data.status !== "waiting") {
-                    try {
-                        const { query, where, getDocs, updateDoc, doc, increment } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
-                        const q = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
-                        const schedSnap = await getDocs(q);
-                        if (!schedSnap.empty) {
-                            const schedDoc = schedSnap.docs[0];
+                // 2. スケジュールのカウント更新
+                try {
+                    const { query, where, getDocs, updateDoc, doc, increment } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+                    const q = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
+                    const schedSnap = await getDocs(q);
+                    if (!schedSnap.empty) {
+                        const schedDoc = schedSnap.docs[0];
+                        let updateData = {};
+                        if (data.status === "waiting") {
+                            // キャンセル待ちの場合は waiting を増やす
+                            updateData = { waiting: increment(1) };
+                        } else {
+                            // 通常時はモードに応じて fullApplied または reserved を増やす
                             const field = data.mode === 'full' ? 'fullApplied' : 'reserved';
-                            await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
+                            updateData = { [field]: increment(1) };
                         }
-                    } catch (e) { console.error("Counter update failed", e); }
-                }
+                        await updateDoc(doc(db, "schedules", schedDoc.id), updateData);
+                    }
+                } catch (e) { console.error("Counter update failed", e); }
 
                 // 3. EmailJSで自動返信メールを送信（全項目を網羅）
                 const emailParams = {
