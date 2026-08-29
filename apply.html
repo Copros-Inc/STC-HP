@@ -21,13 +21,29 @@
     </style>
     
 </head>
-<body class="pb-20">
-    <nav class="bg-slate-900 text-white py-6 px-8 mb-12">
-        <div class="max-w-5xl mx-auto flex justify-between items-center">
-            <div class="font-black italic text-xl tracking-tighter">STC <span class="text-sky-400 uppercase">Application</span></div>
-            <a href="index.html" class="text-xs font-bold hover:text-sky-400 transition italic">← ホームへ戻る / Home</a>
+<body class="pb-20 pt-32 md:pt-40">
+    <!-- カッコよくデザインした統合ヘッダー -->
+    <header class="fixed top-0 w-full z-[9999] py-4 bg-[#001a33] shadow-2xl border-b border-white/5">
+        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-10">
+            <a href="index.html" class="flex items-center gap-3 shrink-0 group">
+                <div class="bg-white p-1 rounded shadow-lg shrink-0 group-hover:scale-105 transition-transform">
+                    <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
+                </div>
+                <div class="text-left text-white leading-none shrink-0">
+                    <h1 class="font-[900] text-[10px] md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
+                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.1em]">Shimonoseki Training Center</p>
+                </div>
+            </a>
+            
+            <a href="index.html" class="relative group overflow-hidden bg-white/5 border border-white/20 px-4 md:px-6 py-2 rounded-full transition-all hover:border-sky-400">
+                <div class="relative z-10 flex items-center gap-2">
+                    <i class="fas fa-arrow-left text-[10px] text-sky-400 group-hover:-translate-x-1 transition-transform"></i>
+                    <span class="text-white text-[10px] md:text-xs font-[900] italic uppercase tracking-widest font-en">Home</span>
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-r from-sky-600/0 via-sky-600/20 to-sky-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+            </a>
         </div>
-    </nav>
+    </header>
 
     <main class="max-w-4xl mx-auto px-6">
         <div class="text-center mb-12">
@@ -96,11 +112,28 @@
                         </p>
                     </div>
                 </div>
-                <div class="mt-6">
-                    <label class="input-label text-sky-600">証明写真の添付（必須） / Profile Photo *</label>
-                    <div onclick="document.getElementById('in_photo').click()" class="photo-box" id="photo-preview-box">
-                        <i class="fas fa-camera text-2xl text-slate-300 mb-2"></i>
-                        <p class="text-[10px] font-bold text-slate-400">タップして撮影または選択</p>
+                <div class="mt-8 pt-8 border-t border-slate-100">
+                    <label class="input-label text-sky-600 mb-4">証明写真の添付（必須） / Profile Photo *</label>
+                    
+                    <!-- 強烈な注意事項ボックス -->
+                    <div class="mb-6 p-6 bg-amber-50 border-2 border-amber-200 rounded-2xl text-left">
+                        <p class="text-amber-700 font-[900] text-sm mb-3 flex items-center gap-2">
+                            <i class="fas fa-exclamation-triangle"></i> 修了証に使用する大切な写真です
+                        </p>
+                        <ul class="text-[10px] md:text-[11px] font-bold text-slate-600 space-y-2 leading-relaxed">
+                            <li class="flex gap-2"><i class="fas fa-check text-amber-500"></i> <span>サイズ：縦30mm × 横24mm（相当）</span></li>
+                            <li class="flex gap-2"><i class="fas fa-check text-amber-500"></i> <span><strong class="text-rose-600">背景：白無地（背景なし）</strong> ※色付き・柄・景色は不可</span></li>
+                            <li class="flex gap-2"><i class="fas fa-check text-amber-500"></i> <span>範囲：<strong class="text-rose-600">胸より上</strong>、正面、脱帽、マスクなし</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- 人型シルエット付きのアップロード箱 -->
+                    <div onclick="document.getElementById('in_photo').click()" class="photo-box relative h-64 border-dashed border-sky-200 bg-sky-50/30 overflow-hidden" id="photo-preview-box">
+                        <div class="flex flex-col items-center justify-center pointer-events-none">
+                            <i class="fas fa-user-tie text-6xl text-slate-200 mb-4"></i>
+                            <p class="text-xs font-black text-sky-500 italic uppercase">Tap to Capture</p>
+                            <p class="text-[10px] font-bold text-slate-400 mt-2">ここをタップして顔写真を撮影・選択</p>
+                        </div>
                     </div>
                     <input type="file" id="in_photo" accept="image/*" class="hidden">
                     <input type="hidden" name="userPhotoBase64" id="userPhotoBase64" required>
@@ -217,7 +250,8 @@
         reader.onload = function(event) {
             const base64String = event.target.result;
             const previewBox = document.getElementById('photo-preview-box');
-            previewBox.innerHTML = `<img src="${base64String}" class="w-full h-full object-cover rounded-xl">`;
+            // アイコンを消して画像を表示（object-containで全身が収まるように調整）
+            previewBox.innerHTML = `<img src="${base64String}" class="absolute inset-0 w-full h-full object-contain p-2 rounded-2xl bg-white">`;
             document.getElementById('userPhotoBase64').value = base64String;
         };
         reader.readAsDataURL(file);
