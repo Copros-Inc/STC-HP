@@ -242,6 +242,21 @@
                 };
                 formData.forEach((value, key) => { data[key] = value; });
                 await addDoc(collection(db, "reservations"), data);
+
+                // --- [追加] スケジュールの残席を自動減算 ---
+                try {
+                    const { query, where, getDocs, updateDoc, doc, increment } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+                    const q = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
+                    const schedSnap = await getDocs(q);
+                    if (!schedSnap.empty) {
+                        const schedDoc = schedSnap.docs[0];
+                        // 本申込なら fullApplied、仮予約なら reserved を +1 する
+                        const mode = new URLSearchParams(window.location.search).get('mode') || "full";
+                        const field = mode === 'full' ? 'fullApplied' : 'reserved';
+                        await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
+                    }
+                } catch (e) { console.error("Counter update failed", e); }
+                
                 alert("お申し込みありがとうございました！\n送信が完了しました。\n\n※本人確認書類の原本を当日必ずお持ちください。"); 
                 window.location.href = "index.html";
             } catch (err) { 
