@@ -523,41 +523,43 @@
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             const avail = item.capacity - (item.fullApplied + item.reserved);
             
+            // --- [統合版] 残席表示とボタン制御 ---
+            const avail = item.capacity - (item.fullApplied + item.reserved);
+            const diffDays = Math.ceil((new Date(displayYear, item.month - 1, item.days[0] || 1) - new Date()) / (1000 * 60 * 60 * 24));
+            
             let statusLabel = '';
-            if (diffDays <= 10) {
+            if (diffDays <= 7) {
                 statusLabel = '<span class="bg-slate-500 text-white px-6 py-2 rounded-full text-base font-black shadow-sm text-center">受付終了</span>';
             } else if (avail <= 0) {
-                statusLabel = '<span class="bg-slate-200 text-slate-500 px-6 py-2 rounded-full text-sm">満員御礼</span>';
+                statusLabel = '<span class="bg-rose-600 text-white px-6 py-2 rounded-full text-base font-black shadow-md text-center animate-pulse">満員御礼</span>';
+            } else if (avail <= 3) {
+                statusLabel = `<span class="bg-white text-rose-600 border-2 border-rose-600 px-6 py-2 rounded-full text-base font-black shadow-sm text-center font-en">残り ${avail} 席</span>`;
             } else {
-                statusLabel = `<span class="bg-sky-100 text-[#001a33] px-6 py-2 rounded-full text-base font-black border border-sky-200 shadow-sm text-center">残り ${avail} 席</span>`;
+                statusLabel = `<span class="bg-sky-100 text-[#001a33] px-6 py-2 rounded-full text-base font-black border border-sky-200 shadow-sm text-center font-en">残り ${avail} 席</span>`;
             }
 
-            // --- [修正] 11H・特別教育は仮予約ボタンのみに限定 ---
-            const cName = String(item.name);
-            const isSimpleOnly = cName.includes("11H") || cName.includes("１１Ｈ") || cName.includes("テールゲート") || cName.includes("フルハーネス");
-            
             let actionBtn = `<div class="flex flex-col gap-3">`;
-            
-            if (isSimpleOnly) {
-                // 11H・特別教育などは「仮予約」ボタンひとつを大きく表示
+            if (avail <= 0 && diffDays > 7) {
+                // 満員時のキャンセル待ちボタン（mode=simpleを付与）
                 actionBtn += `
-                    <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-[#001a33] hover:bg-accent hover:border-accent transition-all italic flex items-center justify-center gap-2 shadow-lg">
-                        <i class="fas fa-clock text-lg"></i>
-                        <span>まずは仮予約（席確保）</span>
+                    <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&status=waiting&mode=simple" class="bg-amber-600 text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-amber-600 hover:bg-[#001a33] transition-all italic flex items-center justify-center gap-2 shadow-lg">
+                        <i class="fas fa-hourglass-half text-lg"></i>
+                        <span>キャンセル待ちを希望する</span>
                     </a>`;
+            } else if (diffDays <= 7) {
+                actionBtn += `<p class="text-[10px] text-slate-400 font-bold italic text-center">※受付期間を終了しました</p>`;
             } else {
-                // 通常コース（玉掛け・小型・31Hなど）は2ボタン制
-                actionBtn += `
-                    <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-[#00a2ff] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-[#00a2ff] hover:bg-[#001a33] transition-all italic flex items-center justify-center gap-2 shadow-lg">
-                        <i class="fas fa-edit text-lg"></i>
-                        <span>Webで本申し込み</span>
-                    </a>
-                    <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-[12px] text-center font-[900] border-2 border-[#001a33] hover:bg-accent hover:border-accent transition-all italic flex items-center justify-center gap-2 shadow-md">
-                        <i class="fas fa-clock text-xs"></i>
-                        <span>まずは仮予約（席確保）</span>
-                    </a>`;
+                // 通常時：コース別のボタン出し分け
+                const isSimpleOnly = item.name.includes("11H") || item.name.includes("１１Ｈ") || item.name.includes("テールゲート") || item.name.includes("フルハーネス");
+                if (isSimpleOnly) {
+                    actionBtn += `<a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-[#001a33] hover:bg-accent transition-all italic flex items-center justify-center gap-2"><span>まずは仮予約（席確保）</span></a>`;
+                } else {
+                    actionBtn += `
+                        <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-[#00a2ff] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-[#00a2ff] hover:bg-[#001a33] transition-all italic flex items-center justify-center gap-2"><span>Webで本申し込み</span></a>
+                        <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-[12px] text-center font-[900] border-2 border-[#001a33] hover:bg-accent transition-all italic flex items-center justify-center gap-2"><span>まずは仮予約（席確保）</span></a>`;
+                }
             }
-            actionBtn += `</div>`;     
+            actionBtn += `</div>`;   
             
             // スマホ用カード：どんな時も絶対に消えないよう style 属性で固定
            mobileHtml += `
