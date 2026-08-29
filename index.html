@@ -482,7 +482,12 @@
             schedules = snapshot.docs.map(doc => {
                 const data = doc.data();
                 const rawStart = String(data.dayStart || "");
-                return { id: doc.id, name: data.courseName || "名称未設定", date: data.date || "", month: parseInt(data.month), days: rawStart.includes(',') ? rawStart.split(',').map(n => parseInt(n.trim())) : [parseInt(rawStart)], dayEnd: parseInt(data.dayEnd || 0), capacity: parseInt(data.capacity || 10), fullApplied: parseInt(data.fullApplied || 0), reserved: parseInt(data.reserved || 0) };
+                return { id: doc.id, name: data.courseName || "名称未設定", date: data.date || "", month: parseInt(data.month), days: rawStart.includes(',') ? rawStart.split(',').map(n => parseInt(n.trim())) : [parseInt(rawStart)], dayEnd: parseInt(data.dayEnd || 0), capacity: parseInt(data.capacity || 10), fullApplied: parseInt(data.fullApplied || 0), reserved: parseInt(data.reserved || 0), waiting: parseInt(data.waiting || 0) };
+            }).sort((a, b) => {
+                // 1. 月で並び替え
+                if (a.month !== b.month) return a.month - b.month;
+                // 2. 同じ月なら開始日で並び替え
+                return a.days[0] - b.days[0];
             });
             renderCalendar(currentMonth); renderGantt(currentMonth);
              // 追加：アンカーリンク（#ID）で来訪時、描画後のズレを補正する
