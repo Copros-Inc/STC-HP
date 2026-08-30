@@ -175,7 +175,7 @@
 
         <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = { 
             apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw",
@@ -374,24 +374,17 @@
                 await addDoc(collection(db, "reservations"), data);
 
                 // 2. スケジュールのカウント更新
-                try {
-                    const { query, where, getDocs, updateDoc, doc, increment } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
-                    const q = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
-                    const schedSnap = await getDocs(q);
-                    if (!schedSnap.empty) {
-                        const schedDoc = schedSnap.docs[0];
-                        let updateData = {};
-                        if (data.status === "waiting") {
-                            // キャンセル待ちの場合は waiting を増やす
-                            updateData = { waiting: increment(1) };
-                        } else {
-                            // 通常時はモードに応じて fullApplied または reserved を増やす
-                            const field = data.mode === 'full' ? 'fullApplied' : 'reserved';
-                            updateData = { [field]: increment(1) };
-                        }
-                        await updateDoc(doc(db, "schedules", schedDoc.id), updateData);
-                    }
-                } catch (e) { console.error("Counter update failed", e); }
+                // 修正後（import を消してスッキリさせます）
+try {
+    const q = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
+    const schedSnap = await getDocs(q);
+    if (!schedSnap.empty) {
+        const schedDoc = schedSnap.docs[0];
+        const mode = new URLSearchParams(window.location.search).get('mode') || "full";
+        const field = mode === 'full' ? 'fullApplied' : 'reserved';
+        await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
+    }
+} catch (e) { console.error("Counter update failed", e); }
 
                 // 3. EmailJSで自動返信メールを送信（全項目を網羅）
                 const emailParams = {
