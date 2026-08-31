@@ -353,38 +353,49 @@
             btn.innerText = "送信中...";
 
             try {
-                // --- 265行目からの書き換え ---
                 const formData = new FormData(e.target);
                 const params = new URLSearchParams(window.location.search);
+                const tempId = params.get('tempId'); // URLから紐付け用IDを取得
+
+                // 送信データの構築
                 const data = {
                     courseName: document.getElementById('courseName').value,
                     courseDate: document.getElementById('courseDate').value,
-                    createdAt: serverTimestamp(),
-                    mode: params.get('mode') || "full",
-                    status: "new",
-                    photos: {
-                        user: document.getElementById('userPhotoBase64').value
-                    }
+                    mode: 'full',      // 本申込として上書き
+                    status: 'accepted', // ステータスを確定済みに変更
+                    updatedAt: serverTimestamp()
                 };
-                formData.forEach((value, key) => { 
-                    if(key !== "userPhotoBase64") data[key] = value; 
+
+                formData.forEach((value, key) => {
+                    if(key !== "userPhotoBase64") data[key] = value;
                 });
 
-                // 1. Firebase Firestoreへ保存
-                await addDoc(collection(db, "reservations"), data);
+                // 写真があれば追加
+                const photoVal = document.getElementById('userPhotoBase64')?.value;
+                if (photoVal) {
+                    data.photos = { user: photoVal };
+                }
 
-                // 2. スケジュールのカウント更新
-                // 修正後（import を消してスッキリさせます）
-try {
-    const q = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
-    const schedSnap = await getDocs(q);
-    if (!schedSnap.empty) {
-        const schedDoc = schedSnap.docs[0];
-        const mode = new URLSearchParams(window.location.search).get('mode') || "full";
-        const field = mode === 'full' ? 'fullApplied' : 'reserved';
-        await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
-    }
-} catch (e) { console.error("Counter update failed", e); }
+                if (tempId) {
+                    // 【統合ロジック】既存の仮予約データを最新情報で更新（不足項目が埋まります）
+                    await updateDoc(doc(db, "reservations", tempId), data);
+                } else {
+                    // 【新規ロジック】直接本申込に来た場合は新規作成
+                    data.createdAt = serverTimestamp();
+                    await addDoc(collection(db, "reservations"), data);
+                    
+                    // 新規の時のみスケジュール残席をマイナス（increment）
+                    try {
+                        const q = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
+                        const schedSnap = await getDocs(q);
+                        if (!schedSnap.empty) {
+                            const schedDoc = schedSnap.docs[0];
+                            const mode = params.get('mode') || "full";
+                            const field = mode === 'full' ? 'fullApplied' : 'reserved';
+                            await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
+                        }
+                    } catch (e) { console.error("Schedule update failed", e); }
+                }
 
                 // 3. EmailJSで自動返信メールを送信（全項目を網羅）
                 const emailParams = {
