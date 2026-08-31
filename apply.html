@@ -190,62 +190,42 @@
 
           
 
-        window.addEventListener('load', async () => {
+        window.addEventListener('load', () => {
             const params = new URLSearchParams(window.location.search);
             const course = params.get('course') || "";
             const date = params.get('date') || "";
+            const regNo = params.get('regNo') || ""; // URLから受付番号を読み取る
             const mode = params.get('mode') || "full";
-            const tempId = params.get('tempId');
 
             // 1. 講習情報のセット
             document.getElementById('courseName').value = course;
             document.getElementById('courseDate').value = date;
             
-            // 2. モード別の表示切り替え
+            // 2. [追加] 受付番号がURLにあれば、画面上の目立つ場所に表示する
+            if (regNo) {
+                const dynamicSection = document.getElementById('dynamic-section');
+                const regHtml = `
+                    <div class="mb-10 p-6 bg-emerald-50 border-2 border-emerald-200 rounded-2xl">
+                        <label class="input-label text-emerald-600">発行済の受付番号</label>
+                        <input type="text" name="regNo" value="${regNo}" readonly class="input-field bg-white font-black text-emerald-700 outline-none border-none">
+                        <p class="text-[10px] text-slate-500 mt-2 font-bold">※この番号で仮予約データと統合されます</p>
+                    </div>`;
+                // 「講習別分岐セクション」の直前に挿入
+                if (dynamicSection) dynamicSection.insertAdjacentHTML('beforebegin', regHtml);
+            }
+            
+            // 3. UIの切り替え
             updateCourseUI(course, mode === 'simple');
 
-            // 3. データの自動読み込み
-            if (tempId) {
-                console.log("Searching for tempId:", tempId);
-                try {
-                    const { getDoc, doc } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
-                    const docSnap = await getDoc(doc(db, "reservations", tempId));
-
-                    if (docSnap.exists()) {
-                        const oldData = docSnap.data();
-                        const f = document.getElementById('applyForm');
-                        if (oldData.userName) f.userName.value = oldData.userName;
-                        if (oldData.userKana) f.userKana.value = oldData.userKana;
-                        if (oldData.phone) f.phone.value = oldData.phone;
-                        if (oldData.email) f.email.value = oldData.email;
-                        if (oldData.address) f.address.value = oldData.address;
-                        if (oldData.zip) f.zip.value = oldData.zip;
-                        if (oldData.company) f.company.value = oldData.company;
-                        if (oldData.compPhone) f.compPhone.value = oldData.compPhone;
-                    }
-                } catch (e) {
-                    console.error("Fetch Error:", e);
-                }
-            }
-
-            // 4. UIの最終調整（モードによる詳細な出し分け）
             if (mode === 'simple') {
                 document.getElementById('mode-badge').innerText = "簡易予約モード（仮押さえ）";
-                if(document.getElementById('section-photo')) {
-                    document.getElementById('section-photo').style.display = 'none';
-                    document.getElementById('userPhotoBase64').required = false;
-                }
+                if(document.getElementById('section-photo')) document.getElementById('section-photo').style.display = 'none';
                 if(document.getElementById('section-payment')) document.getElementById('section-payment').style.display = 'none';
             } else {
                 document.getElementById('mode-badge').innerText = "Full Web Application";
-                if(document.getElementById('section-photo')) {
-                    document.getElementById('section-photo').style.display = 'block';
-                    document.getElementById('userPhotoBase64').required = true;
-                }
-                if(document.getElementById('section-payment')) document.getElementById('section-payment').style.display = 'block';
             }
 
-            // 5. 同意事項の出し分け
+            // 3. 同意事項の出し分け
             const consentList = document.getElementById('consent-list');
             if (mode === 'simple') {
                 consentList.innerHTML = `
@@ -369,7 +349,7 @@
             }
         });
 
-        // 送信処理（メール送信とFirebase保存を統合）
+        // 送信処理
         document.getElementById('applyForm').addEventListener('submit', async e => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn'); 
@@ -379,14 +359,14 @@
             try {
                 const formData = new FormData(e.target);
                 const params = new URLSearchParams(window.location.search);
-                const tempId = params.get('tempId'); // URLから紐付け用IDを取得
+                // 修正：tempId ではなく regNo を取得
+                const regNoUrl = params.get('regNo'); 
 
-                // 送信データの構築
                 const data = {
                     courseName: document.getElementById('courseName').value,
                     courseDate: document.getElementById('courseDate').value,
-                    mode: 'full',      // 本申込として上書き
-                    status: 'accepted', // ステータスを確定済みに変更
+                    mode: 'full',      
+                    status: 'accepted', 
                     updatedAt: serverTimestamp()
                 };
 
@@ -394,21 +374,25 @@
                     if(key !== "userPhotoBase64") data[key] = value;
                 });
 
-                // 写真があれば追加
                 const photoVal = document.getElementById('userPhotoBase64')?.value;
                 if (photoVal) {
                     data.photos = { user: photoVal };
                 }
 
-                if (tempId) {
-                    // 【統合ロジック】既存の仮予約データを最新情報で更新（不足項目が埋まります）
-                    await updateDoc(doc(db, "reservations", tempId), data);
+                // 修正：regNoUrl がある場合に既存データを検索して上書き統合
+                if (regNoUrl) {
+                    const q = query(collection(db, "reservations"), where("regNo", "==", regNoUrl));
+                    const snap = await getDocs(q);
+                    if (!snap.empty) {
+                        await updateDoc(doc(db, "reservations", snap.docs[0].id), data);
+                    } else {
+                        data.createdAt = serverTimestamp();
+                        await addDoc(collection(db, "reservations"), data);
+                    }
                 } else {
-                    // 【新規ロジック】直接本申込に来た場合は新規作成
                     data.createdAt = serverTimestamp();
                     await addDoc(collection(db, "reservations"), data);
                     
-                    // 新規の時のみスケジュール残席をマイナス（increment）
                     try {
                         const q = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
                         const schedSnap = await getDocs(q);
@@ -421,17 +405,18 @@
                     } catch (e) { console.error("Schedule update failed", e); }
                 }
 
-                // --- [修正版] EmailJS用パラメータ ---
+                // --- EmailJS用パラメータ（長谷部様のロジックをそのまま網羅） ---
                 const emailParams = {
-                    userName: data.userName,         // {{userName}}
-                    userKana: data.userKana || "",   // {{userKana}}
-                    courseName: data.courseName,     // {{courseName}}
-                    courseDate: data.courseDate,     // {{courseDate}}
+                    userName: data.userName,         
+                    userKana: data.userKana || "",   
+                    courseName: data.courseName,     
+                    courseDate: data.courseDate,     
                     phone: data.phone || "",
                     email: data.email || "",
                     company: data.company || "個人",
-                    regNo: data.regNo || "（確認中）", // {{regNo}} を追加
-                    deadline_note: new URLSearchParams(window.location.search).get('mode') === 'simple' 
+                    regNo: regNoUrl || "（新規）", 
+                    // 長谷部様が作成された出し分けロジックを維持
+                    deadline_note: params.get('mode') === 'simple' 
                         ? "【重要】現在は「仮予約」の状態です。7日以内に以下のURLより本申込をお願いいたします。" 
                         : "お申し込みの受付（本申込）が完了いたしました。当日の案内書を必ずご確認ください。"
                 };
@@ -440,9 +425,8 @@
 
                 alert("お申し込みありがとうございました！\n自動返信メールをお送りしましたのでご確認ください。"); 
                 window.location.href = "index.html";
+
             } catch (err) { 
-                console.error("Error details:", err);
-                                console.error("Error details:", err);
                 alert("送信に失敗しました。\n\n詳細エラー: " + JSON.stringify(err));  
                 btn.disabled = false; 
                 btn.innerText = "申し込みを送信する";
