@@ -190,17 +190,53 @@
 
           
 
-        // ページ読み込み時の処理
-        window.addEventListener('load', () => {
+        window.addEventListener('load', async () => {
             const params = new URLSearchParams(window.location.search);
-            // URLから情報を取得（取得できない場合は空文字）
             const course = params.get('course') || "";
             const date = params.get('date') || "";
             const mode = params.get('mode') || "full";
+            const tempId = params.get('tempId');
 
-            // 入力欄に値をセット
+            // 1. 講習情報のセット（ここは即座に動くはず）
             document.getElementById('courseName').value = course;
             document.getElementById('courseDate').value = date;
+            
+            // 2. モード別の表示切り替え
+            updateCourseUI(course, mode === 'simple');
+
+            // 3. 【修正版】データの自動読み込み
+            if (tempId) {
+                console.log("Searching for tempId:", tempId); // ブラウザのF12で見えます
+                try {
+                    // Firebaseの読み込み関数をここで確実に取得
+                    const { getDoc, doc } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+                    
+                    // データベースから取得
+                    const docRef = doc(db, "reservations", tempId);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists()) {
+                        const oldData = docSnap.data();
+                        console.log("Data found:", oldData);
+                        
+                        // フォームの各項目に反映（※name属性を使います）
+                        const f = document.getElementById('applyForm');
+                        if (oldData.userName) f.userName.value = oldData.userName;
+                        if (oldData.userKana) f.userKana.value = oldData.userKana;
+                        if (oldData.phone) f.phone.value = oldData.phone;
+                        if (oldData.email) f.email.value = oldData.email;
+                        if (oldData.address) f.address.value = oldData.address;
+                        if (oldData.company) f.company.value = oldData.company;
+                        if (oldData.zip) f.zip.value = oldData.zip;
+                        if (oldData.compPhone) f.compPhone.value = oldData.compPhone;
+                    } else {
+                        console.log("No such document!");
+                    }
+                } catch (e) {
+                    console.error("Fetch Error:", e);
+                }
+            }
+        });
             
             // モードに応じた表示切り替え
             if (mode === 'simple') {
