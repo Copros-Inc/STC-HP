@@ -197,14 +197,14 @@
             const mode = params.get('mode') || "full";
             const tempId = params.get('tempId');
 
-            // 1. 講習情報のセット（ここは即座に動くはず）
+            // 1. 講習情報のセット
             document.getElementById('courseName').value = course;
             document.getElementById('courseDate').value = date;
             
             // 2. モード別の表示切り替え
             updateCourseUI(course, mode === 'simple');
 
-            // 3. 【修正版】データの自動読み込み
+            // 3. データの自動読み込み
             if (tempId) {
                 console.log("Searching for tempId:", tempId);
                 try {
@@ -213,36 +213,29 @@
 
                     if (docSnap.exists()) {
                         const oldData = docSnap.data();
-                        console.log("Data found:", oldData);
-                        
                         const f = document.getElementById('applyForm');
                         if (oldData.userName) f.userName.value = oldData.userName;
                         if (oldData.userKana) f.userKana.value = oldData.userKana;
                         if (oldData.phone) f.phone.value = oldData.phone;
                         if (oldData.email) f.email.value = oldData.email;
                         if (oldData.address) f.address.value = oldData.address;
-                        if (oldData.company) f.company.value = oldData.company || "";
-                        if (oldData.zip) f.zip.value = oldData.zip || "";
-                        if (oldData.compPhone) f.compPhone.value = oldData.compPhone || "";
-                    } else {
-                        console.log("No such document!");
+                        if (oldData.zip) f.zip.value = oldData.zip;
+                        if (oldData.company) f.company.value = oldData.company;
+                        if (oldData.compPhone) f.compPhone.value = oldData.compPhone;
                     }
                 } catch (e) {
                     console.error("Fetch Error:", e);
                 }
             }
-        });
-            
-            // モードに応じた表示切り替え
+
+            // 4. UIの最終調整（モードによる詳細な出し分け）
             if (mode === 'simple') {
                 document.getElementById('mode-badge').innerText = "簡易予約モード（仮押さえ）";
-                // 仮予約では写真を隠し、必須も解除する
                 if(document.getElementById('section-photo')) {
                     document.getElementById('section-photo').style.display = 'none';
                     document.getElementById('userPhotoBase64').required = false;
                 }
                 if(document.getElementById('section-payment')) document.getElementById('section-payment').style.display = 'none';
-                updateCourseUI(course, true);
             } else {
                 document.getElementById('mode-badge').innerText = "Full Web Application";
                 if(document.getElementById('section-photo')) {
@@ -250,9 +243,9 @@
                     document.getElementById('userPhotoBase64').required = true;
                 }
                 if(document.getElementById('section-payment')) document.getElementById('section-payment').style.display = 'block';
-                updateCourseUI(course, false);
             }
-                        // --- 同意事項の出し分け ---
+
+            // 5. 同意事項の出し分け
             const consentList = document.getElementById('consent-list');
             if (mode === 'simple') {
                 consentList.innerHTML = `
@@ -271,7 +264,7 @@
                     <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-sky-300 underline">遅刻・早退・欠席は失格となり、受講料の返金はできないことを承知しました。</span></label>
                 `;
             }
-        });
+        }); // ここでロードイベントを正しく閉じます
 
     document.getElementById('in_photo').addEventListener('change', function(e) {
         const file = e.target.files[0];
