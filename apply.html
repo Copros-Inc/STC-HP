@@ -397,16 +397,19 @@
                     } catch (e) { console.error("Schedule update failed", e); }
                 }
 
-                // 3. EmailJSで自動返信メールを送信（全項目を網羅）
+                // --- [修正版] EmailJS用パラメータ ---
                 const emailParams = {
-                    userName: data.userName,
-                    userKana: data.userKana,
-                    courseName: data.courseName,
-                    courseDate: data.courseDate,
-                    phone: data.phone,
-                    email: data.email,
+                    userName: data.userName,         // {{userName}}
+                    userKana: data.userKana || "",   // {{userKana}}
+                    courseName: data.courseName,     // {{courseName}}
+                    courseDate: data.courseDate,     // {{courseDate}}
+                    phone: data.phone || "",
+                    email: data.email || "",
                     company: data.company || "個人",
-                    deadline_note: data.mode === 'simple' ? "【重要】本予約は「仮予約」です。7日以内に本申込がない場合は自動キャンセルとなります。" : "お申し込みありがとうございました。"
+                    regNo: data.regNo || "（確認中）", // {{regNo}} を追加
+                    deadline_note: new URLSearchParams(window.location.search).get('mode') === 'simple' 
+                        ? "【重要】現在は「仮予約」の状態です。7日以内に以下のURLより本申込をお願いいたします。" 
+                        : "お申し込みの受付（本申込）が完了いたしました。当日の案内書を必ずご確認ください。"
                 };
 
                 await window.emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
