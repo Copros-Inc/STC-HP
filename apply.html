@@ -201,17 +201,21 @@
             document.getElementById('courseName').value = course;
             document.getElementById('courseDate').value = date;
             
-            // 2. [追加] 受付番号がURLにあれば、画面上の目立つ場所に表示する
+            // 2. [位置修正] 受付番号がURLにあれば、受講者情報の直前に挿入する
             if (regNo) {
-                const dynamicSection = document.getElementById('dynamic-section');
+                // ここを 'section-photo'（03のセクション）から 'applyForm' の最初の方へ変更
+                const formCard02 = document.querySelector('section.form-card:nth-of-type(2)'); // 02受講者情報セクションを取得
                 const regHtml = `
                     <div class="mb-10 p-6 bg-emerald-50 border-2 border-emerald-200 rounded-2xl">
                         <label class="input-label text-emerald-600">発行済の受付番号</label>
                         <input type="text" name="regNo" value="${regNo}" readonly class="input-field bg-white font-black text-emerald-700 outline-none border-none">
                         <p class="text-[10px] text-slate-500 mt-2 font-bold">※この番号で仮予約データと統合されます</p>
                     </div>`;
-                // 「講習別分岐セクション」の直前に挿入
-                if (dynamicSection) dynamicSection.insertAdjacentHTML('beforebegin', regHtml);
+                
+                if (formCard02) {
+                    // 02. 受講者情報セクションの「直前」に差し込む
+                    formCard02.insertAdjacentHTML('beforebegin', regHtml);
+                }
             }
             
             // 3. UIの切り替え
