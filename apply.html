@@ -357,21 +357,20 @@
         document.getElementById('applyForm').addEventListener('submit', async e => {
             e.preventDefault();
             const btn = document.getElementById('submitBtn'); 
-            btn.disabled = true; 
-            btn.innerText = "送信中...";
+            btn.disabled = true; btn.innerText = "送信中...";
 
             try {
                 const formData = new FormData(e.target);
                 const params = new URLSearchParams(window.location.search);
-                // 修正：tempId ではなく regNo を取得
                 const regNoUrl = params.get('regNo'); 
 
                 const data = {
                     courseName: document.getElementById('courseName').value,
                     courseDate: document.getElementById('courseDate').value,
-                    mode: 'full',      
+                    mode: params.get('mode') || "full",
                     status: 'accepted', 
-                    updatedAt: serverTimestamp()
+                    createdAt: serverTimestamp(),
+                    memo: regNoUrl ? "仮予約からの移行(" + regNoUrl + ")" : "新規申込"
                 };
 
                 formData.forEach((value, key) => {
@@ -379,47 +378,32 @@
                 });
 
                 const photoVal = document.getElementById('userPhotoBase64')?.value;
-                if (photoVal) {
-                    data.photos = { user: photoVal };
-                }
+                if (photoVal) data.photos = { user: photoVal };
 
-                // 修正：regNoUrl がある場合に既存データを検索して上書き統合
-                if (regNoUrl) {
-                    const q = query(collection(db, "reservations"), where("regNo", "==", regNoUrl));
-                    const snap = await getDocs(q);
-                    if (!snap.empty) {
-                        await updateDoc(doc(db, "reservations", snap.docs[0].id), data);
-                    } else {
-                        data.createdAt = serverTimestamp();
-                        await addDoc(collection(db, "reservations"), data);
+                // 【最優先】今のルールで100%動く「新規作成」
+                await addDoc(collection(db, "reservations"), data);
+                
+                // 残席を減らすロジック
+                try {
+                    const qSched = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
+                    const schedSnap = await getDocs(qSched);
+                    if (!schedSnap.empty) {
+                        const schedDoc = schedSnap.docs[0];
+                        const field = data.mode === 'full' ? 'fullApplied' : 'reserved';
+                        await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
                     }
-                } else {
-                    data.createdAt = serverTimestamp();
-                    await addDoc(collection(db, "reservations"), data);
-                    
-                    try {
-                        const q = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
-                        const schedSnap = await getDocs(q);
-                        if (!schedSnap.empty) {
-                            const schedDoc = schedSnap.docs[0];
-                            const mode = params.get('mode') || "full";
-                            const field = mode === 'full' ? 'fullApplied' : 'reserved';
-                            await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
-                        }
-                    } catch (e) { console.error("Schedule update failed", e); }
-                }
+                } catch (e) { console.error("Schedule update failed", e); }
 
-                // --- EmailJS用パラメータ（長谷部様のロジックをそのまま網羅） ---
+                // --- 長谷部様こだわりの EmailJS 出し分けロジックを完全網羅 ---
                 const emailParams = {
-                    userName: data.userName,         
-                    userKana: data.userKana || "",   
-                    courseName: data.courseName,     
-                    courseDate: data.courseDate,     
+                    userName: data.userName,
+                    userKana: data.userKana || "",
+                    courseName: data.courseName,
+                    courseDate: data.courseDate,
                     phone: data.phone || "",
                     email: data.email || "",
                     company: data.company || "個人",
-                    regNo: regNoUrl || "（新規）", 
-                    // 長谷部様が作成された出し分けロジックを維持
+                    regNo: regNoUrl || "（新規）",
                     deadline_note: params.get('mode') === 'simple' 
                         ? "【重要】現在は「仮予約」の状態です。7日以内に以下のURLより本申込をお願いいたします。" 
                         : "お申し込みの受付（本申込）が完了いたしました。当日の案内書を必ずご確認ください。"
@@ -427,13 +411,13 @@
 
                 await window.emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
 
-                alert("お申し込みありがとうございました！\n自動返信メールをお送りしましたのでご確認ください。"); 
+                alert("お申し込みありがとうございました！\n自動返信メールをご確認ください。"); 
                 window.location.href = "index.html";
 
             } catch (err) { 
-                alert("送信に失敗しました。\n\n詳細エラー: " + JSON.stringify(err));  
-                btn.disabled = false; 
-                btn.innerText = "申し込みを送信する";
+                console.error("Fatal Error:", err);
+                alert("送信に失敗しました。もう一度お試しください。");  
+                btn.disabled = false; btn.innerText = "申し込みを送信する";
             }
         });
     </script>
