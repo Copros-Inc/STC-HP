@@ -353,73 +353,80 @@
             }
         });
 
-        // 送信処理
-        document.getElementById('applyForm').addEventListener('submit', async e => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn'); 
-            btn.disabled = true; btn.innerText = "送信中...";
+// 送信処理（修正版）
+document.getElementById('applyForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn'); 
+    btn.disabled = true; btn.innerText = "送信中...";
 
-            try {
-                const formData = new FormData(e.target);
-                const params = new URLSearchParams(window.location.search);
-                const regNoUrl = params.get('regNo'); 
+    try {
+        const formData = new FormData(e.target);
+        const params = new URLSearchParams(window.location.search);
+        const regNoUrl = params.get('regNo'); 
+        const mode = params.get('mode') || "full";
 
-                const data = {
-                    courseName: document.getElementById('courseName').value,
-                    courseDate: document.getElementById('courseDate').value,
-                    mode: params.get('mode') || "full",
-                    status: 'accepted', 
-                    createdAt: serverTimestamp(),
-                    memo: regNoUrl ? "仮予約からの移行(" + regNoUrl + ")" : "新規申込"
-                };
+        const data = {
+            courseName: document.getElementById('courseName').value,
+            courseDate: document.getElementById('courseDate').value,
+            mode: mode,
+            status: 'accepted', 
+            createdAt: serverTimestamp(),
+            memo: regNoUrl ? "仮予約からの移行(" + regNoUrl + ")" : "新規申込"
+        };
 
-                formData.forEach((value, key) => {
-                    if(key !== "userPhotoBase64") data[key] = value;
-                });
-
-                const photoVal = document.getElementById('userPhotoBase64')?.value;
-                if (photoVal) data.photos = { user: photoVal };
-
-                // 【最優先】今のルールで100%動く「新規作成」
-                await addDoc(collection(db, "reservations"), data);
-                
-                // 残席を減らすロジック
-                try {
-                    const qSched = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
-                    const schedSnap = await getDocs(qSched);
-                    if (!schedSnap.empty) {
-                        const schedDoc = schedSnap.docs[0];
-                        const field = data.mode === 'full' ? 'fullApplied' : 'reserved';
-                        await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
-                    }
-                } catch (e) { console.error("Schedule update failed", e); }
-
-                // --- 長谷部様こだわりの EmailJS 出し分けロジックを完全網羅 ---
-                const emailParams = {
-                    userName: data.userName,
-                    userKana: data.userKana || "",
-                    courseName: data.courseName,
-                    courseDate: data.courseDate,
-                    phone: data.phone || "",
-                    email: data.email || "",
-                    company: data.company || "個人",
-                    regNo: regNoUrl || "（新規）",
-                    deadline_note: params.get('mode') === 'simple' 
-                        ? "【重要】現在は「仮予約」の状態です。7日以内に以下のURLより本申込をお願いいたします。" 
-                        : "お申し込みの受付（本申込）が完了いたしました。当日の案内書を必ずご確認ください。"
-                };
-
-                await window.emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
-
-                alert("お申し込みありがとうございました！\n自動返信メールをご確認ください。"); 
-                window.location.href = "index.html";
-
-            } catch (err) { 
-                console.error("Fatal Error:", err);
-                alert("送信に失敗しました。もう一度お試しください。");  
-                btn.disabled = false; btn.innerText = "申し込みを送信する";
-            }
+        formData.forEach((value, key) => {
+            if(key !== "userPhotoBase64") data[key] = value;
         });
+
+        const photoVal = document.getElementById('userPhotoBase64')?.value;
+        if (photoVal) data.photos = { user: photoVal };
+
+        // 1. 新規申込データとして保存
+        await addDoc(collection(db, "reservations"), data);
+        
+        // 2. 残席の更新（二重減算防止ロジック）
+        // URLに regNo が「ない」場合のみ、新しく席を減らす
+        if (!regNoUrl) {
+            try {
+                const qSched = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
+                const schedSnap = await getDocs(qSched);
+                if (!schedSnap.empty) {
+                    const schedDoc = schedSnap.docs[0];
+                    // 仮予約(simple)なら reserved を、本申込(full)なら fullApplied を増やす
+                    const field = mode === 'full' ? 'fullApplied' : 'reserved';
+                    await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
+                }
+            } catch (e) { console.error("Schedule update failed", e); }
+        } else {
+            console.log("仮予約からの本申込のため、残席更新をスキップしました。");
+        }
+
+        // 3. EmailJS 送信
+        const emailParams = {
+            userName: data.userName,
+            userKana: data.userKana || "",
+            courseName: data.courseName,
+            courseDate: data.courseDate,
+            phone: data.phone || "",
+            email: data.email || "",
+            company: data.company || "個人",
+            regNo: regNoUrl || "（新規）",
+            deadline_note: mode === 'simple' 
+                ? "【重要】現在は「仮予約」の状態です。7日以内に以下のURLより本申込をお願いいたします。" 
+                : "お申し込みの受付（本申込）が完了いたしました。当日の案内書を必ずご確認ください。"
+        };
+
+        await window.emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
+
+        alert("お申し込みありがとうございました！\n自動返信メールをご確認ください。"); 
+        window.location.href = "index.html";
+
+    } catch (err) { 
+        console.error("Fatal Error:", err);
+        alert("送信に失敗しました。もう一度お試しください。");  
+        btn.disabled = false; btn.innerText = "申し込みを送信する";
+    }
+});
     </script>
 
     <input type="file" id="in_licA" accept="image/*" class="hidden" onchange="window.processImg(this, 'licA')">
