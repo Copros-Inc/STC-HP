@@ -194,26 +194,23 @@
             const params = new URLSearchParams(window.location.search);
             const course = params.get('course') || "";
             const date = params.get('date') || "";
-            const regNo = params.get('regNo') || ""; // URLから受付番号を読み取る
+            const regNo = params.get('regNo') || ""; 
             const mode = params.get('mode') || "full";
 
             // 1. 講習情報のセット
             document.getElementById('courseName').value = course;
             document.getElementById('courseDate').value = date;
             
-            // 2. [位置修正] 受付番号がURLにあれば、受講者情報の直前に挿入する
+            // 2. 受付番号の表示（02受講者情報の直前に挿入）
             if (regNo) {
-                // ここを 'section-photo'（03のセクション）から 'applyForm' の最初の方へ変更
-                const formCard02 = document.querySelector('section.form-card:nth-of-type(2)'); // 02受講者情報セクションを取得
+                const formCard02 = document.querySelector('section.form-card:nth-of-type(2)'); 
                 const regHtml = `
                     <div class="mb-10 p-6 bg-emerald-50 border-2 border-emerald-200 rounded-2xl">
-                        <label class="input-label text-emerald-600">発行済の受付番号</label>
-                        <input type="text" name="regNo" value="${regNo}" readonly class="input-field bg-white font-black text-emerald-700 outline-none border-none">
-                        <p class="text-[10px] text-slate-500 mt-2 font-bold">※この番号で仮予約データと統合されます</p>
+                        <label class="input-label text-emerald-600">発行済の受付番号 / Reg No.</label>
+                        <input type="text" name="regNo" value="${regNo}" readonly class="w-full bg-transparent font-black text-emerald-700 text-lg outline-none border-none">
+                        <p class="text-[10px] text-slate-500 mt-2 font-bold">※この番号で仮予約データと統合管理されます</p>
                     </div>`;
-                
                 if (formCard02) {
-                    // 02. 受講者情報セクションの「直前」に差し込む
                     formCard02.insertAdjacentHTML('beforebegin', regHtml);
                 }
             }
@@ -229,26 +226,26 @@
                 document.getElementById('mode-badge').innerText = "Full Web Application";
             }
 
-            // 3. 同意事項の出し分け
+            // 4. 同意事項の出し分け
             const consentList = document.getElementById('consent-list');
+            const commonConsent = `
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">本申込書に虚偽の記載が無いことを確約します。</span></label>
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">自らが反社会的勢力に属さず、密接な関係をもたず、受講期間中も属さないことを確約します。</span></label>
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">当講習所内では講師の注意に従い、一切の講習妨害行為をしないことを確約します。</span></label>
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">講習中、上記事項に反することが判明した場合、講習を中止し退場することに同意します。</span></label>
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">これにより損害が生じても、講習所は一切賠償しないことに同意します。</span></label>
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">予期せぬ事態で講習が開催できなかった場合、教習所は一切賠償しないことに同意します。</span></label>
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-sky-300 underline">遅刻・早退・欠席は失格となり、受講料の返金はできないことを承知しました。</span></label>`;
+
             if (mode === 'simple') {
                 consentList.innerHTML = `
                     <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-sky-300 italic underline">本申込は「仮予約」であり、別途本申込の手続きが必要であることに同意します。</span></label>
                     <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">事務局からの確認メール受領後、7日以内に本申込がない場合は枠をキャンセル待ちの方へ譲ることに同意します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">本申込書に虚偽の記載が無いことを確約します。</span></label>
-                `;
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">本申込書に虚偽の記載が無いことを確約します。</span></label>`;
             } else {
-                consentList.innerHTML = `
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">本申込書に虚偽の記載が無いことを確約します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">自らが反社会的勢力に属さず、密接な関係をもたず、受講期間中も属さないことを確約します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">当講習所内では講師の注意に従い、一切の講習妨害行為をしないことを確約します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">講習中、上記事項に反することが判明した場合、講習を中止し退場することに同意します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">これにより損害が生じても、講習所は一切賠償しないことに同意します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">予期せぬ事態で講習が開催できなかった場合、教習所は一切賠償しないことに同意します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-sky-300 underline">遅刻・早退・欠席は失格となり、受講料の返金はできないことを承知しました。</span></label>
-                `;
+                consentList.innerHTML = commonConsent;
             }
-        }); // ここでロードイベントを正しく閉じます
+        }); // ← ここで正しく閉じる
 
     document.getElementById('in_photo').addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -386,21 +383,18 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
         
         // 2. 残席の更新（二重減算防止ロジック）
         // URLに regNo が「ない」場合のみ、新しく席を減らす
-        if (!regNoUrl) {
-            try {
-                const qSched = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
-                const schedSnap = await getDocs(qSched);
-                if (!schedSnap.empty) {
-                    const schedDoc = schedSnap.docs[0];
-                    // 仮予約(simple)なら reserved を、本申込(full)なら fullApplied を増やす
-                    const field = mode === 'full' ? 'fullApplied' : 'reserved';
-                    await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
-                }
-            } catch (e) { console.error("Schedule update failed", e); }
-        } else {
-            console.log("仮予約からの本申込のため、残席更新をスキップしました。");
-        }
-
+            // 2. 残席を減らすロジック（regNoがある場合はスキップして二重減算を防ぐ）
+            if (!regNoUrl) {
+                try {
+                    const qSched = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
+                    const schedSnap = await getDocs(qSched);
+                    if (!schedSnap.empty) {
+                        const schedDoc = schedSnap.docs[0];
+                        const field = data.mode === 'full' ? 'fullApplied' : 'reserved';
+                        await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
+                    }
+                } catch (e) { console.error("Schedule update failed", e); }
+            }
         // 3. EmailJS 送信
         const emailParams = {
             userName: data.userName,
