@@ -201,17 +201,18 @@
             document.getElementById('courseName').value = course;
             document.getElementById('courseDate').value = date;
             
-            // 2. 受付番号の表示（02受講者情報の直前に挿入）
+            // 2. 受付番号の表示（見出しの直後を狙って確実に挿入）
             if (regNo) {
-                const formCard02 = document.querySelector('section.form-card:nth-of-type(2)'); 
-                const regHtml = `
-                    <div class="mb-10 p-6 bg-emerald-50 border-2 border-emerald-200 rounded-2xl">
-                        <label class="input-label text-emerald-600">発行済の受付番号 / Reg No.</label>
-                        <input type="text" name="regNo" value="${regNo}" readonly class="w-full bg-transparent font-black text-emerald-700 text-lg outline-none border-none">
-                        <p class="text-[10px] text-slate-500 mt-2 font-bold">※この番号で仮予約データと統合管理されます</p>
-                    </div>`;
-                if (formCard02) {
-                    formCard02.insertAdjacentHTML('beforebegin', regHtml);
+                const targetHeader = Array.from(document.querySelectorAll('h2.section-title')).find(el => el.textContent.includes('02.'));
+                if (targetHeader) {
+                    const regHtml = `
+                        <div class="mb-10 p-6 bg-emerald-50 border-2 border-emerald-200 rounded-2xl">
+                            <label class="input-label text-emerald-600 font-black">発行済の受付番号 / Reg No.</label>
+                            <input type="text" name="regNo" value="${regNo}" readonly class="w-full bg-transparent font-black text-emerald-700 text-lg outline-none border-none">
+                            <p class="text-[10px] text-slate-500 mt-2 font-bold">※この番号で仮予約データと統合管理されます</p>
+                        </div>`;
+                    // 見出しの親要素である section の冒頭（見出しのすぐ下）に挿入
+                    targetHeader.closest('section').insertAdjacentHTML('afterbegin', regHtml);
                 }
             }
             
