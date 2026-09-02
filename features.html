@@ -42,10 +42,11 @@
 <body class="bg-white">
 
     <!-- 0. SUBPAGE HEADER (背景濃紺固定・崩れ防止・並び順整理済) -->
+    <!-- 修正版ヘッダー内部：ロゴを左端に、メニューを適切に配置 -->
     <header class="fixed top-0 w-full z-50 py-4 bg-[#001a33] shadow-xl" id="sub-nav">
-        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-8 gap-2">
+        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-10">
             
-            <!-- ロゴ & センター名 -->
+            <!-- ロゴ & センター名（左端固定） -->
             <a href="index.html" class="flex items-center gap-3 group shrink-0">
                 <div class="bg-white p-1 rounded shadow-lg group-hover:scale-105 transition-transform">
                     <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
@@ -56,38 +57,25 @@
                 </div>
             </a>
 
-            <!-- PC用メニュー：ご指定の並び順（改行絶対禁止） -->
-            <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase whitespace-nowrap">
+            <!-- PC用メニュー：中央付近に配置 -->
+            <nav class="hidden xl:flex items-center gap-x-6 text-white text-[12px] font-[900] italic uppercase mx-auto px-10">
                 <a href="index.html#service" class="hover:text-[#00a2ff] transition">事業内容</a>
                 <a href="index.html#courses" class="hover:text-[#00a2ff] transition">主要コース</a>
                 <a href="features.html" class="text-[#00a2ff] border-b-2 border-[#00a2ff]">選ばれる理由</a>
                 <a href="index.html#schedule-section" class="hover:text-[#00a2ff] transition">開催予定</a>
                 <a href="points.html" class="hover:text-[#00a2ff] transition">受講ガイド</a>
                 <a href="index.html#access" class="hover:text-[#00a2ff] transition">Access</a>
-                
-                <!-- ブログボタン：白文字・白枠 -->
-                <a href="blog.html" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">
-                    ブログ
-                </a>
-                
-                <!-- メールボタン：水色文字・水色枠 -->
-                <a href="mailto:info@shimonoseki-tc.com" class="text-[#00a2ff] border border-[#00a2ff]/60 hover:bg-[#00a2ff] hover:text-white transition px-3 py-1 rounded flex items-center gap-2 shadow-sm">
-                    <i class="fas fa-envelope text-[10px]"></i>メール
-                </a>
+                <a href="blog.html" class="border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded">ブログ</a>
             </nav>
 
-            <!-- アクションエリア（整理後） -->
-            <div class="flex items-center gap-2 ml-auto shrink-0">
-                <!-- PC用お問合せ：XL以上でのみ表示 -->
+            <!-- 右側アクションエリア（右端固定） -->
+            <div class="flex items-center gap-4 shrink-0">
                 <a href="tel:0832460556" class="hidden xl:flex bg-[#00a2ff] text-white px-6 py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all items-center justify-center gap-2">
                     <i class="fas fa-phone-alt text-xs"></i><span class="text-xs font-black italic">お問合せ</span>
                 </a>
-                
-                <!-- スマホ用HOMEボタン：これ一つに絞る -->
-                <a href="index.html#features" class="xl:hidden bg-white/10 text-white px-3 py-2 rounded-lg border border-white/20 flex items-center gap-1.5 text-[10px] font-black italic">
+                <a href="index.html" class="xl:hidden bg-white/10 text-white px-4 py-2 rounded-lg border border-white/20 flex items-center gap-2 text-[10px] font-black italic">
                     <i class="fas fa-home"></i> HOME
                 </a>
-            </div>
             </div>
         </div>
     </header>
