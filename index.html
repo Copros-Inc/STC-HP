@@ -543,6 +543,7 @@
             } else {
                 statusLabel = `<span class="bg-sky-100 text-[#001a33] px-6 py-2 rounded-full text-base font-black border border-sky-200 shadow-sm text-center font-en">残り ${avail} 席</span>`;
             }
+              // 修正版：リンク先を最新の apply.html 仕様に合わせる
             let actionBtn = `<div class="flex flex-col gap-3">`;
             if (avail <= 0 && diffDays > 7) {
                 actionBtn += `
@@ -562,7 +563,7 @@
                         <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-[12px] text-center font-[900] border-2 border-[#001a33] hover:bg-accent transition-all italic flex items-center justify-center gap-2"><span>まずは仮予約（席確保）</span></a>`;
                 }
             }
-            actionBtn += `</div>`;   
+            actionBtn += `</div>`;  
             
             // スマホ用カード：どんな時も絶対に消えないよう style 属性で固定
            mobileHtml += `
@@ -712,17 +713,14 @@
     // 他のページで動いている仕組みを index.html にも適用
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('sub-nav');
-        // スマホでもPCでも確実に取れる位置判定
         const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
 
         if (scrollPos > 50) {
-            nav.classList.add('header-scrolled');
-            nav.classList.add('py-2');
-            nav.classList.remove('py-4');
+            nav.classList.add('header-scrolled', 'shadow-2xl');
+            nav.style.backgroundColor = "#001a33"; // 背景色を確実に固定
         } else {
-            nav.classList.remove('header-scrolled');
-            nav.classList.add('py-4');
-            nav.classList.remove('py-2');
+            nav.classList.remove('header-scrolled', 'shadow-2xl');
+            nav.style.backgroundColor = "transparent";
         }
         
         // 既存のふわっと出る演出
