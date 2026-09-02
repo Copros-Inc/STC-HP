@@ -722,16 +722,17 @@
       
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('sub-nav');
-        if (window.pageYOffset > 50) {
-            nav.classList.add('py-2', 'shadow-2xl');
+        const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollPos > 50) {
+            nav.classList.add('header-scrolled', 'py-2', 'shadow-2xl');
             nav.classList.remove('py-4');
-            nav.style.backgroundColor = "#001a33"; // スクロールしたら濃紺
+            nav.style.backgroundColor = "#001a33";
         } else {
+            nav.classList.remove('header-scrolled', 'py-2', 'shadow-2xl');
             nav.classList.add('py-4');
-            nav.classList.remove('py-2', 'shadow-2xl');
-            nav.style.backgroundColor = "transparent"; // 最初は透明
+            nav.style.backgroundColor = "transparent";
         }
-    });
         
         // 既存のふわっと出る演出
         document.querySelectorAll('.reveal').forEach(el => { 
