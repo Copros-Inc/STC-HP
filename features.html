@@ -41,12 +41,11 @@
 </head>
 <body class="bg-white">
 
-    <!-- 0. SUBPAGE HEADER (背景濃紺固定・崩れ防止・並び順整理済) -->
-    <!-- 修正版ヘッダー内部：ロゴを左端に、メニューを適切に配置 -->
-    <header class="fixed top-0 w-full z-50 py-4 bg-[#001a33] shadow-xl" id="sub-nav">
+    <!-- STC共通マスターヘッダー（メールボタン搭載・完全同期版） -->
+    <header class="fixed top-0 w-full z-[9999] py-4 transition-all duration-300" id="sub-nav">
         <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-10">
             
-            <!-- ロゴ & センター名（左端固定） -->
+            <!-- ロゴ & センター名 -->
             <a href="index.html" class="flex items-center gap-3 group shrink-0">
                 <div class="bg-white p-1 rounded shadow-lg group-hover:scale-105 transition-transform">
                     <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
@@ -57,42 +56,39 @@
                 </div>
             </a>
 
-            <!-- PC用メニュー：中央付近に配置 -->
-            <nav class="hidden xl:flex items-center gap-x-6 text-white text-[12px] font-[900] italic uppercase mx-auto px-10">
+            <!-- PC用メニュー（中央配置・メールボタン付き） -->
+            <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase whitespace-nowrap mx-auto px-4">
                 <a href="index.html#service" class="hover:text-[#00a2ff] transition">事業内容</a>
                 <a href="index.html#courses" class="hover:text-[#00a2ff] transition">主要コース</a>
-                <a href="features.html" class="text-[#00a2ff] border-b-2 border-[#00a2ff]">選ばれる理由</a>
+               <a href="features.html" class="text-[#00a2ff] border-b-2 border-[#00a2ff]">選ばれる理由</a>
                 <a href="index.html#schedule-section" class="hover:text-[#00a2ff] transition">開催予定</a>
                 <a href="points.html" class="hover:text-[#00a2ff] transition">受講ガイド</a>
                 <a href="index.html#access" class="hover:text-[#00a2ff] transition">Access</a>
-                <a href="blog.html" class="border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded">ブログ</a>
+                
+                <a href="blog.html" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">
+                    ブログ
+                </a>
+                
+                <a href="mailto:info@shimonoseki-tc.com" class="text-[#00a2ff] border border-[#00a2ff]/60 hover:bg-[#00a2ff] hover:text-white transition px-3 py-1 rounded flex items-center gap-2 shadow-sm">
+                    <i class="fas fa-envelope text-[10px]"></i>メール
+                </a>
             </nav>
 
-            <!-- 右側アクションエリア（右端固定） -->
+            <!-- 右側アクションエリア -->
             <div class="flex items-center gap-4 shrink-0">
                 <a href="tel:0832460556" class="hidden xl:flex bg-[#00a2ff] text-white px-6 py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all items-center justify-center gap-2">
                     <i class="fas fa-phone-alt text-xs"></i><span class="text-xs font-black italic">お問合せ</span>
                 </a>
-                <a href="index.html" class="xl:hidden bg-white/10 text-white px-4 py-2 rounded-lg border border-white/20 flex items-center gap-2 text-[10px] font-black italic">
-                    <i class="fas fa-home"></i> HOME
+                
+                <!-- スマホ用HOMEボタン -->
+                <a href="index.html" class="xl:hidden bg-white/10 text-white px-4 py-2 rounded-lg border border-white/20 flex items-center gap-2 text-[10px] font-black italic uppercase">
+                    <i class="fas fa-home"></i> Home
                 </a>
             </div>
         </div>
     </header>
     
-    <!-- ヘッダー（indexのヒーロー演出を継承） -->
-    <header class="relative pt-40 pb-20 overflow-hidden bg-white">
-        <div class="watermark" style="top: 15%; left: 50%; transform: translateX(-50%);">REASONS</div>
-        <div class="container mx-auto px-6 text-center relative z-10">
-            <h2 class="reveal active">
-                <span class="block text-navy text-3xl md:text-6xl font-black italic tracking-tighter leading-none mb-4 uppercase">下関トレーニングセンターが</span>
-                <span class="block text-accent text-6xl md:text-9xl font-black italic tracking-tighter leading-none uppercase">選ばれる理由</span>
-            </h2>
-            <div class="w-24 h-2 bg-accent mx-auto mt-12"></div>
-        </div>
-    </header>
-
-    <main class="container mx-auto px-6 max-w-6xl space-y-32">
+      <main class="container mx-auto px-6 max-w-6xl space-y-32">
         
         <!-- 01. 労働局登録 (区切りレイアウト＆アイコン一貫性保持版) -->
         <section id="reason01" class="relative py-20 reveal active">
@@ -599,20 +595,26 @@
         });
         
             // --- ヘッダーのスクロール演出（ここから追加） ---
+  window.addEventListener('load', () => {
+        const nav = document.getElementById('sub-nav');
+        nav.style.backgroundColor = "#001a33"; // 最初から濃紺固定
+        nav.classList.add('shadow-xl');
+    });
+
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('sub-nav');
-        const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
-
-        if (scrollPos > 50) {
+        if (window.pageYOffset > 50) {
             nav.classList.add('py-2', 'shadow-2xl');
             nav.classList.remove('py-4', 'shadow-xl');
-            nav.style.backgroundColor = "#001a33"; // 濃紺を確実に適用
         } else {
             nav.classList.add('py-4', 'shadow-xl');
             nav.classList.remove('py-2', 'shadow-2xl');
-            // サブページなので透明にはせず、濃紺を維持するのが index との統一感になります
         }
     });
+    
+    </script>
+</body>
+</html>
     
     </script>
 </body>
