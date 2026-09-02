@@ -201,7 +201,7 @@
             document.getElementById('courseName').value = course;
             document.getElementById('courseDate').value = date;
             
-            // 2. 受付番号の表示（見出しの直後を狙って確実に挿入）
+            // 2. 受付番号の表示 ＆ 仮予約データの自動読み込み
             if (regNo) {
                 const targetHeader = Array.from(document.querySelectorAll('h2.section-title')).find(el => el.textContent.includes('02.'));
                 if (targetHeader) {
@@ -211,8 +211,23 @@
                             <input type="text" name="regNo" value="${regNo}" readonly class="w-full bg-transparent font-black text-emerald-700 text-lg outline-none border-none">
                             <p class="text-[10px] text-slate-500 mt-2 font-bold">※この番号で仮予約データと統合管理されます</p>
                         </div>`;
-                    // 見出しの親要素である section の冒頭（見出しのすぐ下）に挿入
                     targetHeader.closest('section').insertAdjacentHTML('afterbegin', regHtml);
+                }
+
+                // 本申込モードの場合、仮予約時のデータをFirestoreから検索して自動入力
+                if (mode === 'full') {
+                    const qRes = query(collection(db, "reservations"), where("regNo", "==", regNo));
+                    getDocs(qRes).then(snap => {
+                        if (!snap.empty) {
+                            const prev = snap.docs[0].data();
+                            const fields = ['userName', 'userKana', 'birthDate', 'zip', 'phone', 'address', 'email', 'company', 'compPhone', 'compZip', 'compAddress'];
+                            fields.forEach(f => {
+                                if (prev[f] && document.querySelector(`[name="${f}"]`)) {
+                                    document.querySelector(`[name="${f}"]`).value = prev[f];
+                                }
+                            });
+                        }
+                    }).catch(err => console.error("データ自動取得制限:", err));
                 }
             }
             
