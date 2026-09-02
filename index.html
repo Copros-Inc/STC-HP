@@ -720,23 +720,28 @@
         }
     };
       
+    // スクロール時の制御（背景色の変化 ＆ ふわっと出る演出の統合）
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('sub-nav');
         const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
 
+        // 1. ヘッダー背景の切り替え
         if (scrollPos > 50) {
-            nav.classList.add('header-scrolled', 'py-2', 'shadow-2xl');
+            nav.style.backgroundColor = "#001a33"; // 濃紺にする
+            nav.classList.add('py-2', 'shadow-2xl');
             nav.classList.remove('py-4');
-            nav.style.backgroundColor = "#001a33";
         } else {
-            nav.classList.remove('header-scrolled', 'py-2', 'shadow-2xl');
+            nav.style.backgroundColor = "transparent"; // 透明に戻す
             nav.classList.add('py-4');
-            nav.style.backgroundColor = "transparent";
+            nav.classList.remove('py-2', 'shadow-2xl');
         }
         
-        // 既存のふわっと出る演出
+        // 2. ふわっと出る演出（reveal）の制御
         document.querySelectorAll('.reveal').forEach(el => { 
-            if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); 
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight - 50) {
+                el.classList.add('active');
+            }
         });
     });
             
