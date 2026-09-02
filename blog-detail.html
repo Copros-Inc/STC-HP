@@ -33,56 +33,81 @@
             }
             .rounded-\[3rem\] { border-radius: 2rem !important; }
         }
+                
+        #mobile-menu {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+        }
+        #mobile-menu.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+            visibility: visible;
+        }
     </style>
 </head>
 <body class="text-left">
 
-    <!-- 0. SUBPAGE HEADER (背景濃紺固定・主要コース強調版) -->
-    <header class="fixed top-0 w-full z-50 py-4 bg-[#001a33] shadow-xl" id="sub-nav">
-        <div class="max-w-[1500px] mx-auto flex justify-start items-center px-4 md:px-8 gap-4">
-            <!-- ロゴ & センター名 -->
-            <a href="index.html" class="flex items-center gap-3 shrink-0">
-                <div class="bg-white p-1 rounded shadow-lg shrink-0">
+    <!-- STC全ページ共通：真・マスターヘッダー -->
+    <header class="fixed top-0 w-full z-[9999] py-4 transition-all duration-300" id="sub-nav">
+        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-10">
+            
+            <!-- 左：ロゴ & センター名 -->
+            <a href="index.html" class="flex items-center gap-3 group shrink-0">
+                <div class="bg-white p-1 rounded shadow-lg group-hover:scale-105 transition-transform">
                     <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
                 </div>
-                <div class="text-left text-white leading-none shrink-0">
+                <div class="text-left text-white leading-none whitespace-nowrap">
                     <h1 class="font-[900] text-[10px] md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
-                    <!-- スマホでもPCでも英語名を表示（色はCSSで指定） -->
                     <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.2em]">Shimonoseki Training Center</p>
                 </div>
             </a>
 
-            <!-- PC用メニュー：現状維持 -->
-            <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase mx-auto px-4 whitespace-nowrap">
-                <a href="index.html#service" class="hover:text-[#00a2ff] transition text-white">事業内容</a>
-                <a href="index.html#courses" class="hover:text-[#00a2ff] transition text-white">主要コース</a>
-                <a href="features.html" class="hover:text-[#00a2ff] transition text-white">選ばれる理由</a>
-                <a href="index.html#schedule-section" class="hover:text-[#00a2ff] transition text-white">開催予定</a>
-                <a href="points.html" class="hover:text-[#00a2ff] transition text-white">受講ガイド</a>
-                <a href="index.html#access" class="hover:text-[#00a2ff] transition text-white">Access</a>
-                <a href="blog.html" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">ブログ</a>
+            <!-- 中央：PC用メニュー（XL以上で表示） -->
+            <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase whitespace-nowrap mx-auto px-4">
+                <a href="index.html#service" id="nav-service" class="hover:text-[#00a2ff] transition">事業内容</a>
+                <a href="index.html#courses" id="nav-courses" class="hover:text-[#00a2ff] transition">主要コース</a>
+                <a href="features.html" id="nav-features" class="hover:text-[#00a2ff] transition">選ばれる理由</a>
+                <a href="index.html#schedule-section" id="nav-schedule" class="hover:text-[#00a2ff] transition">開催予定</a>
+                <a href="points.html" id="nav-points" class="hover:text-[#00a2ff] transition">受講ガイド</a>
+                <a href="index.html#access" id="nav-access" class="hover:text-[#00a2ff] transition">Access</a>
+                <a href="blog.html" id="nav-blog" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">ブログ</a>
+                <a href="mailto:info@shimonoseki-tc.com" class="text-[#00a2ff] border border-[#00a2ff]/60 hover:bg-[#00a2ff] hover:text-white transition px-3 py-1 rounded flex items-center gap-2 shadow-sm"><i class="fas fa-envelope text-[10px]"></i>メール</a>
             </nav>
 
-            <!-- 右側アクションエリア：スマホ2連ボタン（index同期版） -->
-            <div class="flex items-center gap-1.5 ml-auto shrink-0">
-                <!-- PC用お問合せ -->
+            <!-- 右：アクションエリア（お問合せ ＆ ハンバーガー） -->
+            <div class="flex items-center gap-4 shrink-0">
+                <!-- PC用：お問合せボタン -->
                 <a href="tel:0832460556" class="hidden xl:flex bg-[#00a2ff] text-white px-6 py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all items-center justify-center gap-2">
                     <i class="fas fa-phone-alt text-xs"></i><span class="text-xs font-black italic">お問合せ</span>
                 </a>
-                
-                <!-- スマホ用：一覧ボタン -->
-                <a href="blog.html" class="xl:hidden bg-white/10 text-white px-2 py-2 rounded-lg border border-white/20 flex items-center gap-1 text-[9px] font-black italic">
-                    <i class="fas fa-list-ul"></i> 一覧
-                </a>
-                
-                <!-- スマホ用：HOMEボタン（正確なセクションへ） -->
-                <a href="index.html#blog-section" class="xl:hidden bg-white/10 text-white px-3 py-2 rounded-lg border border-white/20 flex items-center gap-1.5 text-[10px] font-black italic">
-                <i class="fas fa-home"></i> HOME
-                </a>
+                <!-- スマホ用：ハンバーガーボタン（全ページ共通でこれにする） -->
+                <button onclick="toggleMenu()" class="xl:hidden text-white text-2xl p-2 focus:outline-none">
+                    <i class="fas fa-bars" id="menu-icon"></i>
+                </button>
             </div>
         </div>
     </header>
 
+    <!-- スマホ用全画面メニュー（全ページ共通：</header>の直後に配置） -->
+    <div id="mobile-menu" class="fixed top-0 left-0 w-full h-fit bg-[#001a33] z-[9998] pt-28 pb-10 px-8 shadow-2xl xl:hidden border-b-4 border-accent">
+        <nav class="flex flex-col gap-y-6 text-white text-xl font-black italic uppercase">
+            <a href="index.html" onclick="toggleMenu()" class="border-b border-white/10 pb-2 text-accent">HOME</a>
+            <a href="index.html#service" onclick="toggleMenu()" class="border-b border-white/10 pb-2">事業内容</a>
+            <a href="index.html#courses" onclick="toggleMenu()" class="border-b border-white/10 pb-2">主要コース</a>
+            <a href="features.html" onclick="toggleMenu()" class="border-b border-white/10 pb-2">選ばれる理由</a>
+            <a href="index.html#schedule-section" onclick="toggleMenu()" class="border-b border-white/10 pb-2">開催予定</a>
+            <a href="points.html" onclick="toggleMenu()" class="border-b border-white/10 pb-2">受講ガイド</a>
+            <a href="index.html#access" onclick="toggleMenu()" class="border-b border-white/10 pb-2">Access</a>
+            <div class="flex gap-4 mt-4">
+                <a href="blog.html" class="flex-1 text-center bg-white/10 border border-white/40 py-4 rounded-xl text-sm">ブログ</a>
+                <a href="tel:0832460556" class="flex-1 text-center bg-[#00a2ff] py-4 rounded-xl text-sm"><i class="fas fa-phone-alt mr-2"></i>お問合せ</a>
+            </div>
+        </nav>
+    </div>
     <!-- 1. ARTICLE HERO -->
     <section id="hero-bg" class="relative h-[60vh] flex items-end pb-20 px-6 bg-cover bg-center" style="background-image: url('bg-blog.jpg');">
         <div class="absolute inset-0 bg-gradient-to-t from-[#001a33] via-[#001a33]/40 to-transparent"></div>
@@ -188,9 +213,19 @@
             });
         }
 
-            // ヘッダーのスクロール演出
+      // 1. サブページ用：初期状態で濃紺を適用
+    window.addEventListener('load', () => {
+        const nav = document.getElementById('sub-nav');
+        if (nav) {
+            nav.style.backgroundColor = "#001a33"; 
+            nav.classList.add('shadow-xl');
+        }
+    });
+
+    // 2. ヘッダーのスクロール演出
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('sub-nav');
+        if (!nav) return;
         if (window.pageYOffset > 50) {
             nav.classList.add('py-2', 'shadow-2xl');
             nav.classList.remove('py-4', 'shadow-xl');
@@ -199,6 +234,17 @@
             nav.classList.remove('py-2', 'shadow-2xl');
         }
     });
+
+    // 3. 全ページ共通：スマホメニュー開閉
+    window.toggleMenu = function() {
+        const menu = document.getElementById('mobile-menu');
+        const icon = document.getElementById('menu-icon');
+        if (!menu || !icon) return;
+        menu.classList.toggle('active');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+        document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
+    };
         
     </script>
 </body>
