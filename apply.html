@@ -20,28 +20,50 @@
         .input-label { display: block; text-[11px] font-black text-slate-400 mb-1 uppercase tracking-widest; }
     </style>
     
-</head>
-<body class="pb-20 pt-32 md:pt-40">
-    <!-- カッコよくデザインした統合ヘッダー -->
-    <header class="fixed top-0 w-full z-[9999] py-4 bg-[#001a33] shadow-2xl border-b border-white/5">
+    <!-- STC共通マスターヘッダー（メールボタン搭載・完全同期版） -->
+    <header class="fixed top-0 w-full z-[9999] py-4 transition-all duration-300" id="sub-nav">
         <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-10">
-            <a href="index.html" class="flex items-center gap-3 shrink-0 group">
-                <div class="bg-white p-1 rounded shadow-lg shrink-0 group-hover:scale-105 transition-transform">
+            
+            <!-- ロゴ & センター名 -->
+            <a href="index.html" class="flex items-center gap-3 group shrink-0">
+                <div class="bg-white p-1 rounded shadow-lg group-hover:scale-105 transition-transform">
                     <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
                 </div>
-                <div class="text-left text-white leading-none shrink-0">
+                <div class="text-left text-white leading-none whitespace-nowrap">
                     <h1 class="font-[900] text-[10px] md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
-                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.1em]">Shimonoseki Training Center</p>
+                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.2em]">Shimonoseki Training Center</p>
                 </div>
             </a>
-            
-            <a href="index.html" class="relative group overflow-hidden bg-white/5 border border-white/20 px-4 md:px-6 py-2 rounded-full transition-all hover:border-sky-400">
-                <div class="relative z-10 flex items-center gap-2">
-                    <i class="fas fa-arrow-left text-[10px] text-sky-400 group-hover:-translate-x-1 transition-transform"></i>
-                    <span class="text-white text-[10px] md:text-xs font-[900] italic uppercase tracking-widest font-en">Home</span>
-                </div>
-                <div class="absolute inset-0 bg-gradient-to-r from-sky-600/0 via-sky-600/20 to-sky-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-            </a>
+
+            <!-- PC用メニュー（中央配置・メールボタン付き） -->
+            <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase whitespace-nowrap mx-auto px-4">
+                <a href="index.html#service" class="hover:text-[#00a2ff] transition">事業内容</a>
+                <a href="index.html#courses" class="hover:text-[#00a2ff] transition">主要コース</a>
+                <a href="features.html" class="hover:text-[#00a2ff] transition">選ばれる理由</a>
+                <a href="index.html#schedule-section" class="hover:text-[#00a2ff] transition">開催予定</a>
+                <a href="points.html" class="hover:text-[#00a2ff] transition">受講ガイド</a>
+                <a href="index.html#access" class="hover:text-[#00a2ff] transition">Access</a>
+                
+                <a href="blog.html" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">
+                    ブログ
+                </a>
+                
+                <a href="mailto:info@shimonoseki-tc.com" class="text-[#00a2ff] border border-[#00a2ff]/60 hover:bg-[#00a2ff] hover:text-white transition px-3 py-1 rounded flex items-center gap-2 shadow-sm">
+                    <i class="fas fa-envelope text-[10px]"></i>メール
+                </a>
+            </nav>
+
+            <!-- 右側アクションエリア -->
+            <div class="flex items-center gap-4 shrink-0">
+                <a href="tel:0832460556" class="hidden xl:flex bg-[#00a2ff] text-white px-6 py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all items-center justify-center gap-2">
+                    <i class="fas fa-phone-alt text-xs"></i><span class="text-xs font-black italic">お問合せ</span>
+                </a>
+                
+                <!-- スマホ用HOMEボタン -->
+                <a href="index.html" class="xl:hidden bg-white/10 text-white px-4 py-2 rounded-lg border border-white/20 flex items-center gap-2 text-[10px] font-black italic uppercase">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </div>
         </div>
     </header>
 
@@ -447,6 +469,28 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script type="text/javascript">
     emailjs.init("9b2XZtU7jPZZPvYFo");
+
+        // ヘッダー背景を最初から濃紺にし、スクロールで高さを制御
+    window.addEventListener('load', () => {
+        const nav = document.getElementById('sub-nav');
+        if (nav) {
+            nav.style.backgroundColor = "#001a33"; // 最初から濃紺固定
+            nav.classList.add('shadow-xl');
+        }
+    });
+
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('sub-nav');
+        if (!nav) return;
+        if (window.pageYOffset > 50) {
+            nav.classList.add('py-2', 'shadow-2xl');
+            nav.classList.remove('py-4', 'shadow-xl');
+        } else {
+            nav.classList.add('py-4', 'shadow-xl');
+            nav.classList.remove('py-2', 'shadow-2xl');
+        }
+    });
+    
 </script>
 </body>
 </html>
