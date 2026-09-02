@@ -600,16 +600,19 @@
         
             // --- ヘッダーのスクロール演出（ここから追加） ---
     window.addEventListener('scroll', () => {
-        const nav = document.getElementById('sub-nav'); // 先ほどの名前に合わせます
-        if (window.pageYOffset > 50) {
+        const nav = document.getElementById('sub-nav');
+        const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollPos > 50) {
             nav.classList.add('py-2', 'shadow-2xl');
             nav.classList.remove('py-4', 'shadow-xl');
+            nav.style.backgroundColor = "#001a33"; // 濃紺を確実に適用
         } else {
             nav.classList.add('py-4', 'shadow-xl');
             nav.classList.remove('py-2', 'shadow-2xl');
+            // サブページなので透明にはせず、濃紺を維持するのが index との統一感になります
         }
     });
-
     
     </script>
 </body>
