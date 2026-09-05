@@ -20,28 +20,50 @@
         .input-label { display: block; text-[11px] font-black text-slate-400 mb-1 uppercase tracking-widest; }
     </style>
     
-</head>
-<body class="pb-20 pt-32 md:pt-40">
-    <!-- カッコよくデザインした統合ヘッダー -->
-    <header class="fixed top-0 w-full z-[9999] py-4 bg-[#001a33] shadow-2xl border-b border-white/5">
+    <!-- STC共通マスターヘッダー（メールボタン搭載・完全同期版） -->
+    <header class="fixed top-0 w-full z-[9999] py-4 transition-all duration-300" id="sub-nav">
         <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-10">
-            <a href="index.html" class="flex items-center gap-3 shrink-0 group">
-                <div class="bg-white p-1 rounded shadow-lg shrink-0 group-hover:scale-105 transition-transform">
+            
+            <!-- ロゴ & センター名 -->
+            <a href="index.html" class="flex items-center gap-3 group shrink-0">
+                <div class="bg-white p-1 rounded shadow-lg group-hover:scale-105 transition-transform">
                     <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
                 </div>
-                <div class="text-left text-white leading-none shrink-0">
+                <div class="text-left text-white leading-none whitespace-nowrap">
                     <h1 class="font-[900] text-[10px] md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
-                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.1em]">Shimonoseki Training Center</p>
+                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.2em]">Shimonoseki Training Center</p>
                 </div>
             </a>
-            
-            <a href="index.html" class="relative group overflow-hidden bg-white/5 border border-white/20 px-4 md:px-6 py-2 rounded-full transition-all hover:border-sky-400">
-                <div class="relative z-10 flex items-center gap-2">
-                    <i class="fas fa-arrow-left text-[10px] text-sky-400 group-hover:-translate-x-1 transition-transform"></i>
-                    <span class="text-white text-[10px] md:text-xs font-[900] italic uppercase tracking-widest font-en">Home</span>
-                </div>
-                <div class="absolute inset-0 bg-gradient-to-r from-sky-600/0 via-sky-600/20 to-sky-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-            </a>
+
+            <!-- PC用メニュー（中央配置・メールボタン付き） -->
+            <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase whitespace-nowrap mx-auto px-4">
+                <a href="index.html#service" class="hover:text-[#00a2ff] transition">事業内容</a>
+                <a href="index.html#courses" class="hover:text-[#00a2ff] transition">主要コース</a>
+                <a href="features.html" class="hover:text-[#00a2ff] transition">選ばれる理由</a>
+                <a href="index.html#schedule-section" class="hover:text-[#00a2ff] transition">開催予定</a>
+                <a href="points.html" class="hover:text-[#00a2ff] transition">受講ガイド</a>
+                <a href="index.html#access" class="hover:text-[#00a2ff] transition">Access</a>
+                
+                <a href="blog.html" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">
+                    ブログ
+                </a>
+                
+                <a href="mailto:info@shimonoseki-tc.com" class="text-[#00a2ff] border border-[#00a2ff]/60 hover:bg-[#00a2ff] hover:text-white transition px-3 py-1 rounded flex items-center gap-2 shadow-sm">
+                    <i class="fas fa-envelope text-[10px]"></i>メール
+                </a>
+            </nav>
+
+            <!-- 右側アクションエリア -->
+            <div class="flex items-center gap-4 shrink-0">
+                <a href="tel:0832460556" class="hidden xl:flex bg-[#00a2ff] text-white px-6 py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all items-center justify-center gap-2">
+                    <i class="fas fa-phone-alt text-xs"></i><span class="text-xs font-black italic">お問合せ</span>
+                </a>
+                
+                <!-- スマホ用HOMEボタン -->
+                <a href="index.html" class="xl:hidden bg-white/10 text-white px-4 py-2 rounded-lg border border-white/20 flex items-center gap-2 text-[10px] font-black italic uppercase">
+                    <i class="fas fa-home"></i> Home
+                </a>
+            </div>
         </div>
     </header>
 
@@ -190,81 +212,78 @@
 
           
 
-        window.addEventListener('load', async () => {
+        window.addEventListener('load', () => {
             const params = new URLSearchParams(window.location.search);
             const course = params.get('course') || "";
             const date = params.get('date') || "";
+            const regNo = params.get('regNo') || ""; 
             const mode = params.get('mode') || "full";
-            const tempId = params.get('tempId');
 
             // 1. 講習情報のセット
             document.getElementById('courseName').value = course;
             document.getElementById('courseDate').value = date;
             
-            // 2. モード別の表示切り替え
-            updateCourseUI(course, mode === 'simple');
+            // 2. 受付番号の表示 ＆ 仮予約データの自動読み込み
+            if (regNo) {
+                const targetHeader = Array.from(document.querySelectorAll('h2.section-title')).find(el => el.textContent.includes('02.'));
+                if (targetHeader) {
+                    const regHtml = `
+                        <div class="mb-10 p-6 bg-emerald-50 border-2 border-emerald-200 rounded-2xl">
+                            <label class="input-label text-emerald-600 font-black">発行済の受付番号 / Reg No.</label>
+                            <input type="text" name="regNo" value="${regNo}" readonly class="w-full bg-transparent font-black text-emerald-700 text-lg outline-none border-none">
+                            <p class="text-[10px] text-slate-500 mt-2 font-bold">※この番号で仮予約データと統合管理されます</p>
+                        </div>`;
+                    targetHeader.closest('section').insertAdjacentHTML('afterbegin', regHtml);
+                }
 
-            // 3. データの自動読み込み
-            if (tempId) {
-                console.log("Searching for tempId:", tempId);
-                try {
-                    const { getDoc, doc } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
-                    const docSnap = await getDoc(doc(db, "reservations", tempId));
-
-                    if (docSnap.exists()) {
-                        const oldData = docSnap.data();
-                        const f = document.getElementById('applyForm');
-                        if (oldData.userName) f.userName.value = oldData.userName;
-                        if (oldData.userKana) f.userKana.value = oldData.userKana;
-                        if (oldData.phone) f.phone.value = oldData.phone;
-                        if (oldData.email) f.email.value = oldData.email;
-                        if (oldData.address) f.address.value = oldData.address;
-                        if (oldData.zip) f.zip.value = oldData.zip;
-                        if (oldData.company) f.company.value = oldData.company;
-                        if (oldData.compPhone) f.compPhone.value = oldData.compPhone;
-                    }
-                } catch (e) {
-                    console.error("Fetch Error:", e);
+                // 本申込モードの場合、仮予約時のデータをFirestoreから検索して自動入力
+                if (mode === 'full') {
+                    const qRes = query(collection(db, "reservations"), where("regNo", "==", regNo));
+                    getDocs(qRes).then(snap => {
+                        if (!snap.empty) {
+                            const prev = snap.docs[0].data();
+                            const fields = ['userName', 'userKana', 'birthDate', 'zip', 'phone', 'address', 'email', 'company', 'compPhone', 'compZip', 'compAddress'];
+                            fields.forEach(f => {
+                                if (prev[f] && document.querySelector(`[name="${f}"]`)) {
+                                    document.querySelector(`[name="${f}"]`).value = prev[f];
+                                }
+                            });
+                        }
+                    }).catch(err => console.error("データ自動取得制限:", err));
                 }
             }
+            
+            // 3. UIの切り替え
+            updateCourseUI(course, mode === 'simple');
 
-            // 4. UIの最終調整（モードによる詳細な出し分け）
             if (mode === 'simple') {
                 document.getElementById('mode-badge').innerText = "簡易予約モード（仮押さえ）";
-                if(document.getElementById('section-photo')) {
-                    document.getElementById('section-photo').style.display = 'none';
-                    document.getElementById('userPhotoBase64').required = false;
-                }
+                if(document.getElementById('section-photo')) document.getElementById('section-photo').style.display = 'none';
                 if(document.getElementById('section-payment')) document.getElementById('section-payment').style.display = 'none';
             } else {
                 document.getElementById('mode-badge').innerText = "Full Web Application";
-                if(document.getElementById('section-photo')) {
-                    document.getElementById('section-photo').style.display = 'block';
-                    document.getElementById('userPhotoBase64').required = true;
-                }
-                if(document.getElementById('section-payment')) document.getElementById('section-payment').style.display = 'block';
             }
 
-            // 5. 同意事項の出し分け
+            // 4. 同意事項の出し分け
             const consentList = document.getElementById('consent-list');
+            const commonConsent = `
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">本申込書に虚偽の記載が無いことを確約します。</span></label>
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">自らが反社会的勢力に属さず、密接な関係をもたず、受講期間中も属さないことを確約します。</span></label>
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">当講習所内では講師の注意に従い、一切の講習妨害行為をしないことを確約します。</span></label>
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">講習中、上記事項に反することが判明した場合、講習を中止し退場することに同意します。</span></label>
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">これにより損害が生じても、講習所は一切賠償しないことに同意します。</span></label>
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">予期せぬ事態で講習が開催できなかった場合、教習所は一切賠償しないことに同意します。</span></label>
+                <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-sky-300 underline">遅刻・早退・欠席は失格となり、受講料の返金はできないことを承知しました。</span></label>`;
+
             if (mode === 'simple') {
                 consentList.innerHTML = `
                     <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-sky-300 italic underline">本申込は「仮予約」であり、別途本申込の手続きが必要であることに同意します。</span></label>
                     <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">事務局からの確認メール受領後、7日以内に本申込がない場合は枠をキャンセル待ちの方へ譲ることに同意します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">本申込書に虚偽の記載が無いことを確約します。</span></label>
-                `;
+                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">本申込書に虚偽の記載が無いことを確約します。</span></label>`;
             } else {
-                consentList.innerHTML = `
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">本申込書に虚偽の記載が無いことを確約します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">自らが反社会的勢力に属さず、密接な関係をもたず、受講期間中も属さないことを確約します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">当講習所内では講師の注意に従い、一切の講習妨害行為をしないことを確約します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">講習中、上記事項に反することが判明した場合、講習を中止し退場することに同意します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">これにより損害が生じても、講習所は一切賠償しないことに同意します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-slate-300">予期せぬ事態で講習が開催できなかった場合、教習所は一切賠償しないことに同意します。</span></label>
-                    <label class="flex gap-4 cursor-pointer p-2 rounded-lg hover:bg-white/5 transition"><input type="checkbox" class="consent-check"> <span class="text-[10px] font-bold text-sky-300 underline">遅刻・早退・欠席は失格となり、受講料の返金はできないことを承知しました。</span></label>
-                `;
+                consentList.innerHTML = commonConsent;
             }
-        }); // ここでロードイベントを正しく閉じます
+        }); // ← ここで正しく閉じる
 
     document.getElementById('in_photo').addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -369,85 +388,77 @@
             }
         });
 
-        // 送信処理（メール送信とFirebase保存を統合）
-        document.getElementById('applyForm').addEventListener('submit', async e => {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn'); 
-            btn.disabled = true; 
-            btn.innerText = "送信中...";
+// 送信処理（修正版）
+document.getElementById('applyForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn'); 
+    btn.disabled = true; btn.innerText = "送信中...";
 
-            try {
-                const formData = new FormData(e.target);
-                const params = new URLSearchParams(window.location.search);
-                const tempId = params.get('tempId'); // URLから紐付け用IDを取得
+    try {
+        const formData = new FormData(e.target);
+        const params = new URLSearchParams(window.location.search);
+        const regNoUrl = params.get('regNo'); 
+        const mode = params.get('mode') || "full";
 
-                // 送信データの構築
-                const data = {
-                    courseName: document.getElementById('courseName').value,
-                    courseDate: document.getElementById('courseDate').value,
-                    mode: 'full',      // 本申込として上書き
-                    status: 'accepted', // ステータスを確定済みに変更
-                    updatedAt: serverTimestamp()
-                };
+        const data = {
+            courseName: document.getElementById('courseName').value,
+            courseDate: document.getElementById('courseDate').value,
+            mode: mode,
+            status: 'accepted', 
+            createdAt: serverTimestamp(),
+            memo: regNoUrl ? "仮予約からの移行(" + regNoUrl + ")" : "新規申込"
+        };
 
-                formData.forEach((value, key) => {
-                    if(key !== "userPhotoBase64") data[key] = value;
-                });
-
-                // 写真があれば追加
-                const photoVal = document.getElementById('userPhotoBase64')?.value;
-                if (photoVal) {
-                    data.photos = { user: photoVal };
-                }
-
-                if (tempId) {
-                    // 【統合ロジック】既存の仮予約データを最新情報で更新（不足項目が埋まります）
-                    await updateDoc(doc(db, "reservations", tempId), data);
-                } else {
-                    // 【新規ロジック】直接本申込に来た場合は新規作成
-                    data.createdAt = serverTimestamp();
-                    await addDoc(collection(db, "reservations"), data);
-                    
-                    // 新規の時のみスケジュール残席をマイナス（increment）
-                    try {
-                        const q = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
-                        const schedSnap = await getDocs(q);
-                        if (!schedSnap.empty) {
-                            const schedDoc = schedSnap.docs[0];
-                            const mode = params.get('mode') || "full";
-                            const field = mode === 'full' ? 'fullApplied' : 'reserved';
-                            await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
-                        }
-                    } catch (e) { console.error("Schedule update failed", e); }
-                }
-
-                // --- [修正版] EmailJS用パラメータ ---
-                const emailParams = {
-                    userName: data.userName,         // {{userName}}
-                    userKana: data.userKana || "",   // {{userKana}}
-                    courseName: data.courseName,     // {{courseName}}
-                    courseDate: data.courseDate,     // {{courseDate}}
-                    phone: data.phone || "",
-                    email: data.email || "",
-                    company: data.company || "個人",
-                    regNo: data.regNo || "（確認中）", // {{regNo}} を追加
-                    deadline_note: new URLSearchParams(window.location.search).get('mode') === 'simple' 
-                        ? "【重要】現在は「仮予約」の状態です。7日以内に以下のURLより本申込をお願いいたします。" 
-                        : "お申し込みの受付（本申込）が完了いたしました。当日の案内書を必ずご確認ください。"
-                };
-
-                await window.emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
-
-                alert("お申し込みありがとうございました！\n自動返信メールをお送りしましたのでご確認ください。"); 
-                window.location.href = "index.html";
-            } catch (err) { 
-                console.error("Error details:", err);
-                                console.error("Error details:", err);
-                alert("送信に失敗しました。\n\n詳細エラー: " + JSON.stringify(err));  
-                btn.disabled = false; 
-                btn.innerText = "申し込みを送信する";
-            }
+        formData.forEach((value, key) => {
+            if(key !== "userPhotoBase64") data[key] = value;
         });
+
+        const photoVal = document.getElementById('userPhotoBase64')?.value;
+        if (photoVal) data.photos = { user: photoVal };
+
+        // 1. 新規申込データとして保存
+        await addDoc(collection(db, "reservations"), data);
+        
+        // 2. 残席の更新（二重減算防止ロジック）
+        // URLに regNo が「ない」場合のみ、新しく席を減らす
+            // 2. 残席を減らすロジック（regNoがある場合はスキップして二重減算を防ぐ）
+            if (!regNoUrl) {
+                try {
+                    const qSched = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
+                    const schedSnap = await getDocs(qSched);
+                    if (!schedSnap.empty) {
+                        const schedDoc = schedSnap.docs[0];
+                        const field = data.mode === 'full' ? 'fullApplied' : 'reserved';
+                        await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
+                    }
+                } catch (e) { console.error("Schedule update failed", e); }
+            }
+        // 3. EmailJS 送信
+        const emailParams = {
+            userName: data.userName,
+            userKana: data.userKana || "",
+            courseName: data.courseName,
+            courseDate: data.courseDate,
+            phone: data.phone || "",
+            email: data.email || "",
+            company: data.company || "個人",
+            regNo: regNoUrl || "（新規）",
+            deadline_note: mode === 'simple' 
+                ? "【重要】現在は「仮予約」の状態です。7日以内に以下のURLより本申込をお願いいたします。" 
+                : "お申し込みの受付（本申込）が完了いたしました。当日の案内書を必ずご確認ください。"
+        };
+
+        await window.emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
+
+        alert("お申し込みありがとうございました！\n自動返信メールをご確認ください。"); 
+        window.location.href = "index.html";
+
+    } catch (err) { 
+        console.error("Fatal Error:", err);
+        alert("送信に失敗しました。もう一度お試しください。");  
+        btn.disabled = false; btn.innerText = "申し込みを送信する";
+    }
+});
     </script>
 
     <input type="file" id="in_licA" accept="image/*" class="hidden" onchange="window.processImg(this, 'licA')">
@@ -458,6 +469,25 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script type="text/javascript">
     emailjs.init("9b2XZtU7jPZZPvYFo");
+
+    window.addEventListener('load', () => {
+        const nav = document.getElementById('sub-nav');
+        if (nav) {
+            nav.style.backgroundColor = "#001a33";
+            nav.classList.add('shadow-xl');
+        }
+    });
+
+    window.addEventListener('scroll', () => {
+        const nav = document.getElementById('sub-nav');
+        if (!nav) return;
+        if (window.pageYOffset > 50) {
+            nav.classList.add('shadow-2xl'); // 影を強くするだけ
+        } else {
+            nav.classList.remove('shadow-2xl');
+        }
+    });
+    
 </script>
 </body>
 </html>
