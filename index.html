@@ -718,31 +718,36 @@
         }
     };
       
+    // index.html最終確定：高さ固定・透過演出・メニュー開閉
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('sub-nav');
         const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
 
+        // 1. 背景色の切り替え（py-2/py-4の操作を完全に排除し、高さを固定）
         if (scrollPos > 50) {
-            nav.style.backgroundColor = "#001a33"; 
-            nav.classList.add('shadow-2xl'); // 影だけつけて浮かせる
+            nav.style.backgroundColor = "#001a33";
+            nav.classList.add('shadow-2xl');
         } else {
-            nav.style.backgroundColor = "transparent"; 
+            nav.style.backgroundColor = "transparent";
             nav.classList.remove('shadow-2xl');
         }
         
+        // 2. ふわっと出る演出（reveal）
         document.querySelectorAll('.reveal').forEach(el => { 
             if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); 
         });
     });
-               // 全ページ共通：スマホメニュー開閉
+
+    // 3. 全ページ共通：スマホメニュー開閉
     window.toggleMenu = function() {
         const menu = document.getElementById('mobile-menu');
         const icon = document.getElementById('menu-icon');
+        if (!menu || !icon) return;
         menu.classList.toggle('active');
         icon.classList.toggle('fa-bars');
         icon.classList.toggle('fa-times');
         document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
-    }; 
+    };
             
     </script>
 </body>
