@@ -470,13 +470,13 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
             email: data.email || "",
             company: data.company || "個人",
             regNo: regNoUrl || "（新規）",
-// --- apply.html 修正後の記述 ---
-        deadline_note: mode === 'simple' 
-            ? "【仮予約・受付通知】現在、仮予約の送信を承りました。この後、事務局で内容を確認し、正式な受理メールを別途お送りいたします。今しばらくお待ちください。" 
-            : "【本申込・受付通知】ウェブからの本申込を承りました。現在、事務局にてご入力内容および添付写真の確認を行っております。確認が完了次第、改めて正式な「受講案内」をお送りいたします。"
+            deadline_note: mode === 'simple' 
+                ? "【仮予約・受付通知】現在、仮予約の送信を承りました。この後、事務局で内容を確認し、正式な受理メールを別途お送りいたします。今しばらくお待ちください。" 
+                : "【本申込・受付通知】ウェブからの本申込を承りました。現在、事務局にてご入力内容および添付写真の確認を行っております。確認が完了次第、改めて正式な「受講案内」をお送りいたします。"
         };
 
-        await window.emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
+        // window. を抜いて、emailjs.send で実行します
+        await emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
 
         alert("お申し込みありがとうございました！\n自動返信メールをご確認ください。"); 
         window.location.href = "index.html";
