@@ -415,7 +415,7 @@
             }
         });
 
-// 送信処理（修正版）
+// 送信処理（決定版）
 document.getElementById('applyForm').addEventListener('submit', async e => {
     e.preventDefault();
     const btn = document.getElementById('submitBtn'); 
@@ -423,14 +423,14 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
 
     try {
         const formData = new FormData(e.target);
-        const urlParams = new URLSearchParams(window.location.search);
+        const urlParams = new URLSearchParams(window.location.search); // 変数名をurlParamsに統一
         const regNoUrl = urlParams.get('regNo'); 
-        const modeUrl = urlParams.get('mode') || "full";
+        const currentMode = urlParams.get('mode') || "full";
 
         const data = {
             courseName: document.getElementById('courseName').value,
             courseDate: document.getElementById('courseDate').value,
-            mode: modeUrl, // 取得したmodeを使用
+            mode: currentMode,
             status: 'accepted', 
             createdAt: serverTimestamp(),
             memo: regNoUrl ? "仮予約からの移行(" + regNoUrl + ")" : "新規申込"
@@ -443,24 +443,23 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
         const photoVal = document.getElementById('userPhotoBase64')?.value;
         if (photoVal) data.photos = { user: photoVal };
 
-        // 1. 新規申込データとして保存
+        // 1. Firestoreへ保存
         await addDoc(collection(db, "reservations"), data);
         
-        // 2. 残席の更新（二重減算防止ロジック）
-        // URLに regNo が「ない」場合のみ、新しく席を減らす
-            // 2. 残席を減らすロジック（regNoがある場合はスキップして二重減算を防ぐ）
-            if (!regNoUrl) {
-                try {
-                    const qSched = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
-                    const schedSnap = await getDocs(qSched);
-                    if (!schedSnap.empty) {
-                        const schedDoc = schedSnap.docs[0];
-                        const field = data.mode === 'full' ? 'fullApplied' : 'reserved';
-                        await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
-                    }
-                } catch (e) { console.error("Schedule update failed", e); }
-            }
-        // 3. EmailJS 送信
+        // 2. 残席の更新
+        if (!regNoUrl) {
+            try {
+                const qSched = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
+                const schedSnap = await getDocs(qSched);
+                if (!schedSnap.empty) {
+                    const schedDoc = schedSnap.docs[0];
+                    const field = currentMode === 'full' ? 'fullApplied' : 'reserved';
+                    await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
+                }
+            } catch (e) { console.error("Schedule update failed", e); }
+        }
+
+        // 3. EmailJS 送信（文言の切り分け）
         const emailParams = {
             userName: data.userName,
             userKana: data.userKana || "",
@@ -470,12 +469,11 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
             email: data.email || "",
             company: data.company || "個人",
             regNo: regNoUrl || "（新規）",
-            deadline_note: mode === 'simple' 
+            deadline_note: currentMode === 'simple' 
                 ? "【仮予約・受付通知】現在、仮予約の送信を承りました。この後、事務局で内容を確認し、正式な受理メールを別途お送りいたします。今しばらくお待ちください。" 
                 : "【本申込・受付通知】ウェブからの本申込を承りました。現在、事務局にてご入力内容および添付写真の確認を行っております。確認が完了次第、改めて正式な「受講案内」をお送りいたします。"
         };
 
-        // window. を抜いて、emailjs.send で実行します
         await emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
 
         alert("お申し込みありがとうございました！\n自動返信メールをご確認ください。"); 
