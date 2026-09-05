@@ -91,7 +91,7 @@
                 <a href="index.html#schedule-section" id="nav-schedule" class="hover:text-[#00a2ff] transition">開催予定</a>
                 <a href="points.html" id="nav-points" class="hover:text-[#00a2ff] transition">受講ガイド</a>
                 <a href="index.html#access" id="nav-access" class="hover:text-[#00a2ff] transition">Access</a>
-                <a href="blog.html" id="nav-blog" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">ブログ</a>
+               <a href="blog.html" id="nav-blog" class="text-[#00a2ff] border border-[#00a2ff] bg-white transition px-3 py-1 rounded shadow-sm italic">ブログ</a>
                 <a href="mailto:info@shimonoseki-tc.com" class="text-[#00a2ff] border border-[#00a2ff]/60 hover:bg-[#00a2ff] hover:text-white transition px-3 py-1 rounded flex items-center gap-2 shadow-sm"><i class="fas fa-envelope text-[10px]"></i>メール</a>
             </nav>
 
@@ -120,7 +120,7 @@
             <a href="points.html" onclick="toggleMenu()" class="border-b border-white/10 pb-2">受講ガイド</a>
             <a href="index.html#access" onclick="toggleMenu()" class="border-b border-white/10 pb-2">Access</a>
             <div class="flex gap-4 mt-4">
-                <a href="blog.html" class="flex-1 text-center bg-white/10 border border-white/40 py-4 rounded-xl text-sm">ブログ</a>
+               <a href="blog.html" class="flex-1 text-center bg-white/10 border border-white/40 py-4 rounded-xl text-sm font-black italic shadow-lg">ブログ</a>
                 <a href="tel:0832460556" class="flex-1 text-center bg-[#00a2ff] py-4 rounded-xl text-sm"><i class="fas fa-phone-alt mr-2"></i>お問合せ</a>
             </div>
         </nav>
@@ -260,33 +260,18 @@
 
         loadBlogs();
 
-    // 1. サブページ用：初期状態で濃紺を適用
     window.addEventListener('load', () => {
         const nav = document.getElementById('sub-nav');
-        if (nav) {
-            nav.style.backgroundColor = "#001a33"; 
-            nav.classList.add('shadow-xl');
-        }
+        if (nav) { nav.style.backgroundColor = "#001a33"; }
     });
-
-    // 2. ヘッダーのスクロール演出
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('sub-nav');
-        if (!nav) return;
-        if (window.pageYOffset > 50) {
-            nav.classList.add('py-2', 'shadow-2xl');
-            nav.classList.remove('py-4', 'shadow-xl');
-        } else {
-            nav.classList.add('py-4', 'shadow-xl');
-            nav.classList.remove('py-2', 'shadow-2xl');
-        }
+        if (window.pageYOffset > 50) { nav.classList.add('shadow-2xl'); }
+        else { nav.classList.remove('shadow-2xl'); }
     });
-
-    // 3. 全ページ共通：スマホメニュー開閉
     window.toggleMenu = function() {
         const menu = document.getElementById('mobile-menu');
         const icon = document.getElementById('menu-icon');
-        if (!menu || !icon) return;
         menu.classList.toggle('active');
         icon.classList.toggle('fa-bars');
         icon.classList.toggle('fa-times');
