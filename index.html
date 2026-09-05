@@ -682,23 +682,18 @@
         }
     };
       
-    // 他のページで動いている仕組みを index.html にも適用
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('sub-nav');
-        // スマホでもPCでも確実に取れる位置判定
         const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
 
         if (scrollPos > 50) {
-            nav.classList.add('header-scrolled');
-            nav.classList.add('py-2');
-            nav.classList.remove('py-4');
+            nav.style.backgroundColor = "#001a33"; 
+            nav.classList.add('shadow-2xl'); // 影だけつけて浮かせる
         } else {
-            nav.classList.remove('header-scrolled');
-            nav.classList.add('py-4');
-            nav.classList.remove('py-2');
+            nav.style.backgroundColor = "transparent"; 
+            nav.classList.remove('shadow-2xl');
         }
         
-        // 既存のふわっと出る演出
         document.querySelectorAll('.reveal').forEach(el => { 
             if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); 
         });
