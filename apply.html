@@ -423,14 +423,14 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
 
     try {
         const formData = new FormData(e.target);
-        const params = new URLSearchParams(window.location.search);
-        const regNoUrl = params.get('regNo'); 
-        const mode = params.get('mode') || "full";
+        const urlParams = new URLSearchParams(window.location.search);
+        const regNoUrl = urlParams.get('regNo'); 
+        const modeUrl = urlParams.get('mode') || "full";
 
         const data = {
             courseName: document.getElementById('courseName').value,
             courseDate: document.getElementById('courseDate').value,
-            mode: mode,
+            mode: modeUrl, // 取得したmodeを使用
             status: 'accepted', 
             createdAt: serverTimestamp(),
             memo: regNoUrl ? "仮予約からの移行(" + regNoUrl + ")" : "新規申込"
