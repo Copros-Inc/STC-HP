@@ -55,8 +55,8 @@
 </head>
 <body class="bg-white">
 
-    <!-- STC全ページ共通：真・マスターヘッダー -->
-    <header class="fixed top-0 w-full z-[9999] py-4 transition-all duration-300" id="sub-nav">
+    <!-- 1. メインヘッダー（PC・スマホ共通） -->
+    <header class="fixed top-0 w-full z-[9999] py-4 transition-all duration-300 shadow-xl" id="sub-nav">
         <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-10">
             
             <!-- 左：ロゴ & センター名 -->
@@ -74,7 +74,7 @@
             <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase whitespace-nowrap mx-auto px-4">
                 <a href="index.html#service" id="nav-service" class="hover:text-[#00a2ff] transition">事業内容</a>
                 <a href="index.html#courses" id="nav-courses" class="hover:text-[#00a2ff] transition">主要コース</a>
-                <a href="features.html" id="nav-features" class="hover:text-[#00a2ff] transition">選ばれる理由</a>
+               <a href="features.html" id="nav-features" class="text-[#00a2ff] border-b-2 border-[#00a2ff] italic">選ばれる理由</a>
                 <a href="index.html#schedule-section" id="nav-schedule" class="hover:text-[#00a2ff] transition">開催予定</a>
                 <a href="points.html" id="nav-points" class="hover:text-[#00a2ff] transition">受講ガイド</a>
                 <a href="index.html#access" id="nav-access" class="hover:text-[#00a2ff] transition">Access</a>
@@ -88,7 +88,7 @@
                 <a href="tel:0832460556" class="hidden xl:flex bg-[#00a2ff] text-white px-6 py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all items-center justify-center gap-2">
                     <i class="fas fa-phone-alt text-xs"></i><span class="text-xs font-black italic">お問合せ</span>
                 </a>
-                <!-- スマホ用：ハンバーガーボタン（全ページ共通でこれにする） -->
+                <!-- スマホ用：ハンバーガーボタン -->
                 <button onclick="toggleMenu()" class="xl:hidden text-white text-2xl p-2 focus:outline-none">
                     <i class="fas fa-bars" id="menu-icon"></i>
                 </button>
@@ -96,9 +96,9 @@
         </div>
     </header>
 
-    <!-- スマホ用全画面メニュー（全ページ共通：</header>の直後に配置） -->
+    <!-- 2. スマホ用全画面メニュー（全ページ共通：</header>の直後に配置） -->
     <div id="mobile-menu" class="fixed top-0 left-0 w-full h-fit bg-[#001a33] z-[9998] pt-28 pb-10 px-8 shadow-2xl xl:hidden border-b-4 border-accent">
-        <nav class="flex flex-col gap-y-6 text-white text-xl font-black italic uppercase">
+        <nav class="flex flex-col gap-y-5 text-white text-lg font-black italic uppercase">
             <a href="index.html" onclick="toggleMenu()" class="border-b border-white/10 pb-2 text-accent">HOME</a>
             <a href="index.html#service" onclick="toggleMenu()" class="border-b border-white/10 pb-2">事業内容</a>
             <a href="index.html#courses" onclick="toggleMenu()" class="border-b border-white/10 pb-2">主要コース</a>
@@ -106,10 +106,12 @@
             <a href="index.html#schedule-section" onclick="toggleMenu()" class="border-b border-white/10 pb-2">開催予定</a>
             <a href="points.html" onclick="toggleMenu()" class="border-b border-white/10 pb-2">受講ガイド</a>
             <a href="index.html#access" onclick="toggleMenu()" class="border-b border-white/10 pb-2">Access</a>
+            
+            <!-- モバイルメニュー用アクションボタン -->
             <div class="flex gap-4 mt-4">
-                <a href="blog.html" class="flex-1 text-center bg-white/10 border border-white/40 py-4 rounded-xl text-sm">ブログ</a>
-                <a href="tel:0832460556" class="flex-1 text-center bg-[#00a2ff] py-4 rounded-xl text-sm"><i class="fas fa-phone-alt mr-2"></i>お問合せ</a>
-            </div>
+                <a href="blog.html" class="flex-1 text-center bg-white/10 border border-white/40 py-4 rounded-xl text-sm font-black italic shadow-lg">ブログ</a>
+                <a href="tel:0832460556" class="flex-1 text-center bg-[#00a2ff] text-[#001a33] py-4 rounded-xl text-sm font-black italic shadow-lg"><i class="fas fa-phone-alt mr-2"></i>お問合せ</a>
+            
         </nav>
     </div>
     
@@ -619,24 +621,15 @@
             observer.observe(section);
         });
         
-            // --- ヘッダーのスクロール演出（ここから追加） ---
-  window.addEventListener('load', () => {
+    window.addEventListener('load', () => {
         const nav = document.getElementById('sub-nav');
-        nav.style.backgroundColor = "#001a33"; // 最初から濃紺固定
-        nav.classList.add('shadow-xl');
+        if (nav) { nav.style.backgroundColor = "#001a33"; }
     });
-
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('sub-nav');
-        if (window.pageYOffset > 50) {
-            nav.classList.add('py-2', 'shadow-2xl');
-            nav.classList.remove('py-4', 'shadow-xl');
-        } else {
-            nav.classList.add('py-4', 'shadow-xl');
-            nav.classList.remove('py-2', 'shadow-2xl');
-        }
+        if (window.pageYOffset > 50) { nav.classList.add('shadow-2xl'); }
+        else { nav.classList.remove('shadow-2xl'); }
     });
-         // 全ページ共通：スマホメニュー開閉
     window.toggleMenu = function() {
         const menu = document.getElementById('mobile-menu');
         const icon = document.getElementById('menu-icon');
@@ -644,7 +637,7 @@
         icon.classList.toggle('fa-bars');
         icon.classList.toggle('fa-times');
         document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
-    };   
+    };
     
     </script>
 </body>
