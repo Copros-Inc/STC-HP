@@ -730,28 +730,20 @@
         }
     };
       
-    // スクロール時の制御（背景色の変化 ＆ ふわっと出る演出の統合）
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('sub-nav');
         const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
 
-        // 1. ヘッダー背景の切り替え
         if (scrollPos > 50) {
-            nav.style.backgroundColor = "#001a33"; // 濃紺にする
-            nav.classList.add('py-2', 'shadow-2xl');
-            nav.classList.remove('py-4');
+            nav.style.backgroundColor = "#001a33"; 
+            nav.classList.add('shadow-2xl'); // 影だけつけて浮かせる
         } else {
-            nav.style.backgroundColor = "transparent"; // 透明に戻す
-            nav.classList.add('py-4');
-            nav.classList.remove('py-2', 'shadow-2xl');
+            nav.style.backgroundColor = "transparent"; 
+            nav.classList.remove('shadow-2xl');
         }
         
-        // 2. ふわっと出る演出（reveal）の制御
         document.querySelectorAll('.reveal').forEach(el => { 
-            const rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight - 50) {
-                el.classList.add('active');
-            }
+            if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); 
         });
     });
                // 全ページ共通：スマホメニュー開閉
