@@ -18,13 +18,28 @@
         .photo-box:hover { border-color: #0ea5e9; background: #f0f9ff; }
         .input-field { width: 100%; padding: 0.85rem 1rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; font-weight: bold; background: #f8fafc; outline: none; }
         .input-label { display: block; text-[11px] font-black text-slate-400 mb-1 uppercase tracking-widest; }
+    
+            #mobile-menu {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+            visibility: hidden;
+        }
+        #mobile-menu.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+            visibility: visible;
+        }
+    
     </style>
     
-    <!-- STC共通マスターヘッダー（メールボタン搭載・完全同期版） -->
-    <header class="fixed top-0 w-full z-[9999] py-4 transition-all duration-300" id="sub-nav">
+    <!-- 1. メインヘッダー（PC・スマホ共通） -->
+    <header class="fixed top-0 w-full z-[9999] py-4 transition-all duration-300 shadow-xl" id="sub-nav">
         <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-10">
             
-            <!-- ロゴ & センター名 -->
+            <!-- 左：ロゴ & センター名 -->
             <a href="index.html" class="flex items-center gap-3 group shrink-0">
                 <div class="bg-white p-1 rounded shadow-lg group-hover:scale-105 transition-transform">
                     <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
@@ -35,38 +50,50 @@
                 </div>
             </a>
 
-            <!-- PC用メニュー（中央配置・メールボタン付き） -->
+            <!-- 中央：PC用メニュー（XL以上で表示） -->
             <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase whitespace-nowrap mx-auto px-4">
-                <a href="index.html#service" class="hover:text-[#00a2ff] transition">事業内容</a>
-                <a href="index.html#courses" class="hover:text-[#00a2ff] transition">主要コース</a>
-                <a href="features.html" class="hover:text-[#00a2ff] transition">選ばれる理由</a>
-                <a href="index.html#schedule-section" class="hover:text-[#00a2ff] transition">開催予定</a>
-                <a href="points.html" class="hover:text-[#00a2ff] transition">受講ガイド</a>
-                <a href="index.html#access" class="hover:text-[#00a2ff] transition">Access</a>
-                
-                <a href="blog.html" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">
-                    ブログ
-                </a>
-                
-                <a href="mailto:info@shimonoseki-tc.com" class="text-[#00a2ff] border border-[#00a2ff]/60 hover:bg-[#00a2ff] hover:text-white transition px-3 py-1 rounded flex items-center gap-2 shadow-sm">
-                    <i class="fas fa-envelope text-[10px]"></i>メール
-                </a>
+                <a href="index.html#service" id="nav-service" class="hover:text-[#00a2ff] transition">事業内容</a>
+                <a href="index.html#courses" id="nav-courses" class="hover:text-[#00a2ff] transition">主要コース</a>
+                <a href="features.html" id="nav-features" class="hover:text-[#00a2ff] transition">選ばれる理由</a>
+                <a href="index.html#schedule-section" id="nav-schedule" class="hover:text-[#00a2ff] transition">開催予定</a>
+                <a href="points.html" id="nav-points" class="hover:text-[#00a2ff] transition">受講ガイド</a>
+                <a href="index.html#access" id="nav-access" class="hover:text-[#00a2ff] transition">Access</a>
+                <a href="blog.html" id="nav-blog" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">ブログ</a>
+                <a href="mailto:info@shimonoseki-tc.com" class="text-[#00a2ff] border border-[#00a2ff]/60 hover:bg-[#00a2ff] hover:text-white transition px-3 py-1 rounded flex items-center gap-2 shadow-sm"><i class="fas fa-envelope text-[10px]"></i>メール</a>
             </nav>
 
-            <!-- 右側アクションエリア -->
+            <!-- 右：アクションエリア（お問合せ ＆ ハンバーガー） -->
             <div class="flex items-center gap-4 shrink-0">
+                <!-- PC用：お問合せボタン -->
                 <a href="tel:0832460556" class="hidden xl:flex bg-[#00a2ff] text-white px-6 py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all items-center justify-center gap-2">
                     <i class="fas fa-phone-alt text-xs"></i><span class="text-xs font-black italic">お問合せ</span>
                 </a>
-                
-                <!-- スマホ用HOMEボタン -->
-                <a href="index.html" class="xl:hidden bg-white/10 text-white px-4 py-2 rounded-lg border border-white/20 flex items-center gap-2 text-[10px] font-black italic uppercase">
-                    <i class="fas fa-home"></i> Home
-                </a>
+                <!-- スマホ用：ハンバーガーボタン -->
+                <button onclick="toggleMenu()" class="xl:hidden text-white text-2xl p-2 focus:outline-none">
+                    <i class="fas fa-bars" id="menu-icon"></i>
+                </button>
             </div>
         </div>
     </header>
 
+    <!-- 2. スマホ用全画面メニュー（全ページ共通：</header>の直後に配置） -->
+    <div id="mobile-menu" class="fixed top-0 left-0 w-full h-fit bg-[#001a33] z-[9998] pt-28 pb-10 px-8 shadow-2xl xl:hidden border-b-4 border-accent">
+        <nav class="flex flex-col gap-y-5 text-white text-lg font-black italic uppercase">
+            <a href="index.html" onclick="toggleMenu()" class="border-b border-white/10 pb-2 text-accent">HOME</a>
+            <a href="index.html#service" onclick="toggleMenu()" class="border-b border-white/10 pb-2">事業内容</a>
+            <a href="index.html#courses" onclick="toggleMenu()" class="border-b border-white/10 pb-2">主要コース</a>
+            <a href="features.html" onclick="toggleMenu()" class="border-b border-white/10 pb-2">選ばれる理由</a>
+            <a href="index.html#schedule-section" onclick="toggleMenu()" class="border-b border-white/10 pb-2">開催予定</a>
+            <a href="points.html" onclick="toggleMenu()" class="border-b border-white/10 pb-2">受講ガイド</a>
+            <a href="index.html#access" onclick="toggleMenu()" class="border-b border-white/10 pb-2">Access</a>
+            
+            <!-- モバイルメニュー用アクションボタン -->
+            <div class="flex gap-4 mt-4">
+                <a href="blog.html" class="flex-1 text-center bg-white/10 border border-white/40 py-4 rounded-xl text-sm font-black italic shadow-lg">ブログ</a>
+                <a href="tel:0832460556" class="flex-1 text-center bg-[#00a2ff] text-[#001a33] py-4 rounded-xl text-sm font-black italic shadow-lg"><i class="fas fa-phone-alt mr-2"></i>お問合せ</a>
+             </nav>
+    </div>
+    
     <main class="max-w-4xl mx-auto px-6">
         <div class="text-center mb-12">
             <h1 class="text-3xl md:text-4xl font-black italic tracking-tighter text-slate-900 mb-2">受講お申し込み</h1>
@@ -107,7 +134,7 @@
                         <div><label class="input-label">現住所（郵便番号） *</label><input type="text" name="zip" required class="input-field" placeholder="750-0000"></div>
                         <div><label class="input-label">電話番号 *</label><input type="tel" name="phone" required class="input-field" placeholder="090-0000-0000"></div>
                     </div>
-                    <div><label class="input-label">現住所（市区町村・番地） *</label><input type="text" name="address" required class="input-field" placeholder="下関市長府安養寺..."></div>
+                    <div><label class="input-label">現住所（県市区町村・番地） *</label><input type="text" name="address" required class="input-field" placeholder="山口県下関市長府安養寺..."></div>
                     <div><label class="input-label">メールアドレス *</label><input type="email" name="email" required class="input-field" placeholder="example@mail.com"></div>
                     
                     <div id="section-company" class="mt-10 pt-10 border-t border-slate-100 space-y-6 text-left">
@@ -199,6 +226,8 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, updateDoc, doc, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+            emailjs.init("9b2XZtU7jPZZPvYFo"); 
+            
         const firebaseConfig = { 
             apiKey: "AIzaSyCrRf1MMCkR_dTIT4mpz2MWdNPJZt3GpYw",
             authDomain: "stc-hp.firebaseapp.com",
@@ -388,7 +417,7 @@
             }
         });
 
-// 送信処理（修正版）
+// 送信処理（決定版）
 document.getElementById('applyForm').addEventListener('submit', async e => {
     e.preventDefault();
     const btn = document.getElementById('submitBtn'); 
@@ -396,14 +425,14 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
 
     try {
         const formData = new FormData(e.target);
-        const params = new URLSearchParams(window.location.search);
-        const regNoUrl = params.get('regNo'); 
-        const mode = params.get('mode') || "full";
+        const urlParams = new URLSearchParams(window.location.search); // 変数名をurlParamsに統一
+        const regNoUrl = urlParams.get('regNo'); 
+        const currentMode = urlParams.get('mode') || "full";
 
         const data = {
             courseName: document.getElementById('courseName').value,
             courseDate: document.getElementById('courseDate').value,
-            mode: mode,
+            mode: currentMode,
             status: 'accepted', 
             createdAt: serverTimestamp(),
             memo: regNoUrl ? "仮予約からの移行(" + regNoUrl + ")" : "新規申込"
@@ -416,24 +445,23 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
         const photoVal = document.getElementById('userPhotoBase64')?.value;
         if (photoVal) data.photos = { user: photoVal };
 
-        // 1. 新規申込データとして保存
+        // 1. Firestoreへ保存
         await addDoc(collection(db, "reservations"), data);
         
-        // 2. 残席の更新（二重減算防止ロジック）
-        // URLに regNo が「ない」場合のみ、新しく席を減らす
-            // 2. 残席を減らすロジック（regNoがある場合はスキップして二重減算を防ぐ）
-            if (!regNoUrl) {
-                try {
-                    const qSched = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
-                    const schedSnap = await getDocs(qSched);
-                    if (!schedSnap.empty) {
-                        const schedDoc = schedSnap.docs[0];
-                        const field = data.mode === 'full' ? 'fullApplied' : 'reserved';
-                        await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
-                    }
-                } catch (e) { console.error("Schedule update failed", e); }
-            }
-        // 3. EmailJS 送信
+        // 2. 残席の更新
+        if (!regNoUrl) {
+            try {
+                const qSched = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
+                const schedSnap = await getDocs(qSched);
+                if (!schedSnap.empty) {
+                    const schedDoc = schedSnap.docs[0];
+                    const field = currentMode === 'full' ? 'fullApplied' : 'reserved';
+                    await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
+                }
+            } catch (e) { console.error("Schedule update failed", e); }
+        }
+
+        // 3. EmailJS 送信（第一便：ユーザーへの自動返信メール）
         const emailParams = {
             userName: data.userName,
             userKana: data.userKana || "",
@@ -442,17 +470,28 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
             phone: data.phone || "",
             email: data.email || "",
             company: data.company || "個人",
-            regNo: regNoUrl || "（新規）",
-            deadline_note: mode === 'simple' 
-                ? "【重要】現在は「仮予約」の状態です。7日以内に以下のURLより本申込をお願いいたします。" 
-                : "お申し込みの受付（本申込）が完了いたしました。当日の案内書を必ずご確認ください。"
+            regNo: regNoUrl || "（確認中）",
+            // メールの件名横や強調箇所に表示されるタイトル
+            deadline_note: currentMode === 'simple' 
+                ? "【仮予約・自動受付メール】" 
+                : "【本申込・自動受付メール】",
+            // テンプレートの {{{guideBlock}}} に流し込む本文HTML
+            guideBlock: currentMode === 'simple'
+                ? `<p>お申し込み（仮予約）を承りました。現在、事務局にて日程を確認しております。</p>
+                   <p style="color: #e11d48; font-weight: bold;">※まだ受講は確定しておりません。</p>
+                   <p>事務局での確認後、2営業日以内に「仮予約受理」のメールをお送りします。そちらに記載の指示に従い、本申込のお手続きをお願いいたします。</p>`
+                : `<p>ウェブからの本申込を承りました。ありがとうございます。</p>
+                   <p>現在、事務局にてご入力内容および添付写真の確認を行っております。</p>
+                   <p>確認が完了次第、改めて正式な<strong>「受講案内（お振込先等）」</strong>をメールにてお送りいたします。今しばらくお待ちくださいませ。</p>`,
+            // テンプレートの {{{preApplyBlock}}} を空で埋めてエラーを防ぐ
+            preApplyBlock: ""
         };
 
-        await window.emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
+        // EmailJS送信実行
+        await emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
 
         alert("お申し込みありがとうございました！\n自動返信メールをご確認ください。"); 
         window.location.href = "index.html";
-
     } catch (err) { 
         console.error("Fatal Error:", err);
         alert("送信に失敗しました。もう一度お試しください。");  
@@ -468,28 +507,24 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
     <input type="file" id="in_emp" accept="image/*" class="hidden" onchange="window.processImg(this, 'emp')">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script type="text/javascript">
-    emailjs.init("9b2XZtU7jPZZPvYFo");
 
-        // ヘッダー背景を最初から濃紺にし、スクロールで高さを制御
     window.addEventListener('load', () => {
         const nav = document.getElementById('sub-nav');
-        if (nav) {
-            nav.style.backgroundColor = "#001a33"; // 最初から濃紺固定
-            nav.classList.add('shadow-xl');
-        }
+        if (nav) { nav.style.backgroundColor = "#001a33"; }
     });
-
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('sub-nav');
-        if (!nav) return;
-        if (window.pageYOffset > 50) {
-            nav.classList.add('py-2', 'shadow-2xl');
-            nav.classList.remove('py-4', 'shadow-xl');
-        } else {
-            nav.classList.add('py-4', 'shadow-xl');
-            nav.classList.remove('py-2', 'shadow-2xl');
-        }
+        if (window.pageYOffset > 50) { nav.classList.add('shadow-2xl'); }
+        else { nav.classList.remove('shadow-2xl'); }
     });
+    window.toggleMenu = function() {
+        const menu = document.getElementById('mobile-menu');
+        const icon = document.getElementById('menu-icon');
+        menu.classList.toggle('active');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+        document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
+    };
     
 </script>
 </body>
