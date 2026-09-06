@@ -53,65 +53,78 @@
         #sub-nav.header-scrolled { background-color: #001a33 !important; box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding-top: 0.5rem; padding-bottom: 0.5rem; }
         .shrink-0 { flex-shrink: 0 !important; }
         .hero-active .relative.z-10 { margin-top: 100px; }
-                /* ページ内ジャンプの着地位置調整（ヘッダー被り防止） */
-        section[id] { scroll-margin-top: 100px; }
+        /* ページ内ジャンプの着地位置調整（ヘッダー被り防止：最適化版） */
+        section[id] { scroll-margin-top: 150px; } /* PC：100pxから150pxへ大幅増 */
         @media (max-width: 768px) {
-            section[id] { scroll-margin-top: 80px; }
+            section[id] { scroll-margin-top: 130px; } /* スマホ：80pxから130pxへ大幅増 */
         }
+        /* ページ内ジャンプの着地位置調整（ヘッダー被り防止） */
+        #qa, #subsidy, #flow { scroll-margin-top: 130px; }
+        @media (max-width: 768px) {
+            #qa, #subsidy, #flow { scroll-margin-top: 110px; }
+        }
+               
     </style>
 </head>
 <body>
 
-    <!-- 0. MASTER HEADER (ハンバーガーメニュー搭載版) -->
-    <header class="fixed top-0 w-full z-[9999] py-4 transition-all duration-300" id="sub-nav">
-        <div class="max-w-[1500px] mx-auto flex justify-start items-center px-4 md:px-10">
-            <a href="index.html" class="flex items-center gap-3 shrink-0">
-                <div class="bg-white p-1 rounded shadow-lg shrink-0">
+    <!-- 1. メインヘッダー（PC・スマホ共通） -->
+    <header class="fixed top-0 w-full z-[9999] py-4 transition-all duration-300 shadow-xl" id="sub-nav">
+        <div class="max-w-[1500px] mx-auto flex justify-between items-center px-4 md:px-10">
+            
+            <!-- 左：ロゴ & センター名 -->
+            <a href="index.html" class="flex items-center gap-3 group shrink-0">
+                <div class="bg-white p-1 rounded shadow-lg group-hover:scale-105 transition-transform">
                     <img src="logo.png" alt="STC" class="h-8 md:h-12 object-contain">
                 </div>
-                <div class="text-left text-white leading-none shrink-0">
+                <div class="text-left text-white leading-none whitespace-nowrap">
                     <h1 class="font-[900] text-[10px] md:text-lg italic uppercase tracking-tighter">下関トレーニングセンター</h1>
-                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.1em]">Shimonoseki Training Center</p>
+                    <p class="text-[6px] md:text-[8px] text-[#00a2ff] font-black uppercase tracking-[0.2em]">Shimonoseki Training Center</p>
                 </div>
             </a>
-            
-            <!-- PC用ナビゲーション -->
-            <nav class="hidden xl:flex items-center gap-x-6 text-white text-[12px] font-[900] italic uppercase mx-auto px-4">
-                <a href="#service" class="hover:text-[#00a2ff] transition">事業内容</a>
-                <a href="#courses" class="hover:text-[#00a2ff] transition">主要コース</a>
-                <a href="features.html" class="hover:text-[#00a2ff] transition">選ばれる理由</a>
-                <a href="#schedule-section" class="hover:text-[#00a2ff] transition">開催予定</a>
-                <a href="points.html" class="hover:text-[#00a2ff] transition">受講ガイド</a>
-                <a href="#access" class="hover:text-[#00a2ff] transition">Access</a>
-                <a href="blog.html" class="border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded">ブログ</a>
+
+            <!-- 中央：PC用メニュー（XL以上で表示） -->
+            <nav class="hidden xl:flex items-center gap-x-3 2xl:gap-x-5 text-white text-[12px] font-[900] italic uppercase whitespace-nowrap mx-auto px-4">
+                <a href="index.html#service" id="nav-service" class="hover:text-[#00a2ff] transition">事業内容</a>
+                <a href="index.html#courses" id="nav-courses" class="hover:text-[#00a2ff] transition">主要コース</a>
+                <a href="features.html" id="nav-features" class="hover:text-[#00a2ff] transition">選ばれる理由</a>
+                <a href="index.html#schedule-section" id="nav-schedule" class="hover:text-[#00a2ff] transition">開催予定</a>
+                <a href="points.html" id="nav-points" class="hover:text-[#00a2ff] transition">受講ガイド</a>
+                <a href="index.html#access" id="nav-access" class="hover:text-[#00a2ff] transition">Access</a>
+                <a href="blog.html" id="nav-blog" class="text-white border border-white/60 hover:bg-white hover:text-[#001a33] transition px-3 py-1 rounded shadow-sm">ブログ</a>
+                <a href="mailto:info@shimonoseki-tc.com" class="text-[#00a2ff] border border-[#00a2ff]/60 hover:bg-[#00a2ff] hover:text-white transition px-3 py-1 rounded flex items-center gap-2 shadow-sm"><i class="fas fa-envelope text-[10px]"></i>メール</a>
             </nav>
 
-            <!-- 右側アクションエリア -->
-            <div class="flex items-center gap-4 ml-auto shrink-0">
+            <!-- 右：アクションエリア（お問合せ ＆ ハンバーガー） -->
+            <div class="flex items-center gap-4 shrink-0">
+                <!-- PC用：お問合せボタン -->
                 <a href="tel:0832460556" class="hidden xl:flex bg-[#00a2ff] text-white px-6 py-3 rounded-full shadow-lg border-2 border-[#00a2ff] hover:bg-white hover:text-[#001a33] transition-all items-center justify-center gap-2">
                     <i class="fas fa-phone-alt text-xs"></i><span class="text-xs font-black italic">お問合せ</span>
                 </a>
-                <!-- ハンバーガーボタン -->
-                <button onclick="toggleMenu()" class="xl:hidden text-white text-2xl p-2 focus:outline-none shrink-0" aria-label="Menu">
+                <!-- スマホ用：ハンバーガーボタン -->
+                <button onclick="toggleMenu()" class="xl:hidden text-white text-2xl p-2 focus:outline-none">
                     <i class="fas fa-bars" id="menu-icon"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- スマホ用全画面メニュー -->
+    <!-- 2. スマホ用全画面メニュー（全ページ共通：</header>の直後に配置） -->
     <div id="mobile-menu" class="fixed top-0 left-0 w-full h-fit bg-[#001a33] z-[9998] pt-28 pb-10 px-8 shadow-2xl xl:hidden border-b-4 border-accent">
-        <nav class="flex flex-col gap-y-6 text-white text-xl font-black italic uppercase">
-            <a href="#service" onclick="toggleMenu()" class="border-b border-white/10 pb-2">事業内容</a>
-            <a href="#courses" onclick="toggleMenu()" class="border-b border-white/10 pb-2">主要コース</a>
-            <a href="features.html" class="border-b border-white/10 pb-2">選ばれる理由</a>
-            <a href="#schedule-section" onclick="toggleMenu()" class="border-b border-white/10 pb-2">開催予定</a>
-            <a href="points.html" class="border-b border-white/10 pb-2">受講ガイド</a>
-            <a href="#access" onclick="toggleMenu()" class="border-b border-white/10 pb-2">Access</a>
+        <nav class="flex flex-col gap-y-5 text-white text-lg font-black italic uppercase">
+            <a href="index.html" onclick="toggleMenu()" class="border-b border-white/10 pb-2 text-accent">HOME</a>
+            <a href="index.html#service" onclick="toggleMenu()" class="border-b border-white/10 pb-2">事業内容</a>
+            <a href="index.html#courses" onclick="toggleMenu()" class="border-b border-white/10 pb-2">主要コース</a>
+            <a href="features.html" onclick="toggleMenu()" class="border-b border-white/10 pb-2">選ばれる理由</a>
+            <a href="index.html#schedule-section" onclick="toggleMenu()" class="border-b border-white/10 pb-2">開催予定</a>
+            <a href="points.html" onclick="toggleMenu()" class="border-b border-white/10 pb-2">受講ガイド</a>
+            <a href="index.html#access" onclick="toggleMenu()" class="border-b border-white/10 pb-2">Access</a>
+            
+            <!-- モバイルメニュー用アクションボタン -->
             <div class="flex gap-4 mt-4">
-                <a href="blog.html" class="flex-1 text-center bg-white/10 border border-white/40 py-4 rounded-xl text-sm">ブログ</a>
-                <a href="tel:0832460556" class="flex-1 text-center bg-[#00a2ff] py-4 rounded-xl text-sm"><i class="fas fa-phone-alt mr-2"></i>お問合せ</a>
-            </div>
+                <a href="blog.html" class="flex-1 text-center bg-white/10 border border-white/40 py-4 rounded-xl text-sm font-black italic shadow-lg">ブログ</a>
+                <a href="tel:0832460556" class="flex-1 text-center bg-[#00a2ff] text-[#001a33] py-4 rounded-xl text-sm font-black italic shadow-lg"><i class="fas fa-phone-alt mr-2"></i>お問合せ</a>
+           
         </nav>
     </div>
     
@@ -477,9 +490,22 @@
             schedules = snapshot.docs.map(doc => {
                 const data = doc.data();
                 const rawStart = String(data.dayStart || "");
-                return { id: doc.id, name: data.courseName || "名称未設定", date: data.date || "", month: parseInt(data.month), days: rawStart.includes(',') ? rawStart.split(',').map(n => parseInt(n.trim())) : [parseInt(rawStart)], dayEnd: parseInt(data.dayEnd || 0), capacity: parseInt(data.capacity || 10), fullApplied: parseInt(data.fullApplied || 0), reserved: parseInt(data.reserved || 0) };
+                return { id: doc.id, name: data.courseName || "名称未設定", date: data.date || "", month: parseInt(data.month), days: rawStart.includes(',') ? rawStart.split(',').map(n => parseInt(n.trim())) : [parseInt(rawStart)], dayEnd: parseInt(data.dayEnd || 0), capacity: parseInt(data.capacity || 10), fullApplied: parseInt(data.fullApplied || 0), reserved: parseInt(data.reserved || 0), waiting: parseInt(data.waiting || 0) };
+            }).sort((a, b) => {
+                // 1. 月で並び替え
+                if (a.month !== b.month) return a.month - b.month;
+                // 2. 同じ月なら開始日で並び替え
+                return a.days[0] - b.days[0];
             });
             renderCalendar(currentMonth); renderGantt(currentMonth);
+             // 追加：アンカーリンク（#ID）で来訪時、描画後のズレを補正する
+            if (window.location.hash) {
+                const targetId = window.location.hash;
+                setTimeout(() => {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) targetElement.scrollIntoView({ behavior: 'smooth' });
+                }, 800);
+            }           
         });
     }
 
@@ -500,10 +526,9 @@
         let tableHtml = '<table class="w-full text-left border-collapse hidden md:table"><thead><tr class="bg-slate-800 text-white font-[900] text-xl border-b-4 border-navy"><th class="p-10 text-left">講習名称</th><th class="p-10 text-left">開催日程</th><th class="p-10 text-center">状況</th><th class="p-10 text-left">申込</th></tr></thead><tbody class="font-bold text-navy">';
 
         monthSchedules.forEach(item => {
-            // --- 修正：防御ロジック（管理画面からのデータ変更に耐える） ---
+            // --- [修正] 判定ロジックの統合と重複削除 ---
             const today = new Date();
             const dayValue = Array.isArray(item.days) ? item.days[0] : parseInt(item.days);
-            // 判定用の年も displayYear を使用
             const startDate = new Date(displayYear, item.month - 1, dayValue || 1);
             
             const diffTime = startDate - today;
@@ -511,31 +536,42 @@
             const avail = item.capacity - (item.fullApplied + item.reserved);
             
             let statusLabel = '';
-            if (diffDays <= 10) {
+            if (diffDays <= 7) {
                 statusLabel = '<span class="bg-slate-500 text-white px-6 py-2 rounded-full text-base font-black shadow-sm text-center">受付終了</span>';
             } else if (avail <= 0) {
-                statusLabel = '<span class="bg-slate-200 text-slate-500 px-6 py-2 rounded-full text-sm">満員御礼</span>';
+                // 満員時の表示：人数を schedules の waiting から取得して表示
+                const waitCount = item.waiting || 0;
+                statusLabel = `
+                    <div class="flex flex-col items-center gap-2">
+                        <span class="bg-rose-600 text-white px-6 py-2 rounded-full text-base font-black shadow-md text-center animate-pulse">満員御礼</span>
+                        <span class="text-[10px] text-rose-600 font-bold italic">※現在 ${waitCount} 名がキャンセル待ちです</span>
+                    </div>`;
+            } else if (avail <= 3) {
+                statusLabel = `<span class="bg-white text-rose-600 border-2 border-rose-600 px-6 py-2 rounded-full text-base font-black shadow-sm text-center font-en">残り ${avail} 席</span>`;
             } else {
-                statusLabel = `<span class="bg-sky-100 text-[#001a33] px-6 py-2 rounded-full text-base font-black border border-sky-200 shadow-sm text-center">残り ${avail} 席</span>`;
+                statusLabel = `<span class="bg-sky-100 text-[#001a33] px-6 py-2 rounded-full text-base font-black border border-sky-200 shadow-sm text-center font-en">残り ${avail} 席</span>`;
             }
-
-                        let actionBtn = `
-                <div class="flex flex-col gap-3">
-                    <!-- 9/1予約開始の案内（完全維持） -->
-                    <div class="bg-slate-100 text-slate-400 px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-slate-200 cursor-not-allowed">
-                        <i class="fas fa-clock mr-2"></i> 9/1 Web予約開始
-                    </div>
-                    
-                                        <!-- メール問い合わせボタン（アイコン付き・濃紺デザイン） -->
-                    <a href="mailto:info@shimonoseki-tc.com?subject=講習の問い合わせ(${item.name})" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-[#001a33] hover:bg-accent hover:border-accent transition-all italic flex items-center justify-center gap-2 shadow-lg">
-                        <i class="fas fa-envelope text-lg"></i>
-                        <span>メールで相談・申込</span>
-                    </a>
-
-                    <p class="text-[11px] text-center text-slate-500 font-bold leading-tight">
-                        ※現在、システム準備中です。<br>お急ぎの方はお電話またはメールください。
-                    </p>
-                </div>`;
+              // 修正版：リンク先を最新の apply.html 仕様に合わせる
+            let actionBtn = `<div class="flex flex-col gap-3">`;
+            if (avail <= 0 && diffDays > 7) {
+                actionBtn += `
+                    <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&status=waiting&mode=simple" class="bg-amber-600 text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-amber-600 hover:bg-[#001a33] transition-all italic flex items-center justify-center gap-2 shadow-lg">
+                        <i class="fas fa-hourglass-half text-lg"></i>
+                        <span>キャンセル待ちを希望する</span>
+                    </a>`;
+            } else if (diffDays <= 7) {
+                actionBtn += `<p class="text-[10px] text-slate-400 font-bold italic text-center">※受付期間を終了しました</p>`;
+            } else {
+                const isSimpleOnly = item.name.includes("11H") || item.name.includes("１１Ｈ") || item.name.includes("テールゲート") || item.name.includes("フルハーネス");
+                if (isSimpleOnly) {
+                    actionBtn += `<a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-[#001a33] hover:bg-accent transition-all italic flex items-center justify-center gap-2"><span>まずは仮予約（席確保）</span></a>`;
+                } else {
+                    actionBtn += `
+                        <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=full" class="bg-[#00a2ff] text-white px-8 py-4 rounded-2xl text-base text-center font-[900] border-2 border-[#00a2ff] hover:bg-[#001a33] transition-all italic flex items-center justify-center gap-2"><span>Webで本申し込み</span></a>
+                        <a href="apply.html?course=${encodeURIComponent(item.name)}&date=${encodeURIComponent(item.date)}&mode=simple" class="bg-[#001a33] text-white px-8 py-4 rounded-2xl text-[12px] text-center font-[900] border-2 border-[#001a33] hover:bg-accent transition-all italic flex items-center justify-center gap-2"><span>まずは仮予約（席確保）</span></a>`;
+                }
+            }
+            actionBtn += `</div>`;  
             
             // スマホ用カード：どんな時も絶対に消えないよう style 属性で固定
            mobileHtml += `
@@ -682,22 +718,36 @@
         }
     };
       
+    // index.html最終確定：高さ固定・透過演出・メニュー開閉
     window.addEventListener('scroll', () => {
         const nav = document.getElementById('sub-nav');
         const scrollPos = window.pageYOffset || document.documentElement.scrollTop;
 
+        // 1. 背景色の切り替え（py-2/py-4の操作を完全に排除し、高さを固定）
         if (scrollPos > 50) {
-            nav.style.backgroundColor = "#001a33"; 
-            nav.classList.add('shadow-2xl'); // 影だけつけて浮かせる
+            nav.style.backgroundColor = "#001a33";
+            nav.classList.add('shadow-2xl');
         } else {
-            nav.style.backgroundColor = "transparent"; 
+            nav.style.backgroundColor = "transparent";
             nav.classList.remove('shadow-2xl');
         }
         
+        // 2. ふわっと出る演出（reveal）
         document.querySelectorAll('.reveal').forEach(el => { 
             if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); 
         });
     });
+
+    // 3. 全ページ共通：スマホメニュー開閉
+    window.toggleMenu = function() {
+        const menu = document.getElementById('mobile-menu');
+        const icon = document.getElementById('menu-icon');
+        if (!menu || !icon) return;
+        menu.classList.toggle('active');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+        document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : 'auto';
+    };
             
     </script>
 </body>
