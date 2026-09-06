@@ -429,6 +429,8 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
         const regNoUrl = urlParams.get('regNo'); 
         const currentMode = urlParams.get('mode') || "full";
 
+         const isWaiting = urlParams.get('status') === 'waiting';
+        
         const data = {
             courseName: document.getElementById('courseName').value,
             courseDate: document.getElementById('courseDate').value,
@@ -448,14 +450,15 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
         // 1. Firestoreへ保存
         await addDoc(collection(db, "reservations"), data);
         
-        // 2. 残席の更新
+               // 2. 残席の更新
         if (!regNoUrl) {
             try {
                 const qSched = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
                 const schedSnap = await getDocs(qSched);
                 if (!schedSnap.empty) {
                     const schedDoc = schedSnap.docs[0];
-                    const field = currentMode === 'full' ? 'fullApplied' : 'reserved';
+                    // ★修正：isWaitingなら waiting フィールドを増やす
+                    const field = isWaiting ? 'waiting' : (currentMode === 'full' ? 'fullApplied' : 'reserved');
                     await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
                 }
             } catch (e) { console.error("Schedule update failed", e); }
@@ -471,19 +474,24 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
             email: data.email || "",
             company: data.company || "個人",
             regNo: regNoUrl || "（確認中）",
-            // メールの件名横や強調箇所に表示されるタイトル
-            deadline_note: currentMode === 'simple' 
-                ? "【仮予約・自動受付メール】" 
-                : "【本申込・自動受付メール】",
+            
+            // 判定に基づきタイトルを切り分け（キャンセル待ちを優先）
+            deadline_note: isWaiting 
+                ? "【キャンセル待ち・自動受付メール】" 
+                : (currentMode === 'simple' ? "【仮予約・自動受付メール】" : "【本申込・自動受付メール】"),
+            
             // テンプレートの {{{guideBlock}}} に流し込む本文HTML
-            guideBlock: currentMode === 'simple'
-                ? `<p>お申し込み（仮予約）を承りました。現在、事務局にて日程を確認しております。</p>
-                   <p style="color: #e11d48; font-weight: bold;">※まだ受講は確定しておりません。</p>
-                   <p>事務局での確認後、2営業日以内に「仮予約受理」のメールをお送りします。そちらに記載の指示に従い、本申込のお手続きをお願いいたします。</p>`
-                : `<p>ウェブからの本申込を承りました。ありがとうございます。</p>
-                   <p>現在、事務局にてご入力内容および添付写真の確認を行っております。</p>
-                   <p>確認が完了次第、改めて正式な<strong>「受講案内（お振込先等）」</strong>をメールにてお送りいたします。今しばらくお待ちくださいませ。</p>`,
-            // テンプレートの {{{preApplyBlock}}} を空で埋めてエラーを防ぐ
+            guideBlock: isWaiting
+                ? `<p>お申し込みを承りましたが、現在ご希望の日程は<strong>満員</strong>のため、<span>「キャンセル待ち」</span>としての受付となります。</p>
+                   <p>今後、キャンセルが発生し次第、お申し込み順に事務局よりご連絡差し上げます。恐れ入りますが、案内があるまで今しばらくお待ちください。</p>`
+                : (currentMode === 'simple'
+                    ? `<p>お申し込み（仮予約）を承りました。現在、事務局にて日程を確認しております。</p>
+                       <p style="color: #e11d48; font-weight: bold;">※まだ受講は確定しておりません。</p>
+                       <p>事務局での確認後、2営業日以内に「仮予約受理」のメールをお送りします。そちらに記載の指示に従い、本申込のお手続きをお願いいたします。</p>`
+                    : `<p>ウェブからの本申込を承りました。ありがとうございます。</p>
+                       <p>現在、事務局にてご入力内容および添付写真の確認を行っております。</p>
+                       <p>確認が完了次第、改めて正式な<strong>「受講案内（お振込先等）」</strong>をメールにてお送りいたします。今しばらくお待ちくださいませ。</p>`),
+            
             preApplyBlock: ""
         };
 
