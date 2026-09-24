@@ -456,7 +456,7 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
         });
 
         const photoVal = document.getElementById('userPhotoBase64')?.value;
-        if (photoVal) data.photos = { user: photoVal };
+        if (photoVal) data.userPhotoBase64 = photoVal;
 
         // 1. Firestoreへ保存
         await addDoc(collection(db, "reservations"), data);
