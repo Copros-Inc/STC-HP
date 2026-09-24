@@ -421,32 +421,32 @@
             }
         });
 
-// 送信処理（決定版）
+// 送信処理（決定版・修正版）
 document.getElementById('applyForm').addEventListener('submit', async e => {
-    const currentMode = new URLSearchParams(window.location.search).get('mode') || "full";
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentMode = urlParams.get('mode') || "full";
     const photoVal = document.getElementById('userPhotoBase64')?.value;
 
     if (currentMode === 'full' && (!photoVal || photoVal.length < 100)) {
         alert("証明写真が正しく選択されていないか、処理中です。もう一度写真を選び直してください。");
-        return; // ここで送信を強制中止する
+        return;
     }
+    
     e.preventDefault();
     const btn = document.getElementById('submitBtn'); 
-    btn.disabled = true; btn.innerText = "送信中...";
+    btn.disabled = true; 
+    btn.innerText = "送信中...";
 
     try {
         const formData = new FormData(e.target);
-        const urlParams = new URLSearchParams(window.location.search); // 変数名をurlParamsに統一
         const regNoUrl = urlParams.get('regNo'); 
-        const currentMode = urlParams.get('mode') || "full";
-
-         const isWaiting = urlParams.get('status') === 'waiting';
+        const isWaiting = urlParams.get('status') === 'waiting';
         
         const data = {
             courseName: document.getElementById('courseName').value,
             courseDate: document.getElementById('courseDate').value,
             mode: currentMode,
-            status: urlParams.get('status') === 'waiting' ? 'waiting' : 'accepted',
+            status: isWaiting ? 'waiting' : 'accepted',
             createdAt: serverTimestamp(),
             memo: regNoUrl ? "仮予約からの移行(" + regNoUrl + ")" : "新規申込"
         };
@@ -455,27 +455,25 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
             if(key !== "userPhotoBase64") data[key] = value;
         });
 
-        const photoVal = document.getElementById('userPhotoBase64')?.value;
         if (photoVal) data.userPhotoBase64 = photoVal;
 
         // 1. Firestoreへ保存
         await addDoc(collection(db, "reservations"), data);
         
-               // 2. 残席の更新
+        // 2. 残席の更新
         if (!regNoUrl) {
             try {
                 const qSched = query(collection(db, "schedules"), where("courseName", "==", data.courseName), where("date", "==", data.courseDate));
                 const schedSnap = await getDocs(qSched);
                 if (!schedSnap.empty) {
                     const schedDoc = schedSnap.docs[0];
-                    // ★修正：isWaitingなら waiting フィールドを増やす
                     const field = isWaiting ? 'waiting' : (currentMode === 'full' ? 'fullApplied' : 'reserved');
                     await updateDoc(doc(db, "schedules", schedDoc.id), { [field]: increment(1) });
                 }
             } catch (e) { console.error("Schedule update failed", e); }
         }
 
-        // 3. EmailJS 送信（第一便：ユーザーへの自動返信メール）
+        // 3. EmailJS 送信
         const emailParams = {
             userName: data.userName,
             userKana: data.userKana || "",
@@ -485,36 +483,26 @@ document.getElementById('applyForm').addEventListener('submit', async e => {
             email: data.email || "",
             company: data.company || "個人",
             regNo: regNoUrl || "（確認中）",
-            
-            // 判定に基づきタイトルを切り分け（キャンセル待ちを優先）
             deadline_note: isWaiting 
                 ? "【キャンセル待ち・自動受付メール】" 
                 : (currentMode === 'simple' ? "【仮予約・自動受付メール】" : "【本申込・自動受付メール】"),
-            
-            // テンプレートの {{{guideBlock}}} に流し込む本文HTML
             guideBlock: isWaiting
-                ? `<p>お申し込みを承りましたが、現在ご希望の日程は<strong>満員</strong>のため、<span>「キャンセル待ち」</span>としての受付となります。</p>
-                   <p>今後、キャンセルが発生し次第、お申し込み順に事務局よりご連絡差し上げます。恐れ入りますが、案内があるまで今しばらくお待ちください。</p>`
+                ? `<p>お申し込みを承りましたが、現在ご希望の日程は<strong>満員</strong>のため、<span>「キャンセル待ち」</span>としての受付となります。</p>`
                 : (currentMode === 'simple'
-                    ? `<p>お申し込み（仮予約）を承りました。現在、事務局にて日程を確認しております。</p>
-                       <p style="color: #e11d48; font-weight: bold;">※まだ受講は確定しておりません。</p>
-                       <p>事務局での確認後、2営業日以内に「仮予約受理」のメールをお送りします。そちらに記載の指示に従い、本申込のお手続きをお願いいたします。</p>`
-                    : `<p>ウェブからの本申込を承りました。ありがとうございます。</p>
-                       <p>現在、事務局にてご入力内容および添付写真の確認を行っております。</p>
-                       <p>確認が完了次第、改めて正式な<strong>「受講案内（お振込先等）」</strong>をメールにてお送りいたします。今しばらくお待ちくださいませ。</p>`),
-            
+                    ? `<p>お申し込み（仮予約）を承りました。</p>`
+                    : `<p>ウェブからの本申込を承りました。</p>`),
             preApplyBlock: ""
         };
 
-        // EmailJS送信実行
         await emailjs.send("service_ry0ghki", "template_1g454mr", emailParams);
 
         alert("お申し込みありがとうございました！\n自動返信メールをご確認ください。"); 
         window.location.href = "index.html";
     } catch (err) { 
         console.error("Fatal Error:", err);
-        alert("送信に失敗しました。もう一度お試しください。");  
-        btn.disabled = false; btn.innerText = "申し込みを送信する";
+        alert("送信に失敗しました。エラー: " + err.message);  
+        btn.disabled = false; 
+        btn.innerText = "申し込みを送信する";
     }
 });
     </script>
