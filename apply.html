@@ -314,25 +314,60 @@
             }
         }); // ← ここで正しく閉じる
 
-    document.getElementById('in_photo').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
+document.getElementById('in_photo').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
 
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true; // 処理が終わるまでボタンを無効化
-        btn.innerText = "写真を高画質で処理中...";
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerText = "写真を高画質で処理中...";
 
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const base64String = event.target.result;
-            document.getElementById('photo-preview-box').innerHTML = `<img src="${base64String}" class="absolute inset-0 w-full h-full object-contain p-2 rounded-2xl bg-white">`;
-            document.getElementById('userPhotoBase64').value = base64String;
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const img = new Image();
+        img.src = event.target.result;
+        
+        img.onload = function() {
+            // Canvas で圧縮
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // 最大サイズを 800x600 に制限
+            let width = img.width;
+            let height = img.height;
+            const maxWidth = 800;
+            const maxHeight = 600;
+            
+            if (width > height) {
+                if (width > maxWidth) {
+                    height = Math.round(height * (maxWidth / width));
+                    width = maxWidth;
+                }
+            } else {
+                if (height > maxHeight) {
+                    width = Math.round(width * (maxHeight / height));
+                    height = maxHeight;
+                }
+            }
+            
+            canvas.width = width;
+            canvas.height = height;
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            // JPEG で圧縮（品質 70%）
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+            
+            document.getElementById('photo-preview-box').innerHTML = 
+                `<img src="${compressedBase64}" class="absolute inset-0 w-full h-full object-contain p-2 rounded-2xl bg-white">`;
+            document.getElementById('userPhotoBase64').value = compressedBase64;
 
-            btn.disabled = false; // 処理完了後に有効化
+            btn.disabled = false;
             btn.innerText = "申し込みを送信する";
         };
-        reader.readAsDataURL(file);
-    });
+    };
+    reader.readAsDataURL(file);
+});
+            
         // 講習ごとの受講料・追加項目切り替え
         function updateCourseUI(course, isSimple) {
             const feeEl = document.getElementById('displayFee');
