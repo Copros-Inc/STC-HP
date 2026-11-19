@@ -379,17 +379,17 @@ document.getElementById('in_photo').addEventListener('change', function(e) {
             // 受講料計算と全角・半角対応の判定
             const c = String(course);
 
-            // 判定と金額セット
+            // 【12/1からの新料金設定】
             if (c.includes("玉掛け")) {
-                fee = "¥25,000-";
+                fee = "¥27,000-";
             } else if (c.includes("小型移動式")) {
-                fee = "¥35,000-";
+                fee = "¥37,000-";
             } else if (c.includes("31H") || c.includes("３１Ｈ")) {
-                fee = "¥30,000-";
+                fee = "¥32,000-";
             } else if (c.includes("11H") || c.includes("１１Ｈ")) {
-                fee = "¥20,000-";
+                fee = "¥22,000-";
             } else if (c.includes("テールゲート") || c.includes("フルハーネス")) {
-                fee = "¥15,000-";
+                fee = "¥15,000-"; // 据え置き
             }
             feeEl.innerText = fee;
 
