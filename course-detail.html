@@ -191,11 +191,25 @@
                 <div class="price-container reveal active">
                     <span class="font-en text-[10px] font-black text-sky-300 tracking-[0.4em] block mb-6 italic">INVESTMENT</span>
                     <h2 class="text-xl font-black italic mb-10 border-b border-white/10 pb-4 inline-block">受講料金（税込・テキスト代込）</h2>
-                    <div class="flex items-baseline gap-4">
+                    
+                    <!-- 現行料金 -->
+                    <div class="flex items-baseline gap-4 mb-4">
                         <span id="price" class="text-8xl md:text-9xl font-en font-black italic tracking-tighter"></span>
                         <span class="text-2xl font-black italic opacity-60">円</span>
                     </div>
-                    <p id="tax-note" class="text-sky-200/50 text-xs mt-10 font-bold italic pt-6 border-t border-white/10"></p>
+                    <p id="tax-note" class="text-sky-200/50 text-xs font-bold italic mb-10"></p>
+
+                    <!-- 【追加】12/1からの新料金 -->
+                    <div id="new-price-area" class="hidden mt-10 pt-10 border-t border-white/20 bg-white/5 rounded-[2rem] p-6 shadow-inner">
+                        <div class="inline-block bg-accent text-[#001a33] px-4 py-1 rounded-full text-xs font-black italic mb-4">
+                           12/1からの<br class="md:hidden">新受講料金
+                        </div>
+                        <div class="flex items-baseline gap-4">
+                            <span id="new-price" class="text-6xl md:text-7xl font-en font-black italic tracking-tighter text-white"></span>
+                            <span class="text-xl font-black italic opacity-60 text-white">円</span>
+                        </div>
+                        <p id="new-tax-note" class="text-sky-300 text-sm mt-4 font-bold italic"></p>
+                    </div>
                 </div>
 
                 <!-- 5. 講習日数・その他（ここも省略なし） -->
@@ -256,6 +270,9 @@
                 eligibility: '未経験・一般', condition: '特別な資格や経験は必要ありません。どなたでも受講いただけます。',
                 machines: 'クレーン・移動式クレーン・デリック・揚貨装置等を用いた全ての玉掛け作業',
                 price: '25,000', tax: '※ テキスト代 1,800円、及び消費税を含む。',
+                 // 新料金
+                newPrice: '27,000',
+                newTax: '※テキスト代 2,300円及び消費税を含む',
                 others: ['学科講習 12時間 / 実技講習 7時間','講習日数：標準3日間','最低開催人数：4名','※定員に満たない場合、日程を調整することがあります。'],
                 pdf: 'pdf/tamakake.pdf'
             },
@@ -266,6 +283,9 @@
                 eligibility: '有資格者', condition: 'A.玉掛け技能講習修了証所持者\nB.クレーン・デリック等の運転士免許所持者',
                 machines: 'つり上げ荷重5トン未満の、クローラーキャリア搭載クレーン、積載型トラッククレーン、トラッククレーン、ホイールクレーン等',
                 price: '35,000', tax: '※ テキスト代 1,800円、及び消費税を含む。',
+                // 新料金
+                newPrice: '37,000',
+                newTax: '※テキスト代 2,300円及び消費税を含む',                
                 others: ['学科講習 10時間 / 実技講習 6時間','講習日数：3日間','現役プロ講師による実技指導'],
                 pdf: 'pdf/crane.pdf'
             },
@@ -277,6 +297,9 @@
                 eligibility: '免許所持者', condition: '普通・準中型・中型・大型自動車免許のいずれかをお持ちの方',
                 machines: '全種類のフォークリフト（カウンタバランス、リーチ、サイド等すべて）',
                 price: '30,000', tax: '※ 自動車免許所持(31H)の場合。テキスト代込・税込。',
+                // 新料金
+                newPrice: '32,000',
+                newTax: '※ 自動車免許所持(31H)の場合。テキスト代込・税込。',                
                 others: ['学科講習 7時間 / 実技講習 24時間','講習日数：標準4日間','即戦力となる技術を徹底指導'],
                 pdf: 'pdf/fork31.pdf'
             },
@@ -307,6 +330,15 @@
             document.getElementById('machines').innerText = data.machines;
             document.getElementById('price').innerText = data.price;
             document.getElementById('tax-note').innerText = data.tax;
+            // 新料金エリアの表示制御
+            const newPriceArea = document.getElementById('new-price-area');
+            if(data.newPrice) {
+                newPriceArea.classList.remove('hidden');
+                document.getElementById('new-price').innerText = data.newPrice;
+                document.getElementById('new-tax-note').innerText = data.newTax;
+            } else {
+                newPriceArea.classList.add('hidden');
+            }            
             document.getElementById('pdf-link').href = data.pdf;
             
             const othersList = document.getElementById('others');
